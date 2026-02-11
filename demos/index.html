@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Empresa - Design System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    /* Header */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 24px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Search and Filters */
+    .controls {
+      background: #fff;
+      padding: 20px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #d0d0d0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #0066cc;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid #d0d0d0;
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .filter-btn.active {
+      background: #0066cc;
+      color: #fff;
+      border-color: #0066cc;
+    }
+
+    /* Component Grid */
+    .components-grid {
+      padding: 0 32px 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .component-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .component-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .component-preview {
+      background: #ffffff;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 16px;
+    }
+
+    .component-preview::after {
+      content: 'Preview';
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(255,255,255,0.9);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .component-info {
+      padding: 20px;
+    }
+
+    .component-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .component-description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .component-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .component-tag {
+      background: #f0f0f0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Mini prévias dos componentes nos cards */
+    .preview-inner {
+      width: 100%;
+      max-width: 260px;
+      height: 100%;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      overflow: hidden;
+    }
+
+    .preview-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .preview-button-primary {
+      padding: 8px 14px;
+      border-radius: 9999px;
+      border: none;
+      background: #04843B;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .preview-button-secondary {
+      padding: 8px 14px;
+      border-radius: 9999px;
+      border: 1px solid #04843B;
+      background: #ffffff;
+      color: #04843B;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .preview-input {
+      flex: 1;
+      min-width: 0;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #DDDDDD;
+      font-size: 12px;
+      color: #393939;
+    }
+
+    .preview-select {
+      flex: 1;
+      min-width: 0;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #DDDDDD;
+      font-size: 12px;
+      color: #393939;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .preview-checkbox,
+    .preview-radio {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid #DDDDDD;
+      background: #ffffff;
+    }
+
+    .preview-radio {
+      border-radius: 9999px;
+    }
+
+    .preview-switch-track {
+      width: 32px;
+      height: 16px;
+      border-radius: 9999px;
+      background: #C6C6C6;
+      position: relative;
+    }
+
+    .preview-switch-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 9999px;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .preview-textarea {
+      width: 100%;
+      height: 48px;
+      border-radius: 4px;
+      border: 1px solid #DDDDDD;
+      font-size: 11px;
+      padding: 6px 8px;
+      color: #393939;
+      resize: none;
+    }
+
+    .preview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+
+    .preview-table th,
+    .preview-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #EEEEEE;
+      text-align: left;
+    }
+
+    .preview-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: #E6F4ED;
+      color: #005A1A;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .preview-toast {
+      width: 100%;
+      border-radius: 6px;
+      background: #04843B;
+      color: #ffffff;
+      padding: 8px 10px;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: #999;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    /* Stats */
+    .stats {
+      padding: 0 32px 24px;
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      flex: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #0066cc;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1>Portal Empresa Design System</h1>
+    <p>Biblioteca de componentes reutilizáveis com tokens de design e documentação completa</p>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-number" id="total-components">0</div>
+      <div class="stat-label">Componentes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">150+</div>
+      <div class="stat-label">Design Tokens</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">WCAG AA</div>
+      <div class="stat-label">Acessibilidade</div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="controls">
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="search-input" 
+        placeholder="Buscar componentes (ex: button, input, form...)"
+      >
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="form">Formulários</button>
+      <button class="filter-btn" data-filter="feedback">Feedback</button>
+      <button class="filter-btn" data-filter="data">Dados</button>
+      <button class="filter-btn" data-filter="foundation">Fundação</button>
+    </div>
+  </div>
+
+  <!-- Components Grid -->
+  <div class="components-grid" id="components-grid">
+    <!-- Cards serão gerados via JavaScript -->
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" id="empty-state" style="display: none;">
+    <h3>Nenhum componente encontrado</h3>
+    <p>Tente ajustar os filtros ou buscar por outro termo</p>
+  </div>
+
+  <script>
+    // Base de dados dos componentes
+    const components = [
+      {
+        name: 'Design Tokens',
+        description: 'Cores, tipografia, espaçamentos, border-radius e sombras — os valores fundamentais do sistema',
+        category: 'foundation',
+        file: 'design-tokens.html'
+      },
+      {
+        name: 'Iconografia',
+        description: 'Biblioteca de ícones Lucide com busca, categorias e download em SVG',
+        category: 'foundation',
+        file: 'icons-demo.html'
+      },
+      {
+        name: 'Button',
+        description: 'Botões com múltiplas variantes (primary, secondary, ghost) e estados interativos',
+        category: 'form',
+        file: 'button-demo.html',
+        gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      },
+      {
+        name: 'Input',
+        description: 'Campo de entrada de texto com estados, ícones e validação',
+        category: 'form',
+        file: 'input-demo.html'
+      },
+      {
+        name: 'Select',
+        description: 'Dropdown para seleção de opções com busca e estados',
+        category: 'form',
+        file: 'select-demo.html'
+      },
+      {
+        name: 'Checkbox',
+        description: 'Caixas de seleção múltipla com estados e mensagens',
+        category: 'form',
+        file: 'checkbox-demo.html'
+      },
+      {
+        name: 'Radio',
+        description: 'Botões de seleção única para opções exclusivas',
+        category: 'form',
+        file: 'radio-demo.html'
+      },
+      {
+        name: 'Switch',
+        description: 'Toggle para alternar entre estados on/off',
+        category: 'form',
+        file: 'switch-demo.html'
+      },
+      {
+        name: 'Textarea',
+        description: 'Campo de texto multilinhas com redimensionamento',
+        category: 'form',
+        file: 'textarea-demo.html'
+      },
+      {
+        name: 'Table',
+        description: 'Tabelas responsivas com sorting, paginação e virtual scrolling',
+        category: 'data',
+        file: 'table-demo.html'
+      },
+      {
+        name: 'Toast',
+        description: 'Notificações temporárias para feedback do sistema',
+        category: 'feedback',
+        file: 'toast-demo-updated.html'
+      },
+      {
+        name: 'Badge',
+        description: 'Indicadores visuais para status e contadores',
+        category: 'feedback',
+        file: 'table-demo.html'
+      }
+    ];
+
+    // Referências
+    const grid = document.getElementById('components-grid');
+    const searchInput = document.getElementById('search-input');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const emptyState = document.getElementById('empty-state');
+    const totalCounter = document.getElementById('total-components');
+
+    // Estado atual
+    let currentFilter = 'all';
+    let searchTerm = '';
+
+    function getPreviewMarkup(name) {
+      switch (name) {
+        case 'Button':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row">
+                <button class="preview-button-primary">Salvar</button>
+                <button class="preview-button-secondary">Cancelar</button>
+              </div>
+            </div>
+          `;
+        case 'Input':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row">
+                <input class="preview-input" placeholder="Input label" />
+              </div>
+            </div>
+          `;
+        case 'Select':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row">
+                <div class="preview-select">
+                  <span>Selecione...</span>
+                  <span>▾</span>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Checkbox':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row" style="flex-direction: column; align-items: flex-start;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div class="preview-checkbox" style="background:#04843B;border-color:#04843B;"></div>
+                  <span style="font-size:11px;">Aceito os termos</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div class="preview-checkbox"></div>
+                  <span style="font-size:11px;">Receber emails</span>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Radio':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row" style="flex-direction: column; align-items: flex-start;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div class="preview-radio" style="border-color:#04843B;box-shadow:inset 0 0 0 3px #04843B;"></div>
+                  <span style="font-size:11px;">Opção A</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div class="preview-radio"></div>
+                  <span style="font-size:11px;">Opção B</span>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Switch':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row" style="justify-content:flex-start;gap:10px;">
+                <div class="preview-switch-track">
+                  <div class="preview-switch-thumb"></div>
+                </div>
+                <span style="font-size:11px;">Ativar</span>
+              </div>
+            </div>
+          `;
+        case 'Textarea':
+          return `
+            <div class="preview-inner">
+              <textarea class="preview-textarea" placeholder="Escreva aqui..."></textarea>
+            </div>
+          `;
+        case 'Table':
+          return `
+            <div class="preview-inner">
+              <table class="preview-table">
+                <thead>
+                  <tr><th>Nome</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Ana</td><td><span class="preview-badge">Ativo</span></td></tr>
+                  <tr><td>Carlos</td><td><span class="preview-badge">Inativo</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        case 'Toast':
+          return `
+            <div class="preview-inner">
+              <div class="preview-toast">
+                <strong style="font-size:11px;">Operação concluída!</strong>
+                <span>Dados salvos com sucesso.</span>
+              </div>
+            </div>
+          `;
+        case 'Badge':
+          return `
+            <div class="preview-inner">
+              <div class="preview-row">
+                <span class="preview-badge">Ativo</span>
+                <span class="preview-badge" style="background:#FEE2E2;color:#DC2626;">Erro</span>
+              </div>
+            </div>
+          `;
+        case 'Iconografia':
+          return `
+            <div class="preview-inner" style="flex-direction:column;gap:6px;padding:10px 14px;">
+              <div style="display:flex;gap:10px;justify-content:center;align-items:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div style="display:flex;gap:10px;justify-content:center;align-items:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#656976" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#656976" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#656976" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#656976" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <div style="font-size:9px;color:#999;text-align:center;">80+ ícones Lucide</div>
+            </div>
+          `;
+        case 'Design Tokens':
+          return `
+            <div class="preview-inner" style="flex-direction:column;gap:6px;padding:10px 14px;">
+              <div style="display:flex;gap:4px;width:100%;">
+                <div style="flex:1;height:18px;border-radius:4px;background:#E6F4ED;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#99D3B7;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#04843B;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#005A1A;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#003D11;"></div>
+              </div>
+              <div style="display:flex;gap:4px;width:100%;">
+                <div style="flex:1;height:18px;border-radius:4px;background:#F3F3F3;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#C6C6C6;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#6C6C6C;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#333333;"></div>
+                <div style="flex:1;height:18px;border-radius:4px;background:#000000;"></div>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;width:100%;margin-top:2px;">
+                <span style="font-size:10px;font-weight:600;color:#04843B;">Aa</span>
+                <span style="font-size:8px;font-weight:400;color:#999;">Inter · 14px · 400</span>
+                <div style="margin-left:auto;display:flex;gap:3px;">
+                  <div style="width:12px;height:12px;border-radius:2px;background:#04843B;"></div>
+                  <div style="width:12px;height:12px;border-radius:6px;background:#04843B;"></div>
+                  <div style="width:12px;height:12px;border-radius:9999px;background:#04843B;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        default:
+          return `
+            <div class="preview-inner">
+              <span style="font-size:11px;color:#727272;">Preview não configurado</span>
+            </div>
+          `;
+      }
+    }
+
+    // Renderizar componentes
+    function renderComponents() {
+      const filtered = components.filter(comp => {
+        const matchesCategory = currentFilter === 'all' || comp.category === currentFilter;
+        const matchesSearch = comp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             comp.description.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      emptyState.style.display = 'none';
+
+      grid.innerHTML = filtered.map(comp => `
+        <a href="${comp.file}" class="component-card">
+          <div class="component-preview">
+            ${getPreviewMarkup(comp.name)}
+          </div>
+          <div class="component-info">
+            <div class="component-name">${comp.name}</div>
+            <div class="component-description">${comp.description}</div>
+            <div class="component-meta">
+              <span class="component-tag">${comp.category}</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      renderComponents();
+    });
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderComponents();
+      });
+    });
+
+    // Inicializar
+    totalCounter.textContent = components.length;
+    renderComponents();
+  </script>
+</body>
+</html>

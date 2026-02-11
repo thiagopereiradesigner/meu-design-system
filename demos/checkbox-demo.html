@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Checkbox Component</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9F9F9;
+            padding: 40px;
+            color: #393939;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 48px; }
+        .header h1 { font-size: 32px; font-weight: 700; color: #005A1A; margin-bottom: 8px; }
+        .header p { font-size: 16px; color: #5E5E5E; }
+        .section { background: #FFFFFF; padding: 32px; border-radius: 12px; margin-bottom: 32px; }
+        .section-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #1A1A1A; }
+        .section-description { font-size: 14px; color: #5E5E5E; margin-bottom: 16px; }
+        .column { display: flex; flex-direction: column; gap: 16px; }
+        .subtitle { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: #393939; }
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .checkbox-input {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid #DDDDDD;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .checkbox-input:checked {
+            background-color: #04843B;
+            border-color: #04843B;
+        }
+        .checkbox-input:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+        }
+        .checkbox-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .checkbox-label { font-size: 14px; color: #393939; }
+        .code-block {
+            margin-top: 16px;
+            padding: 16px;
+            background: #1A1A1A;
+            color: #E6E6E6;
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Checkbox</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Portal Empresa - Design System</h1>
+            <p>Componente Checkbox | Estados e código de uso</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">✅ Checkbox</h2>
+            <p class="section-description">
+                Controle de seleção múltipla, com suporte a estados marcado, desmarcado e desabilitado.
+            </p>
+
+            <h3 class="subtitle">Basic</h3>
+            <div class="column">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" class="checkbox-input" id="check1">
+                    <span class="checkbox-label">Aceito os termos e condições</span>
+                </label>
+                
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" class="checkbox-input" id="check2" checked>
+                    <span class="checkbox-label">Receber notificações por email</span>
+                </label>
+                
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" class="checkbox-input" id="check3">
+                    <span class="checkbox-label">Manter conectado</span>
+                </label>
+            </div>
+
+            <h3 class="subtitle">States</h3>
+            <div class="column">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" class="checkbox-input" disabled>
+                    <span class="checkbox-label">Desabilitado (unchecked)</span>
+                </label>
+                
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" class="checkbox-input" checked disabled>
+                    <span class="checkbox-label">Desabilitado (checked)</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <p class="section-description">
+                Exemplo mínimo de estrutura para checkbox acessível.
+            </p>
+
+            <div class="code-block">
+<pre><code>&lt;label class="checkbox-wrapper"&gt;
+  &lt;input 
+    type="checkbox" 
+    class="checkbox-input" 
+    checked /&gt;
+  &lt;span class="checkbox-label"&gt;Aceito os termos&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+            </div>
+        </div>
+    </div>
+<!-- DS Navigation Search Script -->
+<script>
+(function(){
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    function setupSearch(inputId,dropdownId){
+        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+        if(!si||!dd)return;
+        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+        si.addEventListener('input',function(e){render(e.target.value);});
+        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+    }
+    setupSearch('ds-nav-search','ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+    if(hb&&mm){
+        hb.addEventListener('click',function(){mm.classList.toggle('open');});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+    }
+})();
+</script>
+</body>
+</html>
+

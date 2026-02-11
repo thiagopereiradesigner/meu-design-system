@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Design Tokens</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #1A1A1A;
+        }
+
+        /* ── Navigation Bar ── */
+        .ds-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 32px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .ds-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid #d0d0d0;
+            background: #fff;
+            color: #333;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .ds-back-btn:hover {
+            background: #f5f5f5;
+            border-color: #04843B;
+            color: #04843B;
+        }
+
+        .ds-topbar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #005A1A;
+            white-space: nowrap;
+        }
+
+        .ds-topbar-spacer { flex: 1; }
+
+        .ds-search-wrapper {
+            position: relative;
+            width: 280px;
+        }
+
+        .ds-search-input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .ds-search-input:focus {
+            border-color: #04843B;
+        }
+
+        .ds-search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            pointer-events: none;
+        }
+
+        .ds-search-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            max-height: 320px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .ds-search-dropdown.open { display: block; }
+
+        .ds-search-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+            transition: background 0.1s;
+        }
+
+        .ds-search-item:hover, .ds-search-item.active {
+            background: #E6F4ED;
+            color: #005A1A;
+        }
+
+        .ds-search-item-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #f0f0f0;
+            color: #666;
+            margin-left: auto;
+        }
+
+        /* Hamburger */
+        .ds-hamburger {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.15s;
+            flex-shrink: 0;
+        }
+
+        .ds-hamburger:hover { background: #f5f5f5; }
+        .ds-hamburger svg { color: #333; }
+
+        /* Mobile Menu */
+        .ds-mobile-menu {
+            display: none;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 16px;
+            z-index: 998;
+            flex-direction: column;
+            gap: 12px;
+            animation: dsSlideDown 0.2s ease;
+        }
+
+        .ds-mobile-menu.open { display: flex; }
+
+        @keyframes dsSlideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ds-mobile-menu .ds-back-btn { width: 100%; justify-content: center; }
+        .ds-mobile-menu .ds-search-wrapper { width: 100%; }
+
+        /* ── Page Content ── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #656976;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Section navigation */
+        .token-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 48px;
+        }
+
+        .token-nav a {
+            padding: 8px 16px;
+            border: 1px solid #d0d0d0;
+            background: #fff;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .token-nav a:hover {
+            background: #E6F4ED;
+            border-color: #04843B;
+            color: #005A1A;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 56px;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #E6F4ED;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 4px;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: #656976;
+        }
+
+        /* ── Colors ── */
+        .color-scale-group {
+            margin-bottom: 32px;
+        }
+
+        .color-scale-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .color-scale {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+        }
+
+        .color-swatch {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.06);
+            transition: transform 0.15s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.05);
+        }
+
+        .color-swatch-block {
+            height: 72px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .color-swatch-block .copied-label {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .color-swatch-block.copied .copied-label {
+            display: flex;
+        }
+
+        .color-swatch-info {
+            padding: 8px 10px;
+            background: #fff;
+        }
+
+        .color-swatch-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .color-swatch-hex {
+            font-size: 11px;
+            color: #999;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Semantic colors */
+        .semantic-colors {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .semantic-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+        }
+
+        .semantic-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .semantic-info {
+            flex: 1;
+        }
+
+        .semantic-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-transform: capitalize;
+        }
+
+        .semantic-hex {
+            font-size: 12px;
+            color: #999;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .semantic-usage {
+            font-size: 11px;
+            color: #656976;
+            margin-top: 2px;
+        }
+
+        /* ── Typography ── */
+        .type-samples {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .type-row {
+            display: flex;
+            align-items: baseline;
+            gap: 24px;
+            padding: 16px 20px;
+            background: #F9F9F9;
+            border-radius: 8px;
+        }
+
+        .type-meta {
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+
+        .type-token {
+            font-size: 12px;
+            font-weight: 600;
+            color: #04843B;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .type-value {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .type-preview {
+            color: #333;
+        }
+
+        /* Font weights */
+        .weight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .weight-card {
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+        }
+
+        .weight-preview {
+            font-size: 28px;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+
+        .weight-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .weight-value {
+            font-size: 12px;
+            color: #999;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Line height */
+        .lh-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .lh-card {
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+        }
+
+        .lh-demo {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 12px;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent calc(1em * var(--lh) - 1px),
+                #E6F4ED calc(1em * var(--lh) - 1px),
+                #E6F4ED calc(1em * var(--lh))
+            );
+        }
+
+        .lh-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .lh-value {
+            font-size: 12px;
+            color: #999;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* ── Spacing ── */
+        .spacing-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .spacing-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 16px;
+            background: #F9F9F9;
+            border-radius: 8px;
+        }
+
+        .spacing-meta {
+            min-width: 120px;
+        }
+
+        .spacing-token {
+            font-size: 13px;
+            font-weight: 600;
+            color: #04843B;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .spacing-value {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .spacing-bar {
+            height: 32px;
+            background: linear-gradient(135deg, #04843B, #33A76F);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .spacing-bar-label {
+            position: absolute;
+            right: -36px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            color: #656976;
+            white-space: nowrap;
+        }
+
+        /* ── Border Radius ── */
+        .radius-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .radius-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .radius-shape {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #04843B, #33A76F);
+        }
+
+        .radius-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .radius-value {
+            font-size: 12px;
+            color: #999;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* ── Shadows ── */
+        .shadow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .shadow-card {
+            padding: 32px;
+            border-radius: 12px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .shadow-preview {
+            width: 120px;
+            height: 80px;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .shadow-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .shadow-value {
+            font-size: 11px;
+            color: #999;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            text-align: center;
+            word-break: break-all;
+        }
+
+        /* ── Copy Feedback ── */
+        .global-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #04843B;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+
+        .global-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .container { padding: 24px 16px; }
+            .ds-topbar { padding: 0 16px; }
+            .ds-topbar > .ds-back-btn,
+            .ds-topbar > .ds-search-wrapper { display: none; }
+            .ds-hamburger { display: flex; }
+            .color-scale { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .lh-grid { grid-template-columns: 1fr; }
+            .type-row { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Design Tokens</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Design Tokens</h1>
+        <p>Os tokens de design são os valores fundamentais que definem a identidade visual do sistema. Cores, tipografia, espaçamentos e sombras — tudo documentado aqui.</p>
+    </div>
+
+    <!-- Quick Nav -->
+    <div class="token-nav">
+        <a href="#colors">Cores</a>
+        <a href="#typography">Tipografia</a>
+        <a href="#spacing">Espaçamento</a>
+        <a href="#radius">Border Radius</a>
+        <a href="#shadows">Sombras</a>
+    </div>
+
+    <!-- ═══════ COLORS ═══════ -->
+    <div class="section" id="colors">
+        <div class="section-header">
+            <h2 class="section-title">Cores</h2>
+            <p class="section-desc">Paleta de cores primárias, neutras e semânticas. Clique em qualquer cor para copiar o valor hex.</p>
+        </div>
+
+        <!-- Primary Scale -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Primary (Green)</div>
+            <div class="color-scale" id="primary-colors"></div>
+        </div>
+
+        <!-- Neutral Scale -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Neutral (Gray)</div>
+            <div class="color-scale" id="neutral-colors"></div>
+        </div>
+
+        <!-- Semantic Colors -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Semânticas</div>
+            <div class="semantic-colors" id="semantic-colors"></div>
+        </div>
+    </div>
+
+    <!-- ═══════ TYPOGRAPHY ═══════ -->
+    <div class="section" id="typography">
+        <div class="section-header">
+            <h2 class="section-title">Tipografia</h2>
+            <p class="section-desc">Família tipográfica Inter com escala de tamanhos, pesos e alturas de linha.</p>
+        </div>
+
+        <!-- Font Family -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Família</div>
+            <div class="type-row" style="margin-bottom: 24px;">
+                <div class="type-meta">
+                    <div class="type-token">fontFamily</div>
+                    <div class="type-value">Inter, sans-serif</div>
+                </div>
+                <div class="type-preview" style="font-size: 20px;">
+                    The quick brown fox jumps over the lazy dog — 0123456789
+                </div>
+            </div>
+        </div>
+
+        <!-- Font Sizes -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Escala de tamanhos</div>
+            <div class="type-samples" id="font-sizes"></div>
+        </div>
+
+        <!-- Font Weights -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Pesos</div>
+            <div class="weight-grid" id="font-weights"></div>
+        </div>
+
+        <!-- Line Heights -->
+        <div class="color-scale-group">
+            <div class="color-scale-label">Altura de linha</div>
+            <div class="lh-grid" id="line-heights"></div>
+        </div>
+    </div>
+
+    <!-- ═══════ SPACING ═══════ -->
+    <div class="section" id="spacing">
+        <div class="section-header">
+            <h2 class="section-title">Espaçamento</h2>
+            <p class="section-desc">Escala de espaçamento consistente para margens, paddings e gaps.</p>
+        </div>
+        <div class="spacing-list" id="spacing-list"></div>
+    </div>
+
+    <!-- ═══════ BORDER RADIUS ═══════ -->
+    <div class="section" id="radius">
+        <div class="section-header">
+            <h2 class="section-title">Border Radius</h2>
+            <p class="section-desc">Raios de borda para manter consistência nos cantos arredondados dos componentes.</p>
+        </div>
+        <div class="radius-grid" id="radius-grid"></div>
+    </div>
+
+    <!-- ═══════ SHADOWS ═══════ -->
+    <div class="section" id="shadows">
+        <div class="section-header">
+            <h2 class="section-title">Sombras</h2>
+            <p class="section-desc">Elevações para hierarquia visual e estados de foco.</p>
+        </div>
+        <div class="shadow-grid" id="shadow-grid"></div>
+    </div>
+</div>
+
+<!-- Global Toast -->
+<div class="global-toast" id="global-toast">Copiado!</div>
+
+<script>
+    // ── Token Data ──
+    const tokens = {
+        colors: {
+            primary: {
+                "50": "#E6F4ED", "100": "#CCE9DB", "200": "#99D3B7", "300": "#66BD93",
+                "400": "#33A76F", "500": "#04843B", "600": "#067647", "700": "#005A1A",
+                "800": "#004D16", "900": "#003D11"
+            },
+            neutral: {
+                "0": "#FFFFFF", "50": "#F9F9F9", "100": "#F3F3F3", "200": "#C6C6C6",
+                "300": "#999999", "400": "#6C6C6C", "500": "#656976", "600": "#4D4D4D",
+                "700": "#333333", "800": "#1A1A1A", "900": "#000000"
+            },
+            semantic: {
+                success: { hex: "#04843B", usage: "Ações positivas, confirmações" },
+                error: { hex: "#DC2626", usage: "Erros, validações, destrutivos" },
+                warning: { hex: "#F59E0B", usage: "Alertas, atenção necessária" },
+                info: { hex: "#3B82F6", usage: "Informações, dicas, links" }
+            }
+        },
+        fontSize: {
+            xs: "10px", sm: "12px", md: "14px", lg: "16px", xl: "18px"
+        },
+        fontWeight: {
+            regular: 400, medium: 500, semibold: 600, bold: 700
+        },
+        lineHeight: {
+            tight: 1.2, normal: 1.5, relaxed: 1.75
+        },
+        spacing: {
+            xs: "4px", sm: "8px", md: "12px", lg: "16px", xl: "24px", "2xl": "32px"
+        },
+        borderRadius: {
+            sm: "4px", md: "8px", lg: "12px", full: "9999px"
+        },
+        shadows: {
+            sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+            md: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            focus: "0 0 0 3px rgba(4, 132, 59, 0.1)"
+        }
+    };
+
+    // ── Component Nav Data ──
+    const navComponents = [
+        { name: 'Button', file: 'button-demo.html', cat: 'Formulário' },
+        { name: 'Input', file: 'input-demo.html', cat: 'Formulário' },
+        { name: 'Select', file: 'select-demo.html', cat: 'Formulário' },
+        { name: 'Checkbox', file: 'checkbox-demo.html', cat: 'Formulário' },
+        { name: 'Radio', file: 'radio-demo.html', cat: 'Formulário' },
+        { name: 'Switch', file: 'switch-demo.html', cat: 'Formulário' },
+        { name: 'Textarea', file: 'textarea-demo.html', cat: 'Formulário' },
+        { name: 'Table', file: 'table-demo.html', cat: 'Dados' },
+        { name: 'Toast', file: 'toast-demo-updated.html', cat: 'Feedback' },
+        { name: 'Design Tokens', file: 'design-tokens.html', cat: 'Fundação' },
+        { name: 'Iconografia', file: 'icons-demo.html', cat: 'Fundação' }
+    ];
+
+    // ── Toast ──
+    function showToast(msg) {
+        const t = document.getElementById('global-toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    function copyHex(hex) {
+        navigator.clipboard.writeText(hex).then(() => showToast('Copiado: ' + hex));
+    }
+
+    // ── Render Colors ──
+    function renderColorScale(containerId, scale, prefix) {
+        const el = document.getElementById(containerId);
+        el.innerHTML = Object.entries(scale).map(([step, hex]) => {
+            const isLight = ['0', '50', '100'].includes(step);
+            return `
+                <div class="color-swatch">
+                    <div class="color-swatch-block" style="background:${hex};" onclick="copyHex('${hex}')" title="Clique para copiar">
+                        <div class="copied-label">Copiado!</div>
+                    </div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">${prefix}-${step}</div>
+                        <div class="color-swatch-hex">${hex}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderSemanticColors() {
+        const el = document.getElementById('semantic-colors');
+        el.innerHTML = Object.entries(tokens.colors.semantic).map(([name, data]) => `
+            <div class="semantic-card" onclick="copyHex('${data.hex}')" style="cursor:pointer;" title="Clique para copiar">
+                <div class="semantic-circle" style="background:${data.hex};"></div>
+                <div class="semantic-info">
+                    <div class="semantic-name">${name}</div>
+                    <div class="semantic-hex">${data.hex}</div>
+                    <div class="semantic-usage">${data.usage}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    renderColorScale('primary-colors', tokens.colors.primary, 'primary');
+    renderColorScale('neutral-colors', tokens.colors.neutral, 'neutral');
+    renderSemanticColors();
+
+    // ── Render Typography ──
+    function renderFontSizes() {
+        const el = document.getElementById('font-sizes');
+        el.innerHTML = Object.entries(tokens.fontSize).map(([name, size]) => `
+            <div class="type-row">
+                <div class="type-meta">
+                    <div class="type-token">fontSize.${name}</div>
+                    <div class="type-value">${size}</div>
+                </div>
+                <div class="type-preview" style="font-size:${size};">
+                    Design tokens criam consistência visual — Aa Bb Cc 123
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderFontWeights() {
+        const el = document.getElementById('font-weights');
+        el.innerHTML = Object.entries(tokens.fontWeight).map(([name, value]) => `
+            <div class="weight-card">
+                <div class="weight-preview" style="font-weight:${value};">Aa</div>
+                <div class="weight-name">${name}</div>
+                <div class="weight-value">${value}</div>
+            </div>
+        `).join('');
+    }
+
+    function renderLineHeights() {
+        const el = document.getElementById('line-heights');
+        el.innerHTML = Object.entries(tokens.lineHeight).map(([name, value]) => `
+            <div class="lh-card">
+                <div class="lh-demo" style="line-height:${value};">
+                    Texto de exemplo com line-height ${value}. Esta linha demonstra o espaçamento vertical entre as linhas de texto.
+                </div>
+                <div class="lh-label">${name}</div>
+                <div class="lh-value">${value}</div>
+            </div>
+        `).join('');
+    }
+
+    renderFontSizes();
+    renderFontWeights();
+    renderLineHeights();
+
+    // ── Render Spacing ──
+    function renderSpacing() {
+        const el = document.getElementById('spacing-list');
+        const maxPx = 32;
+        el.innerHTML = Object.entries(tokens.spacing).map(([name, value]) => {
+            const px = parseInt(value);
+            const pct = (px / maxPx) * 100;
+            return `
+                <div class="spacing-row">
+                    <div class="spacing-meta">
+                        <div class="spacing-token">spacing.${name}</div>
+                        <div class="spacing-value">${value}</div>
+                    </div>
+                    <div style="flex:1;position:relative;padding-right:40px;">
+                        <div class="spacing-bar" style="width:${pct}%;">
+                            <span class="spacing-bar-label">${value}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    renderSpacing();
+
+    // ── Render Border Radius ──
+    function renderRadius() {
+        const el = document.getElementById('radius-grid');
+        el.innerHTML = Object.entries(tokens.borderRadius).map(([name, value]) => `
+            <div class="radius-card">
+                <div class="radius-shape" style="border-radius:${value};"></div>
+                <div class="radius-name">borderRadius.${name}</div>
+                <div class="radius-value">${value}</div>
+            </div>
+        `).join('');
+    }
+
+    renderRadius();
+
+    // ── Render Shadows ──
+    function renderShadows() {
+        const el = document.getElementById('shadow-grid');
+        const labels = {
+            sm: 'Sutil — cards e botões em repouso',
+            md: 'Média — cards elevados, dropdowns',
+            focus: 'Focus — anel de foco para acessibilidade'
+        };
+        el.innerHTML = Object.entries(tokens.shadows).map(([name, value]) => `
+            <div class="shadow-card" style="border: 1px solid #eee;">
+                <div class="shadow-preview" style="box-shadow:${value};"></div>
+                <div class="shadow-name">shadow.${name}</div>
+                <div class="shadow-value">${value}</div>
+                <div style="font-size:12px;color:#656976;text-align:center;">${labels[name] || ''}</div>
+            </div>
+        `).join('');
+    }
+
+    renderShadows();
+
+    // ── Component Search Nav ──
+    function setupSearch(inputId, dropdownId) {
+        const si = document.getElementById(inputId);
+        const dd = document.getElementById(dropdownId);
+        if (!si || !dd) return;
+
+        function renderDropdown(filter) {
+            const filtered = navComponents.filter(c =>
+                c.name.toLowerCase().includes(filter.toLowerCase())
+            );
+            if (filtered.length === 0 || !filter) {
+                dd.classList.remove('open');
+                return;
+            }
+            dd.innerHTML = filtered.map(c => `
+                <a href="${c.file}" class="ds-search-item">
+                    <span>${c.name}</span>
+                    <span class="ds-search-item-tag">${c.cat}</span>
+                </a>
+            `).join('');
+            dd.classList.add('open');
+        }
+
+        si.addEventListener('input', (e) => renderDropdown(e.target.value));
+        si.addEventListener('focus', (e) => { if (e.target.value) renderDropdown(e.target.value); });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.ds-search-wrapper')) dd.classList.remove('open');
+        });
+    }
+
+    setupSearch('ds-nav-search', 'ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile', 'ds-nav-dropdown-mobile');
+
+    // ── Hamburger Toggle ──
+    const hb = document.getElementById('ds-hamburger');
+    const mm = document.getElementById('ds-mobile-menu');
+    if (hb && mm) {
+        hb.addEventListener('click', () => mm.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.ds-mobile-menu') && !e.target.closest('.ds-hamburger'))
+                mm.classList.remove('open');
+        });
+    }
+</script>
+</body>
+</html>

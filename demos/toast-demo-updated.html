@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Toast Component (Lucide Icons)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9F9F9;
+            padding: 40px;
+            color: #393939;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #5E5E5E;
+        }
+
+        .section {
+            background: #FFFFFF;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #1A1A1A;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #5E5E5E;
+            margin-bottom: 16px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.15s ease;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-success { background: #04843B; color: white; }
+        .btn-error { background: #DC2626; color: white; }
+        .btn-warning { background: #DC6803; color: white; }
+        .btn-info { background: #3B82F6; color: white; }
+        .btn-success-light { background: #E6F4ED; color: #005A1A; }
+        .btn-error-light { background: #FEE2E2; color: #DC2626; }
+        .btn-warning-light { background: #FEF3C7; color: #92400E; }
+        .btn-info-light { background: #DBEAFE; color: #1E40AF; }
+
+        /* TOAST */
+        .toast-container {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            opacity: 0;
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast-container.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 320px;
+            max-width: 480px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast-icon {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
+        }
+
+        .toast-title {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+            text-align: left;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            text-align: left;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: opacity 0.15s ease;
+            min-width: 24px;
+            min-height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            opacity: 0.7;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .toast-progress-bar {
+            height: 100%;
+            width: 100%;
+            animation: progress linear;
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Success Active */
+        .toast-success-active { background: #04843B; }
+        .toast-success-active .toast-title,
+        .toast-success-active .toast-message { color: white; }
+        .toast-success-active .toast-progress { background: rgba(255,255,255,0.3); }
+        .toast-success-active .toast-progress-bar { background: white; }
+
+        /* Error Active */
+        .toast-error-active { background: #DC2626; }
+        .toast-error-active .toast-title,
+        .toast-error-active .toast-message { color: white; }
+        .toast-error-active .toast-progress { background: rgba(255,255,255,0.3); }
+        .toast-error-active .toast-progress-bar { background: white; }
+
+        /* Warning Active */
+        .toast-warning-active { background: #DC6803; }
+        .toast-warning-active .toast-title,
+        .toast-warning-active .toast-message { color: white; }
+        .toast-warning-active .toast-progress { background: rgba(255,255,255,0.3); }
+        .toast-warning-active .toast-progress-bar { background: white; }
+
+        /* Info Active */
+        .toast-info-active { background: #3B82F6; }
+        .toast-info-active .toast-title,
+        .toast-info-active .toast-message { color: white; }
+        .toast-info-active .toast-progress { background: rgba(255,255,255,0.3); }
+        .toast-info-active .toast-progress-bar { background: white; }
+
+        /* Success Light */
+        .toast-success-light { background: #E6F4ED; }
+        .toast-success-light .toast-title,
+        .toast-success-light .toast-message { color: #005A1A; }
+        .toast-success-light .toast-progress { background: rgba(4,132,59,0.3); }
+        .toast-success-light .toast-progress-bar { background: #005A1A; }
+
+        /* Error Light */
+        .toast-error-light { background: #FEE2E2; }
+        .toast-error-light .toast-title,
+        .toast-error-light .toast-message { color: #DC2626; }
+        .toast-error-light .toast-progress { background: rgba(220,38,38,0.3); }
+        .toast-error-light .toast-progress-bar { background: #DC2626; }
+
+        /* Warning Light */
+        .toast-warning-light { background: #FEF3C7; }
+        .toast-warning-light .toast-title,
+        .toast-warning-light .toast-message { color: #92400E; }
+        .toast-warning-light .toast-progress { background: rgba(220,104,3,0.3); }
+        .toast-warning-light .toast-progress-bar { background: #92400E; }
+
+        /* Info Light */
+        .toast-info-light { background: #DBEAFE; }
+        .toast-info-light .toast-title,
+        .toast-info-light .toast-message { color: #1E40AF; }
+        .toast-info-light .toast-progress { background: rgba(59,130,246,0.3); }
+        .toast-info-light .toast-progress-bar { background: #1E40AF; }
+
+        .note {
+            margin-top: 32px;
+            padding: 24px;
+            background-color: #E6F4ED;
+            border-radius: 12px;
+            border-left: 4px solid #04843B;
+        }
+
+        .note h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #004D16;
+        }
+
+        .note ul {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .note ul li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Toast</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Portal Empresa - Design System</h1>
+            <p>Toast Component (Lucide Icons + Título e Mensagem)</p>
+        </div>
+
+        <!-- Active Variant -->
+        <div class="section">
+            <h2 class="section-title">🎨 Active (Fundo Colorido)</h2>
+            <p class="description">Texto branco em fundo colorido - Com título E mensagem de apoio</p>
+            <div class="button-grid">
+                <button class="btn-success" onclick="showToast('success', 'active')">
+                    ✅ Success Toast
+                </button>
+                <button class="btn-error" onclick="showToast('error', 'active')">
+                    ❌ Error Toast
+                </button>
+                <button class="btn-warning" onclick="showToast('warning', 'active')">
+                    ⚠️ Warning Toast
+                </button>
+                <button class="btn-info" onclick="showToast('info', 'active')">
+                    ℹ️ Info Toast
+                </button>
+            </div>
+        </div>
+
+        <!-- Light Variant -->
+        <div class="section">
+            <h2 class="section-title">💡 Light (Fundo Claro)</h2>
+            <p class="description">Texto colorido em fundo claro - Menos chamativo</p>
+            <div class="button-grid">
+                <button class="btn-success-light" onclick="showToast('success', 'light')">
+                    ✅ Success Light
+                </button>
+                <button class="btn-error-light" onclick="showToast('error', 'light')">
+                    ❌ Error Light
+                </button>
+                <button class="btn-warning-light" onclick="showToast('warning', 'light')">
+                    ⚠️ Warning Light
+                </button>
+                <button class="btn-info-light" onclick="showToast('info', 'light')">
+                    ℹ️ Info Light
+                </button>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="note">
+            <h3>✨ Melhorias Aplicadas</h3>
+            <ul>
+                <li><strong>Ícones do Lucide:</strong> circle-alert e x</li>
+                <li><strong>Título + Mensagem:</strong> Sempre exibidos (como no Figma)</li>
+                <li><strong>Texto alinhado à esquerda:</strong> Conforme especificação</li>
+                <li><strong>Animação suave:</strong> Fade + Slide from top (40px)</li>
+                <li><strong>Auto-close:</strong> 3s (success), 4s (info/warning), 5s (error)</li>
+                <li><strong>Progress bar:</strong> Animada, pausa no hover</li>
+                <li><strong>Esc fecha:</strong> Acessibilidade de teclado</li>
+                <li><strong>WCAG AA:</strong> Contraste mínimo 4.5:1</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        let currentToast = null;
+        let toastTimer = null;
+
+        const messages = {
+            success: {
+                title: 'Operação concluída!',
+                message: 'Seus dados foram salvos com sucesso.',
+                duration: 3000
+            },
+            error: {
+                title: 'Erro ao processar',
+                message: 'Não foi possível completar a operação. Tente novamente.',
+                duration: 5000
+            },
+            warning: {
+                title: 'Atenção necessária',
+                message: 'Alguns campos precisam ser revisados antes de continuar.',
+                duration: 4000
+            },
+            info: {
+                title: 'Nova atualização',
+                message: 'Uma nova versão do sistema está disponível.',
+                duration: 4000
+            }
+        };
+
+        // Lucide Icons
+        const icons = {
+            // circle-alert (info icon)
+            white: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            success: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            error: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            warning: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC6803" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            info: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            // X icon
+            closeWhite: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>`,
+            closeSuccess: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>`,
+            closeError: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>`,
+            closeWarning: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC6803" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>`,
+            closeInfo: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>`
+        };
+
+        function showToast(type, variant) {
+            const container = document.getElementById('toast-container');
+            const config = messages[type];
+            
+            if (currentToast) {
+                hideToast();
+            }
+
+            const iconKey = variant === 'active' ? 'white' : type;
+            const closeIconKey = variant === 'active' ? 'closeWhite' : 'close' + type.charAt(0).toUpperCase() + type.slice(1);
+            
+            const toastHTML = `
+                <div class="toast toast-${type}-${variant}">
+                    <div class="toast-icon">${icons[iconKey]}</div>
+                    <div class="toast-content">
+                        <p class="toast-title">${config.title}</p>
+                        <p class="toast-message">${config.message}</p>
+                    </div>
+                    <button class="toast-close" onclick="hideToast()" aria-label="Fechar notificação">
+                        ${icons[closeIconKey]}
+                    </button>
+                    <div class="toast-progress">
+                        <div class="toast-progress-bar" style="animation-duration: ${config.duration}ms"></div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = toastHTML;
+            
+            setTimeout(() => container.classList.add('show'), 10);
+
+            toastTimer = setTimeout(hideToast, config.duration);
+
+            const toast = container.querySelector('.toast');
+            const progressBar = container.querySelector('.toast-progress-bar');
+            
+            toast.addEventListener('mouseenter', () => {
+                clearTimeout(toastTimer);
+                progressBar.style.animationPlayState = 'paused';
+            });
+
+            toast.addEventListener('mouseleave', () => {
+                const remaining = parseFloat(getComputedStyle(progressBar).width) / parseFloat(getComputedStyle(progressBar.parentElement).width) * config.duration;
+                toastTimer = setTimeout(hideToast, remaining);
+                progressBar.style.animationPlayState = 'running';
+            });
+
+            currentToast = container;
+            container.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+        }
+
+        function hideToast() {
+            const container = document.getElementById('toast-container');
+            container.classList.remove('show');
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+                currentToast = null;
+            }, 300);
+
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+                toastTimer = null;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && currentToast) {
+                hideToast();
+            }
+        });
+
+        console.log('✅ Toast demo carregado (Lucide Icons)');
+        console.log('💡 Ícones: circle-alert + x');
+        console.log('📝 Título + Mensagem sempre exibidos');
+        console.log('◀️ Texto alinhado à esquerda');
+    </script>
+<!-- DS Navigation Search Script -->
+<script>
+(function(){
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    function setupSearch(inputId,dropdownId){
+        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+        if(!si||!dd)return;
+        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+        si.addEventListener('input',function(e){render(e.target.value);});
+        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+    }
+    setupSearch('ds-nav-search','ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+    if(hb&&mm){
+        hb.addEventListener('click',function(){mm.classList.toggle('open');});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+    }
+})();
+</script>
+</body>
+</html>

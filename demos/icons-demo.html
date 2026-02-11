@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Iconografia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            padding: 40px;
+            color: #1A1A1A;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #656976;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .header-ref {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 14px;
+            background: #F9F9F9;
+            border: 1px solid #e0e0e0;
+            border-radius: 9999px;
+            font-size: 12px;
+            color: #656976;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .header-ref:hover {
+            border-color: #04843B;
+            color: #005A1A;
+            background: #E6F4ED;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .icon-search {
+            flex: 1;
+            min-width: 240px;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .icon-search:focus {
+            border-color: #04843B;
+        }
+
+        .icon-search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .icon-search-wrap svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            pointer-events: none;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            padding: 8px 14px;
+            border: 1px solid #d0d0d0;
+            background: #fff;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .cat-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .cat-btn.active {
+            background: #04843B;
+            color: #fff;
+            border-color: #04843B;
+        }
+
+        .icon-count {
+            font-size: 13px;
+            color: #999;
+            padding: 8px 0;
+        }
+
+        /* Grid */
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .icon-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 8px 14px;
+            border-radius: 12px;
+            border: 1px solid #f0f0f0;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .icon-card:hover {
+            border-color: #04843B;
+            background: #E6F4ED;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(4,132,59,0.08);
+        }
+
+        .icon-card svg {
+            width: 24px;
+            height: 24px;
+            stroke: #333;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .icon-card:hover svg {
+            stroke: #005A1A;
+        }
+
+        .icon-card-name {
+            font-size: 10px;
+            color: #656976;
+            text-align: center;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+
+        .icon-card:hover .icon-card-name {
+            color: #005A1A;
+        }
+
+        /* Section title */
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section-group {
+            margin-bottom: 32px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            display: none;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        /* ── Drawer ── */
+        .drawer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 2000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .drawer-overlay.open {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 420px;
+            max-width: 90vw;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -8px 0 32px rgba(0,0,0,0.15);
+            z-index: 2001;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .drawer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1A1A1A;
+        }
+
+        .drawer-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+
+        .drawer-close:hover {
+            background: #f5f5f5;
+        }
+
+        .drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .drawer-preview {
+            width: 160px;
+            height: 160px;
+            border-radius: 16px;
+            background: #F9F9F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .drawer-preview svg {
+            width: 64px;
+            height: 64px;
+            stroke: #1A1A1A;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .drawer-meta {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .drawer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .drawer-row-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #656976;
+        }
+
+        .drawer-row-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1A1A1A;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .drawer-sizes {
+            display: flex;
+            gap: 24px;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 16px;
+            background: #F9F9F9;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .drawer-size-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .drawer-size-item svg {
+            stroke: #333;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .drawer-size-label {
+            font-size: 10px;
+            color: #999;
+        }
+
+        .drawer-actions {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-top: 8px;
+        }
+
+        .btn-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 9999px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+        }
+
+        .btn-download-primary {
+            background: #04843B;
+            color: #fff;
+        }
+
+        .btn-download-primary:hover {
+            background: #067647;
+        }
+
+        .btn-download-secondary {
+            background: #fff;
+            color: #04843B;
+            border: 1px solid #04843B;
+        }
+
+        .btn-download-secondary:hover {
+            background: #E6F4ED;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #04843B;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .icons-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 8px;
+            }
+            .icon-card { padding: 14px 6px 10px; }
+            .drawer { width: 100%; max-width: 100vw; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Iconografia</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Iconografia</h1>
+        <p>Biblioteca de ícones do design system baseada no Lucide Icons. Clique em qualquer ícone para visualizar detalhes e fazer download em SVG.</p>
+        <a href="https://lucide.dev" target="_blank" rel="noopener noreferrer" class="header-ref">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Referência: lucide.dev
+        </a>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <div class="icon-search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="icon-search" id="icon-search" placeholder="Buscar ícones (ex: search, user, arrow...)">
+        </div>
+        <div class="category-filters" id="category-filters"></div>
+    </div>
+
+    <div class="icon-count" id="icon-count"></div>
+
+    <!-- Icons Grid -->
+    <div id="icons-container"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+        <h3>Nenhum ícone encontrado</h3>
+        <p>Tente buscar por outro termo ou ajustar os filtros</p>
+    </div>
+</div>
+
+<!-- Drawer Overlay -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<!-- Drawer -->
+<div class="drawer" id="drawer">
+    <div class="drawer-header">
+        <span class="drawer-title" id="drawer-title">Ícone</span>
+        <button class="drawer-close" id="drawer-close" aria-label="Fechar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+    </div>
+    <div class="drawer-body">
+        <div class="drawer-preview" id="drawer-preview"></div>
+
+        <div class="drawer-sizes" id="drawer-sizes"></div>
+
+        <div class="drawer-meta" id="drawer-meta"></div>
+
+        <div class="drawer-actions">
+            <button class="btn-download btn-download-primary" id="btn-download-svg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download SVG
+            </button>
+            <button class="btn-download btn-download-secondary" id="btn-copy-svg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                Copiar SVG
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copiado!</div>
+
+<script>
+    // ── Icon Database (Lucide SVG paths) ──
+    const icons = [
+        // Navegação
+        { name: 'arrow-left', cat: 'Navegação', svg: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>' },
+        { name: 'arrow-right', cat: 'Navegação', svg: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>' },
+        { name: 'arrow-up', cat: 'Navegação', svg: '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>' },
+        { name: 'arrow-down', cat: 'Navegação', svg: '<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>' },
+        { name: 'chevron-left', cat: 'Navegação', svg: '<path d="m15 18-6-6 6-6"/>' },
+        { name: 'chevron-right', cat: 'Navegação', svg: '<path d="m9 18 6-6-6-6"/>' },
+        { name: 'chevron-up', cat: 'Navegação', svg: '<path d="m18 15-6-6-6 6"/>' },
+        { name: 'chevron-down', cat: 'Navegação', svg: '<path d="m6 9 6 6 6-6"/>' },
+        { name: 'chevrons-left', cat: 'Navegação', svg: '<path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/>' },
+        { name: 'chevrons-right', cat: 'Navegação', svg: '<path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/>' },
+        { name: 'menu', cat: 'Navegação', svg: '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>' },
+        { name: 'x', cat: 'Navegação', svg: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>' },
+        { name: 'home', cat: 'Navegação', svg: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>' },
+        { name: 'external-link', cat: 'Navegação', svg: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>' },
+        { name: 'corner-up-left', cat: 'Navegação', svg: '<polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>' },
+
+        // Ações
+        { name: 'search', cat: 'Ações', svg: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>' },
+        { name: 'plus', cat: 'Ações', svg: '<path d="M5 12h14"/><path d="M12 5v14"/>' },
+        { name: 'minus', cat: 'Ações', svg: '<path d="M5 12h14"/>' },
+        { name: 'check', cat: 'Ações', svg: '<path d="M20 6 9 17l-5-5"/>' },
+        { name: 'copy', cat: 'Ações', svg: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>' },
+        { name: 'clipboard', cat: 'Ações', svg: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>' },
+        { name: 'download', cat: 'Ações', svg: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>' },
+        { name: 'upload', cat: 'Ações', svg: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>' },
+        { name: 'trash-2', cat: 'Ações', svg: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>' },
+        { name: 'edit', cat: 'Ações', svg: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>' },
+        { name: 'pencil', cat: 'Ações', svg: '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>' },
+        { name: 'save', cat: 'Ações', svg: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>' },
+        { name: 'refresh-cw', cat: 'Ações', svg: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>' },
+        { name: 'filter', cat: 'Ações', svg: '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>' },
+        { name: 'sort-asc', cat: 'Ações', svg: '<path d="m3 8 4-4 4 4"/><path d="M7 4v16"/><path d="M11 12h4"/><path d="M11 16h7"/><path d="M11 20h10"/>' },
+        { name: 'log-out', cat: 'Ações', svg: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>' },
+        { name: 'log-in', cat: 'Ações', svg: '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>' },
+        { name: 'share-2', cat: 'Ações', svg: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>' },
+        { name: 'printer', cat: 'Ações', svg: '<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/>' },
+
+        // Alertas e Feedback
+        { name: 'circle-alert', cat: 'Alertas', svg: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>' },
+        { name: 'circle-check', cat: 'Alertas', svg: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>' },
+        { name: 'circle-x', cat: 'Alertas', svg: '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>' },
+        { name: 'triangle-alert', cat: 'Alertas', svg: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>' },
+        { name: 'info', cat: 'Alertas', svg: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>' },
+        { name: 'bell', cat: 'Alertas', svg: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>' },
+        { name: 'ban', cat: 'Alertas', svg: '<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>' },
+        { name: 'shield-check', cat: 'Alertas', svg: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>' },
+
+        // Usuário
+        { name: 'user', cat: 'Usuário', svg: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+        { name: 'users', cat: 'Usuário', svg: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
+        { name: 'user-plus', cat: 'Usuário', svg: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>' },
+        { name: 'user-check', cat: 'Usuário', svg: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>' },
+
+        // Comunicação
+        { name: 'mail', cat: 'Comunicação', svg: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>' },
+        { name: 'message-square', cat: 'Comunicação', svg: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
+        { name: 'phone', cat: 'Comunicação', svg: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>' },
+        { name: 'send', cat: 'Comunicação', svg: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>' },
+
+        // Dados e Arquivos
+        { name: 'file', cat: 'Dados', svg: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>' },
+        { name: 'file-text', cat: 'Dados', svg: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/>' },
+        { name: 'folder', cat: 'Dados', svg: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>' },
+        { name: 'database', cat: 'Dados', svg: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>' },
+        { name: 'table', cat: 'Dados', svg: '<path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/>' },
+        { name: 'bar-chart-3', cat: 'Dados', svg: '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>' },
+        { name: 'pie-chart', cat: 'Dados', svg: '<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>' },
+        { name: 'image', cat: 'Dados', svg: '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>' },
+
+        // Interface
+        { name: 'settings', cat: 'Interface', svg: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>' },
+        { name: 'eye', cat: 'Interface', svg: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>' },
+        { name: 'eye-off', cat: 'Interface', svg: '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>' },
+        { name: 'lock', cat: 'Interface', svg: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>' },
+        { name: 'unlock', cat: 'Interface', svg: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>' },
+        { name: 'calendar', cat: 'Interface', svg: '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>' },
+        { name: 'clock', cat: 'Interface', svg: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>' },
+        { name: 'star', cat: 'Interface', svg: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>' },
+        { name: 'heart', cat: 'Interface', svg: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>' },
+        { name: 'more-horizontal', cat: 'Interface', svg: '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>' },
+        { name: 'more-vertical', cat: 'Interface', svg: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>' },
+        { name: 'loader-2', cat: 'Interface', svg: '<path d="M21 12a9 9 0 1 1-6.219-8.56"/>' },
+        { name: 'grip-vertical', cat: 'Interface', svg: '<circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/>' },
+        { name: 'maximize-2', cat: 'Interface', svg: '<polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/>' },
+        { name: 'minimize-2', cat: 'Interface', svg: '<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" x2="21" y1="10" y2="3"/><line x1="3" x2="10" y1="21" y2="14"/>' },
+        { name: 'layout-grid', cat: 'Interface', svg: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>' },
+        { name: 'list', cat: 'Interface', svg: '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/>' },
+        { name: 'sliders-horizontal', cat: 'Interface', svg: '<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>' },
+        { name: 'help-circle', cat: 'Interface', svg: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>' },
+
+        // Mídia
+        { name: 'play', cat: 'Mídia', svg: '<polygon points="6 3 20 12 6 21 6 3"/>' },
+        { name: 'pause', cat: 'Mídia', svg: '<rect width="4" height="16" x="6" y="4"/><rect width="4" height="16" x="14" y="4"/>' },
+        { name: 'volume-2', cat: 'Mídia', svg: '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>' },
+        { name: 'camera', cat: 'Mídia', svg: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>' },
+
+        // E-commerce / Negócios
+        { name: 'shopping-cart', cat: 'Negócios', svg: '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>' },
+        { name: 'credit-card', cat: 'Negócios', svg: '<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>' },
+        { name: 'building-2', cat: 'Negócios', svg: '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>' },
+        { name: 'briefcase', cat: 'Negócios', svg: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>' },
+        { name: 'trending-up', cat: 'Negócios', svg: '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>' },
+        { name: 'wallet', cat: 'Negócios', svg: '<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>' },
+        { name: 'receipt', cat: 'Negócios', svg: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>' },
+        { name: 'package', cat: 'Negócios', svg: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>' },
+    ];
+
+    // ── Categories ──
+    const categories = [...new Set(icons.map(i => i.cat))];
+
+    // ── State ──
+    let currentCat = 'all';
+    let searchTerm = '';
+    let selectedIcon = null;
+
+    // ── Render Category Filters ──
+    const filtersEl = document.getElementById('category-filters');
+    filtersEl.innerHTML = `<button class="cat-btn active" data-cat="all">Todos</button>` +
+        categories.map(c => `<button class="cat-btn" data-cat="${c}">${c}</button>`).join('');
+
+    filtersEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        filtersEl.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.dataset.cat;
+        renderIcons();
+    });
+
+    // ── Build SVG string ──
+    function buildSvg(icon, size) {
+        return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.svg}</svg>`;
+    }
+
+    // ── Render Icons ──
+    const containerEl = document.getElementById('icons-container');
+    const emptyEl = document.getElementById('empty-state');
+    const countEl = document.getElementById('icon-count');
+
+    function renderIcons() {
+        const filtered = icons.filter(i => {
+            const matchCat = currentCat === 'all' || i.cat === currentCat;
+            const matchSearch = i.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                i.cat.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchCat && matchSearch;
+        });
+
+        countEl.textContent = `${filtered.length} ícone${filtered.length !== 1 ? 's' : ''}`;
+
+        if (filtered.length === 0) {
+            containerEl.innerHTML = '';
+            emptyEl.style.display = 'block';
+            return;
+        }
+        emptyEl.style.display = 'none';
+
+        if (currentCat === 'all' && !searchTerm) {
+            // Group by category
+            const grouped = {};
+            filtered.forEach(i => {
+                if (!grouped[i.cat]) grouped[i.cat] = [];
+                grouped[i.cat].push(i);
+            });
+            containerEl.innerHTML = Object.entries(grouped).map(([cat, catIcons]) => `
+                <div class="section-group">
+                    <div class="section-label">${cat} (${catIcons.length})</div>
+                    <div class="icons-grid">
+                        ${catIcons.map(i => `
+                            <div class="icon-card" data-icon="${i.name}" title="${i.name}">
+                                ${buildSvg(i, 24)}
+                                <span class="icon-card-name">${i.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            containerEl.innerHTML = `
+                <div class="icons-grid">
+                    ${filtered.map(i => `
+                        <div class="icon-card" data-icon="${i.name}" title="${i.name}">
+                            ${buildSvg(i, 24)}
+                            <span class="icon-card-name">${i.name}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+    }
+
+    // ── Search ──
+    document.getElementById('icon-search').addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        renderIcons();
+    });
+
+    // ── Drawer ──
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerPreview = document.getElementById('drawer-preview');
+    const drawerSizes = document.getElementById('drawer-sizes');
+    const drawerMeta = document.getElementById('drawer-meta');
+
+    function openDrawer(iconName) {
+        const icon = icons.find(i => i.name === iconName);
+        if (!icon) return;
+        selectedIcon = icon;
+
+        drawerTitle.textContent = icon.name;
+        drawerPreview.innerHTML = buildSvg(icon, 64);
+
+        drawerSizes.innerHTML = [16, 20, 24, 32, 48].map(s => `
+            <div class="drawer-size-item">
+                ${buildSvg(icon, s)}
+                <span class="drawer-size-label">${s}px</span>
+            </div>
+        `).join('');
+
+        drawerMeta.innerHTML = `
+            <div class="drawer-row">
+                <span class="drawer-row-label">Nome</span>
+                <span class="drawer-row-value">${icon.name}</span>
+            </div>
+            <div class="drawer-row">
+                <span class="drawer-row-label">Categoria</span>
+                <span class="drawer-row-value">${icon.cat}</span>
+            </div>
+            <div class="drawer-row">
+                <span class="drawer-row-label">Biblioteca</span>
+                <span class="drawer-row-value">Lucide Icons</span>
+            </div>
+            <div class="drawer-row">
+                <span class="drawer-row-label">ViewBox</span>
+                <span class="drawer-row-value">0 0 24 24</span>
+            </div>
+            <div class="drawer-row">
+                <span class="drawer-row-label">Stroke</span>
+                <span class="drawer-row-value">2px, round cap/join</span>
+            </div>
+        `;
+
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        selectedIcon = null;
+    }
+
+    // Click on icon card
+    containerEl.addEventListener('click', (e) => {
+        const card = e.target.closest('.icon-card');
+        if (!card) return;
+        openDrawer(card.dataset.icon);
+    });
+
+    document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+
+    // ── Download SVG ──
+    function getFullSvg(icon) {
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.svg}</svg>`;
+    }
+
+    document.getElementById('btn-download-svg').addEventListener('click', () => {
+        if (!selectedIcon) return;
+        const svgContent = getFullSvg(selectedIcon);
+        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${selectedIcon.name}.svg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Download iniciado: ' + selectedIcon.name + '.svg');
+    });
+
+    document.getElementById('btn-copy-svg').addEventListener('click', () => {
+        if (!selectedIcon) return;
+        const svgContent = getFullSvg(selectedIcon);
+        navigator.clipboard.writeText(svgContent).then(() => {
+            showToast('SVG copiado para a área de transferência!');
+        });
+    });
+
+    // ── Toast ──
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ── Init ──
+    renderIcons();
+
+    // ── DS Nav Search ──
+    (function(){
+        const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+        function setupSearch(inputId,dropdownId){
+            var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+            if(!si||!dd)return;
+            function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+            si.addEventListener('input',function(e){render(e.target.value);});
+            si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+            document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+        }
+        setupSearch('ds-nav-search','ds-nav-dropdown');
+        setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+        var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+        if(hb&&mm){
+            hb.addEventListener('click',function(){mm.classList.toggle('open');});
+            document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+        }
+    })();
+</script>
+</body>
+</html>

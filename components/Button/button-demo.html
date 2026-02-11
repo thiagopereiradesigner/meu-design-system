@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Design System Buttons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #656976;
+        }
+
+        .section {
+            background: #F9F9F9;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 24px;
+        }
+
+        .size-group {
+            margin-bottom: 32px;
+        }
+
+        .size-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #656976;
+            margin-bottom: 16px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .button-item {
+            text-align: center;
+        }
+
+        .state-label {
+            font-size: 10px;
+            color: #999999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        /* BUTTON STYLES */
+        .btn {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            outline: none;
+        }
+
+        .btn-large {
+            padding: 12px 24px;
+            height: 48px;
+        }
+
+        .btn-medium {
+            padding: 8px 16px;
+            height: 40px;
+            font-size: 12px;
+        }
+
+        /* PRIMARY VARIANT */
+        .btn-primary {
+            background-color: #04843B;
+            color: #FFFFFF;
+        }
+
+        .btn-primary.hover,
+        .btn-primary:hover:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #067647;
+        }
+
+        .btn-primary.focus,
+        .btn-primary:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #04843B;
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+        }
+
+        .btn-primary.active,
+        .btn-primary:active:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #005A1A;
+        }
+
+        .btn-primary.disabled,
+        .btn-primary:disabled {
+            background-color: #F3F3F3;
+            color: #C6C6C6;
+            cursor: not-allowed;
+        }
+
+        /* SECONDARY VARIANT */
+        .btn-secondary {
+            background-color: #E6F4ED;
+            color: #067647;
+        }
+
+        .btn-secondary.hover,
+        .btn-secondary:hover:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #CCE9DB;
+        }
+
+        .btn-secondary.focus,
+        .btn-secondary:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #E6F4ED;
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+        }
+
+        .btn-secondary.active,
+        .btn-secondary:active:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #99D3B7;
+        }
+
+        .btn-secondary.disabled,
+        .btn-secondary:disabled {
+            background-color: #F9F9F9;
+            color: #C6C6C6;
+            cursor: not-allowed;
+        }
+
+        /* OUTLINE VARIANT */
+        .btn-outline {
+            background-color: transparent;
+            color: #067647;
+            border: 1px solid #067647;
+        }
+
+        .btn-outline.hover,
+        .btn-outline:hover:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #E6F4ED;
+        }
+
+        .btn-outline.focus,
+        .btn-outline:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: transparent;
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+        }
+
+        .btn-outline.active,
+        .btn-outline:active:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #CCE9DB;
+        }
+
+        .btn-outline.disabled,
+        .btn-outline:disabled {
+            background-color: transparent;
+            color: #C6C6C6;
+            border-color: #C6C6C6;
+            cursor: not-allowed;
+        }
+
+        /* GHOST VARIANT */
+        .btn-ghost {
+            background-color: transparent;
+            color: #067647;
+        }
+
+        .btn-ghost.hover,
+        .btn-ghost:hover:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #E6F4ED;
+        }
+
+        .btn-ghost.focus,
+        .btn-ghost:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: transparent;
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+        }
+
+        .btn-ghost.active,
+        .btn-ghost:active:not(.hover):not(.focus):not(.active):not(.disabled) {
+            background-color: #CCE9DB;
+        }
+
+        .btn-ghost.disabled,
+        .btn-ghost:disabled {
+            background-color: transparent;
+            color: #C6C6C6;
+            cursor: not-allowed;
+        }
+
+        /* FILTER BUTTON */
+        .btn-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            border: 1px solid #067647;
+            background-color: transparent;
+            color: #04843B;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-filter.active {
+            background-color: #E6F4ED;
+        }
+
+        .btn-filter .close-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #004D16;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .examples {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .note {
+            margin-top: 48px;
+            padding: 24px;
+            background-color: #E6F4ED;
+            border-radius: 12px;
+            border-left: 4px solid #04843B;
+        }
+
+        .note h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #004D16;
+        }
+
+        .note ul {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        /* Icons SVG */
+        .icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+        }
+
+        .color-demo {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .color-swatch {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-right: 24px;
+            margin-bottom: 8px;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .color-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .color-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .color-value {
+            font-size: 11px;
+            color: #666;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Portal Empresa - Design System</h1>
+            <p>Componente Button | Todos os estados e variantes</p>
+        </div>
+
+        <!-- COLOR TOKENS -->
+        <div class="section">
+            <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
+            <div class="color-demo">
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #04843B;"></div>
+                    <div class="color-info">
+                        <span class="color-name">Primary 500 (Brand)</span>
+                        <span class="color-value">#04843B</span>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #067647;"></div>
+                    <div class="color-info">
+                        <span class="color-name">Primary 600 (Hover)</span>
+                        <span class="color-value">#067647</span>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #005A1A;"></div>
+                    <div class="color-info">
+                        <span class="color-name">Primary 700 (Active)</span>
+                        <span class="color-value">#005A1A</span>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #E6F4ED;"></div>
+                    <div class="color-info">
+                        <span class="color-name">Primary 50 (Background)</span>
+                        <span class="color-value">#E6F4ED</span>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #C6C6C6;"></div>
+                    <div class="color-info">
+                        <span class="color-name">Neutral 200 (Disabled)</span>
+                        <span class="color-value">#C6C6C6</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRIMARY BUTTONS -->
+        <div class="section">
+            <h2 class="section-title">🟢 Primary Buttons</h2>
+            
+            <div class="size-group">
+                <div class="size-label">Tamanho Large (L) - 48px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-large">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Button
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="state-label">Default (hover me!)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-large hover">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Button
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="state-label">Hover (#067647)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-large focus">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Button
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="state-label">Focus (with ring)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-large active">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Button
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="state-label">Active (#005A1A)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-large disabled" disabled>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Button
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="size-group">
+                <div class="size-label">Tamanho Medium (M) - 40px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-medium">Button</button>
+                        <div class="state-label">Default</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-medium hover">Button</button>
+                        <div class="state-label">Hover</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-medium focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-medium active">Button</button>
+                        <div class="state-label">Active</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-primary btn-medium disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECONDARY BUTTONS -->
+        <div class="section">
+            <h2 class="section-title">⚪ Secondary Buttons</h2>
+            
+            <div class="size-group">
+                <div class="size-label">Tamanho Large (L) - 48px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-large">Button</button>
+                        <div class="state-label">Default (#E6F4ED)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-large hover">Button</button>
+                        <div class="state-label">Hover (#CCE9DB)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-large focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-large active">Button</button>
+                        <div class="state-label">Active (#99D3B7)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-large disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="size-group">
+                <div class="size-label">Tamanho Medium (M) - 40px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-medium">Button</button>
+                        <div class="state-label">Default</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-medium hover">Button</button>
+                        <div class="state-label">Hover</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-medium focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-medium active">Button</button>
+                        <div class="state-label">Active</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-secondary btn-medium disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OUTLINE BUTTONS -->
+        <div class="section">
+            <h2 class="section-title">⭕ Outline Buttons</h2>
+            
+            <div class="size-group">
+                <div class="size-label">Tamanho Large (L) - 48px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-large">Button</button>
+                        <div class="state-label">Default (transparent)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-large hover">Button</button>
+                        <div class="state-label">Hover (#E6F4ED)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-large focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-large active">Button</button>
+                        <div class="state-label">Active</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-large disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="size-group">
+                <div class="size-label">Tamanho Medium (M) - 40px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-medium">Button</button>
+                        <div class="state-label">Default</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-medium hover">Button</button>
+                        <div class="state-label">Hover</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-medium focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-medium active">Button</button>
+                        <div class="state-label">Active</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-outline btn-medium disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GHOST BUTTONS -->
+        <div class="section">
+            <h2 class="section-title">👻 Ghost Buttons</h2>
+            
+            <div class="size-group">
+                <div class="size-label">Tamanho Large (L) - 48px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-large">Button</button>
+                        <div class="state-label">Default (transparent)</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-large hover">Button</button>
+                        <div class="state-label">Hover</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-large focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-large active">Button</button>
+                        <div class="state-label">Active</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-large disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="size-group">
+                <div class="size-label">Tamanho Medium (M) - 40px</div>
+                <div class="button-grid">
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-medium">Button</button>
+                        <div class="state-label">Default</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-medium hover">Button</button>
+                        <div class="state-label">Hover</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-medium focus">Button</button>
+                        <div class="state-label">Focus</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-medium active">Button</button>
+                        <div class="state-label">Active</div>
+                    </div>
+                    <div class="button-item">
+                        <button class="btn btn-ghost btn-medium disabled" disabled>Button</button>
+                        <div class="state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTER BUTTON -->
+        <div class="section">
+            <h2 class="section-title">🔍 Filter Button (Componente Especial)</h2>
+            <div style="display: flex; gap: 24px; align-items: flex-start;">
+                <div>
+                    <button class="btn-filter">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Filtro
+                    </button>
+                    <div class="state-label">Default</div>
+                </div>
+                <div>
+                    <button class="btn-filter active">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Filtro
+                        <span class="close-icon">
+                            <svg class="icon-sm" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2">
+                                <path d="M12 4L4 12M4 4L12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="state-label">Active (com close)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USAGE EXAMPLES -->
+        <div class="section">
+            <h2 class="section-title">💡 Exemplos Práticos de Uso</h2>
+            <div class="examples">
+                <button class="btn btn-primary btn-large" onclick="alert('Ação primária!')">Criar novo</button>
+                <button class="btn btn-secondary btn-medium">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Filtrar resultados
+                </button>
+                <button class="btn btn-outline btn-medium">
+                    Ver mais
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="btn btn-ghost btn-medium">Cancelar</button>
+                <button class="btn btn-primary btn-medium disabled" disabled>Indisponível</button>
+            </div>
+        </div>
+
+        <!-- ACCESSIBILITY NOTE -->
+        <div class="note">
+            <h3>♿ Nota sobre Acessibilidade (WCAG)</h3>
+            <ul>
+                <li>Todos os botões possuem estados visuais claros (hover, focus, active)</li>
+                <li>Contrast ratio conforme WCAG AA (4.5:1 para texto normal)</li>
+                <li>Focus visível com outline de 3px para navegação por teclado</li>
+                <li>Estados desabilitados claramente diferenciados</li>
+                <li>Tamanho mínimo de toque: 40px (WCAG 2.5.5 - Level AAA)</li>
+                <li>Ícones com stroke visível em todos os estados</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn:not(.hover):not(.focus):not(.active):not(.disabled)').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!this.disabled) {
+                    console.log('Botão clicado!', this.className);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+        <!-- ICON VARIATIONS -->
+        <div class="section">
+            <h2 class="section-title">🎨 Variações de Ícones e Texto</h2>
+            
+            <div style="background: white; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333;">
+                    1. Botão só com texto (sem ícones)
+                </h3>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 8px;">
+                    <button class="btn btn-primary btn-large">Salvar</button>
+                    <button class="btn btn-secondary btn-medium">Cancelar</button>
+                    <button class="btn btn-outline btn-medium">Detalhes</button>
+                    <button class="btn btn-ghost btn-medium">Voltar</button>
+                </div>
+                <pre style="font-size: 11px; background: #f5f5f5; padding: 8px; border-radius: 4px; color: #666; margin-top: 12px; overflow-x: auto;"><code>&lt;button class="btn btn-primary btn-large"&gt;Salvar&lt;/button&gt;</code></pre>
+            </div>
+
+            <div style="background: white; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333;">
+                    2. Botão com ícone à esquerda
+                </h3>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 8px;">
+                    <button class="btn btn-primary btn-large">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Criar novo
+                    </button>
+                    <button class="btn btn-secondary btn-medium">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Filtrar
+                    </button>
+                    <button class="btn btn-outline btn-medium">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Adicionar
+                    </button>
+                </div>
+                <pre style="font-size: 11px; background: #f5f5f5; padding: 8px; border-radius: 4px; color: #666; margin-top: 12px; overflow-x: auto;"><code>&lt;button class="btn btn-primary btn-large"&gt;
+  &lt;svg class="icon"&gt;...&lt;/svg&gt;
+  Criar novo
+&lt;/button&gt;</code></pre>
+            </div>
+
+            <div style="background: white; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333;">
+                    3. Botão com ícone à direita
+                </h3>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 8px;">
+                    <button class="btn btn-primary btn-large">
+                        Continuar
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline btn-medium">
+                        Ver mais
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-ghost btn-medium">
+                        Próximo
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <pre style="font-size: 11px; background: #f5f5f5; padding: 8px; border-radius: 4px; color: #666; margin-top: 12px; overflow-x: auto;"><code>&lt;button class="btn btn-outline btn-medium"&gt;
+  Ver mais
+  &lt;svg class="icon"&gt;...&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+            </div>
+
+            <div style="background: white; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333;">
+                    4. Botão icon-only (apenas ícone) ⭐ IMPORTANTE
+                </h3>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 8px;">
+                    <button class="btn btn-primary btn-large" style="width: 48px; padding: 12px;" aria-label="Adicionar novo item" title="Adicionar novo item">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-secondary btn-large" style="width: 48px; padding: 12px;" aria-label="Filtrar" title="Filtrar">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline btn-medium" style="width: 40px; padding: 8px;" aria-label="Avançar" title="Avançar">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-ghost btn-medium" style="width: 40px; padding: 8px;" aria-label="Criar" title="Criar">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <p style="font-size: 12px; color: #E07800; margin-bottom: 12px; padding: 8px; background: #FFF4E6; border-radius: 4px; border-left: 3px solid #E07800;">
+                    <strong>⚠️ Acessibilidade:</strong> Sempre adicione <code>aria-label</code> e <code>title</code> em botões icon-only!
+                </p>
+                <pre style="font-size: 11px; background: #f5f5f5; padding: 8px; border-radius: 4px; color: #666; overflow-x: auto;"><code>&lt;button 
+  class="btn btn-primary btn-large" 
+  style="width: 48px; padding: 12px;"
+  aria-label="Adicionar novo item"
+  title="Adicionar novo item"
+&gt;
+  &lt;svg class="icon"&gt;...&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+            </div>
+
+            <div style="background: white; padding: 24px; border-radius: 8px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333;">
+                    5. Casos de uso reais
+                </h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">📌 Formulário com ações primárias e secundárias</p>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-primary btn-large">Salvar alterações</button>
+                        <button class="btn btn-ghost btn-large">Cancelar</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">📌 Toolbar de ações (icon-only)</p>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-ghost btn-medium" style="width: 40px; padding: 8px;" aria-label="Adicionar" title="Adicionar">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-ghost btn-medium" style="width: 40px; padding: 8px;" aria-label="Filtrar" title="Filtrar">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-ghost btn-medium" style="width: 40px; padding: 8px;" aria-label="Exportar" title="Exportar">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">📌 Navegação com ícones</p>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-outline btn-medium">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform: rotate(180deg);">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Anterior
+                        </button>
+                        <button class="btn btn-primary btn-medium">
+                            Próximo
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">📌 FAB (Floating Action Button)</p>
+                    <button class="btn btn-primary btn-large" style="width: 56px; height: 56px; padding: 16px; border-radius: 50%;" aria-label="Criar novo" title="Criar novo">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">💡 Dica: Use border-radius: 50% para botões circulares</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn:not(.hover):not(.focus):not(.active):not(.disabled)').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!this.disabled) {
+                    console.log('Botão clicado!', this.className);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

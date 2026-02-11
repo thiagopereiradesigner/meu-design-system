@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Input & Select Components</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            padding: 40px;
+            color: #393939;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #5E5E5E;
+        }
+
+        .section {
+            background: #F9F9F9;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 24px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* INPUT & SELECT FIELD */
+        .field {
+            width: 100%;
+        }
+
+        .field-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .field-label-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #393939;
+        }
+
+        .field-label-text.error {
+            color: #DC2626;
+        }
+
+        .field-sublabel {
+            font-size: 12px;
+            font-weight: 400;
+            color: #5E5E5E;
+        }
+
+        .field-input-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background-color: #FFFFFF;
+            border: 1px solid #DDDDDD;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .field-input-container:hover:not(.disabled) {
+            border-color: #04843B;
+        }
+
+        .field-input-container:focus-within:not(.disabled):not(.error) {
+            border-color: #04843B;
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+        }
+
+        .field-input-container.error {
+            border-color: #DC2626;
+        }
+
+        .field-input-container.error:focus-within {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .field-input-container.disabled {
+            background-color: #F9F9F9;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .field-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #393939;
+        }
+
+        .field-input::placeholder {
+            color: #727272;
+        }
+
+        .field-input:disabled {
+            cursor: not-allowed;
+            color: #727272;
+        }
+
+        .field-helper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            font-size: 10px;
+            color: #5E5E5E;
+        }
+
+        .field-helper.error {
+            color: #DC2626;
+        }
+
+        /* SELECT */
+        .select-container {
+            position: relative;
+        }
+
+        .select-display {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .select-display.disabled {
+            cursor: not-allowed;
+        }
+
+        .select-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #727272;
+        }
+
+        .select-text.has-value {
+            color: #393939;
+        }
+
+        .select-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            border: 1px solid #DDDDDD;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .select-dropdown.open {
+            display: block;
+        }
+
+        .select-search {
+            padding: 8px;
+            border-bottom: 1px solid #DDDDDD;
+        }
+
+        .select-search input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #DDDDDD;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .select-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .select-option:hover:not(.disabled) {
+            background-color: #E6F4ED;
+        }
+
+        .select-option.selected {
+            background-color: #E6F4ED;
+        }
+
+        .select-option.disabled {
+            color: #727272;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .chevron {
+            transition: transform 0.2s ease;
+        }
+
+        .chevron.open {
+            transform: rotate(180deg);
+        }
+
+        /* ICONS */
+        .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+        }
+
+        .note {
+            margin-top: 48px;
+            padding: 24px;
+            background-color: #E6F4ED;
+            border-radius: 12px;
+            border-left: 4px solid #04843B;
+        }
+
+        .note h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #004D16;
+        }
+
+        .note ul {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Input &amp; Select</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Portal Empresa - Design System</h1>
+            <p>Componentes Input e Select</p>
+        </div>
+
+        <!-- INPUT STATES -->
+        <div class="section">
+            <h2 class="section-title">📝 Input - Estados</h2>
+            <div class="grid">
+                <!-- Default -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">Input label</span>
+                        <span class="field-sublabel">Sublabel</span>
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="field-input-container">
+                        <svg class="icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" class="field-input" placeholder="Your text input here">
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Input label</span>
+                    </div>
+                </div>
+
+                <!-- With value -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">Input com valor</span>
+                    </div>
+                    <div class="field-input-container">
+                        <svg class="icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" class="field-input" value="Texto digitado" placeholder="Digite algo...">
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Este input está funcional</span>
+                    </div>
+                </div>
+
+                <!-- Error -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text error">Input com erro</span>
+                    </div>
+                    <div class="field-input-container error">
+                        <svg class="icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" class="field-input" placeholder="Campo obrigatório">
+                    </div>
+                    <div class="field-helper error">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#DC2626" stroke-width="1.5"/>
+                            <path d="M8 4V8M8 11V11.5" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Este campo é obrigatório</span>
+                    </div>
+                </div>
+
+                <!-- Disabled -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">Input desabilitado</span>
+                    </div>
+                    <div class="field-input-container disabled">
+                        <svg class="icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="#727272" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="#727272" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" class="field-input" placeholder="Campo desabilitado" disabled>
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Este campo está desabilitado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SELECT BASIC -->
+        <div class="section">
+            <h2 class="section-title">📋 Select - Básico</h2>
+            <div class="grid">
+                <!-- Select Default -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">Estado</span>
+                        <span class="field-sublabel">obrigatório</span>
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="select-container">
+                        <div class="field-input-container select-display" onclick="toggleDropdown('select1')">
+                            <span class="select-text" id="select1-text">Selecione um estado</span>
+                            <svg class="icon chevron" id="select1-chevron" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="select-dropdown" id="select1-dropdown">
+                            <div class="select-option" onclick="selectOption('select1', 'São Paulo', this)">
+                                <span>São Paulo</span>
+                            </div>
+                            <div class="select-option" onclick="selectOption('select1', 'Rio de Janeiro', this)">
+                                <span>Rio de Janeiro</span>
+                            </div>
+                            <div class="select-option" onclick="selectOption('select1', 'Minas Gerais', this)">
+                                <span>Minas Gerais</span>
+                            </div>
+                            <div class="select-option" onclick="selectOption('select1', 'Espírito Santo', this)">
+                                <span>Espírito Santo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Selecione o estado onde você mora</span>
+                    </div>
+                </div>
+
+                <!-- Select with disabled option -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">Cidade</span>
+                    </div>
+                    <div class="select-container">
+                        <div class="field-input-container select-display" onclick="toggleDropdown('select2')">
+                            <span class="select-text" id="select2-text">Selecione uma cidade</span>
+                            <svg class="icon chevron" id="select2-chevron" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="select-dropdown" id="select2-dropdown">
+                            <div class="select-option" onclick="selectOption('select2', 'São Paulo', this)">
+                                <span>São Paulo</span>
+                            </div>
+                            <div class="select-option" onclick="selectOption('select2', 'Rio de Janeiro', this)">
+                                <span>Rio de Janeiro</span>
+                            </div>
+                            <div class="select-option disabled">
+                                <span>Porto Alegre (indisponível)</span>
+                            </div>
+                            <div class="select-option" onclick="selectOption('select2', 'Belo Horizonte', this)">
+                                <span>Belo Horizonte</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Algumas opções podem estar desabilitadas</span>
+                    </div>
+                </div>
+
+                <!-- Select Error -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text error">Select com erro</span>
+                    </div>
+                    <div class="select-container">
+                        <div class="field-input-container error select-display" onclick="toggleDropdown('select3')">
+                            <span class="select-text" id="select3-text">Selecione</span>
+                            <svg class="icon chevron" id="select3-chevron" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="select-dropdown" id="select3-dropdown">
+                            <div class="select-option" onclick="selectOption('select3', 'Opção 1', this)">
+                                <span>Opção 1</span>
+                            </div>
+                            <div class="select-option" onclick="selectOption('select3', 'Opção 2', this)">
+                                <span>Opção 2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-helper error">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#DC2626" stroke-width="1.5"/>
+                            <path d="M8 4V8M8 11V11.5" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Este campo é obrigatório</span>
+                    </div>
+                </div>
+
+                <!-- Select Disabled -->
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">Select desabilitado</span>
+                    </div>
+                    <div class="select-container">
+                        <div class="field-input-container disabled select-display">
+                            <span class="select-text">Campo desabilitado</span>
+                            <svg class="icon chevron" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Este campo está desabilitado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SELECT SEARCHABLE -->
+        <div class="section">
+            <h2 class="section-title">🔍 Select - Com busca</h2>
+            <div class="grid">
+                <div class="field">
+                    <div class="field-label">
+                        <span class="field-label-text">País (com busca)</span>
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="select-container">
+                        <div class="field-input-container select-display" onclick="toggleDropdown('select4')">
+                            <svg class="icon" viewBox="0 0 20 20" fill="none">
+                                <circle cx="9" cy="9" r="6" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M13.5 13.5L17 17" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span class="select-text" id="select4-text">Busque um país</span>
+                            <svg class="icon chevron" id="select4-chevron" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="select-dropdown" id="select4-dropdown">
+                            <div class="select-search">
+                                <input type="text" placeholder="Buscar..." oninput="filterOptions('select4', this.value)" onclick="event.stopPropagation()">
+                            </div>
+                            <div id="select4-options">
+                                <div class="select-option" data-label="Brasil" onclick="selectOption('select4', 'Brasil', this)">
+                                    <span>Brasil</span>
+                                </div>
+                                <div class="select-option" data-label="Argentina" onclick="selectOption('select4', 'Argentina', this)">
+                                    <span>Argentina</span>
+                                </div>
+                                <div class="select-option" data-label="Estados Unidos" onclick="selectOption('select4', 'Estados Unidos', this)">
+                                    <span>Estados Unidos</span>
+                                </div>
+                                <div class="select-option" data-label="Reino Unido" onclick="selectOption('select4', 'Reino Unido', this)">
+                                    <span>Reino Unido</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-helper">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Digite para filtrar as opções</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACCESSIBILITY NOTE -->
+        <div class="note">
+            <h3>♿ Acessibilidade</h3>
+            <ul>
+                <li>Focus ring visível em todos os estados (3px verde)</li>
+                <li>Estados de erro claramente identificados com cor e ícone</li>
+                <li>Helper text fornece contexto adicional</li>
+                <li>Placeholders descritivos</li>
+                <li>Contrast ratio conforme WCAG AA (4.5:1)</li>
+                <li>Ícones informativos para ajudar o usuário</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dropdown
+        function toggleDropdown(selectId) {
+            const dropdown = document.getElementById(selectId + '-dropdown');
+            const chevron = document.getElementById(selectId + '-chevron');
+            const isOpen = dropdown.classList.contains('open');
+            
+            // Fecha todos os outros dropdowns
+            document.querySelectorAll('.select-dropdown').forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
+            
+            if (!isOpen) {
+                dropdown.classList.add('open');
+                chevron.classList.add('open');
+            }
+        }
+
+        // Select option
+        function selectOption(selectId, value, element) {
+            if (element.classList.contains('disabled')) return;
+            
+            const text = document.getElementById(selectId + '-text');
+            text.textContent = value;
+            text.classList.add('has-value');
+            
+            // Remove selected de todas as opções
+            const container = element.parentElement;
+            container.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Adiciona selected na opção clicada
+            element.classList.add('selected');
+            
+            // Fecha dropdown
+            toggleDropdown(selectId);
+        }
+
+        // Filter options (searchable select)
+        function filterOptions(selectId, searchTerm) {
+            const optionsContainer = document.getElementById(selectId + '-options');
+            const options = optionsContainer.querySelectorAll('.select-option');
+            
+            options.forEach(option => {
+                const label = option.getAttribute('data-label').toLowerCase();
+                if (label.includes(searchTerm.toLowerCase())) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+        // Fecha dropdown ao clicar fora
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.select-container')) {
+                document.querySelectorAll('.select-dropdown').forEach(d => d.classList.remove('open'));
+                document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
+            }
+        });
+    </script>
+<!-- DS Navigation Search Script -->
+<script>
+(function(){
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    function setupSearch(inputId,dropdownId){
+        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+        if(!si||!dd)return;
+        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+        si.addEventListener('input',function(e){render(e.target.value);});
+        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+    }
+    setupSearch('ds-nav-search','ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+    if(hb&&mm){
+        hb.addEventListener('click',function(){mm.classList.toggle('open');});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+    }
+})();
+</script>
+</body>
+</html>

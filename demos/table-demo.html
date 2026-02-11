@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Table Component</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            padding: 40px;
+            color: #393939;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #5E5E5E;
+        }
+
+        .section {
+            background: #F9F9F9;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            font-size: 14px;
+            color: #5E5E5E;
+            margin-bottom: 16px;
+        }
+
+        /* TABLE */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+        }
+
+        .table-container.bordered {
+            border: 1px solid #DDDDDD;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #F9F9F9;
+            border-bottom: 2px solid #DDDDDD;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #393939;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: #F3F3F3;
+        }
+
+        th.sortable::after {
+            content: ' ↕';
+            font-size: 10px;
+            color: #727272;
+            margin-left: 4px;
+        }
+
+        th.sorted-asc::after {
+            content: ' ↑';
+            color: #04843B;
+        }
+
+        th.sorted-desc::after {
+            content: ' ↓';
+            color: #04843B;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #DDDDDD;
+            transition: background-color 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #E6F4ED;
+        }
+
+        tbody tr.striped:nth-child(even) {
+            background-color: #F9F9F9;
+        }
+
+        tbody tr.striped:nth-child(even):hover {
+            background-color: #E6F4ED;
+        }
+
+        tbody tr.clickable {
+            cursor: pointer;
+        }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            color: #393939;
+            line-height: 1.5;
+        }
+
+        /* COMPACT */
+        .compact th,
+        .compact td {
+            padding: 12px;
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .badge-success {
+            background-color: #E6F4ED;
+            color: #005A1A;
+        }
+
+        .badge-warning {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-error {
+            background-color: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .badge-neutral {
+            background-color: #F3F3F3;
+            color: #5E5E5E;
+        }
+
+        .badge-info {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-small {
+            padding: 2px 8px;
+            font-size: 10px;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            padding: 32px;
+            text-align: center;
+            color: #727272;
+            font-size: 14px;
+        }
+
+        /* NOTE */
+        .note {
+            margin-top: 48px;
+            padding: 24px;
+            background-color: #E6F4ED;
+            border-radius: 12px;
+            border-left: 4px solid #04843B;
+        }
+
+        .note h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #004D16;
+        }
+
+        .note ul {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .note ul li {
+            margin-bottom: 4px;
+        }
+
+        .tokens-grid {
+            margin-top: 24px;
+            padding: 24px;
+            background-color: #F3F3F3;
+            border-radius: 12px;
+        }
+
+        .tokens-grid h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #393939;
+        }
+
+        .tokens-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Table</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Portal Empresa - Design System</h1>
+            <p>Componente Table</p>
+        </div>
+
+        <!-- Basic Table -->
+        <div class="section">
+            <h2 class="section-title">📊 Tabela Básica</h2>
+            <p class="section-description">Tabela simples com colunas essenciais</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sortable" onclick="sortTable(0, 'table1')">Nome</th>
+                            <th class="sortable" onclick="sortTable(1, 'table1')">Email</th>
+                            <th class="sortable" onclick="sortTable(2, 'table1')">Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table1">
+                        <tr>
+                            <td>João Silva</td>
+                            <td>joao@empresa.com</td>
+                            <td>Desenvolvedor</td>
+                        </tr>
+                        <tr>
+                            <td>Maria Santos</td>
+                            <td>maria@empresa.com</td>
+                            <td>Designer</td>
+                        </tr>
+                        <tr>
+                            <td>Pedro Costa</td>
+                            <td>pedro@empresa.com</td>
+                            <td>Product Manager</td>
+                        </tr>
+                        <tr>
+                            <td>Ana Oliveira</td>
+                            <td>ana@empresa.com</td>
+                            <td>Analista de Dados</td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Ferreira</td>
+                            <td>carlos@empresa.com</td>
+                            <td>QA Engineer</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Striped Table -->
+        <div class="section">
+            <h2 class="section-title">🦓 Tabela Listrada (Zebrada)</h2>
+            <p class="section-description">Linhas alternadas facilitam a leitura</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="striped">
+                            <td>João Silva</td>
+                            <td>joao@empresa.com</td>
+                            <td>Desenvolvedor</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Maria Santos</td>
+                            <td>maria@empresa.com</td>
+                            <td>Designer</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Pedro Costa</td>
+                            <td>pedro@empresa.com</td>
+                            <td>Product Manager</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Ana Oliveira</td>
+                            <td>ana@empresa.com</td>
+                            <td>Analista de Dados</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Carlos Ferreira</td>
+                            <td>carlos@empresa.com</td>
+                            <td>QA Engineer</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bordered Table -->
+        <div class="section">
+            <h2 class="section-title">🔲 Tabela com Bordas</h2>
+            <p class="section-description">Borda externa para melhor definição</p>
+            <div class="table-container bordered">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="striped">
+                            <td>João Silva</td>
+                            <td>joao@empresa.com</td>
+                            <td>Desenvolvedor</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Maria Santos</td>
+                            <td>maria@empresa.com</td>
+                            <td>Designer</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Pedro Costa</td>
+                            <td>pedro@empresa.com</td>
+                            <td>Product Manager</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Compact Table -->
+        <div class="section">
+            <h2 class="section-title">📦 Tabela Compacta</h2>
+            <p class="section-description">Padding reduzido para mais dados na tela</p>
+            <div class="table-container bordered">
+                <table class="compact">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="striped">
+                            <td>João Silva</td>
+                            <td>joao@empresa.com</td>
+                            <td>Desenvolvedor</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Maria Santos</td>
+                            <td>maria@empresa.com</td>
+                            <td>Designer</td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Pedro Costa</td>
+                            <td>pedro@empresa.com</td>
+                            <td>Product Manager</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Table with Badges -->
+        <div class="section">
+            <h2 class="section-title">🏷️ Tabela com Badges</h2>
+            <p class="section-description">Status visuais usando badges coloridos</p>
+            <div class="table-container bordered">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Departamento</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="striped">
+                            <td>João Silva</td>
+                            <td>joao@empresa.com</td>
+                            <td>Tecnologia</td>
+                            <td><span class="badge badge-success">Ativo</span></td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Maria Santos</td>
+                            <td>maria@empresa.com</td>
+                            <td>Produto</td>
+                            <td><span class="badge badge-success">Ativo</span></td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Pedro Costa</td>
+                            <td>pedro@empresa.com</td>
+                            <td>Produto</td>
+                            <td><span class="badge badge-neutral">Inativo</span></td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Ana Oliveira</td>
+                            <td>ana@empresa.com</td>
+                            <td>Analytics</td>
+                            <td><span class="badge badge-success">Ativo</span></td>
+                        </tr>
+                        <tr class="striped">
+                            <td>Carlos Ferreira</td>
+                            <td>carlos@empresa.com</td>
+                            <td>Tecnologia</td>
+                            <td><span class="badge badge-warning">Férias</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Complete Table -->
+        <div class="section">
+            <h2 class="section-title">⚡ Tabela Completa (Sortable + Clickable)</h2>
+            <p class="section-description">Clique nos headers para ordenar, clique nas linhas para ações</p>
+            <div class="table-container bordered">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sortable" onclick="sortTable(0, 'table2')">ID</th>
+                            <th class="sortable" onclick="sortTable(1, 'table2')">Nome</th>
+                            <th class="sortable" onclick="sortTable(2, 'table2')">Email</th>
+                            <th class="sortable" onclick="sortTable(3, 'table2')">Departamento</th>
+                            <th class="sortable" onclick="sortTable(4, 'table2')">Status</th>
+                            <th class="sortable" onclick="sortTable(5, 'table2')">Data de Entrada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table2">
+                        <tr class="striped clickable" onclick="rowClick('João Silva')">
+                            <td>1</td>
+                            <td>João Silva</td>
+                            <td>joao@empresa.com</td>
+                            <td>Tecnologia</td>
+                            <td><span class="badge badge-success badge-small">Ativo</span></td>
+                            <td>15/01/2023</td>
+                        </tr>
+                        <tr class="striped clickable" onclick="rowClick('Maria Santos')">
+                            <td>2</td>
+                            <td>Maria Santos</td>
+                            <td>maria@empresa.com</td>
+                            <td>Produto</td>
+                            <td><span class="badge badge-success badge-small">Ativo</span></td>
+                            <td>20/03/2023</td>
+                        </tr>
+                        <tr class="striped clickable" onclick="rowClick('Pedro Costa')">
+                            <td>3</td>
+                            <td>Pedro Costa</td>
+                            <td>pedro@empresa.com</td>
+                            <td>Produto</td>
+                            <td><span class="badge badge-neutral badge-small">Inativo</span></td>
+                            <td>10/11/2022</td>
+                        </tr>
+                        <tr class="striped clickable" onclick="rowClick('Ana Oliveira')">
+                            <td>4</td>
+                            <td>Ana Oliveira</td>
+                            <td>ana@empresa.com</td>
+                            <td>Analytics</td>
+                            <td><span class="badge badge-success badge-small">Ativo</span></td>
+                            <td>08/05/2023</td>
+                        </tr>
+                        <tr class="striped clickable" onclick="rowClick('Carlos Ferreira')">
+                            <td>5</td>
+                            <td>Carlos Ferreira</td>
+                            <td>carlos@empresa.com</td>
+                            <td>Tecnologia</td>
+                            <td><span class="badge badge-warning badge-small">Férias</span></td>
+                            <td>14/02/2023</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="section">
+            <h2 class="section-title">📭 Estado Vazio</h2>
+            <p class="section-description">Quando não há dados</p>
+            <div class="table-container bordered">
+                <div class="empty-state">
+                    Nenhum funcionário cadastrado ainda
+                </div>
+            </div>
+        </div>
+
+        <!-- Accessibility Note -->
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li><strong>Contrast ratio:</strong> 4.5:1 em todos os textos (WCAG AA)</li>
+                <li><strong>Hover state:</strong> Verde claro (#E6F4ED) para feedback visual claro</li>
+                <li><strong>Striped rows:</strong> Facilita rastreamento horizontal de dados</li>
+                <li><strong>Sort indicators:</strong> Setas visuais claras (↑↓↕)</li>
+                <li><strong>Cursor pointer:</strong> Indica elementos clicáveis</li>
+                <li><strong>Badges:</strong> Cores distintas com bom contraste</li>
+                <li><strong>Font-family:</strong> Inter para melhor legibilidade</li>
+                <li><strong>Font sizes:</strong> Mínimo 12px (headers) e 14px (conteúdo)</li>
+            </ul>
+        </div>
+
+        <!-- Design Tokens -->
+        <div class="tokens-grid">
+            <h3>🎨 Design Tokens Utilizados</h3>
+            <div class="tokens-list">
+                <div><strong>Header BG:</strong> #F9F9F9</div>
+                <div><strong>Hover BG:</strong> #E6F4ED</div>
+                <div><strong>Border:</strong> #DDDDDD</div>
+                <div><strong>Text:</strong> #393939</div>
+                <div><strong>Padding Normal:</strong> 16px</div>
+                <div><strong>Padding Compact:</strong> 12px</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sort table functionality
+        function sortTable(columnIndex, tableId) {
+            const tbody = document.getElementById(tableId);
+            const rows = Array.from(tbody.rows);
+            const th = tbody.previousElementSibling.rows[0].cells[columnIndex];
+            
+            // Determine sort direction
+            let direction = 'asc';
+            if (th.classList.contains('sorted-asc')) {
+                direction = 'desc';
+            }
+            
+            // Remove all sorted classes
+            Array.from(tbody.previousElementSibling.rows[0].cells).forEach(cell => {
+                cell.classList.remove('sorted-asc', 'sorted-desc');
+            });
+            
+            // Add appropriate class
+            th.classList.add(direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+            
+            // Sort rows
+            rows.sort((a, b) => {
+                const aValue = a.cells[columnIndex].textContent.trim();
+                const bValue = b.cells[columnIndex].textContent.trim();
+                
+                if (direction === 'asc') {
+                    return aValue.localeCompare(bValue, 'pt-BR', { numeric: true });
+                } else {
+                    return bValue.localeCompare(aValue, 'pt-BR', { numeric: true });
+                }
+            });
+            
+            // Reappend sorted rows
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        // Row click handler
+        function rowClick(name) {
+            alert('Clicou em: ' + name);
+        }
+    </script>
+<!-- DS Navigation Search Script -->
+<script>
+(function(){
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    function setupSearch(inputId,dropdownId){
+        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+        if(!si||!dd)return;
+        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+        si.addEventListener('input',function(e){render(e.target.value);});
+        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+    }
+    setupSearch('ds-nav-search','ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+    if(hb&&mm){
+        hb.addEventListener('click',function(){mm.classList.toggle('open');});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+    }
+})();
+</script>
+</body>
+</html>

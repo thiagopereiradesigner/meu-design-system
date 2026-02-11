@@ -1,0 +1,1023 @@
+import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+
+// Design Tokens (Portal Empresa)
+const tokens = {
+  colors: {
+    primary: {
+      50: '#E6F4ED',
+      500: '#04843B',
+      600: '#067647',
+      700: '#005A1A',
+    },
+    neutral: {
+      0: '#FFFFFF',
+      50: '#F9F9F9',
+      100: '#F3F3F3',
+      200: '#C6C6C6',
+      500: '#656976',
+      700: '#333333',
+      800: '#1A1A1A',
+      900: '#000000',
+    },
+    content: {
+      primary: '#393939',
+      secondary: '#5E5E5E',
+      tertiary: '#727272',
+      inverse: '#FFFFFF',
+    },
+    border: {
+      primary: '#393939',
+      secondary: '#DDDDDD',
+    },
+    overlay: 'rgba(0, 0, 0, 0.5)',
+  },
+  spacing: {
+    xxs: '4px',
+    xs: '8px',
+    sm: '12px',
+    md: '16px',
+    lg: '24px',
+    xl: '32px',
+    xxl: '48px',
+  },
+  borderRadius: {
+    xs: '4px',
+    sm: '8px',
+    md: '12px',
+    lg: '16px',
+  },
+  typography: {
+    fontFamily: 'Inter, sans-serif',
+    fontSize: {
+      xs: '10px',
+      sm: '12px',
+      md: '14px',
+      lg: '16px',
+      xl: '18px',
+      xxl: '24px',
+    },
+    fontWeight: {
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+    },
+    lineHeight: {
+      normal: 1.5,
+    },
+  },
+  shadows: {
+    sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
+    xl: '0 20px 25px rgba(0, 0, 0, 0.15)',
+  },
+  zIndex: {
+    tooltip: 9998,
+    drawer: 9999,
+    modal: 10000,
+  },
+};
+
+// ==================== SPINNER COMPONENT ====================
+export const Spinner = ({
+  size = 'medium', // 'small', 'medium', 'large'
+  color = tokens.colors.primary[500],
+}) => {
+  const sizes = {
+    small: 16,
+    medium: 24,
+    large: 40,
+  };
+
+  const spinnerSize = sizes[size];
+
+  const spinnerStyles = {
+    display: 'inline-block',
+    width: `${spinnerSize}px`,
+    height: `${spinnerSize}px`,
+    border: `3px solid ${tokens.colors.neutral[200]}`,
+    borderTopColor: color,
+    borderRadius: '50%',
+    animation: 'spin 0.8s linear infinite',
+  };
+
+  return (
+    <>
+      <style>
+        {`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}
+      </style>
+      <div style={spinnerStyles} role="status" aria-label="Carregando">
+        <span style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+          Carregando...
+        </span>
+      </div>
+    </>
+  );
+};
+
+// ==================== TOOLTIP COMPONENT ====================
+export const Tooltip = ({
+  children,
+  content,
+  position = 'top', // 'top', 'right', 'bottom', 'left'
+  delay = 200,
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const timeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsVisible(true);
+    }, delay);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsVisible(false);
+  };
+
+  const positions = {
+    top: {
+      bottom: '100%',
+      left: '50%',
+      transform: 'translateX(-50%) translateY(-8px)',
+    },
+    bottom: {
+      top: '100%',
+      left: '50%',
+      transform: 'translateX(-50%) translateY(8px)',
+    },
+    left: {
+      right: '100%',
+      top: '50%',
+      transform: 'translateY(-50%) translateX(-8px)',
+    },
+    right: {
+      left: '100%',
+      top: '50%',
+      transform: 'translateY(-50%) translateX(8px)',
+    },
+  };
+
+  const arrowPositions = {
+    top: {
+      top: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      borderLeft: '6px solid transparent',
+      borderRight: '6px solid transparent',
+      borderTop: `6px solid ${tokens.colors.neutral[800]}`,
+    },
+    bottom: {
+      bottom: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      borderLeft: '6px solid transparent',
+      borderRight: '6px solid transparent',
+      borderBottom: `6px solid ${tokens.colors.neutral[800]}`,
+    },
+    left: {
+      left: '100%',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      borderTop: '6px solid transparent',
+      borderBottom: '6px solid transparent',
+      borderLeft: `6px solid ${tokens.colors.neutral[800]}`,
+    },
+    right: {
+      right: '100%',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      borderTop: '6px solid transparent',
+      borderBottom: '6px solid transparent',
+      borderRight: `6px solid ${tokens.colors.neutral[800]}`,
+    },
+  };
+
+  const containerStyles = {
+    position: 'relative',
+    display: 'inline-block',
+  };
+
+  const tooltipStyles = {
+    position: 'absolute',
+    backgroundColor: tokens.colors.neutral[800],
+    color: tokens.colors.content.inverse,
+    padding: `${tokens.spacing.xs} ${tokens.spacing.sm}`,
+    borderRadius: tokens.borderRadius.xs,
+    fontSize: tokens.typography.fontSize.sm,
+    whiteSpace: 'nowrap',
+    zIndex: tokens.zIndex.tooltip,
+    opacity: isVisible ? 1 : 0,
+    visibility: isVisible ? 'visible' : 'hidden',
+    transition: 'opacity 0.2s ease, visibility 0.2s ease',
+    pointerEvents: 'none',
+    ...positions[position],
+  };
+
+  const arrowStyles = {
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    ...arrowPositions[position],
+  };
+
+  return (
+    <div
+      style={containerStyles}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {children}
+      <div style={tooltipStyles} role="tooltip">
+        {content}
+        <div style={arrowStyles} />
+      </div>
+    </div>
+  );
+};
+
+// ==================== MENU COMPONENT ====================
+export const Menu = ({
+  items = [],
+  collapsed = false,
+  onItemClick,
+}) => {
+  const [activeItem, setActiveItem] = useState(null);
+
+  const handleItemClick = (item) => {
+    setActiveItem(item.id);
+    if (onItemClick) {
+      onItemClick(item);
+    }
+  };
+
+  const menuStyles = {
+    width: collapsed ? '60px' : '240px',
+    backgroundColor: tokens.colors.neutral[0],
+    borderRight: `1px solid ${tokens.colors.border.secondary}`,
+    display: 'flex',
+    flexDirection: 'column',
+    transition: 'width 0.3s ease',
+    fontFamily: tokens.typography.fontFamily,
+  };
+
+  const menuItemStyles = (isActive) => ({
+    display: 'flex',
+    alignItems: 'center',
+    gap: tokens.spacing.sm,
+    padding: tokens.spacing.md,
+    color: isActive ? tokens.colors.primary[500] : tokens.colors.content.primary,
+    backgroundColor: isActive ? tokens.colors.primary[50] : 'transparent',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    borderLeft: isActive ? `3px solid ${tokens.colors.primary[500]}` : '3px solid transparent',
+    fontSize: tokens.typography.fontSize.md,
+    fontWeight: isActive ? tokens.typography.fontWeight.semibold : tokens.typography.fontWeight.regular,
+  });
+
+  const iconStyles = {
+    width: '20px',
+    height: '20px',
+    flexShrink: 0,
+  };
+
+  const labelStyles = {
+    opacity: collapsed ? 0 : 1,
+    transition: 'opacity 0.3s ease',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  };
+
+  return (
+    <nav style={menuStyles}>
+      {items.map((item) => (
+        <div
+          key={item.id}
+          style={menuItemStyles(activeItem === item.id)}
+          onClick={() => handleItemClick(item)}
+          onMouseEnter={(e) => {
+            if (!activeItem || activeItem !== item.id) {
+              e.currentTarget.style.backgroundColor = tokens.colors.neutral[50];
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (activeItem !== item.id) {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }
+          }}
+        >
+          {item.icon && <div style={iconStyles}>{item.icon}</div>}
+          <span style={labelStyles}>{item.label}</span>
+        </div>
+      ))}
+    </nav>
+  );
+};
+
+// ==================== TABS COMPONENT ====================
+export const Tabs = ({
+  tabs = [],
+  activeTab,
+  onChange,
+  variant = 'underline', // 'underline', 'filled'
+}) => {
+  const [internalActive, setInternalActive] = useState(activeTab || tabs[0]?.id);
+
+  const currentActive = activeTab !== undefined ? activeTab : internalActive;
+
+  const handleTabClick = (tabId) => {
+    if (onChange) {
+      onChange(tabId);
+    } else {
+      setInternalActive(tabId);
+    }
+  };
+
+  const tabsContainerStyles = {
+    display: 'flex',
+    gap: variant === 'underline' ? tokens.spacing.lg : tokens.spacing.xs,
+    borderBottom: variant === 'underline' ? `1px solid ${tokens.colors.border.secondary}` : 'none',
+    fontFamily: tokens.typography.fontFamily,
+  };
+
+  const getTabStyles = (isActive) => {
+    if (variant === 'underline') {
+      return {
+        padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
+        fontSize: tokens.typography.fontSize.md,
+        fontWeight: isActive ? tokens.typography.fontWeight.semibold : tokens.typography.fontWeight.regular,
+        color: isActive ? tokens.colors.primary[500] : tokens.colors.content.secondary,
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+        borderBottom: isActive ? `2px solid ${tokens.colors.primary[500]}` : '2px solid transparent',
+        marginBottom: '-1px',
+        userSelect: 'none',
+      };
+    } else {
+      // Filled/Pill style - rounded pills como na imagem
+      return {
+        padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
+        fontSize: tokens.typography.fontSize.md,
+        fontWeight: tokens.typography.fontWeight.medium,
+        color: isActive ? tokens.colors.content.primary : tokens.colors.content.secondary,
+        backgroundColor: isActive ? tokens.colors.primary[50] : 'transparent',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+        borderRadius: '100px', // Pill shape
+        userSelect: 'none',
+      };
+    }
+  };
+
+  return (
+    <div style={tabsContainerStyles} role="tablist">
+      {tabs.map((tab) => (
+        <div
+          key={tab.id}
+          style={getTabStyles(currentActive === tab.id)}
+          onClick={() => handleTabClick(tab.id)}
+          onMouseEnter={(e) => {
+            if (currentActive !== tab.id) {
+              e.currentTarget.style.color = variant === 'underline' 
+                ? tokens.colors.content.primary 
+                : tokens.colors.content.primary;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (currentActive !== tab.id) {
+              e.currentTarget.style.color = variant === 'underline'
+                ? tokens.colors.content.secondary
+                : tokens.colors.content.primary;
+            }
+          }}
+          role="tab"
+          aria-selected={currentActive === tab.id}
+        >
+          {tab.label}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ==================== DRAWER COMPONENT ====================
+export const Drawer = ({
+  isOpen = false,
+  onClose,
+  children,
+  title,
+  position = 'right', // 'left', 'right'
+  width = '400px',
+}) => {
+  const [isVisible, setIsVisible] = useState(isOpen);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+      setTimeout(() => setIsAnimating(true), 10);
+    } else {
+      setIsAnimating(false);
+      setTimeout(() => setIsVisible(false), 300);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
+  if (!isVisible) return null;
+
+  const overlayStyles = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: tokens.colors.overlay,
+    zIndex: tokens.zIndex.drawer,
+    opacity: isAnimating ? 1 : 0,
+    transition: 'opacity 0.3s ease',
+  };
+
+  const drawerStyles = {
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    [position]: 0,
+    width: width,
+    backgroundColor: tokens.colors.neutral[0],
+    boxShadow: tokens.shadows.xl,
+    zIndex: tokens.zIndex.drawer + 1,
+    display: 'flex',
+    flexDirection: 'column',
+    transform: isAnimating ? 'translateX(0)' : `translateX(${position === 'right' ? '100%' : '-100%'})`,
+    transition: 'transform 0.3s ease',
+    fontFamily: tokens.typography.fontFamily,
+  };
+
+  const headerStyles = {
+    padding: tokens.spacing.lg,
+    borderBottom: `1px solid ${tokens.colors.border.secondary}`,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  };
+
+  const titleStyles = {
+    fontSize: tokens.typography.fontSize.xl,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.content.primary,
+  };
+
+  const closeButtonStyles = {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: tokens.spacing.xs,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: tokens.borderRadius.xs,
+    transition: 'background-color 0.15s ease',
+  };
+
+  const contentStyles = {
+    flex: 1,
+    padding: tokens.spacing.lg,
+    overflowY: 'auto',
+  };
+
+  return (
+    <>
+      <div style={overlayStyles} onClick={onClose} />
+      <div style={drawerStyles} role="dialog" aria-modal="true">
+        <div style={headerStyles}>
+          <h2 style={titleStyles}>{title}</h2>
+          <button
+            style={closeButtonStyles}
+            onClick={onClose}
+            aria-label="Fechar"
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.neutral[100]}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.content.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div style={contentStyles}>
+          {children}
+        </div>
+      </div>
+    </>
+  );
+};
+
+// ==================== MODAL COMPONENT ====================
+export const Modal = ({
+  isOpen = false,
+  onClose,
+  children,
+  title,
+  size = 'medium', // 'small', 'medium', 'large'
+  showCloseButton = true,
+}) => {
+  const [isVisible, setIsVisible] = useState(isOpen);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => setIsAnimating(true), 10);
+    } else {
+      setIsAnimating(false);
+      setTimeout(() => {
+        setIsVisible(false);
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
+  if (!isVisible) return null;
+
+  const sizes = {
+    small: '400px',
+    medium: '600px',
+    large: '800px',
+  };
+
+  const overlayStyles = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: tokens.colors.overlay,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: tokens.zIndex.modal,
+    opacity: isAnimating ? 1 : 0,
+    transition: 'opacity 0.3s ease',
+    padding: tokens.spacing.lg,
+  };
+
+  const modalStyles = {
+    backgroundColor: tokens.colors.neutral[0],
+    borderRadius: tokens.borderRadius.md,
+    boxShadow: tokens.shadows.xl,
+    width: '100%',
+    maxWidth: sizes[size],
+    maxHeight: '90vh',
+    display: 'flex',
+    flexDirection: 'column',
+    transform: isAnimating ? 'scale(1)' : 'scale(0.95)',
+    opacity: isAnimating ? 1 : 0,
+    transition: 'all 0.3s ease',
+    fontFamily: tokens.typography.fontFamily,
+  };
+
+  const headerStyles = {
+    padding: tokens.spacing.lg,
+    borderBottom: `1px solid ${tokens.colors.border.secondary}`,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  };
+
+  const titleStyles = {
+    fontSize: tokens.typography.fontSize.xl,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.content.primary,
+    margin: 0,
+  };
+
+  const closeButtonStyles = {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: tokens.spacing.xs,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: tokens.borderRadius.xs,
+    transition: 'background-color 0.15s ease',
+  };
+
+  const contentStyles = {
+    padding: tokens.spacing.lg,
+    overflowY: 'auto',
+    flex: 1,
+  };
+
+  return (
+    <div style={overlayStyles} onClick={onClose}>
+      <div
+        style={modalStyles}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        {(title || showCloseButton) && (
+          <div style={headerStyles}>
+            {title && <h2 id="modal-title" style={titleStyles}>{title}</h2>}
+            {showCloseButton && (
+              <button
+                style={closeButtonStyles}
+                onClick={onClose}
+                aria-label="Fechar"
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.neutral[100]}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.content.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
+        <div style={contentStyles}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ==================== BREADCRUMB COMPONENT ====================
+export const Breadcrumb = ({
+  items = [],
+  separator = '/',
+}) => {
+  const breadcrumbStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: tokens.spacing.xs,
+    fontFamily: tokens.typography.fontFamily,
+    fontSize: tokens.typography.fontSize.md,
+    flexWrap: 'wrap',
+  };
+
+  const itemStyles = (isLast) => ({
+    color: isLast ? tokens.colors.content.primary : tokens.colors.content.secondary,
+    textDecoration: 'none',
+    cursor: isLast ? 'default' : 'pointer',
+    transition: 'color 0.15s ease',
+    fontWeight: isLast ? tokens.typography.fontWeight.semibold : tokens.typography.fontWeight.regular,
+  });
+
+  const separatorStyles = {
+    color: tokens.colors.content.tertiary,
+    userSelect: 'none',
+  };
+
+  return (
+    <nav style={breadcrumbStyles} aria-label="Breadcrumb">
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        return (
+          <React.Fragment key={item.id || index}>
+            {item.href && !isLast ? (
+              <a
+                href={item.href}
+                style={itemStyles(isLast)}
+                onClick={(e) => {
+                  if (item.onClick) {
+                    e.preventDefault();
+                    item.onClick();
+                  }
+                }}
+                onMouseEnter={(e) => {
+                  if (!isLast) {
+                    e.currentTarget.style.color = tokens.colors.primary[500];
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isLast) {
+                    e.currentTarget.style.color = tokens.colors.content.secondary;
+                  }
+                }}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <span style={itemStyles(isLast)} aria-current={isLast ? 'page' : undefined}>
+                {item.label}
+              </span>
+            )}
+            {!isLast && <span style={separatorStyles}>{separator}</span>}
+          </React.Fragment>
+        );
+      })}
+    </nav>
+  );
+};
+
+// ==================== DEMO ====================
+export default function FinalComponentsDemo() {
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [menuCollapsed, setMenuCollapsed] = useState(false);
+  const [activeTab, setActiveTab] = useState('tab1');
+
+  const menuItems = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      ),
+    },
+    {
+      id: 'users',
+      label: 'Usuários',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      ),
+    },
+    {
+      id: 'settings',
+      label: 'Configurações',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"/>
+        </svg>
+      ),
+    },
+  ];
+
+  const tabs = [
+    { id: 'tab1', label: 'Visão Geral' },
+    { id: 'tab2', label: 'Detalhes' },
+    { id: 'tab3', label: 'Configurações' },
+  ];
+
+  const containerStyle = {
+    padding: '40px',
+    backgroundColor: '#F9F9F9',
+    minHeight: '100vh',
+    fontFamily: tokens.typography.fontFamily,
+  };
+
+  const sectionStyle = {
+    marginBottom: '48px',
+    padding: '32px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '12px',
+  };
+
+  const titleStyle = {
+    fontSize: '24px',
+    fontWeight: 700,
+    marginBottom: '24px',
+    color: '#1A1A1A',
+  };
+
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '24px',
+    marginBottom: '24px',
+  };
+
+  const buttonStyle = {
+    padding: '12px 24px',
+    backgroundColor: tokens.colors.primary[500],
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
+  };
+
+  return (
+    <div style={containerStyle}>
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px', color: '#005A1A' }}>
+          Portal Empresa - Design System
+        </h1>
+        <p style={{ fontSize: '16px', color: '#5E5E5E' }}>
+          Spinner, Tooltip, Menu, Tabs, Drawer, Modal & Breadcrumb
+        </p>
+      </div>
+
+      {/* BREADCRUMB */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>🍞 Breadcrumb</h2>
+        <Breadcrumb
+          items={[
+            { id: 'home', label: 'Home', href: '/', onClick: () => console.log('Home') },
+            { id: 'products', label: 'Produtos', href: '/products', onClick: () => console.log('Produtos') },
+            { id: 'category', label: 'Eletrônicos', href: '/products/electronics', onClick: () => console.log('Eletrônicos') },
+            { id: 'current', label: 'Notebook Dell' },
+          ]}
+        />
+        
+        <h3 style={{ fontSize: '16px', fontWeight: 600, marginTop: '24px', marginBottom: '16px' }}>
+          Com separador customizado
+        </h3>
+        <Breadcrumb
+          separator=">"
+          items={[
+            { id: 'home', label: 'Início', onClick: () => console.log('Início') },
+            { id: 'config', label: 'Configurações', onClick: () => console.log('Config') },
+            { id: 'profile', label: 'Perfil' },
+          ]}
+        />
+      </div>
+
+      {/* SPINNER */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>⏳ Spinner / Loader</h2>
+        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+          <div style={{ textAlign: 'center' }}>
+            <Spinner size="small" />
+            <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Small</p>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <Spinner size="medium" />
+            <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Medium</p>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <Spinner size="large" />
+            <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Large</p>
+          </div>
+        </div>
+      </div>
+
+      {/* TOOLTIP */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>💬 Tooltip</h2>
+        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', padding: '40px 0' }}>
+          <Tooltip content="Tooltip no topo" position="top">
+            <button style={buttonStyle}>Top</button>
+          </Tooltip>
+          <Tooltip content="Tooltip à direita" position="right">
+            <button style={buttonStyle}>Right</button>
+          </Tooltip>
+          <Tooltip content="Tooltip embaixo" position="bottom">
+            <button style={buttonStyle}>Bottom</button>
+          </Tooltip>
+          <Tooltip content="Tooltip à esquerda" position="left">
+            <button style={buttonStyle}>Left</button>
+          </Tooltip>
+        </div>
+      </div>
+
+      {/* MENU */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>📋 Menu / Sidebar</h2>
+        <button
+          style={{ ...buttonStyle, marginBottom: '16px' }}
+          onClick={() => setMenuCollapsed(!menuCollapsed)}
+        >
+          {menuCollapsed ? 'Expandir Menu' : 'Colapsar Menu'}
+        </button>
+        <div style={{ border: `1px solid ${tokens.colors.border.secondary}`, borderRadius: '8px', overflow: 'hidden' }}>
+          <Menu
+            items={menuItems}
+            collapsed={menuCollapsed}
+            onItemClick={(item) => console.log('Clicou em:', item.label)}
+          />
+        </div>
+      </div>
+
+      {/* TABS */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>📑 Tabs</h2>
+        
+        <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Underline</h3>
+        <Tabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={setActiveTab}
+          variant="underline"
+        />
+        <div style={{ padding: '24px', border: `1px solid ${tokens.colors.border.secondary}`, borderTop: 'none', borderRadius: '0 0 8px 8px' }}>
+          <p>Conteúdo da aba: {tabs.find(t => t.id === activeTab)?.label}</p>
+        </div>
+
+        <h3 style={{ fontSize: '16px', fontWeight: 600, marginTop: '32px', marginBottom: '16px' }}>Filled</h3>
+        <Tabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={setActiveTab}
+          variant="filled"
+        />
+        <div style={{ padding: '24px', border: `1px solid ${tokens.colors.border.secondary}`, marginTop: '16px', borderRadius: '8px' }}>
+          <p>Conteúdo da aba: {tabs.find(t => t.id === activeTab)?.label}</p>
+        </div>
+      </div>
+
+      {/* DRAWER */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>🗂️ Drawer</h2>
+        <button style={buttonStyle} onClick={() => setShowDrawer(true)}>
+          Abrir Drawer
+        </button>
+
+        <Drawer
+          isOpen={showDrawer}
+          onClose={() => setShowDrawer(false)}
+          title="Configurações"
+          position="right"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <p>Este é um drawer lateral que desliza da direita.</p>
+            <p>Pode conter formulários, configurações, ou qualquer conteúdo.</p>
+            <button style={buttonStyle}>Salvar</button>
+          </div>
+        </Drawer>
+      </div>
+
+      {/* MODAL */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>🪟 Modal</h2>
+        <button style={buttonStyle} onClick={() => setShowModal(true)}>
+          Abrir Modal
+        </button>
+
+        <Modal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          title="Confirmar Ação"
+          size="medium"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <p>Você tem certeza que deseja realizar esta ação?</p>
+            <p>Esta operação não pode ser desfeita.</p>
+            <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+              <button
+                style={buttonStyle}
+                onClick={() => {
+                  console.log('Confirmado');
+                  setShowModal(false);
+                }}
+              >
+                Confirmar
+              </button>
+              <button
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: tokens.colors.neutral[200],
+                  color: tokens.colors.content.primary,
+                }}
+                onClick={() => setShowModal(false)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
+    </div>
+  );
+}
