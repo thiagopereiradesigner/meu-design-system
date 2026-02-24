@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:www.figma.com)"
+      "WebFetch(domain:www.figma.com)",
+      "Bash(npm install:*)",
+      "Bash(cmd /c \"npm install\")",
+      "Bash(cmd /c \"cd /d \"\"c:\\\\Users\\\\ThiagoPereiraRodrigu\\\\Documents\\\\GitHub\\\\meu-design-system\"\" && npm install 2>&1\")"
     ]
   }
 }
