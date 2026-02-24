@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Design System Tabs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #656976;
+        }
+
+        .section {
+            background: #F9F9F9;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 24px;
+        }
+
+        .size-group {
+            margin-bottom: 32px;
+        }
+
+        .size-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #656976;
+            margin-bottom: 16px;
+        }
+
+        .state-label {
+            font-size: 10px;
+            color: #999999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        .color-demo {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .color-swatch {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-right: 24px;
+            margin-bottom: 8px;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .color-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .color-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .color-value {
+            font-size: 11px;
+            color: #666;
+            font-family: monospace;
+        }
+
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ─────────────────────────────────────
+           TAB COMPONENT STYLES
+        ───────────────────────────────────── */
+
+        /* Tab Group wrapper */
+        .tab-group {
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 0;
+            position: relative;
+        }
+
+        /* ── LINE VARIANT (underline indicator) ── */
+        .tab-group--line {
+            border-bottom: 1px solid #E0E0E0;
+            width: 100%;
+        }
+
+        .tab--line {
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: transparent;
+            color: #656976;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            margin-bottom: -1px;
+            border-radius: 0;
+            white-space: nowrap;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .tab--line:hover:not(:disabled):not(.tab--active) {
+            color: #04843B;
+            background-color: #F9F9F9;
+        }
+
+        .tab--line:focus-visible {
+            box-shadow: inset 0 0 0 2px rgba(4, 132, 59, 0.4);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .tab--line.tab--active {
+            color: #04843B;
+            border-bottom-color: #04843B;
+            font-weight: 600;
+        }
+
+        .tab--line:disabled,
+        .tab--line.tab--disabled {
+            color: #C6C6C6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Medium size */
+        .tab--line.tab--md {
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+
+        /* ── PILL VARIANT ── */
+        .tab-group--pill {
+            background: #F3F3F3;
+            border-radius: 9999px;
+            padding: 4px;
+            gap: 4px;
+            border-bottom: none;
+        }
+
+        .tab--pill {
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 9999px;
+            background: transparent;
+            color: #656976;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            outline: none;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .tab--pill:hover:not(:disabled):not(.tab--active) {
+            color: #04843B;
+            background-color: #E6F4ED;
+        }
+
+        .tab--pill:focus-visible {
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.2);
+        }
+
+        .tab--pill.tab--active {
+            background: #FFFFFF;
+            color: #04843B;
+            font-weight: 600;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+        }
+
+        .tab--pill:disabled,
+        .tab--pill.tab--disabled {
+            color: #C6C6C6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Medium pill */
+        .tab--pill.tab--md {
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+
+        /* ── BADGE on tab ── */
+        .tab-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9999px;
+            background: #E6F4ED;
+            color: #005A1A;
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .tab--active .tab-badge {
+            background: #04843B;
+            color: #FFFFFF;
+        }
+
+        .tab--disabled .tab-badge,
+        :disabled .tab-badge {
+            background: #F3F3F3;
+            color: #C6C6C6;
+        }
+
+        /* ── TAB PANEL ── */
+        .tab-panel {
+            padding: 24px 0;
+            display: none;
+        }
+
+        .tab-panel--active {
+            display: block;
+        }
+
+        .tab-panel-card {
+            background: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #E0E0E0;
+            padding: 24px;
+        }
+
+        .tab-panel-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+
+        .tab-panel-card p {
+            font-size: 14px;
+            color: #656976;
+            line-height: 1.6;
+        }
+
+        /* ── DEMO GRID layout ── */
+        .demo-row {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .demo-item {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .demo-item-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .states-row {
+            display: flex;
+            gap: 0;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            border-bottom: 1px solid #E0E0E0;
+            margin-bottom: 8px;
+        }
+
+        .states-row--pill {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: none;
+            background: #F3F3F3;
+            border-radius: 9999px;
+            padding: 4px;
+            width: fit-content;
+        }
+
+        .state-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Note box */
+        .note {
+            margin-top: 48px;
+            padding: 24px;
+            background-color: #E6F4ED;
+            border-radius: 12px;
+            border-left: 4px solid #04843B;
+        }
+
+        .note h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #004D16;
+        }
+
+        .note ul {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Tab</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Portal Empresa - Design System</h1>
+        <p>Componente Tab | Todas as variantes, tamanhos e estados</p>
+    </div>
+
+    <!-- COLOR TOKENS -->
+    <div class="section">
+        <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
+        <div class="color-demo">
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #04843B;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 500 (Active)</span>
+                    <span class="color-value">#04843B</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #067647;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 600 (Hover)</span>
+                    <span class="color-value">#067647</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #005A1A;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 700 (Badge text)</span>
+                    <span class="color-value">#005A1A</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #E6F4ED;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 50 (Badge bg)</span>
+                    <span class="color-value">#E6F4ED</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #656976;"></div>
+                <div class="color-info">
+                    <span class="color-name">Neutral 500 (Default text)</span>
+                    <span class="color-value">#656976</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #C6C6C6;"></div>
+                <div class="color-info">
+                    <span class="color-name">Neutral 200 (Disabled)</span>
+                    <span class="color-value">#C6C6C6</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #E0E0E0; border-color: #ccc;"></div>
+                <div class="color-info">
+                    <span class="color-name">Border (Line)</span>
+                    <span class="color-value">#E0E0E0</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #F3F3F3; border-color: #ccc;"></div>
+                <div class="color-info">
+                    <span class="color-name">Neutral 100 (Pill bg)</span>
+                    <span class="color-value">#F3F3F3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE TABS -->
+    <div class="section">
+        <h2 class="section-title">📑 Tab Line — Variante Linha</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">A variante mais comum, com indicador de sublinha. Ideal para navegação de seções e conteúdo extenso.</p>
+
+        <!-- Large -->
+        <div class="size-group">
+            <div class="size-label">Tamanho Large (L) — height 48px</div>
+            <div class="demo-item">
+                <div class="demo-item-label">Estados individuais</div>
+                <div class="states-row">
+                    <div class="state-col">
+                        <button class="tab--line" style="height:48px;">Tab Item</button>
+                        <span class="state-label">Default</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line tab--active" style="height:48px;" aria-selected="true">Tab Item</button>
+                        <span class="state-label">Active</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line" style="height:48px;color:#04843B;background:#F9F9F9;">Tab Item</button>
+                        <span class="state-label">Hover</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line" style="height:48px;box-shadow:inset 0 0 0 2px rgba(4,132,59,0.4);border-radius:4px 4px 0 0;">Tab Item</button>
+                        <span class="state-label">Focus</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line tab--disabled" style="height:48px;" disabled>Tab Item</button>
+                        <span class="state-label">Disabled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medium -->
+        <div class="size-group">
+            <div class="size-label">Tamanho Medium (M) — height 40px</div>
+            <div class="demo-item">
+                <div class="demo-item-label">Estados individuais</div>
+                <div class="states-row">
+                    <div class="state-col">
+                        <button class="tab--line tab--md" style="height:40px;">Tab Item</button>
+                        <span class="state-label">Default</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line tab--md tab--active" style="height:40px;" aria-selected="true">Tab Item</button>
+                        <span class="state-label">Active</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line tab--md" style="height:40px;color:#04843B;background:#F9F9F9;">Tab Item</button>
+                        <span class="state-label">Hover</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line tab--md" style="height:40px;box-shadow:inset 0 0 0 2px rgba(4,132,59,0.4);border-radius:4px 4px 0 0;">Tab Item</button>
+                        <span class="state-label">Focus</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--line tab--md tab--disabled" style="height:40px;" disabled>Tab Item</button>
+                        <span class="state-label">Disabled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group example -->
+        <div class="size-group" style="margin-bottom:0;">
+            <div class="size-label">Grupo completo com conteúdo interativo</div>
+            <div class="demo-item">
+                <div role="tablist" class="tab-group tab-group--line" id="tabs-line-demo" aria-label="Seções do portal">
+                    <button class="tab--line tab--active" role="tab" aria-selected="true" aria-controls="panel-line-1" id="tab-line-1" style="height:48px;">Visão geral</button>
+                    <button class="tab--line" role="tab" aria-selected="false" aria-controls="panel-line-2" id="tab-line-2" style="height:48px;">Configurações</button>
+                    <button class="tab--line" role="tab" aria-selected="false" aria-controls="panel-line-3" id="tab-line-3" style="height:48px;">Histórico</button>
+                    <button class="tab--line tab--disabled" role="tab" aria-selected="false" aria-disabled="true" style="height:48px;" disabled>Em breve</button>
+                </div>
+                <div id="panel-line-1" role="tabpanel" aria-labelledby="tab-line-1" class="tab-panel tab-panel--active">
+                    <div class="tab-panel-card">
+                        <h3>Visão geral</h3>
+                        <p>Resumo das métricas e atividades recentes da sua conta.</p>
+                    </div>
+                </div>
+                <div id="panel-line-2" role="tabpanel" aria-labelledby="tab-line-2" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Configurações</h3>
+                        <p>Gerencie as preferências e configurações da sua conta aqui.</p>
+                    </div>
+                </div>
+                <div id="panel-line-3" role="tabpanel" aria-labelledby="tab-line-3" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Histórico</h3>
+                        <p>Todas as ações e eventos registrados nos últimos 30 dias.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PILL TABS -->
+    <div class="section">
+        <h2 class="section-title">💊 Tab Pill — Variante Pílula</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Variante compacta com fundo arredondado. Ideal para filtros de conteúdo e seleções secundárias.</p>
+
+        <!-- Large -->
+        <div class="size-group">
+            <div class="size-label">Tamanho Large (L) — height 40px</div>
+            <div class="demo-item">
+                <div class="demo-item-label">Estados individuais</div>
+                <div class="states-row--pill" style="margin-bottom:8px;">
+                    <div class="state-col">
+                        <button class="tab--pill">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Default</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill tab--active" aria-selected="true">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Active</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill" style="color:#04843B;background:#E6F4ED;">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Hover</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill" style="box-shadow:0 0 0 3px rgba(4,132,59,0.2);">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Focus</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill tab--disabled" disabled>Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Disabled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medium -->
+        <div class="size-group">
+            <div class="size-label">Tamanho Medium (M) — height 32px</div>
+            <div class="demo-item">
+                <div class="demo-item-label">Estados individuais</div>
+                <div class="states-row--pill" style="margin-bottom:8px;">
+                    <div class="state-col">
+                        <button class="tab--pill tab--md">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Default</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill tab--md tab--active" aria-selected="true">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Active</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill tab--md" style="color:#04843B;background:#E6F4ED;">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Hover</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill tab--md" style="box-shadow:0 0 0 3px rgba(4,132,59,0.2);">Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Focus</span>
+                    </div>
+                    <div class="state-col">
+                        <button class="tab--pill tab--md tab--disabled" disabled>Tab Item</button>
+                        <span class="state-label" style="margin-top:6px;">Disabled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group example -->
+        <div class="size-group" style="margin-bottom:0;">
+            <div class="size-label">Grupo completo com conteúdo interativo</div>
+            <div class="demo-item">
+                <div role="tablist" class="tab-group tab-group--pill" id="tabs-pill-demo" aria-label="Filtros de status">
+                    <button class="tab--pill tab--active" role="tab" aria-selected="true" aria-controls="panel-pill-1" id="tab-pill-1">Todos</button>
+                    <button class="tab--pill" role="tab" aria-selected="false" aria-controls="panel-pill-2" id="tab-pill-2">Ativos</button>
+                    <button class="tab--pill" role="tab" aria-selected="false" aria-controls="panel-pill-3" id="tab-pill-3">Inativos</button>
+                    <button class="tab--pill tab--disabled" role="tab" aria-selected="false" aria-disabled="true" disabled>Arquivados</button>
+                </div>
+                <div id="panel-pill-1" role="tabpanel" aria-labelledby="tab-pill-1" class="tab-panel tab-panel--active">
+                    <div class="tab-panel-card">
+                        <h3>Todos os registros</h3>
+                        <p>Exibindo 248 registros no total entre todos os status.</p>
+                    </div>
+                </div>
+                <div id="panel-pill-2" role="tabpanel" aria-labelledby="tab-pill-2" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Registros ativos</h3>
+                        <p>Exibindo 183 registros com status ativo.</p>
+                    </div>
+                </div>
+                <div id="panel-pill-3" role="tabpanel" aria-labelledby="tab-pill-3" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Registros inativos</h3>
+                        <p>Exibindo 65 registros com status inativo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS WITH ICONS -->
+    <div class="section">
+        <h2 class="section-title">🔷 Tabs com Ícones</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Ícones reforçam o significado visual de cada aba. Use o ícone sempre à esquerda do texto.</p>
+
+        <div class="size-group">
+            <div class="size-label">Line — com ícone</div>
+            <div class="demo-item">
+                <div role="tablist" class="tab-group tab-group--line" id="tabs-icon-demo" aria-label="Navegação com ícones">
+                    <button class="tab--line tab--active" role="tab" aria-selected="true" aria-controls="panel-icon-1" id="tab-icon-1" style="height:48px;">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Dashboard
+                    </button>
+                    <button class="tab--line" role="tab" aria-selected="false" aria-controls="panel-icon-2" id="tab-icon-2" style="height:48px;">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Usuários
+                    </button>
+                    <button class="tab--line" role="tab" aria-selected="false" aria-controls="panel-icon-3" id="tab-icon-3" style="height:48px;">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        Relatórios
+                    </button>
+                    <button class="tab--line tab--disabled" role="tab" aria-selected="false" aria-disabled="true" style="height:48px;" disabled>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                        Integrações
+                    </button>
+                </div>
+                <div id="panel-icon-1" role="tabpanel" aria-labelledby="tab-icon-1" class="tab-panel tab-panel--active">
+                    <div class="tab-panel-card">
+                        <h3>Dashboard</h3>
+                        <p>Visão consolidada de métricas, gráficos e indicadores de desempenho.</p>
+                    </div>
+                </div>
+                <div id="panel-icon-2" role="tabpanel" aria-labelledby="tab-icon-2" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Usuários</h3>
+                        <p>Gerenciamento de usuários, permissões e grupos de acesso.</p>
+                    </div>
+                </div>
+                <div id="panel-icon-3" role="tabpanel" aria-labelledby="tab-icon-3" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Relatórios</h3>
+                        <p>Exportação e visualização de relatórios analíticos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="size-group" style="margin-bottom:0;">
+            <div class="size-label">Pill — com ícone</div>
+            <div class="demo-item">
+                <div role="tablist" class="tab-group tab-group--pill" id="tabs-pill-icon-demo" aria-label="Filtros com ícones">
+                    <button class="tab--pill tab--active" role="tab" aria-selected="true">
+                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M7 12h10M10 18h4"/></svg>
+                        Todos
+                    </button>
+                    <button class="tab--pill" role="tab" aria-selected="false">
+                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Concluídos
+                    </button>
+                    <button class="tab--pill" role="tab" aria-selected="false">
+                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Pendentes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS WITH BADGE -->
+    <div class="section">
+        <h2 class="section-title">🔔 Tabs com Badge</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Badges indicam quantidade de itens ou notificações em cada aba. O badge herda a cor do estado ativo.</p>
+
+        <div class="size-group">
+            <div class="size-label">Line — com badge contador</div>
+            <div class="demo-item">
+                <div role="tablist" class="tab-group tab-group--line" id="tabs-badge-demo" aria-label="Notificações">
+                    <button class="tab--line tab--active" role="tab" aria-selected="true" style="height:48px;">
+                        Todos
+                        <span class="tab-badge" aria-label="248 itens">248</span>
+                    </button>
+                    <button class="tab--line" role="tab" aria-selected="false" style="height:48px;">
+                        Pendentes
+                        <span class="tab-badge" aria-label="12 itens">12</span>
+                    </button>
+                    <button class="tab--line" role="tab" aria-selected="false" style="height:48px;">
+                        Em análise
+                        <span class="tab-badge" aria-label="5 itens">5</span>
+                    </button>
+                    <button class="tab--line tab--disabled" role="tab" aria-selected="false" style="height:48px;" disabled>
+                        Arquivados
+                        <span class="tab-badge" aria-label="0 itens">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="size-group" style="margin-bottom:0;">
+            <div class="size-label">Pill — com badge contador</div>
+            <div class="demo-item">
+                <div role="tablist" class="tab-group tab-group--pill" id="tabs-pill-badge-demo" aria-label="Itens por status">
+                    <button class="tab--pill tab--active" role="tab" aria-selected="true">
+                        Todos
+                        <span class="tab-badge">248</span>
+                    </button>
+                    <button class="tab--pill" role="tab" aria-selected="false">
+                        Ativos
+                        <span class="tab-badge">183</span>
+                    </button>
+                    <button class="tab--pill" role="tab" aria-selected="false">
+                        Inativos
+                        <span class="tab-badge">65</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- USAGE EXAMPLES -->
+    <div class="section">
+        <h2 class="section-title">💡 Exemplos Práticos de Uso</h2>
+
+        <div class="demo-row">
+            <!-- Example 1: Detalhe de registro -->
+            <div style="background: #FFFFFF; border-radius: 8px; padding: 24px; border: 1px solid #E0E0E0;">
+                <h3 style="font-size:16px;font-weight:600;margin-bottom:4px;color:#1A1A1A;">Detalhe de registro</h3>
+                <p style="font-size:12px;color:#999;margin-bottom:20px;">Abas line em página de detalhe de cadastro</p>
+                <div role="tablist" class="tab-group tab-group--line" id="tabs-ex1" aria-label="Seções do cadastro">
+                    <button class="tab--line tab--active" role="tab" aria-selected="true" style="height:48px;" aria-controls="ex1-p1" id="ex1-t1">Dados gerais</button>
+                    <button class="tab--line" role="tab" aria-selected="false" style="height:48px;" aria-controls="ex1-p2" id="ex1-t2">
+                        Endereços
+                        <span class="tab-badge">3</span>
+                    </button>
+                    <button class="tab--line" role="tab" aria-selected="false" style="height:48px;" aria-controls="ex1-p3" id="ex1-t3">Documentos</button>
+                    <button class="tab--line" role="tab" aria-selected="false" style="height:48px;" aria-controls="ex1-p4" id="ex1-t4">Histórico</button>
+                </div>
+                <div id="ex1-p1" role="tabpanel" aria-labelledby="ex1-t1" class="tab-panel tab-panel--active">
+                    <div class="tab-panel-card">
+                        <h3>Dados gerais</h3>
+                        <p>Nome, CPF/CNPJ, e-mail, telefone e demais informações cadastrais.</p>
+                    </div>
+                </div>
+                <div id="ex1-p2" role="tabpanel" aria-labelledby="ex1-t2" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Endereços</h3>
+                        <p>3 endereços cadastrados: Comercial, Residencial e Entrega.</p>
+                    </div>
+                </div>
+                <div id="ex1-p3" role="tabpanel" aria-labelledby="ex1-t3" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Documentos</h3>
+                        <p>Contrato social, comprovante de endereço e demais documentos.</p>
+                    </div>
+                </div>
+                <div id="ex1-p4" role="tabpanel" aria-labelledby="ex1-t4" class="tab-panel">
+                    <div class="tab-panel-card">
+                        <h3>Histórico</h3>
+                        <p>Registro de todas as alterações feitas neste cadastro.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: Filtro de listagem -->
+            <div style="background: #FFFFFF; border-radius: 8px; padding: 24px; border: 1px solid #E0E0E0;">
+                <h3 style="font-size:16px;font-weight:600;margin-bottom:4px;color:#1A1A1A;">Filtro de listagem</h3>
+                <p style="font-size:12px;color:#999;margin-bottom:20px;">Abas pill como filtro rápido de status em uma listagem</p>
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+                    <div role="tablist" class="tab-group tab-group--pill" id="tabs-ex2" aria-label="Filtrar por status">
+                        <button class="tab--pill tab--md tab--active" role="tab" aria-selected="true">Todos <span class="tab-badge">248</span></button>
+                        <button class="tab--pill tab--md" role="tab" aria-selected="false">Aprovados <span class="tab-badge">183</span></button>
+                        <button class="tab--pill tab--md" role="tab" aria-selected="false">Pendentes <span class="tab-badge">50</span></button>
+                        <button class="tab--pill tab--md" role="tab" aria-selected="false">Reprovados <span class="tab-badge">15</span></button>
+                    </div>
+                    <button style="padding:8px 14px;border:1px solid #d0d0d0;border-radius:8px;background:#fff;font-size:13px;cursor:pointer;font-family:inherit;">+ Novo</button>
+                </div>
+                <div style="border:1px solid #E0E0E0;border-radius:8px;padding:16px;font-size:13px;color:#656976;text-align:center;">
+                    Conteúdo da listagem aparece aqui conforme filtro selecionado
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMO USAR -->
+    <div class="section">
+        <h2 class="section-title">💻 Como usar (HTML)</h2>
+
+        <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">1. Tab Line básica</h3>
+            <pre style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;!-- Wrapper com role=tablist --&gt;
+&lt;div role="tablist" class="tab-group tab-group--line" aria-label="Seções"&gt;
+  &lt;button
+    class="tab--line tab--active"
+    role="tab"
+    aria-selected="true"
+    aria-controls="panel-1"
+    id="tab-1"
+  &gt;
+    Tab ativa
+  &lt;/button&gt;
+  &lt;button
+    class="tab--line"
+    role="tab"
+    aria-selected="false"
+    aria-controls="panel-2"
+    id="tab-2"
+  &gt;
+    Tab padrão
+  &lt;/button&gt;
+  &lt;button
+    class="tab--line"
+    role="tab"
+    aria-selected="false"
+    aria-disabled="true"
+    disabled
+  &gt;
+    Desabilitada
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Painéis de conteúdo --&gt;
+&lt;div id="panel-1" role="tabpanel" aria-labelledby="tab-1" class="tab-panel tab-panel--active"&gt;
+  Conteúdo da aba 1
+&lt;/div&gt;
+&lt;div id="panel-2" role="tabpanel" aria-labelledby="tab-2" class="tab-panel"&gt;
+  Conteúdo da aba 2
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">2. Tab Pill com ícone e badge</h3>
+            <pre style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;div role="tablist" class="tab-group tab-group--pill" aria-label="Filtros"&gt;
+  &lt;button class="tab--pill tab--active" role="tab" aria-selected="true"&gt;
+    &lt;svg class="icon-sm"&gt;...&lt;/svg&gt;
+    Todos
+    &lt;span class="tab-badge" aria-label="248 itens"&gt;248&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="tab--pill" role="tab" aria-selected="false"&gt;
+    Ativos
+    &lt;span class="tab-badge" aria-label="183 itens"&gt;183&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div style="background:#FFFFFF;border-radius:8px;padding:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">3. Classes disponíveis</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                    <tr style="background:#F3F3F3;">
+                        <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Classe</th>
+                        <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab-group</td><td style="padding:10px 14px;color:#656976;">Container do grupo de abas (use com role="tablist")</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab-group--line</td><td style="padding:10px 14px;color:#656976;">Variante com indicador de sublinha</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab-group--pill</td><td style="padding:10px 14px;color:#656976;">Variante com fundo em pílula arredondada</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab--line</td><td style="padding:10px 14px;color:#656976;">Item de aba na variante linha</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab--pill</td><td style="padding:10px 14px;color:#656976;">Item de aba na variante pílula</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab--active</td><td style="padding:10px 14px;color:#656976;">Estado ativo/selecionado da aba</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab--disabled</td><td style="padding:10px 14px;color:#656976;">Estado desabilitado (use junto com disabled)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab--md</td><td style="padding:10px 14px;color:#656976;">Modificador de tamanho Medium</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab-badge</td><td style="padding:10px 14px;color:#656976;">Badge contador dentro da aba</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab-panel</td><td style="padding:10px 14px;color:#656976;">Painel de conteúdo associado à aba</td></tr>
+                    <tr><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.tab-panel--active</td><td style="padding:10px 14px;color:#656976;">Painel visível (use no painel correspondente à aba ativa)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ACCESSIBILITY NOTE -->
+    <div class="note">
+        <h3>♿ Nota sobre Acessibilidade (WCAG)</h3>
+        <ul>
+            <li>Use <code>role="tablist"</code> no container e <code>role="tab"</code> em cada botão</li>
+            <li>Adicione <code>aria-selected="true/false"</code> para indicar o estado atual ao leitor de tela</li>
+            <li>Associe cada aba ao seu painel com <code>aria-controls</code> e <code>aria-labelledby</code></li>
+            <li>Use <code>aria-disabled="true"</code> junto com <code>disabled</code> em abas desabilitadas</li>
+            <li>Forneça <code>aria-label</code> no <code>tablist</code> para descrever o grupo de abas</li>
+            <li>Suporte navegação por teclado: <kbd>Tab</kbd> para focar, <kbd>←</kbd>/<kbd>→</kbd> para navegar entre abas</li>
+            <li>O foco visível usa box-shadow de 2px na variante line e 3px na variante pill</li>
+            <li>Contrast ratio WCAG AA: texto ativo #04843B sobre branco = 5.5:1 ✓</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Tab switching function
+    function setupTabGroup(groupId, tabSelector, panelPrefix) {
+        var group = document.getElementById(groupId);
+        if (!group) return;
+        var tabs = group.querySelectorAll('[role="tab"]:not([disabled])');
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                // Deactivate all tabs in group
+                tabs.forEach(function(t) {
+                    t.classList.remove('tab--active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                // Activate clicked tab
+                tab.classList.add('tab--active');
+                tab.setAttribute('aria-selected', 'true');
+                // Hide all panels
+                var panelIds = Array.from(group.querySelectorAll('[role="tab"]'))
+                    .map(function(t) { return t.getAttribute('aria-controls'); })
+                    .filter(Boolean);
+                panelIds.forEach(function(id) {
+                    var panel = document.getElementById(id);
+                    if (panel) {
+                        panel.classList.remove('tab-panel--active');
+                    }
+                });
+                // Show active panel
+                var activePanel = document.getElementById(tab.getAttribute('aria-controls'));
+                if (activePanel) {
+                    activePanel.classList.add('tab-panel--active');
+                }
+            });
+
+            // Keyboard navigation (←/→)
+            tab.addEventListener('keydown', function(e) {
+                var tabsArr = Array.from(tabs);
+                var idx = tabsArr.indexOf(tab);
+                if (e.key === 'ArrowRight') {
+                    var next = tabsArr[idx + 1] || tabsArr[0];
+                    next.focus();
+                } else if (e.key === 'ArrowLeft') {
+                    var prev = tabsArr[idx - 1] || tabsArr[tabsArr.length - 1];
+                    prev.focus();
+                }
+            });
+        });
+    }
+
+    // Pill groups without panels (auto-switch only)
+    function setupPillGroup(groupId) {
+        var group = document.getElementById(groupId);
+        if (!group) return;
+        var tabs = group.querySelectorAll('[role="tab"]:not([disabled])');
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                tabs.forEach(function(t) {
+                    t.classList.remove('tab--active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                tab.classList.add('tab--active');
+                tab.setAttribute('aria-selected', 'true');
+            });
+        });
+    }
+
+    setupTabGroup('tabs-line-demo');
+    setupTabGroup('tabs-pill-demo');
+    setupTabGroup('tabs-icon-demo');
+    setupTabGroup('tabs-ex1');
+    setupPillGroup('tabs-badge-demo');
+    setupPillGroup('tabs-pill-icon-demo');
+    setupPillGroup('tabs-pill-badge-demo');
+    setupPillGroup('tabs-ex2');
+</script>
+
+<!-- DS Navigation Search Script -->
+<script>
+(function(){
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Tab',file:'tab-demo.html',cat:'Navegação'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    function setupSearch(inputId,dropdownId){
+        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+        if(!si||!dd)return;
+        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+        si.addEventListener('input',function(e){render(e.target.value);});
+        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+    }
+    setupSearch('ds-nav-search','ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+    if(hb&&mm){
+        hb.addEventListener('click',function(){mm.classList.toggle('open');});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+    }
+})();
+</script>
+</body>
+</html>

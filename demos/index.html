@@ -318,6 +318,96 @@
       gap: 2px;
     }
 
+    .preview-tab-group {
+      width: 100%;
+      border-bottom: 1px solid #E0E0E0;
+      display: flex;
+      gap: 0;
+    }
+
+    .preview-tab {
+      padding: 6px 10px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: #656976;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .preview-tab-active {
+      color: #04843B;
+      border-bottom-color: #04843B;
+      font-weight: 600;
+    }
+
+    .preview-dp-input {
+      width: 100%;
+      padding: 5px 28px 5px 8px;
+      border: 1px solid #DDDDDD;
+      border-radius: 6px;
+      font-size: 10px;
+      color: #999;
+      background: #fff;
+    }
+
+    .preview-dp-cal {
+      width: 100%;
+      border: 1px solid #E0E0E0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .preview-dp-cal-header {
+      background: #F9F9F9;
+      padding: 4px 6px;
+      font-size: 9px;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .preview-dp-cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      padding: 4px;
+    }
+
+    .preview-dp-cal-day {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 1;
+      font-size: 8px;
+      border-radius: 3px;
+      color: #333;
+    }
+
+    .preview-dp-cal-day--selected {
+      background: #04843B;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .preview-dp-cal-day--today {
+      color: #04843B;
+      font-weight: 700;
+      border: 1px solid #04843B;
+    }
+
+    .preview-dp-cal-day--range {
+      background: #E6F4ED;
+      color: #005A1A;
+    }
+
+    .preview-dp-cal-day--muted {
+      color: #C6C6C6;
+    }
+
     /* Empty State */
     .empty-state {
       text-align: center;
@@ -396,6 +486,7 @@
       <button class="filter-btn" data-filter="feedback">Feedback</button>
       <button class="filter-btn" data-filter="data">Dados</button>
       <button class="filter-btn" data-filter="foundation">Fundação</button>
+      <button class="filter-btn" data-filter="navigation">Navegação</button>
     </div>
   </div>
 
@@ -485,6 +576,18 @@
         description: 'Indicadores visuais para status e contadores',
         category: 'feedback',
         file: 'table-demo.html'
+      },
+      {
+        name: 'Tab',
+        description: 'Navegação entre seções com variantes linha e pílula, suporte a ícones e badges',
+        category: 'navigation',
+        file: 'tab-demo.html'
+      },
+      {
+        name: 'Date Picker',
+        description: 'Seletor de data com calendário, seleção de intervalo e todos os estados do campo',
+        category: 'form',
+        file: 'datepicker-demo.html'
       }
     ];
 
@@ -654,6 +757,56 @@
               </div>
             </div>
           `;
+        case 'Date Picker':
+          return `
+            <div class="preview-inner" style="flex-direction:column;gap:6px;padding:10px 14px;align-items:flex-start;">
+              <div style="position:relative;width:100%;">
+                <input class="preview-dp-input" placeholder="dd/mm/aaaa" readonly>
+                <svg style="position:absolute;right:6px;top:50%;transform:translateY(-50%);" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#656976" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="preview-dp-cal">
+                <div class="preview-dp-cal-header">Fevereiro 2026</div>
+                <div class="preview-dp-cal-grid">
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">D</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">S</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">T</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">Q</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">Q</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">S</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">S</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">1</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--muted">2</div>
+                  <div class="preview-dp-cal-day">3</div>
+                  <div class="preview-dp-cal-day">4</div>
+                  <div class="preview-dp-cal-day">5</div>
+                  <div class="preview-dp-cal-day">6</div>
+                  <div class="preview-dp-cal-day">7</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--range">10</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--range">11</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--range">12</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--range">13</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--selected">14</div>
+                  <div class="preview-dp-cal-day preview-dp-cal-day--today">20</div>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Tab':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:flex-start;gap:8px;padding:12px 14px;">
+              <div class="preview-tab-group">
+                <div class="preview-tab preview-tab-active">Visão geral</div>
+                <div class="preview-tab">Config.</div>
+                <div class="preview-tab" style="color:#C6C6C6;">Inativo</div>
+              </div>
+              <div style="font-size:9px;color:#656976;padding:4px 2px;line-height:1.4;">Conteúdo da aba ativa</div>
+              <div style="display:flex;gap:4px;background:#F3F3F3;border-radius:9999px;padding:3px;">
+                <div style="padding:3px 8px;border-radius:9999px;background:#fff;font-size:9px;color:#04843B;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.1);">Todos</div>
+                <div style="padding:3px 8px;border-radius:9999px;font-size:9px;color:#656976;">Ativos</div>
+                <div style="padding:3px 8px;border-radius:9999px;font-size:9px;color:#656976;">Inativos</div>
+              </div>
+            </div>
+          `;
         default:
           return `
             <div class="preview-inner">
@@ -715,6 +868,7 @@
     // Inicializar
     totalCounter.textContent = components.length;
     renderComponents();
+
   </script>
 </body>
 </html>

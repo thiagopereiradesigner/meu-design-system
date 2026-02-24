@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Empresa - Design System Date Picker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ── DS Navigation Bar ── */
+        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
+        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
+        .ds-topbar-spacer{flex:1;}
+        .ds-search-wrapper{position:relative;width:280px;}
+        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+        .ds-search-input:focus{border-color:#04843B;}
+        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
+        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
+        .ds-search-dropdown.open{display:block;}
+        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
+        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
+        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
+        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
+        .ds-hamburger:hover{background:#f5f5f5;}
+        .ds-hamburger svg{color:#333;}
+        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
+        .ds-mobile-menu.open{display:flex;}
+        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
+        .ds-mobile-menu .ds-search-wrapper{width:100%;}
+        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005A1A;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #656976;
+        }
+
+        .section {
+            background: #F9F9F9;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 24px;
+        }
+
+        .size-group {
+            margin-bottom: 32px;
+        }
+
+        .size-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #656976;
+            margin-bottom: 16px;
+        }
+
+        .state-label {
+            font-size: 10px;
+            color: #999999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .color-demo {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .color-swatch {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-right: 24px;
+            margin-bottom: 8px;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .color-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .color-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .color-value {
+            font-size: 11px;
+            color: #666;
+            font-family: monospace;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .demo-item {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .demo-item-label {
+            font-size: 10px;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .note {
+            margin-top: 48px;
+            padding: 24px;
+            background-color: #E6F4ED;
+            border-radius: 12px;
+            border-left: 4px solid #04843B;
+        }
+
+        .note h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #004D16;
+        }
+
+        .note ul {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        /* ─────────────────────────────────────
+           DATE PICKER COMPONENT STYLES
+        ───────────────────────────────────── */
+
+        /* ── Input trigger ── */
+        .dp-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            max-width: 320px;
+            position: relative;
+        }
+
+        .dp-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333333;
+        }
+
+        .dp-label-required {
+            color: #DC2626;
+            margin-left: 2px;
+        }
+
+        .dp-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .dp-input {
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            height: 48px;
+            padding: 12px 44px 12px 16px;
+            border: 1px solid #DDDDDD;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1A1A1A;
+            background: #FFFFFF;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            caret-color: #04843B;
+        }
+
+        .dp-input::placeholder {
+            color: #999999;
+        }
+
+        .dp-input:hover:not(:disabled) {
+            border-color: #04843B;
+        }
+
+        .dp-input:focus {
+            border-color: #04843B;
+            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+        }
+
+        .dp-input.dp-input--error {
+            border-color: #DC2626;
+        }
+
+        .dp-input.dp-input--error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .dp-input:disabled {
+            background: #F3F3F3;
+            color: #C6C6C6;
+            border-color: #E0E0E0;
+            cursor: not-allowed;
+        }
+
+        /* Medium size */
+        .dp-input--md {
+            height: 40px;
+            padding: 8px 40px 8px 14px;
+            font-size: 13px;
+        }
+
+        .dp-icon-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #656976;
+            border-radius: 4px;
+            transition: color 0.15s, background 0.15s;
+            padding: 0;
+        }
+
+        .dp-icon-btn:hover {
+            color: #04843B;
+            background: #E6F4ED;
+        }
+
+        .dp-input:disabled + .dp-icon-btn,
+        .dp-input:disabled ~ .dp-icon-btn {
+            color: #C6C6C6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .dp-helper {
+            font-size: 12px;
+            color: #656976;
+        }
+
+        .dp-helper--error {
+            color: #DC2626;
+        }
+
+        /* ── Calendar popover ── */
+        .dp-popover {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            z-index: 100;
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            padding: 16px;
+            width: 296px;
+            user-select: none;
+        }
+
+        .dp-popover--hidden {
+            display: none;
+        }
+
+        /* Header: month nav */
+        .dp-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .dp-nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            background: #FFFFFF;
+            cursor: pointer;
+            color: #333333;
+            transition: all 0.15s;
+        }
+
+        .dp-nav-btn:hover {
+            border-color: #04843B;
+            color: #04843B;
+            background: #E6F4ED;
+        }
+
+        .dp-month-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1A1A1A;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .dp-month-label:hover {
+            background: #F3F3F3;
+        }
+
+        /* Weekday row */
+        .dp-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 8px;
+        }
+
+        .dp-weekday {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #999999;
+            padding: 4px 0;
+        }
+
+        /* Days grid */
+        .dp-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .dp-day {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #333333;
+            cursor: pointer;
+            transition: all 0.1s;
+            padding: 0;
+        }
+
+        .dp-day:hover:not(.dp-day--disabled):not(.dp-day--selected):not(.dp-day--outside) {
+            background: #E6F4ED;
+            color: #04843B;
+        }
+
+        .dp-day--today {
+            font-weight: 700;
+            color: #04843B;
+            border: 1.5px solid #04843B;
+        }
+
+        .dp-day--today:hover {
+            background: #E6F4ED;
+        }
+
+        .dp-day--selected {
+            background: #04843B;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .dp-day--selected.dp-day--today {
+            border-color: transparent;
+        }
+
+        .dp-day--outside {
+            color: #C6C6C6;
+            cursor: default;
+        }
+
+        .dp-day--disabled {
+            color: #C6C6C6;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        /* Range styles */
+        .dp-day--range-start {
+            background: #04843B;
+            color: #FFFFFF;
+            font-weight: 600;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .dp-day--range-end {
+            background: #04843B;
+            color: #FFFFFF;
+            font-weight: 600;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .dp-day--range-between {
+            background: #E6F4ED;
+            color: #005A1A;
+            border-radius: 0;
+        }
+
+        .dp-day--range-start.dp-day--range-end {
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        .dp-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #E0E0E0;
+            gap: 8px;
+        }
+
+        .dp-footer-today {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #04843B;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .dp-footer-today:hover {
+            background: #E6F4ED;
+        }
+
+        .dp-footer-clear {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #656976;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .dp-footer-clear:hover {
+            background: #F3F3F3;
+        }
+
+        /* ── Range input group ── */
+        .dp-range-group {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            max-width: 480px;
+        }
+
+        .dp-range-group .dp-field {
+            flex: 1;
+            max-width: none;
+        }
+
+        .dp-range-group .dp-input {
+            border-radius: 8px 0 0 8px;
+            border-right: none;
+        }
+
+        .dp-range-group .dp-field:last-child .dp-input {
+            border-radius: 0 8px 8px 0;
+            border-right: 1px solid #DDDDDD;
+            border-left: none;
+        }
+
+        .dp-range-separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 48px;
+            background: #F3F3F3;
+            border-top: 1px solid #DDDDDD;
+            border-bottom: 1px solid #DDDDDD;
+            flex-shrink: 0;
+        }
+
+        .dp-range-separator--md {
+            height: 40px;
+        }
+
+        /* ── Inline calendar (no input) ── */
+        .dp-inline {
+            display: inline-block;
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+            width: 296px;
+        }
+    </style>
+</head>
+<body>
+<!-- DS Navigation Bar -->
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">Date Picker</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<!-- DS Mobile Menu -->
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Portal Empresa - Design System</h1>
+        <p>Componente Date Picker | Todos os estados, variantes e interações</p>
+    </div>
+
+    <!-- COLOR TOKENS -->
+    <div class="section">
+        <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
+        <div class="color-demo">
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #04843B;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 500 (Selected / Active)</span>
+                    <span class="color-value">#04843B</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #067647;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 600 (Hover borda)</span>
+                    <span class="color-value">#067647</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #005A1A;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 700 (Range texto)</span>
+                    <span class="color-value">#005A1A</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #E6F4ED;"></div>
+                <div class="color-info">
+                    <span class="color-name">Primary 50 (Range fundo / Focus ring)</span>
+                    <span class="color-value">#E6F4ED</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #DDDDDD; border-color:#ccc;"></div>
+                <div class="color-info">
+                    <span class="color-name">Border input (default)</span>
+                    <span class="color-value">#DDDDDD</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #999999;"></div>
+                <div class="color-info">
+                    <span class="color-name">Neutral 300 (Placeholder)</span>
+                    <span class="color-value">#999999</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #C6C6C6;"></div>
+                <div class="color-info">
+                    <span class="color-name">Neutral 200 (Disabled / Outside)</span>
+                    <span class="color-value">#C6C6C6</span>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background-color: #DC2626;"></div>
+                <div class="color-info">
+                    <span class="color-name">Semantic Error</span>
+                    <span class="color-value">#DC2626</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT STATES -->
+    <div class="section">
+        <h2 class="section-title">📅 Input — Estados do campo</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">O campo de entrada dispara o calendário. Segue os mesmos padrões visuais do componente Input do DS.</p>
+
+        <!-- Large -->
+        <div class="size-group">
+            <div class="size-label">Tamanho Large (L) — 48px</div>
+            <div class="demo-grid">
+                <div class="demo-item">
+                    <div class="demo-item-label">Default</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper">Selecione uma data</span>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Com valor</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" value="20/02/2026" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper">Data selecionada</span>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Focus / Open</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly style="border-color:#04843B;box-shadow:0 0 0 3px rgba(4,132,59,0.1);">
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário" style="color:#04843B;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper">Calendário aberto</span>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Erro</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data <span class="dp-label-required">*</span></label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input dp-input--error" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário" style="color:#DC2626;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper dp-helper--error">Data obrigatória</span>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Desabilitado</div>
+                    <div class="dp-field">
+                        <label class="dp-label" style="color:#C6C6C6;">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly disabled>
+                            <button class="dp-icon-btn" tabindex="-1" disabled aria-label="Abrir calendário" style="color:#C6C6C6;cursor:not-allowed;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper" style="color:#C6C6C6;">Campo desabilitado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medium -->
+        <div class="size-group" style="margin-bottom:0;">
+            <div class="size-label">Tamanho Medium (M) — 40px</div>
+            <div class="demo-grid">
+                <div class="demo-item">
+                    <div class="demo-item-label">Default</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input dp-input--md" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Com valor</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input dp-input--md" value="20/02/2026" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Erro</div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data <span class="dp-label-required">*</span></label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input dp-input--md dp-input--error" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário" style="color:#DC2626;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper dp-helper--error">Campo obrigatório</span>
+                    </div>
+                </div>
+
+                <div class="demo-item">
+                    <div class="demo-item-label">Desabilitado</div>
+                    <div class="dp-field">
+                        <label class="dp-label" style="color:#C6C6C6;">Data</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input dp-input--md" placeholder="dd/mm/aaaa" readonly disabled>
+                            <button class="dp-icon-btn" tabindex="-1" disabled aria-label="Abrir calendário" style="color:#C6C6C6;cursor:not-allowed;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALENDAR STATES -->
+    <div class="section">
+        <h2 class="section-title">🗓️ Calendário — Estados dos dias</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Visualização dos estados individuais de cada célula de dia dentro do calendário.</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;">
+            <!-- Default calendar -->
+            <div>
+                <div class="size-label" style="margin-bottom:12px;">Seleção de data única — interativo</div>
+                <div class="dp-inline" id="cal-single">
+                    <!-- rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Day states legend -->
+            <div style="flex:1;min-width:280px;">
+                <div class="size-label" style="margin-bottom:16px;">Estados das células</div>
+                <div style="background:#fff;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#333;background:transparent;border:1px solid transparent;">15</div>
+                        <div>
+                            <div style="font-size:13px;font-weight:500;color:#333;">Default</div>
+                            <div style="font-size:11px;color:#999;">Dia normal, disponível</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#04843B;background:#E6F4ED;">16</div>
+                        <div>
+                            <div style="font-size:13px;font-weight:500;color:#333;">Hover</div>
+                            <div style="font-size:11px;color:#999;">Mouse sobre o dia</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:700;color:#04843B;border:1.5px solid #04843B;">20</div>
+                        <div>
+                            <div style="font-size:13px;font-weight:500;color:#333;">Hoje</div>
+                            <div style="font-size:11px;color:#999;">Data atual, borda verde</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:#04843B;">14</div>
+                        <div>
+                            <div style="font-size:13px;font-weight:500;color:#333;">Selecionado</div>
+                            <div style="font-size:11px;color:#999;">Data escolhida pelo usuário</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#C6C6C6;text-decoration:line-through;">11</div>
+                        <div>
+                            <div style="font-size:13px;font-weight:500;color:#333;">Desabilitado</div>
+                            <div style="font-size:11px;color:#999;">Data bloqueada / fora do range permitido</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#C6C6C6;">1</div>
+                        <div>
+                            <div style="font-size:13px;font-weight:500;color:#333;">Fora do mês</div>
+                            <div style="font-size:11px;color:#999;">Dia de mês anterior/seguinte</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATE RANGE -->
+    <div class="section">
+        <h2 class="section-title">📆 Date Range — Seleção de intervalo</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Dois campos ligados para selecionar um período. O calendário mostra o intervalo com destaque visual.</p>
+
+        <div class="size-group">
+            <div class="size-label">Range input — Large (L)</div>
+            <div style="background:#fff;border-radius:8px;padding:24px;">
+                <div class="dp-range-group">
+                    <div class="dp-field">
+                        <label class="dp-label">Data inicial</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" placeholder="dd/mm/aaaa" value="10/02/2026" readonly id="dp-range-start-input">
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="dp-range-separator" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </div>
+                    <div class="dp-field">
+                        <label class="dp-label">Data final</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" placeholder="dd/mm/aaaa" value="20/02/2026" readonly id="dp-range-end-input">
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="size-group" style="margin-bottom:0;">
+            <div class="size-label">Calendário com intervalo selecionado — interativo</div>
+            <div style="background:#fff;border-radius:8px;padding:24px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
+                <div class="dp-inline" id="cal-range">
+                    <!-- rendered by JS -->
+                </div>
+                <div style="flex:1;min-width:220px;padding-top:4px;">
+                    <p style="font-size:13px;color:#656976;line-height:1.6;margin-bottom:12px;">Clique em dois dias para definir o intervalo. O período selecionado é destacado em verde claro.</p>
+                    <div style="font-size:13px;color:#333;background:#F3F3F3;border-radius:8px;padding:12px 14px;">
+                        <div style="margin-bottom:4px;"><strong>Início:</strong> <span id="range-start-label" style="color:#04843B;font-weight:600;">—</span></div>
+                        <div><strong>Fim:</strong> <span id="range-end-label" style="color:#04843B;font-weight:600;">—</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE DATE PICKER -->
+    <div class="section">
+        <h2 class="section-title">⚡ Date Picker interativo</h2>
+        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Clique no campo ou no ícone de calendário para abrir o seletor. Clique fora para fechar.</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+            <!-- Single date picker -->
+            <div>
+                <div class="size-label" style="margin-bottom:12px;">Seleção simples — Large</div>
+                <div style="position:relative;width:fit-content;">
+                    <div class="dp-field" style="max-width:280px;">
+                        <label class="dp-label" for="dp-interactive">Data de nascimento</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input" id="dp-interactive" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" id="dp-trigger" aria-label="Abrir calendário" aria-expanded="false" aria-haspopup="dialog">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                        <span class="dp-helper">Formato: dd/mm/aaaa</span>
+                    </div>
+                    <div class="dp-popover dp-popover--hidden" id="dp-popover" role="dialog" aria-label="Calendário">
+                        <!-- rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medium date picker -->
+            <div>
+                <div class="size-label" style="margin-bottom:12px;">Seleção simples — Medium</div>
+                <div style="position:relative;width:fit-content;">
+                    <div class="dp-field" style="max-width:240px;">
+                        <label class="dp-label" for="dp-interactive-md">Competência</label>
+                        <div class="dp-input-wrapper">
+                            <input type="text" class="dp-input dp-input--md" id="dp-interactive-md" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" id="dp-trigger-md" aria-label="Abrir calendário" aria-expanded="false" aria-haspopup="dialog">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="dp-popover dp-popover--hidden" id="dp-popover-md" role="dialog" aria-label="Calendário">
+                        <!-- rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMO USAR -->
+    <div class="section">
+        <h2 class="section-title">💻 Como usar (HTML)</h2>
+
+        <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">1. Input com calendário (estrutura base)</h3>
+            <pre style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;!-- Wrapper com posicionamento relativo --&gt;
+&lt;div style="position: relative; width: fit-content;"&gt;
+
+  &lt;!-- Campo de entrada --&gt;
+  &lt;div class="dp-field"&gt;
+    &lt;label class="dp-label" for="minha-data"&gt;
+      Data &lt;span class="dp-label-required"&gt;*&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;div class="dp-input-wrapper"&gt;
+      &lt;input
+        type="text"
+        class="dp-input"
+        id="minha-data"
+        placeholder="dd/mm/aaaa"
+        readonly
+      &gt;
+      &lt;button class="dp-icon-btn" aria-label="Abrir calendário"&gt;
+        &lt;!-- ícone de calendário SVG --&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;span class="dp-helper"&gt;Texto auxiliar&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Popover do calendário (JS controla visibilidade) --&gt;
+  &lt;div class="dp-popover dp-popover--hidden" role="dialog" aria-label="Calendário"&gt;
+    &lt;!-- Header + grid de dias gerado via JS --&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">2. Date Range (dois campos)</h3>
+            <pre style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;div class="dp-range-group"&gt;
+  &lt;div class="dp-field"&gt;
+    &lt;label class="dp-label"&gt;Data inicial&lt;/label&gt;
+    &lt;div class="dp-input-wrapper"&gt;
+      &lt;input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly&gt;
+      &lt;button class="dp-icon-btn" aria-label="Abrir calendário"&gt;&lt;!-- SVG --&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="dp-range-separator" aria-hidden="true"&gt;
+    &lt;!-- seta SVG --&gt;
+  &lt;/div&gt;
+  &lt;div class="dp-field"&gt;
+    &lt;label class="dp-label"&gt;Data final&lt;/label&gt;
+    &lt;div class="dp-input-wrapper"&gt;
+      &lt;input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly&gt;
+      &lt;button class="dp-icon-btn" aria-label="Abrir calendário"&gt;&lt;!-- SVG --&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div style="background:#FFFFFF;border-radius:8px;padding:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">3. Classes disponíveis</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                    <tr style="background:#F3F3F3;">
+                        <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Classe</th>
+                        <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-field</td><td style="padding:10px 14px;color:#656976;">Container do campo (label + input + helper)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-label</td><td style="padding:10px 14px;color:#656976;">Rótulo do campo</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input-wrapper</td><td style="padding:10px 14px;color:#656976;">Wrapper relativo que posiciona ícone sobre input</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input</td><td style="padding:10px 14px;color:#656976;">Campo de texto — tamanho Large (48px)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input--md</td><td style="padding:10px 14px;color:#656976;">Modificador Medium (40px)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input--error</td><td style="padding:10px 14px;color:#656976;">Estado de erro (borda vermelha)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-icon-btn</td><td style="padding:10px 14px;color:#656976;">Botão ícone de calendário dentro do input</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-helper</td><td style="padding:10px 14px;color:#656976;">Texto auxiliar abaixo do campo</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-helper--error</td><td style="padding:10px 14px;color:#656976;">Texto de erro (vermelho)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-popover</td><td style="padding:10px 14px;color:#656976;">Calendário flutuante (posicionamento absoluto)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-popover--hidden</td><td style="padding:10px 14px;color:#656976;">Oculta o popover (toggle via JS)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-inline</td><td style="padding:10px 14px;color:#656976;">Calendário estático sem input (embutido na página)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--today</td><td style="padding:10px 14px;color:#656976;">Célula do dia atual</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--selected</td><td style="padding:10px 14px;color:#656976;">Data selecionada</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--disabled</td><td style="padding:10px 14px;color:#656976;">Data indisponível</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--range-start</td><td style="padding:10px 14px;color:#656976;">Início do intervalo (range)</td></tr>
+                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--range-end</td><td style="padding:10px 14px;color:#656976;">Fim do intervalo (range)</td></tr>
+                    <tr><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--range-between</td><td style="padding:10px 14px;color:#656976;">Dias entre início e fim do intervalo</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ACCESSIBILITY NOTE -->
+    <div class="note">
+        <h3>♿ Nota sobre Acessibilidade (WCAG)</h3>
+        <ul>
+            <li>Use <code>role="dialog"</code> e <code>aria-label="Calendário"</code> no popover para leitores de tela</li>
+            <li>O botão de ícone deve ter <code>aria-label="Abrir calendário"</code> e <code>aria-expanded</code> atualizado via JS</li>
+            <li>Dias desabilitados devem ter <code>aria-disabled="true"</code> além do atributo <code>disabled</code></li>
+            <li>Dias selecionados recebem <code>aria-pressed="true"</code> ou <code>aria-selected="true"</code></li>
+            <li>Suporte a teclado: <kbd>Enter</kbd>/<kbd>Space</kbd> para selecionar, <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> para navegar, <kbd>Esc</kbd> para fechar</li>
+            <li>O campo de entrada usa <code>readonly</code> para evitar digitação livre — use máscara ou apenas o calendário</li>
+            <li>Focus visível: <code>box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1)</code> no input, borda verde no popover</li>
+            <li>Contrast ratio WCAG AA: texto selecionado branco sobre #04843B = 5.5:1 ✓</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // ── Utilities ──
+    const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const DAYS_PT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function formatDate(d) { return pad(d.getDate()) + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear(); }
+    function sameDay(a, b) { return a && b && a.getDate()===b.getDate() && a.getMonth()===b.getMonth() && a.getFullYear()===b.getFullYear(); }
+
+    // ── Calendar renderer ──
+    function renderCalendar(container, opts) {
+        // opts: { year, month, selected, rangeStart, rangeEnd, onSelect, disabledBefore, showFooter, rangeMode }
+        var today = new Date();
+        var year = opts.year !== undefined ? opts.year : today.getFullYear();
+        var month = opts.month !== undefined ? opts.month : today.getMonth();
+
+        var firstDay = new Date(year, month, 1).getDay();
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+        var prevDays = new Date(year, month, 0).getDate();
+
+        var html = '';
+
+        // Header
+        html += '<div class="dp-header">';
+        html += '<button class="dp-nav-btn" data-action="prev" aria-label="Mês anterior"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
+        html += '<span class="dp-month-label">' + MONTHS_PT[month] + ' ' + year + '</span>';
+        html += '<button class="dp-nav-btn" data-action="next" aria-label="Próximo mês"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>';
+        html += '</div>';
+
+        // Weekdays
+        html += '<div class="dp-weekdays">';
+        DAYS_PT.forEach(function(d) { html += '<div class="dp-weekday">' + d + '</div>'; });
+        html += '</div>';
+
+        // Days
+        html += '<div class="dp-days">';
+
+        // Previous month days
+        for (var i = firstDay - 1; i >= 0; i--) {
+            html += '<button class="dp-day dp-day--outside" disabled>' + (prevDays - i) + '</button>';
+        }
+
+        // Current month days
+        for (var d = 1; d <= daysInMonth; d++) {
+            var date = new Date(year, month, d);
+            var classes = ['dp-day'];
+            var isToday = sameDay(date, today);
+            var isSelected = opts.selected && sameDay(date, opts.selected);
+            var isRangeStart = opts.rangeStart && sameDay(date, opts.rangeStart);
+            var isRangeEnd = opts.rangeEnd && sameDay(date, opts.rangeEnd);
+            var isDisabled = opts.disabledBefore && date < opts.disabledBefore;
+
+            var isBetween = false;
+            if (opts.rangeStart && opts.rangeEnd) {
+                isBetween = date > opts.rangeStart && date < opts.rangeEnd;
+            }
+
+            if (isToday) classes.push('dp-day--today');
+            if (isSelected) classes.push('dp-day--selected');
+            if (isRangeStart) classes.push('dp-day--range-start');
+            if (isRangeEnd) classes.push('dp-day--range-end');
+            if (isBetween) classes.push('dp-day--range-between');
+            if (isDisabled) classes.push('dp-day--disabled');
+
+            html += '<button class="' + classes.join(' ') + '" data-day="' + d + '" ' + (isDisabled ? 'disabled' : '') + ' aria-label="' + d + ' de ' + MONTHS_PT[month] + ' de ' + year + '">' + d + '</button>';
+        }
+
+        // Next month padding
+        var total = firstDay + daysInMonth;
+        var remainder = total % 7 === 0 ? 0 : 7 - (total % 7);
+        for (var n = 1; n <= remainder; n++) {
+            html += '<button class="dp-day dp-day--outside" disabled>' + n + '</button>';
+        }
+
+        html += '</div>';
+
+        // Footer
+        if (opts.showFooter !== false) {
+            html += '<div class="dp-footer">';
+            html += '<button class="dp-footer-today" data-action="today">Hoje</button>';
+            html += '<button class="dp-footer-clear" data-action="clear">Limpar</button>';
+            html += '</div>';
+        }
+
+        container.innerHTML = html;
+        container.dataset.year = year;
+        container.dataset.month = month;
+
+        // Events
+        container.querySelector('[data-action="prev"]').addEventListener('click', function(e) {
+            e.stopPropagation();
+            var nm = month - 1, ny = year;
+            if (nm < 0) { nm = 11; ny--; }
+            opts.year = ny; opts.month = nm;
+            renderCalendar(container, opts);
+        });
+
+        container.querySelector('[data-action="next"]').addEventListener('click', function(e) {
+            e.stopPropagation();
+            var nm = month + 1, ny = year;
+            if (nm > 11) { nm = 0; ny++; }
+            opts.year = ny; opts.month = nm;
+            renderCalendar(container, opts);
+        });
+
+        var todayBtn = container.querySelector('[data-action="today"]');
+        if (todayBtn) {
+            todayBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                opts.year = today.getFullYear();
+                opts.month = today.getMonth();
+                if (opts.onSelect) opts.onSelect(new Date(today));
+            });
+        }
+
+        var clearBtn = container.querySelector('[data-action="clear"]');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (opts.onClear) opts.onClear();
+            });
+        }
+
+        container.querySelectorAll('.dp-day[data-day]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var day = parseInt(btn.dataset.day);
+                var clicked = new Date(year, month, day);
+                if (opts.onSelect) opts.onSelect(clicked);
+            });
+        });
+    }
+
+    // ── Static single calendar (states section) ──
+    (function() {
+        var today = new Date();
+        var opts = {
+            selected: null,
+            showFooter: true,
+            onSelect: function(d) {
+                opts.selected = d;
+                renderCalendar(container, opts);
+            },
+            onClear: function() {
+                opts.selected = null;
+                renderCalendar(container, opts);
+            }
+        };
+        var container = document.getElementById('cal-single');
+        renderCalendar(container, opts);
+    })();
+
+    // ── Static range calendar ──
+    (function() {
+        var container = document.getElementById('cal-range');
+        var startLabel = document.getElementById('range-start-label');
+        var endLabel = document.getElementById('range-end-label');
+        var rangeStart = null, rangeEnd = null, picking = false;
+
+        var opts = {
+            rangeStart: null,
+            rangeEnd: null,
+            showFooter: true,
+            onSelect: function(d) {
+                if (!picking || !rangeStart) {
+                    rangeStart = d;
+                    rangeEnd = null;
+                    picking = true;
+                } else {
+                    if (d < rangeStart) {
+                        rangeEnd = rangeStart;
+                        rangeStart = d;
+                    } else {
+                        rangeEnd = d;
+                    }
+                    picking = false;
+                }
+                opts.rangeStart = rangeStart;
+                opts.rangeEnd = rangeEnd;
+                startLabel.textContent = rangeStart ? formatDate(rangeStart) : '—';
+                endLabel.textContent = rangeEnd ? formatDate(rangeEnd) : '—';
+                renderCalendar(container, opts);
+            },
+            onClear: function() {
+                rangeStart = null; rangeEnd = null; picking = false;
+                opts.rangeStart = null; opts.rangeEnd = null;
+                startLabel.textContent = '—'; endLabel.textContent = '—';
+                renderCalendar(container, opts);
+            }
+        };
+        renderCalendar(container, opts);
+    })();
+
+    // ── Interactive popover (single) ──
+    function createInteractivePicker(inputId, triggerId, popoverId) {
+        var input = document.getElementById(inputId);
+        var trigger = document.getElementById(triggerId);
+        var popover = document.getElementById(popoverId);
+        var today = new Date();
+        var selectedDate = null;
+
+        var opts = {
+            year: today.getFullYear(),
+            month: today.getMonth(),
+            selected: null,
+            showFooter: true,
+            onSelect: function(d) {
+                selectedDate = d;
+                opts.selected = d;
+                input.value = formatDate(d);
+                closePopover();
+            },
+            onClear: function() {
+                selectedDate = null;
+                opts.selected = null;
+                input.value = '';
+                renderCalendar(popover, opts);
+            }
+        };
+
+        function openPopover() {
+            opts.year = selectedDate ? selectedDate.getFullYear() : today.getFullYear();
+            opts.month = selectedDate ? selectedDate.getMonth() : today.getMonth();
+            renderCalendar(popover, opts);
+            popover.classList.remove('dp-popover--hidden');
+            trigger.setAttribute('aria-expanded', 'true');
+            input.style.borderColor = '#04843B';
+            input.style.boxShadow = '0 0 0 3px rgba(4,132,59,0.1)';
+        }
+
+        function closePopover() {
+            popover.classList.add('dp-popover--hidden');
+            trigger.setAttribute('aria-expanded', 'false');
+            input.style.borderColor = '';
+            input.style.boxShadow = '';
+        }
+
+        function togglePopover(e) {
+            e.stopPropagation();
+            if (popover.classList.contains('dp-popover--hidden')) {
+                openPopover();
+            } else {
+                closePopover();
+            }
+        }
+
+        trigger.addEventListener('click', togglePopover);
+        input.addEventListener('click', togglePopover);
+
+        document.addEventListener('click', function(e) {
+            if (!popover.contains(e.target) && e.target !== input && e.target !== trigger) {
+                closePopover();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closePopover();
+        });
+
+        popover.addEventListener('click', function(e) { e.stopPropagation(); });
+    }
+
+    createInteractivePicker('dp-interactive', 'dp-trigger', 'dp-popover');
+    createInteractivePicker('dp-interactive-md', 'dp-trigger-md', 'dp-popover-md');
+</script>
+
+<!-- DS Navigation Search Script -->
+<script>
+(function(){
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Tab',file:'tab-demo.html',cat:'Navegação'},{name:'Date Picker',file:'datepicker-demo.html',cat:'Formulário'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    function setupSearch(inputId,dropdownId){
+        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
+        if(!si||!dd)return;
+        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
+        si.addEventListener('input',function(e){render(e.target.value);});
+        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
+    }
+    setupSearch('ds-nav-search','ds-nav-dropdown');
+    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
+    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
+    if(hb&&mm){
+        hb.addEventListener('click',function(){mm.classList.toggle('open');});
+        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
+    }
+})();
+</script>
+</body>
+</html>
