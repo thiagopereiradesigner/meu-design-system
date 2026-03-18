@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Form Components</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -341,6 +342,66 @@
         <div class="header">
             <h1>TP.IA - Design System</h1>
             <p>Textarea, Checkbox, Radio & Switch</p>
+        </div>
+
+        <p class="section-subtitle">
+            Demo agregado de controles de formulário com estados e acessibilidade básica (Textarea, Checkbox, Radio e Switch).
+        </p>
+
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Textarea e labels usam texto visível (ex.: <code>label.textarea-label</code>).</li>
+                <li>Checkbox e Radio são inputs nativos (<code>input type="checkbox|radio"</code>) com <code>label</code>.</li>
+                <li>Switch mantém coerência visual entre estados (classe <code>.checked</code> e <code>.disabled</code>).</li>
+                <li>Estados de erro/dados desabilitados são comunicados por classes e atributos (<code>class="error"</code> e <code>disabled</code>).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div.textarea-wrapper</code>: agrupa <code>label.textarea-label</code>, <code>textarea</code> e helpers.</li>
+                <li><code>textarea.error</code>: estado de erro (borda/cor).</li>
+                <li><code>label.checkbox-wrapper</code> + <code>input.checkbox-input</code> + <code>span.checkbox-label</code>.</li>
+                <li><code>label.radio-wrapper</code> + <code>input.radio-input</code> + <code>span.radio-label</code>.</li>
+                <li><code>label.switch-wrapper</code> + <code>div.switch-track</code> + <code>div.switch-thumb</code>.</li>
+                <li>Layout: uso de <code>div.section</code>, <code>h2.section-title</code> e <code>div.grid</code> para organizar exemplos.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (HTML)</div>
+            <p class="section-description">
+                Exemplo de estrutura para Textarea + Checkbox.
+            </p>
+            <pre class="code"><code>&lt;div class="textarea-wrapper"&gt;
+  &lt;label class="textarea-label"&gt;Comentário&lt;/label&gt;
+  &lt;textarea rows="4" placeholder="Digite seu comentário..." id="textarea1"&gt;&lt;/textarea&gt;
+  &lt;div class="helper-text"&gt;Compartilhe sua opinião&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;label class="checkbox-wrapper"&gt;
+  &lt;input type="checkbox" class="checkbox-input" id="check1"&gt;
+  &lt;span class="checkbox-label"&gt;Aceito os termos e condições&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Renderize o demo React equivalente (Textarea, Checkbox, Radio e Switch).
+            </p>
+            <pre class="code"><code>import React from 'react';
+import FormComponentsDemo from '@/components/Forms/FormComponents';
+
+export default function FormsPage() {
+  return &lt;FormComponentsDemo /&gt;;
+}</code></pre>
+            <dl class="props-list">
+                <dt>Props</dt>
+                <dd>O demo não exige props (comportamento e estados internos ficam no componente).</dd>
+            </dl>
         </div>
 
         <!-- TEXTAREA -->

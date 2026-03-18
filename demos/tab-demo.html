@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Design System Tabs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -442,6 +443,111 @@
     <div class="header">
         <h1>TP.IA - Design System</h1>
         <p>Componente Tab | Todas as variantes, tamanhos e estados</p>
+    </div>
+
+    <!-- Lead -->
+    <p class="section-subtitle">
+        Tabs para alternar conteúdo por seção, com variantes (underline/filled), estados (active/disabled) e papéis ARIA.
+    </p>
+
+    <!-- Nota Acessibilidade (WCAG/ARIA) -->
+    <div class="note">
+        <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+        <ul>
+            <li>Use <code>role="tablist"</code>, <code>role="tab"</code> e <code>role="tabpanel"</code> com <code>aria-selected</code>.</li>
+            <li>Para tabs desabilitadas, aplique <code>disabled</code> e use <code>aria-disabled="true"</code>.</li>
+            <li>Associe cada aba com o painel via <code>aria-controls</code> e <code>aria-labelledby</code>.</li>
+        </ul>
+    </div>
+
+    <!-- Anatomia -->
+    <div class="section">
+        <div class="section-title">Anatomia do Componente (HTML)</div>
+        <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+            <li><code>div.tab-group</code>: wrapper do conjunto de abas (ex.: <code>tab-group--line</code> ou <code>tab-group--pill</code>).</li>
+            <li><code>div[role="tablist"]</code>: container das abas.</li>
+            <li><code>button.tab--line</code> / <code>button.tab--pill</code>: cada tab com <code>role="tab"</code>.</li>
+            <li><code>aria-selected</code>: indica qual aba está ativa.</li>
+            <li><code>aria-controls</code> / <code>aria-labelledby</code>: relaciona tab e painel.</li>
+            <li><code>div.tab-panel</code>: painel correspondente; <code>tab-panel--active</code> define a aba visível.</li>
+            <li><code>tab--disabled</code> (e <code>disabled</code>): estado desabilitado da tab.</li>
+        </ul>
+    </div>
+
+    <!-- Como Usar (HTML) -->
+    <div class="section">
+        <div class="section-title">Como Usar (HTML)</div>
+        <p class="section-description">
+            Exemplo mínimo de uma tab group com 2 abas e 2 painéis (underline).
+        </p>
+        <div class="code-block">
+<pre class="code"><code>&lt;div role="tablist" class="tab-group tab-group--line" aria-label="Seções"&gt;
+  &lt;button
+    class="tab--line tab--active"
+    role="tab"
+    aria-selected="true"
+    aria-controls="panel-1"
+    id="tab-1"&gt;
+    Aba 1
+  &lt;/button&gt;
+  &lt;button
+    class="tab--line"
+    role="tab"
+    aria-selected="false"
+    aria-controls="panel-2"
+    id="tab-2"&gt;
+    Aba 2
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div id="panel-1" role="tabpanel" aria-labelledby="tab-1" class="tab-panel tab-panel--active"&gt;
+  &lt;div class="tab-panel-card"&gt;Conteúdo da Aba 1&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="panel-2" role="tabpanel" aria-labelledby="tab-2" class="tab-panel"&gt;
+  &lt;div class="tab-panel-card"&gt;Conteúdo da Aba 2&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+    </div>
+
+    <!-- Como Usar (React) -->
+    <div class="section">
+        <div class="section-title">Como Usar (React)</div>
+        <p class="section-description">
+            Snippet usando o componente <code>Tabs</code> do DS.
+        </p>
+        <div class="code-block">
+<pre class="code"><code>import React from 'react';
+import { Tabs } from '@/components/FinalComponents';
+
+export function ExampleTabs() {
+  return (
+    &lt;Tabs
+      tabs={[
+        { id: 'overview', label: 'Visão geral' },
+        { id: 'settings', label: 'Configurações' },
+      ]}
+      activeTab="overview"
+      onChange={(id) =&gt; console.log('tab changed', id)}
+      variant="underline"
+    /&gt;
+  );
+}</code></pre>
+        </div>
+
+        <dl class="props-list">
+            <dt>tabs</dt>
+            <dd>Array de abas: <code>{`{ id, label }`}</code>.</dd>
+
+            <dt>activeTab</dt>
+            <dd>Id da tab ativa (controlado). Se omitido, o componente usa estado interno.</dd>
+
+            <dt>onChange</dt>
+            <dd>Callback chamado com o <code>tabId</code> ao clicar em uma aba.</dd>
+
+            <dt>variant</dt>
+            <dd><code>'underline'</code> ou <code>'filled'</code>.</dd>
+        </dl>
     </div>
 
     <!-- COLOR TOKENS -->

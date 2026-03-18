@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Iconografia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -527,6 +528,101 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Referência: lucide.dev
         </a>
+    </div>
+
+    <!-- Lead -->
+    <p class="section-subtitle">
+        Use a biblioteca para copiar SVGs compatíveis com `stroke="currentColor"` e reaproveitar a mesma iconografia em telas e componentes.
+    </p>
+
+    <!-- Nota Acessibilidade (WCAG/ARIA) -->
+    <div class="note">
+        <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+        <ul>
+            <li>Botões do drawer possuem <code>aria-label</code> (ex.: fechar).</li>
+            <li>Fechamento do drawer via teclado com <code>Escape</code>.</li>
+            <li>O SVG exportado mantém <code>fill="none"</code> e <code>stroke="currentColor"</code> para herdar cor e manter consistência visual.</li>
+        </ul>
+    </div>
+
+    <!-- Anatomia -->
+    <div class="section">
+        <div class="section-title">Anatomia do Componente (HTML)</div>
+        <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+            <li><code>div#category-filters</code>: lista de filtros por categoria (renderizada por JS).</li>
+            <li><code>input#icon-search</code>: busca do grid de ícones.</li>
+            <li><code>div#icons-container</code>: container onde os cards de ícone são renderizados.</li>
+            <li><code>.icon-card[data-icon]</code>: cada ícone clicável abre o drawer com preview.</li>
+            <li><code>div#drawer</code> + <code>div#drawer-overlay</code>: painel lateral com preview, tamanhos e ações.</li>
+            <li><code>div#drawer-preview</code>: onde o SVG do ícone selecionado é injetado.</li>
+            <li><code>button#btn-copy-svg</code> e <code>button#btn-download-svg</code>: copiar/download do SVG.</li>
+            <li><code>div#toast</code>: feedback após copiar/download.</li>
+        </ul>
+    </div>
+
+    <!-- Como Usar (HTML) -->
+    <div class="section">
+        <div class="section-title">Como Usar (HTML)</div>
+        <p class="section-description">
+            Exemplo com o ícone <code>search</code> (compatível com <code>currentColor</code>).
+        </p>
+        <pre class="code"><code>&lt;svg
+  width="20"
+  height="20"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"&gt;
+  &lt;circle cx="11" cy="11" r="8"/&gt;
+  &lt;path d="m21 21-4.3-4.3"/&gt;
+&lt;/svg&gt;</code></pre>
+    </div>
+
+    <!-- Como Usar (React) -->
+    <div class="section">
+        <div class="section-title">Como Usar (React)</div>
+        <p class="section-description">
+            Snippet JSX para renderizar um ícone com cor via <code>currentColor</code>.
+        </p>
+        <pre class="code"><code>import React from 'react';
+
+export function SearchIcon({
+  size = 20,
+  className,
+  title,
+  ariaLabel,
+}) {
+  return (
+    &lt;svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      role={ariaLabel ? "img" : "presentation"}
+      aria-label={ariaLabel}&gt;
+      {title ? &lt;title&gt;{title}&lt;/title&gt; : null}
+      &lt;circle cx="11" cy="11" r="8"/&gt;
+      &lt;path d="m21 21-4.3-4.3"/&gt;
+    &lt;/svg&gt;
+  );
+}</code></pre>
+        <dl class="props-list">
+            <dt>size</dt>
+            <dd>Tamanho do SVG (equivalente ao <code>width/height</code>).</dd>
+            <dt>className</dt>
+            <dd>Permite ajustar cor via CSS (ex.: <code>color: var(...)</code>).</dd>
+            <dt>title</dt>
+            <dd>Opcional; adiciona legenda interna para acessibilidade.</dd>
+            <dt>ariaLabel</dt>
+            <dd>Quando presente, o SVG vira <code>role="img"</code>.</dd>
+        </dl>
     </div>
 
     <!-- Controls -->

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Design System Date Picker</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -614,6 +615,22 @@
         <p>Componente Date Picker | Todos os estados, variantes e interações</p>
     </div>
 
+    <!-- Lead -->
+    <p class="section-subtitle">
+        Date Picker com popover de calendário, suporte a teclado e variantes (single date e date range).
+    </p>
+
+    <!-- Nota Acessibilidade (WCAG/ARIA) -->
+    <div class="note">
+        <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+        <ul>
+            <li>Popover do calendário como <code>role="dialog"</code> e com <code>aria-label</code>.</li>
+            <li>Trigger (botão/ícone) com <code>aria-label</code> e estado atualizado (<code>aria-expanded</code>).</li>
+            <li>Tratamento de disabled com atributos compatíveis e mensagens textuais.</li>
+            <li>Navegação por teclado (setas, Enter/Space, Esc).</li>
+        </ul>
+    </div>
+
     <!-- COLOR TOKENS -->
     <div class="section">
         <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
@@ -983,11 +1000,25 @@
 
     <!-- COMO USAR -->
     <div class="section">
-        <h2 class="section-title">💻 Como usar (HTML)</h2>
+        <div class="section-title">Anatomia do Componente (HTML)</div>
+        <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+            <li><code>div.dp-field</code>: wrapper do campo (label + input + helper).</li>
+            <li><code>label.dp-label</code> e <code>span.dp-label-required</code>: rótulo e obrigatoriedade.</li>
+            <li><code>div.dp-input-wrapper</code>: wrapper relativo que posiciona o botão/ícone.</li>
+            <li><code>input.dp-input</code>: campo de data (geralmente <code>readonly</code>).</li>
+            <li><code>button.dp-icon-btn</code>: botão ícone que abre o popover (com <code>aria-label</code>).</li>
+            <li><code>div.dp-popover</code>: popover do calendário (com <code>role="dialog"</code>).</li>
+            <li><code>button.dp-day</code>: células dos dias, incluindo modificadores como <code>dp-day--selected</code>.</li>
+            <li>Range: <code>div.dp-range-group</code>, e classes de dias como <code>dp-day--range-start</code> / <code>dp-day--range-end</code>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Como Usar (HTML)</h2>
 
         <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
             <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">1. Input com calendário (estrutura base)</h3>
-            <pre style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;!-- Wrapper com posicionamento relativo --&gt;
+            <pre class="code" style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;!-- Wrapper com posicionamento relativo --&gt;
 &lt;div style="position: relative; width: fit-content;"&gt;
 
   &lt;!-- Campo de entrada --&gt;
@@ -1020,7 +1051,7 @@
 
         <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
             <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">2. Date Range (dois campos)</h3>
-            <pre style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;div class="dp-range-group"&gt;
+            <pre class="code" style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;div class="dp-range-group"&gt;
   &lt;div class="dp-field"&gt;
     &lt;label class="dp-label"&gt;Data inicial&lt;/label&gt;
     &lt;div class="dp-input-wrapper"&gt;
@@ -1074,19 +1105,69 @@
         </div>
     </div>
 
-    <!-- ACCESSIBILITY NOTE -->
-    <div class="note">
-        <h3>♿ Nota sobre Acessibilidade (WCAG)</h3>
-        <ul>
-            <li>Use <code>role="dialog"</code> e <code>aria-label="Calendário"</code> no popover para leitores de tela</li>
-            <li>O botão de ícone deve ter <code>aria-label="Abrir calendário"</code> e <code>aria-expanded</code> atualizado via JS</li>
-            <li>Dias desabilitados devem ter <code>aria-disabled="true"</code> além do atributo <code>disabled</code></li>
-            <li>Dias selecionados recebem <code>aria-pressed="true"</code> ou <code>aria-selected="true"</code></li>
-            <li>Suporte a teclado: <kbd>Enter</kbd>/<kbd>Space</kbd> para selecionar, <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> para navegar, <kbd>Esc</kbd> para fechar</li>
-            <li>O campo de entrada usa <code>readonly</code> para evitar digitação livre — use máscara ou apenas o calendário</li>
-            <li>Focus visível: <code>box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1)</code> no input, borda verde no popover</li>
-            <li>Contrast ratio WCAG AA: texto selecionado branco sobre #04843B = 5.5:1 ✓</li>
-        </ul>
+    <!-- Como Usar (React) -->
+    <div class="section">
+        <div class="section-title">Como Usar (React)</div>
+        <p class="section-description">
+            Snippet React mantendo as mesmas classes do HTML: trigger com <code>aria-expanded</code> e popover como <code>role="dialog"</code>.
+        </p>
+
+        <div class="code-block">
+<pre class="code"><code>import React, { useState } from 'react';
+
+function DatePickerField({
+  label,
+  placeholder = 'dd/mm/aaaa',
+  value,
+  onChange,
+  disabledBefore,
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    &lt;div className="dp-field"&gt;
+      &lt;label className="dp-label"&gt;{label}&lt;/label&gt;
+      &lt;div className="dp-input-wrapper"&gt;
+        &lt;input
+          className="dp-input"
+          placeholder={placeholder}
+          readOnly
+          value={value || ''}
+        /&gt;
+        &lt;button
+          className="dp-icon-btn"
+          aria-label="Abrir calendário"
+          aria-expanded={open}
+          aria-haspopup="dialog"
+          onClick={() =&gt; setOpen((v) =&gt; !v)}
+        &gt;
+          &lt;!-- SVG do calendário --&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      {open ? (
+        &lt;div className="dp-popover" role="dialog" aria-label="Calendário"&gt;
+          &lt;!-- render do calendário (dias) e handlers de seleção --&gt;
+        &lt;/div&gt;
+      ) : null}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+
+        <dl class="props-list">
+            <dt>label</dt>
+            <dd>Rótulo do campo (use <code>dp-label</code>).</dd>
+
+            <dt>value</dt>
+            <dd>String da data exibida no input (read-only).</dd>
+
+            <dt>onChange</dt>
+            <dd>Callback chamado quando o usuário seleciona uma data.</dd>
+
+            <dt>disabledBefore</dt>
+            <dd>Data limite para desabilitar dias anteriores.</dd>
+        </dl>
     </div>
 </div>
 

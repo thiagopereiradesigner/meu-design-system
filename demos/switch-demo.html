@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Switch Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         /* ── DS Navigation Bar ── */
@@ -127,6 +128,21 @@
             <p>Componente Switch | On/Off acessível</p>
         </div>
 
+        <!-- Lead -->
+        <p class="section-subtitle">
+            Switch acessível para alternar estados (on/off), com suporte a disabled e navegação via teclado.
+        </p>
+
+        <!-- Nota Acessibilidade (WCAG/ARIA) -->
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Use um elemento focável (ou <code>role="switch"</code>) para anunciar o estado ao leitor de tela.</li>
+                <li>Quando estiver em <code>disabled</code>, mantenha o switch não interativo e com estado visual coerente.</li>
+                <li>Garanta que o estado atual seja refletido imediatamente na UI (classe <code>.checked</code>).</li>
+            </ul>
+        </div>
+
         <div class="section">
             <h2 class="section-title">🎚️ Switch</h2>
             <p class="section-description">
@@ -168,18 +184,75 @@
             </div>
         </div>
 
+        <!-- Anatomia -->
         <div class="section">
-            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>label.switch-wrapper</code>: rótulo clicável (aumenta área de interação).</li>
+                <li><code>div.switch-track</code>: trilho do switch; use <code>.checked</code> para ligado e <code>.disabled</code> para desabilitado.</li>
+                <li><code>div.switch-thumb</code>: “bolinha” que se move quando o switch é ativado.</li>
+                <li><code>span.switch-label</code>: texto do controle.</li>
+                <li>JS: função <code>toggleSwitch(element)</code> alterna <code>.checked</code> e respeita <code>.disabled</code>.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
                 Estrutura mínima de um switch controlado via JavaScript.
             </p>
             <div class="code-block">
-<pre><code>&lt;label class="switch-wrapper"&gt;
+<pre class="code"><code>&lt;label class="switch-wrapper"&gt;
   &lt;div class="switch-track" onclick="toggleSwitch(this)"&gt;
     &lt;div class="switch-thumb"&gt;&lt;/div&gt;
   &lt;/div&gt;
   &lt;span class="switch-label"&gt;Ativar notificações&lt;/span&gt;
 &lt;/label&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- Como Usar (React) -->
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Snippet React para controlar <code>checked</code> no estado e manter o mesmo layout HTML.
+            </p>
+
+            <div class="code-block">
+<pre class="code"><code>import React, { useState } from 'react';
+
+function SwitchField({ label, disabled = false, defaultChecked = false }) {
+  const [checked, setChecked] = useState(defaultChecked);
+
+  return (
+    &lt;label className="switch-wrapper"&gt;
+      &lt;div
+        className={"switch-track" + (checked ? " checked" : "") + (disabled ? " disabled" : "")}
+        onClick={() =&gt; {
+          if (disabled) return;
+          setChecked((v) =&gt; !v);
+        }}
+        role="switch"
+        aria-checked={checked}
+      &gt;
+        &lt;div className="switch-thumb"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;span className="switch-label"&gt;{label}&lt;/span&gt;
+    &lt;/label&gt;
+  );
+}</code></pre>
+            </div>
+
+            <dl class="props-list">
+                <dt>label</dt>
+                <dd>Texto do controle (<code>span.switch-label</code>).</dd>
+
+                <dt>disabled</dt>
+                <dd>Quando <code>true</code>, bloqueia click e adiciona classe <code>.disabled</code>.</dd>
+
+                <dt>defaultChecked</dt>
+                <dd>Estado inicial do switch (equivalente a <code>.checked</code>).</dd>
+            </dl>
         </div>
     </div>
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Select Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -317,6 +318,21 @@
             <p>Componente Select | Estados, busca e código de uso</p>
         </div>
 
+        <!-- Lead -->
+        <p class="section-subtitle">
+            Dropdown de seleção única com estados (normal, erro e disabled), com opção de busca no conteúdo.
+        </p>
+
+        <!-- Nota Acessibilidade (WCAG/ARIA) -->
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Garanta que a área clicável do trigger possua rótulo textual (via <code>field-label</code>).</li>
+                <li>Para erro, aplique <code>.error</code> no container e use helper text como mensagem única de feedback.</li>
+                <li>Para disabled, combine <code>.disabled</code> no trigger e bloqueie interações via JS.</li>
+            </ul>
+        </div>
+
         <!-- SELECT BÁSICO -->
         <div class="section">
             <h2 class="section-title">📋 Select - Básico</h2>
@@ -490,15 +506,30 @@
             </div>
         </div>
 
+        <!-- Anatomia -->
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div.field</code>: wrapper do componente.</li>
+                <li><code>div.field-label</code>: container da label; use <code>span.field-label-text</code> e opcional <code>span.field-sublabel</code>.</li>
+                <li><code>div.select-container</code>: wrapper do trigger + dropdown.</li>
+                <li><code>div.field-input-container</code>: área clicável do trigger (aplique <code>.error</code> ou <code>.disabled</code> aqui).</li>
+                <li><code>span.select-text</code>: texto exibido no trigger (use <code>.has-value</code> quando tiver valor selecionado).</li>
+                <li><code>div.select-dropdown</code>: container das opções (aparece/oculta via <code>.open</code>).</li>
+                <li><code>div.select-option</code>: cada opção do dropdown; opções desabilitadas devem ter classe <code>disabled</code>.</li>
+                <li><code>div.field-helper</code>: mensagem abaixo do campo; use <code>.error</code> para erro.</li>
+            </ul>
+        </div>
+
         <!-- COMO USAR (para devs) -->
         <div class="section">
-            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
                 Exemplo mínimo de estrutura para o componente de Select básico.
             </p>
 
             <div class="code-block">
-<pre><code>&lt;div class="field"&gt;
+<pre class="code"><code>&lt;div class="field"&gt;
   &lt;div class="field-label"&gt;
     &lt;span class="field-label-text"&gt;Estado&lt;/span&gt;
     &lt;span class="field-sublabel"&gt;obrigatório&lt;/span&gt;
@@ -527,6 +558,90 @@
 
                 <dt>estados</dt>
                 <dd>Use <code>.error</code> na <code>.field-input-container</code> e em <code>.field-helper</code> para erro, e <code>.disabled</code> para estado desabilitado.</dd>
+            </dl>
+        </div>
+
+        <!-- Como Usar (React) -->
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Snippet React que espelha o HTML: trigger controlado + dropdown com lista de opções.
+            </p>
+
+            <div class="code-block">
+<pre class="code"><code>import React, { useMemo, useState } from 'react';
+
+function SelectField({
+  label,
+  sublabel,
+  options,
+  placeholder = 'Selecione...',
+  helperText = 'Selecione uma opção',
+  error = false,
+  disabled = false,
+}) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const text = value || placeholder;
+
+  const isError = Boolean(error);
+  const selected = useMemo(
+    () =&gt; options.find((o) =&gt; o.value === value) || null,
+    [options, value]
+  );
+
+  return (
+    &lt;div className="field"&gt;
+      &lt;div className="field-label"&gt;
+        &lt;span className="field-label-text"&gt;{label}&lt;/span&gt;
+        {sublabel ? &lt;span className="field-sublabel"&gt;{sublabel}&lt;/span&gt; : null}
+      &lt;/div&gt;
+
+      &lt;div className="select-container"&gt;
+        &lt;div
+          className={"field-input-container" + (isError ? " error" : "") + (disabled ? " disabled" : "")}
+          onClick={() =&gt; !disabled &amp;&amp; setOpen((v) =&gt; !v)}
+          role="button"
+          aria-expanded={open}
+        &gt;
+          &lt;span className={"select-text" + (value ? " has-value" : "")}&gt;{text}&lt;/span&gt;
+          &lt;span&gt;▾&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div className={"select-dropdown" + (open ? " open" : "")}&gt;
+          {options.map((opt) =&gt; (
+            &lt;div
+              key={opt.value}
+              className={"select-option" + (opt.disabled ? " disabled" : "")}
+              onClick={() =&gt; {
+                if (opt.disabled) return;
+                setValue(opt.value);
+                setOpen(false);
+              }}
+            &gt;
+              &lt;span&gt;{opt.label}&lt;/span&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div className={"field-helper" + (isError ? " error" : "")}&gt;
+        &lt;span&gt;{helperText}&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <dl class="props-list">
+                <dt>options</dt>
+                <dd>Array com <code>{`{ value, label, disabled? }`}</code>.</dd>
+
+                <dt>error</dt>
+                <dd>Quando <code>true</code>, aplica classes <code>error</code>.</dd>
+
+                <dt>disabled</dt>
+                <dd>Quando <code>true</code>, bloqueia abertura e aplica classe <code>disabled</code>.</dd>
             </dl>
         </div>
     </div>

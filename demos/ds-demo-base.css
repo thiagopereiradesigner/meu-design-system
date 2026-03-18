@@ -8,6 +8,17 @@
 
   --ds-bg: #FFFFFF;
   --ds-bg-subtle: #F9F9F9;
+
+  /* Semantic colors (defaults; white-label can override these CSS vars) */
+  --ds-success-bg: #E6F4ED;
+  --ds-success-fg: #004D16;
+  --ds-error: #DC2626;
+  --ds-warning: #F59E0B;
+  --ds-info: #3B82F6;
+
+  --ds-n100: #F3F3F3;
+  --ds-pre-bg: var(--ds-n100);
+  --ds-pre-fg: #2b2b2b;
 }
 
 body{
@@ -95,7 +106,7 @@ body{
 .note{
   margin-top: 18px;
   padding: 24px;
-  background-color: #E6F4ED;
+  background-color: var(--ds-success-bg);
   border-radius: 12px;
   border-left: 4px solid var(--ds-success);
 }
@@ -104,7 +115,7 @@ body{
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 12px;
-  color: #004D16;
+  color: var(--ds-success-fg);
 }
 
 .note ul{
@@ -116,12 +127,12 @@ body{
 
 pre.code{
   margin-top: 10px;
-  background: #F3F3F3;
+  background: var(--ds-pre-bg);
   border-radius: 12px;
   padding: 12px;
   overflow-x: auto;
   font-size: 12px;
-  color: #2b2b2b;
+  color: var(--ds-pre-fg);
   line-height: 1.5;
 }
 

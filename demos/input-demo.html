@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Input Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -270,6 +271,21 @@
             <p>Componente Input | Estados, tokens e código de uso</p>
         </div>
 
+        <!-- Lead -->
+        <p class="section-subtitle">
+            Campo de texto de linha única com suporte a label, helper text, ícones e estados (normal, erro e disabled).
+        </p>
+
+        <!-- Nota Acessibilidade (WCAG/ARIA) -->
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Use label textual para contexto do que o usuário deve inserir (além do placeholder).</li>
+                <li>Para erro, aplique <code>.error</code> no container e helper para manter contraste e leitura consistente.</li>
+                <li>Para disabled, use <code>disabled</code> no <code>input</code> e mantenha helper textual.</li>
+            </ul>
+        </div>
+
         <!-- INPUT - PREVIEW PRINCIPAL -->
         <div class="section">
             <h2 class="section-title">📝 Input - Estados principais</h2>
@@ -369,15 +385,28 @@
             </div>
         </div>
 
+        <!-- Anatomia -->
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div.field</code>: wrapper do componente.</li>
+                <li><code>div.field-label</code>: container da label (texto + opcional <code>field-sublabel</code>).</li>
+                <li><code>span.field-label-text</code>: label principal; com erro use <code>.error</code> (quando aplicável).</li>
+                <li><code>div.field-input-container</code>: container do input; use <code>.error</code> ou <code>.disabled</code>.</li>
+                <li><code>input.field-input</code>: campo nativo para foco/teclado.</li>
+                <li><code>div.field-helper</code>: helper text; com erro aplique <code>.error</code>.</li>
+            </ul>
+        </div>
+
         <!-- COMO USAR (para devs) -->
         <div class="section">
-            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
                 Exemplo mínimo de marcação para o input padrão, reaproveitando a estrutura de label, container e helper text.
             </p>
 
             <div class="code-block">
-<pre><code>&lt;div class="field"&gt;
+<pre class="code"><code>&lt;div class="field"&gt;
   &lt;div class="field-label"&gt;
     &lt;span class="field-label-text"&gt;Input label&lt;/span&gt;
     &lt;span class="field-sublabel"&gt;Sublabel&lt;/span&gt;
@@ -410,11 +439,71 @@
                     para estado de erro, e <code>.disabled</code> + <code>disabled</code> no <code>input</code> para estado desabilitado.
                 </dd>
             </dl>
+        </div>
 
-            <div class="note">
-                <strong>Tokens usados:</strong> cores primárias (verde), neutrais, raio de borda 4px, tipografia Inter 14px, 
-                e focus ring com sombra de 3px em verde claro.
+        <!-- Como Usar (React) -->
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                O snippet abaixo replica a mesma estrutura de classes do HTML, usando estado local para o valor do <code>&lt;input&gt;</code>.
+            </p>
+
+            <div class="code-block">
+<pre class="code"><code>import React, { useState } from 'react';
+
+function InputField({
+  label,
+  sublabel,
+  placeholder = 'Your text input here',
+  helperText = 'Helper text opcional',
+  error = false,
+  disabled = false,
+}) {
+  const [value, setValue] = useState('');
+  const isError = Boolean(error);
+
+  return (
+    &lt;div className="field"&gt;
+      &lt;div className="field-label"&gt;
+        &lt;span className="field-label-text"&gt;{label}&lt;/span&gt;
+        {sublabel ? &lt;span className="field-sublabel"&gt;{sublabel}&lt;/span&gt; : null}
+      &lt;/div&gt;
+
+      &lt;div className={"field-input-container" + (isError ? " error" : "") + (disabled ? " disabled" : "")}&gt;
+        &lt;input
+          type="text"
+          className="field-input"
+          placeholder={placeholder}
+          disabled={disabled}
+          value={value}
+          onChange={(e) =&gt; setValue(e.target.value)}
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div className={"field-helper" + (isError ? " error" : "")}&gt;
+        &lt;span&gt;{helperText}&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
             </div>
+
+            <dl class="props-list">
+                <dt>label</dt>
+                <dd>Texto principal da <code>.field-label-text</code>.</dd>
+
+                <dt>sublabel</dt>
+                <dd>Opcional; renderizado como <code>.field-sublabel</code>.</dd>
+
+                <dt>helperText</dt>
+                <dd>Conteúdo do bloco <code>.field-helper</code>.</dd>
+
+                <dt>error</dt>
+                <dd>Quando <code>true</code>, aplica classes <code>error</code> e foca no estado de erro.</dd>
+
+                <dt>disabled</dt>
+                <dd>Quando <code>true</code>, aplica classe <code>disabled</code> e define <code>disabled</code> no input.</dd>
+            </dl>
         </div>
     </div>
 <!-- DS Navigation Search Script -->

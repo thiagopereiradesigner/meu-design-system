@@ -1,7 +1,7 @@
 ---
 description: Padroniza TODOS os demos de componentes (1:1) com Lead + A11y + Anatomia HTML + Como Usar HTML + Como Usar React + snippet/props
 globs: demos/*-demo*.html
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Template de Documentação para Demos (demos/*-demo*.html)

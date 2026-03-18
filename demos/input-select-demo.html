@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Input & Select Components</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -343,6 +344,143 @@
         <div class="header">
             <h1>TP.IA - Design System</h1>
             <p>Componentes Input e Select</p>
+        </div>
+
+        <p class="section-subtitle">
+            Demonstração de Input (texto) e Select (dropdown) com estados (normal, erro e disabled) e busca no dropdown.
+        </p>
+
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Use <code>field-label</code> com <code>field-label-text</code> para fornecer contexto textual ao campo.</li>
+                <li>Para erro, aplique <code>.error</code> no container correspondente (ex.: <code>.field-input-container</code> e helper).</li>
+                <li>Para desabilitado, use <code>disabled</code> (e mantenha o visual coerente em <code>.disabled</code>).</li>
+                <li>Dropdown deve fechar ao selecionar e não pode abrir quando está desabilitado (lógica via JS).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div.field</code>: wrapper do campo (Input ou Select).</li>
+                <li><code>div.field-label</code> + <code>span.field-label-text</code>: rótulo (com opcional <code>span.field-sublabel</code>).</li>
+                <li><code>.field-input-container</code>: container visual e também “trigger” do Select via <code>onclick</code>.</li>
+                <li><code>input.field-input</code>: campo nativo do Input (foco/teclado funcionam naturalmente).</li>
+                <li><code>span.select-text</code>: texto do valor selecionado (atualizado por <code>selectOption</code>).</li>
+                <li><code>div.select-dropdown</code>: painel das opções (visibilidade via <code>.open</code> e id).</li>
+                <li><code>div.select-option</code> (+ <code>.disabled</code>): cada opção do dropdown.</li>
+                <li>JS: <code>toggleDropdown</code>, <code>selectOption</code> e <code>filterOptions</code> (para o modo com busca).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (HTML)</div>
+            <p class="section-description">
+                Estruture o trigger e o dropdown do Select usando os mesmos ids do JS do demo.
+            </p>
+            <pre class="code"><code>&lt;div class="field"&gt;
+  &lt;div class="field-label"&gt;
+    &lt;span class="field-label-text"&gt;Estado&lt;/span&gt;
+    &lt;span class="field-sublabel"&gt;obrigatório&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class="select-container"&gt;
+    &lt;div class="field-input-container" onclick="toggleDropdown('estado')"&gt;
+      &lt;span class="select-text" id="estado-text"&gt;Selecione um estado&lt;/span&gt;
+      &lt;span&gt;▾&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class="select-dropdown" id="estado-dropdown"&gt;
+      &lt;div class="select-option" onclick="selectOption('estado', 'São Paulo', this)"&gt;
+        &lt;span&gt;São Paulo&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="select-option" onclick="selectOption('estado', 'Rio de Janeiro', this)"&gt;
+        &lt;span&gt;Rio de Janeiro&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  function toggleDropdown(selectId) { /* abra/feche dropdown + atualize classes */ }
+  function selectOption(selectId, value, element) { /* atualize select-text e feche */ }
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Exemplo React controlado para um Select com as mesmas classes do demo.
+            </p>
+            <pre class="code"><code>import React, { useMemo, useState } from 'react';
+
+export function SelectField({
+  label,
+  sublabel,
+  options,
+  placeholder = 'Selecione...',
+  helperText,
+  error = false,
+  disabled = false,
+}) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+
+  const selectedLabel = useMemo(() => {
+    return options.find((o) =&gt; o.value === value)?.label || placeholder;
+  }, [options, value, placeholder]);
+
+  return (
+    &lt;div className="field"&gt;
+      &lt;div className="field-label"&gt;
+        &lt;span className="field-label-text"&gt;{label}&lt;/span&gt;
+        {sublabel ? &lt;span className="field-sublabel"&gt;{sublabel}&lt;/span&gt; : null}
+      &lt;/div&gt;
+
+      &lt;div className="select-container"&gt;
+        &lt;div
+          className={"field-input-container" + (error ? " error" : "") + (disabled ? " disabled" : "")}
+          onClick={() =&gt; !disabled &amp;&amp; setOpen((v) =&gt; !v)}
+        &gt;
+          &lt;span className={"select-text" + (value ? " has-value" : "")}&gt;{selectedLabel}&lt;/span&gt;
+          &lt;span&gt;▾&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div className={"select-dropdown" + (open ? " open" : "")}&gt;
+          {options.map((opt) =&gt; (
+            &lt;div
+              key={opt.value}
+              className={"select-option" + (opt.disabled ? " disabled" : "")}
+              onClick={() =&gt; {
+                if (disabled || opt.disabled) return;
+                setValue(opt.value);
+                setOpen(false);
+              }}
+            &gt;
+              &lt;span&gt;{opt.label}&lt;/span&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div className={"field-helper" + (error ? " error" : "")}&gt;
+        &lt;span&gt;{helperText || 'Selecione uma opção'}&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+            <dl class="props-list">
+                <dt>options</dt>
+                <dd>Array com <code>{`{ value, label, disabled? }`}</code>.</dd>
+                <dt>placeholder</dt>
+                <dd>Texto quando nenhum item estiver selecionado.</dd>
+                <dt>error</dt>
+                <dd>Quando <code>true</code>, aplica classe <code>error</code> no trigger e helper.</dd>
+                <dt>disabled</dt>
+                <dd>Quando <code>true</code>, bloqueia abertura e aplica <code>disabled</code> visual.</dd>
+            </dl>
         </div>
 
         <!-- INPUT STATES -->

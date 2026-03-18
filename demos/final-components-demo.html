@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Final Components</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -417,6 +418,58 @@
         <div class="header">
             <h1>TP.IA - Design System</h1>
             <p>Spinner, Tooltip, Menu, Tabs, Drawer & Modal</p>
+        </div>
+
+        <p class="section-subtitle">
+            Demo agregado com múltiplos componentes (Spinner, Tooltip, Menu, Tabs, Drawer, Modal e Breadcrumb) para referência rápida.
+        </p>
+
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Use papéis ARIA existentes nos componentes (ex.: tabs com <code>role="tablist"</code>).</li>
+                <li>Drawer/Modal devem suportar foco e fechamento por teclado (<code>Esc</code>).</li>
+                <li>Breadcrumb comunica hierarquia via links e separadores.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div.spinner</code>: spinner em tamanhos (<code>.spinner-small</code>, <code>.spinner-medium</code>, <code>.spinner-large</code>).</li>
+                <li><code>div.tooltip</code>: tooltip com variações posicionais (ex.: <code>.tooltip-top</code>, <code>.tooltip-right</code>).</li>
+                <li><code>button</code> + JS: Menu colapsável via <code>toggleMenu()</code>.</li>
+                <li>Tabs: grupo com <code>role="tablist"</code> e painéis com <code>role="tabpanel"</code>.</li>
+                <li>Drawer/Modal: containers com classes/IDs (<code>.drawer</code>, <code>.modal</code>) e botões de abrir/fechar.</li>
+                <li>Breadcrumb: área de navegação com links e separadores customizados.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (HTML)</div>
+            <p class="section-description">
+                Exemplo mínimo do Spinner dentro do demo agregado.
+            </p>
+            <pre class="code"><code>&lt;div class="spinner spinner-small"&gt;&lt;/div&gt;
+&lt;div class="spinner spinner-medium"&gt;&lt;/div&gt;
+&lt;div class="spinner spinner-large"&gt;&lt;/div&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Renderize o demo React equivalente.
+            </p>
+            <pre class="code"><code>import React from 'react';
+import FinalComponentsDemo from '@/components/FinalComponents';
+
+export default function Home() {
+  return &lt;FinalComponentsDemo /&gt;;
+}</code></pre>
+            <dl class="props-list">
+                <dt>Props</dt>
+                <dd>O demo não exige props (estado e interações ficam internos).</dd>
+            </dl>
         </div>
 
         <!-- SPINNER -->

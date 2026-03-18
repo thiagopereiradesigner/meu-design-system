@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Toast Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -369,6 +370,133 @@
         <div class="header">
             <h1>TP.IA - Design System</h1>
             <p>Toast Component com WCAG AA</p>
+        </div>
+
+        <p class="section-subtitle">
+            Notificações (toasts) com feedback visual e comportamento acessível (role/ARIA + teclado).
+        </p>
+
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Container do toast com <code>role="alert"</code>, <code>aria-live</code> e <code>aria-atomic</code>.</li>
+                <li>Erro usa <code>aria-live="assertive"</code> para priorizar leitura.</li>
+                <li>Fechamento via botão com <code>aria-label</code> e via teclado com <code>Esc</code>.</li>
+                <li>Auto-close e pausa ao passar o mouse (progress bar).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div#toast-container</code>: região viva do toast (<code>role="alert"</code> + <code>aria-live</code>).</li>
+                <li><code>div.toast</code>: wrapper do toast injetado via JS.</li>
+                <li><code>div.toast-content</code>: agrupa <code>p.toast-title</code> e <code>p.toast-message</code>.</li>
+                <li><code>button.toast-close</code>: botão para fechar (tem <code>aria-label</code>).</li>
+                <li><code>div.toast-progress</code> + <code>div.toast-progress-bar</code>: visual de tempo restante.</li>
+                <li>Classes <code>toast-success-active</code>, <code>toast-error-active</code>, <code>toast-warning-active</code>, <code>toast-info-active</code> controlam cores/FG.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (HTML)</div>
+            <p class="section-description">
+                Estruture a região do toast e chame <code>showToast(type, variant)</code para renderizar o conteúdo.
+            </p>
+            <pre class="code"><code>&lt;div id="toast-container" class="toast-container"
+     role="alert"
+     aria-live="polite"
+     aria-atomic="true"&gt;&lt;/div&gt;
+
+&lt;button onclick="showToast('success', 'active')"&gt;Sucesso&lt;/button&gt;
+
+&lt;script&gt;
+  function showToast(type, variant) {
+    const container = document.getElementById('toast-container');
+    const config = {
+      success: { title: 'Sucesso!', message: 'Operação concluída.', duration: 3000 },
+      error: { title: 'Erro!', message: 'Tente novamente.', duration: 5000 },
+      warning: { title: 'Atenção!', message: 'Revise os dados.', duration: 4000 },
+      info: { title: 'Info', message: 'Atualização disponível.', duration: 4000 }
+    };
+
+    const c = config[type] || config.info;
+    container.innerHTML = `
+      &lt;div class="toast toast-${type}-${variant}"&gt;
+        &lt;div class="toast-content"&gt;
+          &lt;p class="toast-title"&gt;${c.title}&lt;/p&gt;
+          &lt;p class="toast-message"&gt;${c.message}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button class="toast-close" onclick="hideToast()" aria-label="Fechar notificação"&gt;Fechar&lt;/button&gt;
+        &lt;div class="toast-progress"&gt;
+          &lt;div class="toast-progress-bar" style="animation-duration:${c.duration}ms"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `;
+    container.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+    container.classList.add('show');
+    setTimeout(hideToast, c.duration);
+  }
+
+  function hideToast() {
+    const container = document.getElementById('toast-container');
+    container.classList.remove('show');
+    setTimeout(() =&gt; (container.innerHTML = ''), 300);
+  }
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Exemplo com <code>ToastProvider</code> + hook <code>useToast</code>.
+            </p>
+            <pre class="code"><code>import React from 'react';
+import { ToastProvider, useToast } from '@/components/Toast/ToastComponent';
+
+function ToastButtons() {
+  const { showToast } = useToast();
+
+  return (
+    &lt;button
+      onClick={() =&gt;
+        showToast({
+          type: 'success',
+          variant: 'active',
+          title: 'Operação concluída!',
+          message: 'Seus dados foram salvos com sucesso.',
+        })
+      }
+    &gt;
+      Mostrar toast
+    &lt;/button&gt;
+  );
+}
+
+export default function ToastPage() {
+  return (
+    &lt;ToastProvider&gt;
+      &lt;ToastButtons /&gt;
+    &lt;/ToastProvider&gt;
+  );
+}</code></pre>
+
+            <dl class="props-list">
+                <dt>type</dt>
+                <dd><code>'success' | 'error' | 'warning' | 'info'</code> (define cores e <code>aria-live</code>).</dd>
+
+                <dt>variant</dt>
+                <dd><code>'active'</code> ou <code>'light'</code> (define palette do toast).</dd>
+
+                <dt>title</dt>
+                <dd>Título do toast (renderizado em <code>p.toast-title</code>).</dd>
+
+                <dt>message</dt>
+                <dd>Mensagem do toast (renderizada em <code>p.toast-message</code>).</dd>
+
+                <dt>duration</dt>
+                <dd>Duração (ms) para auto-close (opcional).</dd>
+            </dl>
         </div>
 
         <!-- Active Variant -->

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Textarea Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         /* ── DS Navigation Bar ── */
@@ -128,6 +129,21 @@
             <p>Componente Textarea | Estados e código de uso</p>
         </div>
 
+        <!-- Lead -->
+        <p class="section-subtitle">
+            Textarea com estados (normal, erro e disabled), helper text e contador opcional de caracteres.
+        </p>
+
+        <!-- Nota Acessibilidade (WCAG/ARIA) -->
+        <div class="note">
+            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <ul>
+                <li>Use <code>label</code> textual associado ao <code>textarea</code> para contexto.</li>
+                <li>Para erro, aplique classes <code>error</code> e mantenha a mensagem em texto visível.</li>
+                <li>Para disabled, use o atributo <code>disabled</code> para impedir interação.</li>
+            </ul>
+        </div>
+
         <div class="section">
             <h2 class="section-title">📝 Textarea</h2>
             <p class="section-description">
@@ -167,14 +183,28 @@
             </div>
         </div>
 
+        <!-- Anatomia -->
         <div class="section">
-            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+                <li><code>div.textarea-wrapper</code>: wrapper do textarea (label + campo + helper).</li>
+                <li><code>label.textarea-label</code>: rótulo do campo.</li>
+                <li><code>textarea</code>: controle nativo; use <code>rows</code> e <code>maxlength</code>.</li>
+                <li><code>textarea.error</code>: estado de erro (borda/estilo).</li>
+                <li><code>textarea:disabled</code>: estado desabilitado.</li>
+                <li><code>div.helper-text</code>: mensagem de apoio.</li>
+                <li><code>div.char-count</code>: contador (quando aplicável).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
                 Estrutura base para o uso de textarea com helper text e contador.
             </p>
 
             <div class="code-block">
-<pre><code>&lt;div class="textarea-wrapper"&gt;
+<pre class="code"><code>&lt;div class="textarea-wrapper"&gt;
   &lt;label class="textarea-label"&gt;Comentário&lt;/label&gt;
   &lt;textarea 
     rows="4" 
@@ -182,6 +212,62 @@
   &lt;div class="helper-text"&gt;Helper text opcional&lt;/div&gt;
 &lt;/div&gt;</code></pre>
             </div>
+        </div>
+
+        <!-- Como Usar (React) -->
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <p class="section-description">
+                Snippet React para controlar o valor do <code>&lt;textarea&gt;</code> e manter o mesmo HTML.
+            </p>
+
+            <div class="code-block">
+<pre class="code"><code>import React, { useState } from 'react';
+
+function TextareaField({
+  label,
+  placeholder = '',
+  helperText = '',
+  error = false,
+  disabled = false,
+  rows = 4,
+  maxLength,
+}) {
+  const [value, setValue] = useState('');
+  return (
+    &lt;div className="textarea-wrapper"&gt;
+      &lt;label className="textarea-label"&gt;{label}&lt;/label&gt;
+      &lt;textarea
+        rows={rows}
+        placeholder={placeholder}
+        className={error ? 'error' : undefined}
+        disabled={disabled}
+        maxLength={maxLength}
+        value={value}
+        onChange={(e) =&gt; setValue(e.target.value)}
+      /&gt;
+      {helperText ? &lt;div className="helper-text"&gt;{helperText}&lt;/div&gt; : null}
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <dl class="props-list">
+                <dt>label</dt>
+                <dd>Texto exibido em <code>label.textarea-label</code>.</dd>
+
+                <dt>placeholder</dt>
+                <dd>Valor padrão do campo.</dd>
+
+                <dt>helperText</dt>
+                <dd>Conteúdo do bloco <code>.helper-text</code>.</dd>
+
+                <dt>error</dt>
+                <dd>Quando <code>true</code>, aplica classe <code>error</code>.</dd>
+
+                <dt>disabled</dt>
+                <dd>Quando <code>true</code>, aplica atributo <code>disabled</code>.</dd>
+            </dl>
         </div>
     </div>
 
