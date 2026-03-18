@@ -602,6 +602,12 @@
         file: 'spinner-demo.html'
       },
       {
+        name: 'Skeleton',
+        description: 'Placeholders de carregamento (pulse) no padrão shadcn: avatar + linhas',
+        category: 'feedback',
+        file: 'skeleton-demo.html'
+      },
+      {
         name: 'Divider',
         description: 'Linha separadora horizontal/vertical para seções e feedback',
         category: 'foundation',
@@ -778,6 +784,16 @@
               <div style="margin-left:10px;display:flex;flex-direction:column;gap:2px;">
                 <div style="font-size:11px;font-weight:600;color:#1A1A1A;">Carregando</div>
                 <div style="font-size:9px;color:#656976;">Status</div>
+              </div>
+            </div>
+          `;
+        case 'Skeleton':
+          return `
+            <div class="preview-inner" style="justify-content:flex-start;align-items:center;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#E8E8E8;flex-shrink:0;"></div>
+              <div style="margin-left:12px;display:flex;flex-direction:column;gap:6px;min-width:0;">
+                <div style="height:10px;width:72px;border-radius:9999px;background:#E8E8E8;"></div>
+                <div style="height:10px;width:56px;border-radius:9999px;background:#E8E8E8;"></div>
               </div>
             </div>
           `;

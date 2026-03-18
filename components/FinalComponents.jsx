@@ -120,6 +120,79 @@ export const Spinner = ({
   );
 };
 
+// ==================== SKELETON COMPONENT (shadcn-like) ====================
+export const Skeleton = ({
+  width = '100%',
+  height = '1rem',
+  rounded = 'md',
+  style = {},
+  'aria-hidden': ariaHidden = true,
+}) => {
+  const borderRadius =
+    rounded === 'full' ? '9999px' : rounded === 'none' ? '0' : '6px';
+
+  return (
+    <>
+      <style>
+        {`
+          @keyframes ds-skeleton-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.45; }
+          }
+        `}
+      </style>
+      <div
+        style={{
+          display: 'block',
+          boxSizing: 'border-box',
+          width,
+          height,
+          backgroundColor: tokens.colors.neutral[200],
+          animation:
+            'ds-skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          borderRadius,
+          ...style,
+        }}
+        aria-hidden={ariaHidden}
+      />
+    </>
+  );
+};
+
+/** Layout típico shadcn: avatar circular + duas linhas (título / subtítulo). */
+export const SkeletonProfileRow = ({
+  avatarSize = 48,
+  titleWidth = 250,
+  subtitleWidth = 200,
+  lineHeight = 16,
+  gap = 16,
+}) => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap,
+    }}
+  >
+    <Skeleton
+      width={avatarSize}
+      height={avatarSize}
+      rounded="full"
+    />
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        minWidth: 0,
+      }}
+    >
+      <Skeleton width={titleWidth} height={lineHeight} rounded="full" />
+      <Skeleton width={subtitleWidth} height={lineHeight} rounded="full" />
+    </div>
+  </div>
+);
+
 // ==================== TOOLTIP COMPONENT ====================
 export const Tooltip = ({
   children,
@@ -845,7 +918,7 @@ export default function FinalComponentsDemo() {
           Portal Empresa - Design System
         </h1>
         <p style={{ fontSize: '16px', color: '#5E5E5E' }}>
-          Spinner, Tooltip, Menu, Tabs, Drawer, Modal & Breadcrumb
+          Spinner, Skeleton, Tooltip, Menu, Tabs, Drawer, Modal & Breadcrumb
         </p>
       </div>
 
@@ -890,6 +963,14 @@ export default function FinalComponentsDemo() {
             <Spinner size="large" />
             <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Large</p>
           </div>
+        </div>
+      </div>
+
+      {/* SKELETON */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>◻ Skeleton (shadcn-like)</h2>
+        <div style={{ padding: '16px', background: '#fff', border: '1px solid #E0E0E0', borderRadius: '12px', maxWidth: '360px' }}>
+          <SkeletonProfileRow />
         </div>
       </div>
 
