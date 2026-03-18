@@ -1,0 +1,42 @@
+---
+description: Padroniza TODOS os demos de componentes (1:1) com Lead + A11y + Anatomia HTML + Como Usar HTML + Como Usar React + snippet/props
+globs: demos/*-demo*.html
+alwaysApply: false
+---
+
+# Template de Documentação para Demos (demos/*-demo*.html)
+
+Ao editar/criar qualquer página em `demos/*-demo*.html` o objetivo é que uma IA/dev consiga copiar e reproduzir o componente “1:1”:
+
+## 1) CSS base (obrigatório)
+- Garanta que a página linka o CSS base:
+  - `<link rel="stylesheet" href="ds-demo-base.css">`
+- Trechos novos de documentação devem usar as classes do base:
+  - `.section`, `.note`, `.section-title`, `.section-subtitle`/`.section-description`, `pre.code`
+- Evitar espalhar hex/valores fixos quando o token existir:
+  - Preferir `var(--ds-*)` quando aplicável.
+
+## 2) Ordem fixa das seções (obrigatório)
+A página deve manter esta ordem e headings:
+
+1. **Lead** (1 parágrafo): o que é o componente + quando usar.
+2. **Nota Acessibilidade** (`.note`): checklist curto e objetivo (WCAG/ARIA/teclado).
+3. **Anatomia do Componente (HTML)**: lista das “partes/blocos” e o papel de cada uma (mencione classes/IDs reais do demo).
+4. **Como Usar (HTML)**:
+   - snippet completo e copiável do markup (incluindo `id`s/estruturas essenciais).
+   - incluir JS mínimo equivalente ao demo quando houver comportamento (ex.: `toggleAcc`, `setStep`, `showToast` etc.).
+   - se existir `role`/`aria-*`, deixar explícito no snippet.
+5. **Como Usar (React)**:
+   - heading deve ser exatamente `Como Usar (React)` (não “Handoff para devs (React)”).
+   - snippet React em `pre.code`.
+   - lista curta de props reais (3 a 6 itens) ajudando a recriar corretamente.
+
+## 3) Regras de qualidade (obrigatório)
+- Anatomia precisa ser “copiável”: cada item da lista deve responder “o que representa” no HTML.
+- Como Usar (HTML) precisa permitir replicar a “execução equivalente” do demo.
+- Como Usar (React) precisa conter as props que realmente controlam o comportamento visual/UX no componente.
+
+## 4) Economia de tokens (obrigatório)
+- Nos blocos novos, não inventar tokens/hex.
+- Se a página precisar de cor/spacing/texto, buscar nos `var(--ds-*)` do base.
+

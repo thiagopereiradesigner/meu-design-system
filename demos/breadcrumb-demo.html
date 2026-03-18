@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Breadcrumb Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    .breadcrumb{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+    .breadcrumb a{
+      color: var(--ds-n500);
+      text-decoration:none;
+      transition: color .15s ease;
+    }
+    .breadcrumb a:hover{ color: var(--ds-success); }
+    .breadcrumb .current{
+      color: var(--ds-n800);
+      font-weight:600;
+    }
+    .breadcrumb .separator{
+      color: #727272;
+      user-select:none;
+    }
+    code{ word-break: break-word; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div style="flex:1;"></div>
+    <span class="ds-topbar-title">Breadcrumb</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Breadcrumb</h1>
+    <p class="section-subtitle" style="margin-bottom:28px;">
+      Navegação hierárquica (caminho) para orientar o usuário em páginas aninhadas.
+    </p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li>Uso de <code>nav aria-label="Breadcrumb"</code>.</li>
+        <li>Último item usa <code>aria-current="page"</code> (estado atual).</li>
+      </ul>
+    </div>
+
+    <div class="section" style="margin-top:16px;">
+      <div class="section-title" style="margin-bottom:10px;">Preview</div>
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">/</span>
+        <a href="/products">Produtos</a>
+        <span class="separator">/</span>
+        <a href="/products/electronics">Eletrônicos</a>
+        <span class="separator">/</span>
+        <span class="current" aria-current="page">Notebook Dell</span>
+      </nav>
+
+      <div style="height:16px;"></div>
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Início</a>
+        <span class="separator">&gt;</span>
+        <a href="/config">Configurações</a>
+        <span class="separator">&gt;</span>
+        <span class="current" aria-current="page">Perfil</span>
+      </nav>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+        <li><code>nav.breadcrumb</code>: wrapper semântico da navegação.</li>
+        <li><code>a</code>: links dos níveis anteriores.</li>
+        <li><code>span.separator</code>: separador entre níveis (ex.: <code>/</code> ou <code>&gt;</code>).</li>
+        <li><code>span.current</code> + <code>aria-current="page"</code>: item atual.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">Estruture links + separadores + item atual com <code>aria-current</code>.</div>
+      <pre class="code"><code>{/* HTML */}
+&lt;nav class="breadcrumb" aria-label="Breadcrumb"&gt;
+  &lt;a href="/"&gt;Home&lt;/a&gt;
+  &lt;span class="separator"&gt;/&lt;/span&gt;
+  &lt;a href="/products"&gt;Produtos&lt;/a&gt;
+  &lt;span class="separator"&gt;/&lt;/span&gt;
+  &lt;span class="current" aria-current="page"&gt;Notebook Dell&lt;/span&gt;
+&lt;/nav&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">Passe <code>items</code> (com <code>href</code>) e ajuste <code>separator</code> quando necessário.</div>
+      <pre class="code"><code>{/* JSX */}
+import { Breadcrumb } from '@/components/FinalComponents';
+
+function Example() {
+  return (
+    &lt;Breadcrumb
+      items={[
+        { id: 'home', label: 'Home', href: '/' },
+        { id: 'products', label: 'Produtos', href: '/products' },
+        { id: 'category', label: 'Eletrônicos', href: '/products/electronics' },
+        { id: 'current', label: 'Notebook Dell' },
+      ]}
+      separator="/"
+    /&gt;
+  );
+}
+      </code></pre>
+      <div style="font-size:13px;color:var(--ds-n500);line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color:var(--ds-n800);margin-bottom:6px;">Props principais</div>
+        <div><code>items</code>: {`{ id, label, href? }[]`}</div>
+        <div><code>separator</code> (opcional): string.</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+

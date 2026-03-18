@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Badge Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    :root{
+      --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ds-success: #04843B;
+      --ds-success-bg: #E6F4ED;
+      --ds-success-fg: #005A1A;
+
+      --ds-error: #DC2626;
+      --ds-error-bg: #FEE2E2;
+      --ds-error-fg: #DC2626;
+
+      --ds-warning: #DC6803;
+      --ds-warning-bg: #FEF3C7;
+      --ds-warning-fg: #92400E;
+
+      --ds-info: #3B82F6;
+      --ds-info-bg: #DBEAFE;
+      --ds-info-fg: #1E40AF;
+
+      --ds-neutral-bg: #F3F3F3;
+      --ds-neutral-fg: #656976;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--ds-font-family); background: #F9F9F9; color: #1A1A1A; }
+
+    .ds-topbar{
+      position: sticky; top: 0; z-index: 10;
+      background: #fff; border-bottom: 1px solid #E0E0E0;
+      height: 56px; display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    @media(min-width:744px){ .ds-topbar{ padding: 0 24px; } }
+    @media(min-width:1280px){ .ds-topbar{ padding: 0 32px; } }
+
+    .ds-back-btn{
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 8px;
+      border: 1px solid #d0d0d0; background: #fff; color: #333;
+      font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .ds-back-btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: #F3F4F6; }
+    .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success-fg); }
+    .ds-topbar-spacer{ flex: 1; }
+
+    .ds-container{
+      width: 100%; max-width: 1440px; margin: 0 auto;
+      padding: 40px 16px;
+    }
+    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+    @media(min-width:1280px){ .ds-container{ padding-left: 32px; padding-right: 32px; } }
+
+    h1{ font-size: 28px; font-weight: 700; color: var(--ds-success-fg); margin-bottom: 8px; }
+    p.lead{ font-size: 14px; color: #656976; margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
+
+    .section{
+      background: #fff; border-radius: 12px; border: 1px solid #E0E0E0;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+    .section-subtitle{ font-size: 14px; color: #656976; margin-bottom: 16px; line-height: 1.6; }
+
+    .badge-row{ display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+    .badge{
+      display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+      border-radius: 9999px;
+      font-weight: 500;
+      padding: 4px 10px;
+      line-height: 1.5;
+      border: 1px solid transparent;
+    }
+
+    .badge.small{ padding: 2px 8px; font-size: 10px; }
+    .badge.medium{ padding: 4px 10px; font-size: 12px; }
+
+    .badge.success{ background: var(--ds-success-bg); color: var(--ds-success-fg); }
+    .badge.error{ background: var(--ds-error-bg); color: var(--ds-error-fg); }
+    .badge.warning{ background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+    .badge.info{ background: var(--ds-info-bg); color: var(--ds-info-fg); }
+    .badge.neutral{ background: var(--ds-neutral-bg); color: var(--ds-neutral-fg); }
+
+    .badge .icon{ display: inline-flex; align-items: center; justify-content: center; }
+    .badge .icon svg{ display: block; }
+
+    .badge .right-icon{ display: inline-flex; align-items: center; justify-content: center; }
+    .badge .right-icon svg{ display: block; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div class="ds-topbar-spacer"></div>
+    <span class="ds-topbar-title">Badge</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1>Badges: com ícone e sem ícone</h1>
+    <p class="lead">
+      Variações por tipo (success/error/warning/info/neutral) e um modo opcional de exibir ícone ao lado do texto.
+    </p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li><strong>Uso consistente de contraste:</strong> cores do badge vêm das variáveis do DS.</li>
+        <li><strong>Foco e legibilidade:</strong> textos e ícones usam tamanho mínimo e stroke visível.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+        <li><code>span.badge</code>: componente base (pill/arredondado e alinhamento).</li>
+        <li><code>span.badge.success|error|warning|info|neutral</code>: variação semântica de cor via classes.</li>
+        <li><code>span.badge.small|medium</code>: controle de tamanho (padding e font-size).</li>
+        <li><code>span.icon</code> (opcional): ícone à esquerda.</li>
+        <li><code>span.right-icon</code> (opcional): ícone à direita (ex.: <code>chevron-right</code>).</li>
+        <li><code>border-radius</code>: sempre em “full” (pill) para consistência.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">
+        O badge é puramente visual: escolha a variação (color) e decida se vai exibir <code>icon</code> (esquerda) e/ou <code>right-icon</code> (direita).
+      </div>
+      <pre class="code"><code>{/* HTML */}
+&lt;span class="badge success small"&gt;
+  &lt;!-- sem ícone --&gt;
+  Ativo
+&lt;/span&gt;
+
+&lt;span class="badge error medium"&gt;
+  &lt;span class="icon"&gt;
+    &lt;!-- svg do ícone aqui --&gt;
+  &lt;/span&gt;
+  Erro
+&lt;/span&gt;
+
+&lt;span class="badge info medium"&gt;
+  Info
+  &lt;span class="right-icon"&gt;
+    &lt;!-- svg chevron-right aqui --&gt;
+  &lt;/span&gt;
+&lt;/span&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Com ícone</div>
+      <div class="section-subtitle">Use quando o status precisa ser reconhecido mais rápido.</div>
+      <div class="badge-row">
+        <span class="badge success medium">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </span>
+          Ativo
+        </span>
+        <span class="badge error medium">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m15 9-6 6"/>
+              <path d="m9 9 6 6"/>
+            </svg>
+          </span>
+          Erro
+        </span>
+        <span class="badge warning medium">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </span>
+          Atenção
+        </span>
+        <span class="badge info medium">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </span>
+          Info
+        </span>
+        <span class="badge neutral medium">
+          <span class="icon">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="3.5" fill="currentColor"/>
+            </svg>
+          </span>
+          Neutro
+        </span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sem ícone</div>
+      <div class="section-subtitle">Use quando já há contexto visual/linha na tela.</div>
+      <div class="badge-row">
+        <span class="badge success small">Ativo</span>
+        <span class="badge error small">Erro</span>
+        <span class="badge warning small">Atenção</span>
+        <span class="badge info small">Info</span>
+        <span class="badge neutral small">Neutro</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Com ícone à direita</div>
+      <div class="section-subtitle">Ex.: `chevron-right` para navegação/ação. Ícones são opcionais.</div>
+      <div class="badge-row">
+        <span class="badge success medium">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </span>
+          Ativo
+          <span class="right-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </span>
+        </span>
+
+        <span class="badge info medium">
+          Info
+          <span class="right-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">
+        `Badge` é um componente inline para status/categoria. O formato é sempre pill (radius full) e as cores vêm de CSS variables (white-label).
+      </div>
+
+      <pre class="code" style="margin-top:0;background:#F3F3F3;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;">
+        <code>{/* JSX */}
+import { Badge } from '@/components/ui/Badge';
+
+<Badge variant="success" showIcon>
+  Ativo
+</Badge>
+
+<Badge variant="info" showRightIcon>
+  Detalhes
+</Badge>
+
+<Badge variant="warning">
+  Atenção
+</Badge>
+        </code>
+      </pre>
+
+      <div style="font-size:13px;color:#656976;line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+        <div><code>variant</code>: success | error | warning | info | neutral</div>
+        <div><code>size</code>: small | medium</div>
+        <div><code>showIcon</code> / <code>icon</code> (override)</div>
+        <div><code>showRightIcon</code> / <code>rightIcon</code> (override)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

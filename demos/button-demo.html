@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Empresa - Design System Buttons</title>
+    <title>TP.IA - Design System Buttons</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -35,7 +36,7 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
 
         body {
             font-family: 'Inter', sans-serif;
@@ -403,7 +404,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Portal Empresa - Design System</h1>
+            <h1>TP.IA - Design System</h1>
             <p>Componente Button | Todos os estados e variantes</p>
         </div>
 
@@ -780,6 +781,54 @@
                 <li>Tamanho mínimo de toque: 40px (WCAG 2.5.5 - Level AAA)</li>
                 <li>Ícones com stroke visível em todos os estados</li>
             </ul>
+        </div>
+
+        <!-- Template: Anatomia + Como Usar -->
+        <div class="section">
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+                <li><code>button.btn</code>: componente base.</li>
+                <li><code>.btn-primary|btn-secondary|btn-outline|btn-ghost</code>: variação de estilo.</li>
+                <li><code>.btn-large|btn-medium</code>: variação de tamanho (padding/font-size).</li>
+                <li><code>.disabled</code>: estado desabilitado.</li>
+                <li>Ícone: <code>span</code> ou <code>svg</code> com classes como <code>icon</code> dentro do botão.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (HTML)</div>
+            <pre class="code" style="font-size:12px;"><code>{/* HTML */}
+&lt;button class="btn btn-primary btn-large"&gt;
+  Criar novo
+&lt;/button&gt;
+
+&lt;button class="btn btn-outline btn-medium"&gt;
+  Ver mais
+  &lt;svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"&gt;...&lt;/svg&gt;
+&lt;/button&gt;
+            </code></pre>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (React)</div>
+            <div class="section-subtitle" style="margin-top:0;">
+                JSX equivalente usando as mesmas classes do demo (copiável para IA/Dev).
+            </div>
+            <pre class="code" style="font-size:12px;"><code>{/* React */}
+<button
+  className="btn btn-primary btn-large"
+  onClick={() =&gt; alert("Ação primária!")}
+>
+  Criar novo
+</button>
+            </code></pre>
+            <div style="font-size:13px;color:#5E5E5E;line-height:1.7;margin-top:14px;">
+                <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais (visuais)</div>
+                <div><code>variant</code> (primary/secondary/outline/ghost)</div>
+                <div><code>size</code> (large/medium)</div>
+                <div><code>disabled</code> (true/false)</div>
+                <div><code>iconOnly</code> (se você usar “só ícone”, garanta <code>aria-label</code>)</div>
+            </div>
         </div>
     </div>
 

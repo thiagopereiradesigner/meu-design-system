@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Drawer Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    /* Subconjunto do botão do DS (mesmas classes da button-demo) */
+    .btn{
+      font-family: var(--ds-font-family);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.5;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      outline: none;
+      padding: 0;
+    }
+    .btn-medium{
+      padding: 8px 16px;
+      height: 40px;
+      font-size: 12px;
+    }
+    .btn-primary{
+      background-color: var(--ds-success);
+      color: #fff;
+    }
+    .btn-primary:hover{ background-color: #067647; }
+    .btn-secondary{
+      background-color: #E6F4ED;
+      color: #067647;
+    }
+    .btn-secondary:hover{ background-color: #CCE9DB; }
+    .btn-ghost{
+      background-color: transparent;
+      color: #067647;
+    }
+    .btn-ghost:hover{ background-color: #E6F4ED; }
+
+    .overlay{
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 9999;
+      padding: 24px;
+    }
+    .overlay.show{ display: flex; }
+
+    .drawer{
+      position: fixed;
+      top: 0; bottom: 0; right: -400px;
+      width: 400px;
+      background: #fff;
+      box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+      transition: right 0.3s ease;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer.show{ right: 0; }
+
+    .drawer-header{
+      padding: 24px;
+      border-bottom: 1px solid var(--ds-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-title{
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ds-n800);
+      margin: 0;
+    }
+
+    .drawer-content{
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .close-btn{
+      /* Mantém compatibilidade com layout anterior; as classes .btn* aplicam a estética */
+      padding: 0;
+      min-width: 40px;
+      min-height: 40px;
+      color: inherit;
+    }
+    .close-btn:hover{ background-color: #F3F3F3; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div style="flex:1;"></div>
+    <span class="ds-topbar-title">Drawer</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Drawer</h1>
+    <p class="section-subtitle" style="margin-bottom:28px;">
+      Painel lateral que abre sobre a tela e fecha por overlay, botão e tecla <code>Esc</code>.
+    </p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li>Drawer usa <code>role="dialog"</code> e <code>aria-modal="true"</code>.</li>
+        <li>Fechamento por overlay (clique), botão e <code>Esc</code>.</li>
+        <li>Ao abrir, o foco vai para o botão de fechar.</li>
+      </ul>
+    </div>
+
+    <div class="section" style="margin-top:16px;">
+      <div class="section-title" style="margin-bottom:10px;">Preview</div>
+      <button class="btn btn-primary btn-medium" id="drawer-open-btn" type="button" onclick="openDrawer()">Abrir Drawer</button>
+
+      <div class="overlay" id="drawer-overlay" onclick="closeDrawer()" aria-hidden="true"></div>
+      <div
+        class="drawer"
+        id="drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawer-title"
+      >
+        <div class="drawer-header">
+          <h2 class="drawer-title" id="drawer-title">Configurações</h2>
+          <button class="btn btn-ghost btn-medium close-btn" id="drawer-close-btn" type="button" onclick="closeDrawer()" aria-label="Fechar Drawer">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="drawer-content">
+          <p style="margin-bottom:12px;">Este é um drawer lateral com layout consistente.</p>
+          <p style="margin-bottom:18px;">Pode conter formulários e ações secundárias.</p>
+          <button class="btn btn-primary btn-medium" type="button" onclick="alert('Ação do drawer')">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+        <li><code>button</code> de abrir (<code>openDrawer()</code>).</li>
+        <li><code>div.overlay#drawer-overlay</code>: sombra e clique externo para fechar.</li>
+        <li><code>div.drawer#drawer</code>: container do dialog.</li>
+        <li><code>role="dialog"</code> + <code>aria-modal="true"</code>: acessibilidade.</li>
+        <li><code>div.drawer-header</code> + <code>button.close-btn</code> + <code>div.drawer-content</code>.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">Estruture overlay + drawer e use <code>openDrawer()</code>/<code>closeDrawer()</code>.</div>
+      <pre class="code"><code>{/* HTML + JS mínimo */}
+&lt;button id="drawer-open-btn" type="button" onclick="openDrawer()"&gt;
+  Abrir Drawer
+&lt;/button&gt;
+
+&lt;div class="overlay" id="drawer-overlay" onclick="closeDrawer()"&gt;&lt;/div&gt;
+
+&lt;div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title"&gt;
+  &lt;div class="drawer-header"&gt;
+    &lt;h2 class="drawer-title" id="drawer-title"&gt;Configurações&lt;/h2&gt;
+    &lt;button class="close-btn" type="button" onclick="closeDrawer()" aria-label="Fechar"&gt;...&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="drawer-content"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  function openDrawer(){
+    document.getElementById('drawer-overlay').classList.add('show');
+    document.getElementById('drawer').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('drawer-close-btn').focus();
+  }
+
+  function closeDrawer(){
+    document.getElementById('drawer-overlay').classList.remove('show');
+    document.getElementById('drawer').classList.remove('show');
+    document.body.style.overflow = '';
+    document.getElementById('drawer-open-btn').focus();
+  }
+
+  document.addEventListener('keydown', (e) =&gt; {
+    if (e.key === 'Escape') closeDrawer();
+  });
+&lt;/script&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">O componente React controla <code>isOpen</code> e fecha via <code>onClose</code>.</div>
+      <pre class="code"><code>{/* JSX */}
+import { Drawer } from '@/components/FinalComponents';
+import React, { useState } from 'react';
+
+function Page() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    &lt;&gt;
+      &lt;button type="button" onClick={() =&gt; setIsOpen(true)}&gt;Abrir Drawer&lt;/button&gt;
+      &lt;Drawer
+        isOpen={isOpen}
+        onClose={() =&gt; setIsOpen(false)}
+        title="Configurações"
+        position="right"
+        width="400px"
+      &gt;
+        &lt;button type="button"&gt;Salvar&lt;/button&gt;
+      &lt;/Drawer&gt;
+    &lt;/&gt;
+  );
+}
+      </code></pre>
+      <div style="font-size:13px;color:var(--ds-n500);line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color:var(--ds-n800);margin-bottom:6px;">Props principais</div>
+        <div><code>isOpen</code>: controla exibição do drawer.</div>
+        <div><code>onClose</code>: callback ao fechar (overlay/esc/botão).</div>
+        <div><code>title</code> (opcional): título no header.</div>
+        <div><code>position</code> (opcional): left | right.</div>
+        <div><code>width</code> (opcional): string (ex.: <code>"400px"</code>).</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.openDrawer = function openDrawer(){
+      const overlay = document.getElementById('drawer-overlay');
+      const drawer = document.getElementById('drawer');
+      overlay.classList.add('show');
+      drawer.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('drawer-close-btn').focus();
+    }
+
+    window.closeDrawer = function closeDrawer(){
+      const overlay = document.getElementById('drawer-overlay');
+      const drawer = document.getElementById('drawer');
+      overlay.classList.remove('show');
+      drawer.classList.remove('show');
+      document.body.style.overflow = '';
+      document.getElementById('drawer-open-btn').focus();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.closeDrawer();
+    });
+  </script>
+</body>
+</html>
+

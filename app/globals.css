@@ -2,6 +2,10 @@
 
 /* ── Portal Empresa Design System — Tokens ── */
 :root {
+  /* Theme hook (white-label): partners can override these CSS variables
+     in a wrapper element (e.g. <div data-ds-theme="fantasia">). */
+  --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
   /* Primary (brand green) */
   --ds-primary:        #04843B;
   --ds-primary-hover:  #067647;
@@ -25,9 +29,21 @@
 
   /* Semantic */
   --ds-error:   #DC2626;
-  --ds-warning: #F59E0B;
+  --ds-warning: #DC6803;
   --ds-success: #04843B;
   --ds-info:    #3B82F6;
+
+  /* Semantic: derivados para componentes (ex.: Badge, Toast, Alert) */
+  --ds-success-bg: #E6F4ED;
+  --ds-success-fg: #005A1A;
+  --ds-error-bg:   #FEE2E2;
+  --ds-error-fg:   #DC2626;
+  --ds-warning-bg: #FEF3C7;
+  --ds-warning-fg: #92400E;
+  --ds-info-bg:    #DBEAFE;
+  --ds-info-fg:    #1E40AF;
+  --ds-neutral-bg: #F3F3F3;
+  --ds-neutral-fg: #656976;
 
   /* Spacing */
   --ds-space-xs:  4px;
@@ -47,6 +63,19 @@
   --ds-shadow-sm:    0 1px 2px 0 rgba(0,0,0,0.05);
   --ds-shadow-md:    0 4px 6px -1px rgba(0,0,0,0.1);
   --ds-shadow-focus: 0 0 0 3px rgba(4,132,59,0.1);
+
+  /* Layout / grid (mobile first) */
+  --ds-bp-sm:  744px;
+  --ds-bp-md:  1024px;
+  --ds-bp-lg:  1280px;
+  --ds-bp-xl:  1728px;
+  --ds-bp-full: 1920px;
+
+  --ds-container-max: 1440px;
+  --ds-container-px:  16px;
+  --ds-gutter:        16px;
+
+  --ds-grid-columns: 12;
 }
 
 @layer base {
@@ -57,9 +86,125 @@
   }
 
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--ds-font-family);
     background-color: var(--ds-bg);
     color: var(--ds-n800);
     -webkit-font-smoothing: antialiased;
   }
+}
+
+/* Responsive layout variables */
+@media (min-width: 744px) {
+  :root {
+    --ds-container-px: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --ds-gutter: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --ds-container-px: 32px;
+    --ds-gutter: 32px;
+  }
+}
+
+/* ── Container & grid ── */
+.ds-container {
+  width: 100%;
+  max-width: var(--ds-container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--ds-container-px);
+  padding-right: var(--ds-container-px);
+}
+
+.ds-grid-12 {
+  display: grid;
+  grid-template-columns: repeat(var(--ds-grid-columns), minmax(0, 1fr));
+  gap: var(--ds-gutter);
+}
+
+/* ── Tipografia (mobile first; headings LINE-HEIGHT 120%) ── */
+.ds-heading-1,
+.ds-heading-2,
+.ds-heading-3,
+.ds-heading-4,
+.ds-heading-5,
+.ds-heading-6 {
+  font-family: var(--ds-font-family);
+  line-height: 1.2;
+  color: var(--ds-n800);
+}
+
+.ds-heading-1 { font-size: 32px; font-weight: 700; }
+.ds-heading-2 { font-size: 28px; font-weight: 700; }
+.ds-heading-3 { font-size: 26px; font-weight: 600; }
+.ds-heading-4 { font-size: 24px; font-weight: 600; }
+.ds-heading-5 { font-size: 20px; font-weight: 600; }
+.ds-heading-6 { font-size: 18px; font-weight: 600; }
+
+@media (min-width: 744px) {
+  .ds-heading-1 { font-size: 44px; }
+  .ds-heading-2 { font-size: 40px; }
+  .ds-heading-3 { font-size: 32px; }
+}
+
+.ds-subtitle-l,
+.ds-subtitle-m,
+.ds-subtitle-s {
+  font-family: var(--ds-font-family);
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--ds-n700);
+}
+
+.ds-subtitle-l { font-size: 16px; }
+.ds-subtitle-m { font-size: 14px; }
+.ds-subtitle-s { font-size: 12px; }
+
+.ds-body-l,
+.ds-body-m,
+.ds-body-s {
+  font-family: var(--ds-font-family);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.ds-body-l { font-size: 16px; color: var(--ds-n800); }
+.ds-body-m { font-size: 14px; color: var(--ds-n800); }
+.ds-body-s { font-size: 12px; color: var(--ds-n700); }
+
+.ds-label-l,
+.ds-label-m,
+.ds-label-s {
+  font-family: var(--ds-font-family);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--ds-n700);
+}
+
+.ds-label-l { font-size: 14px; }
+.ds-label-m { font-size: 12px; }
+.ds-label-s { font-size: 10px; color: var(--ds-n500); }
+
+.ds-link {
+  line-height: 1.5;
+  color: var(--ds-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ds-link:hover {
+  color: var(--ds-primary-hover);
+}
+
+.ds-link:focus-visible {
+  outline: 2px solid var(--ds-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
 }

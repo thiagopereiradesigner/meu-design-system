@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Modal Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    /* Subconjunto do botão do DS (mesmas classes da button-demo) */
+    .btn{
+      font-family: var(--ds-font-family);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.5;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      outline: none;
+      padding: 0;
+    }
+    .btn-medium{
+      padding: 8px 16px;
+      height: 40px;
+      font-size: 12px;
+    }
+    .btn-primary{
+      background-color: var(--ds-success);
+      color: #fff;
+    }
+    .btn-primary:hover{ background-color: #067647; }
+    .btn-secondary{
+      background-color: #E6F4ED;
+      color: #067647;
+    }
+    .btn-secondary:hover{ background-color: #CCE9DB; }
+    .btn-ghost{
+      background-color: transparent;
+      color: #067647;
+    }
+    .btn-ghost:hover{ background-color: #E6F4ED; }
+
+    .modal-overlay{
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 24px;
+    }
+    .modal-overlay.show{ display: flex; }
+
+    .modal{
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+    }
+
+    .modal-header{
+      padding: 24px;
+      border-bottom: 1px solid var(--ds-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-title{
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ds-n800);
+      margin: 0;
+    }
+
+    .modal-content{
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .close-btn{
+      /* Mantém compatibilidade com layout anterior; as classes .btn* aplicam a estética */
+      padding: 0;
+      min-width: 40px;
+      min-height: 40px;
+      flex-shrink: 0;
+    }
+    .close-btn:hover{ background-color: #F3F3F3; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div style="flex:1;"></div>
+    <span class="ds-topbar-title">Modal</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Modal</h1>
+    <p class="section-subtitle" style="margin-bottom:28px;">
+      Diálogo para confirmar ações (overlay + fechamento por overlay, botão e <code>Esc</code>).
+    </p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li>Modal usa <code>role="dialog"</code> e <code>aria-modal="true"</code>.</li>
+        <li>Fechamento por <code>Esc</code> e clique no overlay.</li>
+        <li>Foco inicial no botão de fechar ao abrir.</li>
+      </ul>
+    </div>
+
+    <div class="section" style="margin-top:16px;">
+      <div class="section-title" style="margin-bottom:10px;">Preview</div>
+      <button class="btn btn-primary btn-medium" id="modal-open-btn" type="button" onclick="openModal()">Abrir Modal</button>
+
+      <div class="modal-overlay" id="modal-overlay" onclick="closeModal()" aria-hidden="true">
+        <div class="modal" id="modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div class="modal-header">
+            <h2 class="modal-title" id="modal-title">Confirmar Ação</h2>
+            <button class="btn btn-ghost btn-medium close-btn" id="modal-close-btn" type="button" onclick="closeModal()" aria-label="Fechar Modal">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal-content">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <p>Você tem certeza que deseja realizar esta ação?</p>
+              <p>Esta operação não pode ser desfeita.</p>
+
+              <div style="display:flex;gap:12px;justify-content:flex-end;">
+                <button class="btn btn-primary btn-medium" type="button" onclick="confirmModal()">Confirmar</button>
+                <button class="btn btn-secondary btn-medium" type="button" onclick="closeModal()">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+        <li><code>div.modal-overlay</code>: overlay escurecida + fechamento ao clicar fora.</li>
+        <li><code>div.modal</code>: container do diálogo (role/aria).</li>
+        <li><code>role="dialog"</code> + <code>aria-modal="true"</code> para leitores de tela.</li>
+        <li><code>button.close-btn</code>: fechar.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">Estruture overlay + modal e use as classes <code>.show</code> via JS.</div>
+      <pre class="code"><code>{/* HTML + JS mínimo */}
+&lt;button type="button" id="modal-open-btn" onclick="openModal()"&gt;Abrir Modal&lt;/button&gt;
+
+&lt;div class="modal-overlay" id="modal-overlay" onclick="closeModal()"&gt;
+  &lt;div class="modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="modal-title"&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;h2 class="modal-title" id="modal-title"&gt;Confirmar Ação&lt;/h2&gt;
+      &lt;button type="button" onclick="closeModal()"&gt;Fechar&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-content"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  function openModal() {
+    document.getElementById('modal-overlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) =&gt; {
+    if (e.key === 'Escape') closeModal();
+  });
+&lt;/script&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">Use <code>isOpen</code> e <code>onClose</code>; passe <code>title</code> e contenha ações em <code>children</code>.</div>
+      <pre class="code"><code>{/* JSX */}
+import { Modal } from '@/components/FinalComponents';
+import React, { useState } from 'react';
+
+function ConfirmDialog() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    &lt;&gt;
+      &lt;button type="button" onClick={() =&gt; setIsOpen(true)}&gt;Abrir Modal&lt;/button&gt;
+      &lt;Modal
+        isOpen={isOpen}
+        onClose={() =&gt; setIsOpen(false)}
+        title="Confirmar Ação"
+        size="medium"
+        showCloseButton={true}
+      &gt;
+        &lt;p&gt;Você tem certeza que deseja realizar esta ação?&lt;/p&gt;
+        &lt;div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}&gt;
+          &lt;button type="button"&gt;Confirmar&lt;/button&gt;
+          &lt;button type="button"&gt;Cancelar&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/Modal&gt;
+    &lt;/&gt;
+  );
+}
+      </code></pre>
+      <div style="font-size:13px;color:var(--ds-n500);line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color:var(--ds-n800);margin-bottom:6px;">Props principais</div>
+        <div><code>isOpen</code>: controla exibição.</div>
+        <div><code>onClose</code>: callback ao fechar.</div>
+        <div><code>title</code>: título do header.</div>
+        <div><code>size</code> (opcional): 'small' | 'medium' | 'large'.</div>
+        <div><code>showCloseButton</code> (opcional): exibe botão fechar.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.openModal = function openModal() {
+      const overlay = document.getElementById('modal-overlay');
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('modal-close-btn').focus();
+    };
+
+    window.closeModal = function closeModal() {
+      const overlay = document.getElementById('modal-overlay');
+      overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      document.getElementById('modal-open-btn').focus();
+    };
+
+    window.confirmModal = function confirmModal() {
+      // Evita erro de referência (confirmModal não existia antes).
+      window.closeModal();
+      alert('Ação confirmada!');
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.closeModal();
+    });
+  </script>
+</body>
+</html>
+

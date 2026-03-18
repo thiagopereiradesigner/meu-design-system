@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Empresa - Design System</title>
+  <title>TP.IA - Design System</title>
   <style>
     * {
       margin: 0;
@@ -451,7 +451,7 @@
 <body>
   <!-- Header -->
   <header class="header">
-    <h1>Portal Empresa Design System</h1>
+    <h1>TP.IA Design System</h1>
     <p>Biblioteca de componentes reutilizáveis com tokens de design e documentação completa</p>
   </header>
 
@@ -482,10 +482,10 @@
     </div>
     <div class="filter-buttons">
       <button class="filter-btn active" data-filter="all">Todos</button>
-      <button class="filter-btn" data-filter="form">Formulários</button>
-      <button class="filter-btn" data-filter="feedback">Feedback</button>
-      <button class="filter-btn" data-filter="data">Dados</button>
       <button class="filter-btn" data-filter="foundation">Fundação</button>
+      <button class="filter-btn" data-filter="form">Formulários</button>
+      <button class="filter-btn" data-filter="data">Dados</button>
+      <button class="filter-btn" data-filter="feedback">Feedback</button>
       <button class="filter-btn" data-filter="navigation">Navegação</button>
     </div>
   </div>
@@ -515,6 +515,12 @@
         description: 'Biblioteca de ícones Lucide com busca, categorias e download em SVG',
         category: 'foundation',
         file: 'icons-demo.html'
+      },
+      {
+        name: 'Tooltip',
+        description: 'Dica contextual com setinha e posições (top/right/bottom/left)',
+        category: 'foundation',
+        file: 'tooltip-demo.html'
       },
       {
         name: 'Button',
@@ -560,6 +566,12 @@
         file: 'textarea-demo.html'
       },
       {
+        name: 'Date Picker',
+        description: 'Seletor de data com calendário, seleção de intervalo e todos os estados do campo',
+        category: 'form',
+        file: 'datepicker-demo.html'
+      },
+      {
         name: 'Table',
         description: 'Tabelas responsivas com sorting, paginação e virtual scrolling',
         category: 'data',
@@ -572,22 +584,70 @@
         file: 'toast-demo-updated.html'
       },
       {
+        name: 'Alert',
+        description: 'Alertas inline (ícone + opcional texto) com dismiss',
+        category: 'feedback',
+        file: 'alert-demo.html'
+      },
+      {
         name: 'Badge',
         description: 'Indicadores visuais para status e contadores',
         category: 'feedback',
-        file: 'table-demo.html'
+        file: 'badge-demo.html'
+      },
+      {
+        name: 'Spinner',
+        description: 'Indicador visual de carregamento (status) com variantes de tamanho',
+        category: 'feedback',
+        file: 'spinner-demo.html'
+      },
+      {
+        name: 'Divider',
+        description: 'Linha separadora horizontal/vertical para seções e feedback',
+        category: 'foundation',
+        file: 'divider-demo.html'
+      },
+      {
+        name: 'Accordion',
+        description: 'Perguntas e respostas colapsáveis, estilo shadcn com divider',
+        category: 'navigation',
+        file: 'accordion-demo.html'
+      },
+      {
+        name: 'Stepper',
+        description: 'Indicador de progresso por etapas com step atual destacado (sticky)',
+        category: 'navigation',
+        file: 'stepper-demo.html'
+      },
+      {
+        name: 'Breadcrumb',
+        description: 'Navegação hierárquica (caminho) com item atual e separadores',
+        category: 'navigation',
+        file: 'breadcrumb-demo.html'
+      },
+      {
+        name: 'Menu',
+        description: 'Navegação lateral colapsável com item ativo',
+        category: 'navigation',
+        file: 'menu-demo.html'
+      },
+      {
+        name: 'Drawer',
+        description: 'Painel lateral com overlay, fechamento por clique/esc e conteúdo composto',
+        category: 'navigation',
+        file: 'drawer-demo.html'
+      },
+      {
+        name: 'Modal',
+        description: 'Diálogo centralizado para confirmação de ações (overlay + esc)',
+        category: 'navigation',
+        file: 'modal-demo.html'
       },
       {
         name: 'Tab',
         description: 'Navegação entre seções com variantes linha e pílula, suporte a ícones e badges',
         category: 'navigation',
         file: 'tab-demo.html'
-      },
-      {
-        name: 'Date Picker',
-        description: 'Seletor de data com calendário, seleção de intervalo e todos os estados do campo',
-        category: 'form',
-        file: 'datepicker-demo.html'
       }
     ];
 
@@ -708,6 +768,122 @@
               <div class="preview-row">
                 <span class="preview-badge">Ativo</span>
                 <span class="preview-badge" style="background:#FEE2E2;color:#DC2626;">Erro</span>
+              </div>
+            </div>
+          `;
+        case 'Spinner':
+          return `
+            <div class="preview-inner" style="justify-content:flex-start;">
+              <div style="width:20px;height:20px;border-radius:50%;border:3px solid #C6C6C6;border-top-color:#04843B;"></div>
+              <div style="margin-left:10px;display:flex;flex-direction:column;gap:2px;">
+                <div style="font-size:11px;font-weight:600;color:#1A1A1A;">Carregando</div>
+                <div style="font-size:9px;color:#656976;">Status</div>
+              </div>
+            </div>
+          `;
+        case 'Alert':
+          return `
+            <div class="preview-inner" style="align-items:flex-start;justify-content:flex-start;">
+              <div style="display:flex;align-items:flex-start;gap:10px;background:#04843B;color:#fff;border-radius:8px;padding:10px 12px;max-width:100%;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;">
+                  <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+                </svg>
+                <div style="display:flex;flex-direction:column;gap:2px;">
+                  <div style="font-size:12px;font-weight:800;line-height:1.3;">Sucesso</div>
+                  <div style="font-size:11px;font-weight:500;opacity:0.95;line-height:1.3;">Operação concluída.</div>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Divider':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:stretch;justify-content:center;gap:12px;">
+              <div style="width:100%;height:1px;background:#E0E0E0;"></div>
+              <div style="width:70%;height:1px;background:#E0E0E0;"></div>
+              <div style="width:40%;height:1px;background:#E0E0E0;"></div>
+            </div>
+          `;
+        case 'Tooltip':
+          return `
+            <div class="preview-inner" style="align-items:flex-start;justify-content:flex-start;">
+              <div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+                <div style="background:#fff;border:1px solid #DDDDDD;border-radius:9999px;padding:6px 10px;font-size:12px;color:#393939;">Passe</div>
+                <div style="position:absolute;top:-10px;left:50%;transform:translate(-50%,-100%);background:#1A1A1A;color:#fff;padding:6px 8px;border-radius:8px;font-size:11px;white-space:nowrap;">
+                  Tooltip
+                  <div style="position:absolute;left:50%;top:100%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #1A1A1A;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Accordion':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:stretch;justify-content:flex-start;gap:10px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                <span style="font-size:11px;color:#1A1A1A;font-weight:500;">
+                  <span style="font-weight:500;">1.</span> <span style="font-weight:800;">O que você precisa saber?</span>
+                </span>
+                <span style="font-size:12px;color:#656976;">▾</span>
+              </div>
+              <div style="height:1px;background:#E0E0E0;"></div>
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                <span style="font-size:11px;color:#1A1A1A;font-weight:500;">
+                  <span style="font-weight:500;">2.</span> <span style="font-weight:800;">Como funciona?</span>
+                </span>
+                <span style="font-size:12px;color:#656976;">▾</span>
+              </div>
+              <div style="font-size:10px;color:#656976;line-height:1.4;">Conteúdo do item aberto (preview)</div>
+            </div>
+          `;
+        case 'Stepper':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;">
+              <div style="display:flex;gap:6px;width:100%;">
+                <div style="flex:1;height:8px;border-radius:9999px;background:#04843B;"></div>
+                <div style="flex:1;height:8px;border-radius:9999px;background:#04843B;"></div>
+                <div style="flex:1;height:8px;border-radius:9999px;background:#E0E0E0;"></div>
+              </div>
+              <div style="font-size:11px;font-weight:900;color:#1A1A1A;">Confirmação</div>
+            </div>
+          `;
+        case 'Breadcrumb':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;">
+              <div style="font-size:12px;color:#656976;">
+                Home <span style="color:#727272;">/</span> Produtos <span style="color:#727272;">/</span> <span style="color:#1A1A1A;font-weight:700;">Atual</span>
+              </div>
+            </div>
+          `;
+        case 'Menu':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;padding:12px 14px;">
+              <div style="border:1px solid #E0E0E0;border-radius:12px;overflow:hidden;">
+                <div style="padding:10px 12px;background:#E6F4ED;border-left:3px solid #04843B;font-weight:700;color:#04843B;display:flex;gap:10px;align-items:center;">
+                  <span style="width:10px;height:10px;border-radius:2px;background:#04843B;display:inline-block;"></span>
+                  <span style="font-size:11px;">Dashboard</span>
+                </div>
+                <div style="padding:10px 12px;display:flex;gap:10px;align-items:center;">
+                  <span style="width:10px;height:10px;border-radius:2px;background:#C6C6C6;display:inline-block;"></span>
+                  <span style="font-size:11px;color:#656976;">Usuários</span>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'Drawer':
+          return `
+            <div class="preview-inner" style="justify-content:flex-start;align-items:flex-start;">
+              <div style="width:100%;height:100%;position:relative;">
+                <div style="position:absolute;right:0;top:18px;width:120px;height:90px;background:#fff;border:1px solid #E0E0E0;border-radius:12px;box-shadow:0 10px 20px rgba(0,0,0,0.08);"></div>
+                <div style="position:absolute;left:0;top:10px;width:100%;font-size:11px;color:#656976;padding-left:10px;">Drawer</div>
+              </div>
+            </div>
+          `;
+        case 'Modal':
+          return `
+            <div class="preview-inner" style="justify-content:center;align-items:center;">
+              <div style="width:210px;background:#fff;border:1px solid #E0E0E0;border-radius:12px;box-shadow:0 10px 20px rgba(0,0,0,0.08);padding:12px;">
+                <div style="font-size:12px;font-weight:800;color:#1A1A1A;margin-bottom:10px;">Confirmar</div>
+                <div style="height:1px;background:#E0E0E0;margin:0 -12px 12px;"></div>
+                <div style="font-size:10px;color:#656976;">Ação irreversível</div>
               </div>
             </div>
           `;

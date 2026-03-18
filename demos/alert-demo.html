@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Alert Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    :root{
+      --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ds-success: #04843B;
+      --ds-success-bg: #E6F4ED;
+      --ds-success-fg: #005A1A;
+
+      --ds-error: #DC2626;
+      --ds-error-bg: #FEE2E2;
+      --ds-error-fg: #DC2626;
+
+      --ds-warning: #DC6803;
+      --ds-warning-bg: #FEF3C7;
+      --ds-warning-fg: #92400E;
+
+      --ds-info: #3B82F6;
+      --ds-info-bg: #DBEAFE;
+      --ds-info-fg: #1E40AF;
+
+      --ds-neutral-bg: #F3F3F3;
+      --ds-neutral-fg: #656976;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--ds-font-family); background: #F9F9F9; color: #1A1A1A; }
+
+    .ds-topbar{
+      position: sticky; top: 0; z-index: 10;
+      background: #fff; border-bottom: 1px solid #E0E0E0;
+      height: 56px; display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    @media(min-width:744px){ .ds-topbar{ padding: 0 24px; } }
+    @media(min-width:1280px){ .ds-topbar{ padding: 0 32px; } }
+
+    .ds-back-btn{
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 8px;
+      border: 1px solid #d0d0d0; background: #fff; color: #333;
+      font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .ds-back-btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: #F3F4F6; }
+    .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success-fg); }
+    .ds-topbar-spacer{ flex: 1; }
+
+    .ds-container{
+      width: 100%; max-width: 1440px; margin: 0 auto;
+      padding: 40px 16px;
+    }
+    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+    @media(min-width:1280px){ .ds-container{ padding-left: 32px; padding-right: 32px; } }
+
+    h1{ font-size: 28px; font-weight: 700; color: var(--ds-success-fg); margin-bottom: 8px; }
+    p.lead{ font-size: 14px; color: #656976; margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
+
+    .section{
+      background: #fff; border-radius: 12px; border: 1px solid #E0E0E0;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+    .section-subtitle{ font-size: 14px; color: #656976; margin-bottom: 16px; line-height: 1.6; }
+
+    .stack{ display: flex; flex-direction: column; gap: 14px; }
+
+    .alert{
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 16px; border-radius: 8px;
+      position: relative;
+      border: 1px solid rgba(0,0,0,0.02);
+      width: 100%;
+      max-width: 720px;
+    }
+    .alert.align-center{ align-items: center; padding: 12px; }
+
+    .alert .alert-text{ display: flex; flex-direction: column; gap: 4px; }
+    .alert .alert-title{ font-size: 14px; font-weight: 700; line-height: 1.5; }
+    .alert .alert-message{ font-size: 14px; font-weight: 400; line-height: 1.5; }
+
+    .alert .alert-close{
+      margin-left: auto;
+      background: none; border: none; cursor: pointer;
+      padding: 4px; border-radius: 6px;
+    }
+
+    /* Active */
+    .alert.active.success{ background: var(--ds-success); color: #fff; }
+    .alert.active.success .alert-title, .alert.active.success .alert-message{ color: #fff; }
+    .alert.active.error{ background: var(--ds-error); color: #fff; }
+    .alert.active.error .alert-title, .alert.active.error .alert-message{ color: #fff; }
+    .alert.active.warning{ background: var(--ds-warning); color: #fff; }
+    .alert.active.warning .alert-title, .alert.active.warning .alert-message{ color: #fff; }
+    .alert.active.info{ background: var(--ds-info); color: #fff; }
+    .alert.active.info .alert-title, .alert.active.info .alert-message{ color: #fff; }
+
+    /* Light */
+    .alert.light.success{ background: var(--ds-success-bg); color: var(--ds-success-fg); }
+    .alert.light.success .alert-title, .alert.light.success .alert-message{ color: var(--ds-success-fg); }
+    .alert.light.error{ background: var(--ds-error-bg); color: var(--ds-error-fg); }
+    .alert.light.error .alert-title, .alert.light.error .alert-message{ color: var(--ds-error-fg); }
+    .alert.light.warning{ background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+    .alert.light.warning .alert-title, .alert.light.warning .alert-message{ color: var(--ds-warning-fg); }
+    .alert.light.info{ background: var(--ds-info-bg); color: var(--ds-info-fg); }
+    .alert.light.info .alert-title, .alert.light.info .alert-message{ color: var(--ds-info-fg); }
+
+    /* Icon stroke */
+    .alert svg{ flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div class="ds-topbar-spacer"></div>
+    <span class="ds-topbar-title">Alert</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1>Alert inline (variação do Toast)</h1>
+    <p class="lead">Ícone por tipo e opção de texto. Também inclui botão de fechar (dismiss).</p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li><strong>Semântica:</strong> `role="alert"` no componente React.</li>
+        <li><strong>Controle visual:</strong> alternativa `showText={false}` mantém título sem reduzir entendimento.</li>
+        <li><strong>Fechamento:</strong> botão de dismiss com <code>aria-label</code>.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+        <li><code>div.alert</code>: wrapper do alerta (modificadores <code>active</code>/<code>light</code> e <code>success|error|warning|info</code>).</li>
+        <li><code>role="alert"</code>: anuncia conteúdo para leitores de tela (quando renderizado no fluxo).</li>
+        <li><code>svg</code>: ícone do tipo (success/error/warning/info).</li>
+        <li><code>div.alert-text</code>: agrupador do texto.</li>
+        <li><code>div.alert-title</code>: sempre exibido quando existe título.</li>
+        <li><code>div.alert-message</code>: body/mensagem (pode ser omitido para “ícone sem body”).</li>
+        <li><code>button.alert-close</code>: botão de fechar com <code>aria-label</code>.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">
+        Para “ícone sem body”, não renderize <code>.alert-message</code> (mas mantenha <code>.alert-title</code>).
+      </div>
+      <pre class="code"><code>{/* HTML */}
+&lt;div class="alert active success" role="alert"&gt;
+  &lt;svg ...&gt;&lt;/svg&gt;
+  &lt;div class="alert-text"&gt;
+    &lt;div class="alert-title"&gt;Sucesso&lt;/div&gt;
+    &lt;div class="alert-message"&gt;Operação concluída com sucesso.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;button class="alert-close" aria-label="Fechar alerta" onclick="..."&gt;...&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="alert active warning" role="alert"&gt;
+  &lt;svg ...&gt;&lt;/svg&gt;
+  &lt;div class="alert-text"&gt;
+    &lt;div class="alert-title"&gt;Atenção&lt;/div&gt;
+    &lt;!-- sem .alert-message --&gt;
+  &lt;/div&gt;
+  &lt;button class="alert-close" aria-label="Fechar alerta" onclick="..."&gt;...&lt;/button&gt;
+&lt;/div&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Com ícone + texto</div>
+      <div class="section-subtitle">Active e Light, mostrando título e mensagem.</div>
+      <div class="stack">
+        <div class="alert active success" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Sucesso</div>
+            <div class="alert-message">Operação concluída com sucesso.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="alert active error" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Erro</div>
+            <div class="alert-message">Não foi possível completar a operação.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="alert active warning" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Atenção</div>
+            <div class="alert-message">Alguns campos precisam ser revisados.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="alert active info" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Info</div>
+            <div class="alert-message">Há uma nova atualização disponível.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Ícone com título (sem body)</div>
+      <div class="section-subtitle">Quando o contexto já está claro na tela.</div>
+      <div class="stack">
+        <div class="alert active success align-center" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Sucesso</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="alert active warning align-center" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Atenção</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="alert active error align-center" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Erro</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="alert active info align-center" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <div class="alert-text">
+            <div class="alert-title">Info</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').remove()" aria-label="Fechar alerta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">
+        Alert inline é um componente “dentro do fluxo” (não fixa na tela). Ele pode exibir <code>message</code> e/ou apenas <code>title</code>
+        (quando <code>showText={false}</code>).
+      </div>
+
+      <pre class="code" style="margin-top:0;background:#F3F3F3;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;line-height:1.5;">
+        <code>{/* JSX */}
+import { Alert } from '@/components/ui/Alert';
+
+<Alert
+  type="error"
+  variant="active"
+  title="Erro"
+  message="Revise os campos obrigatórios."
+/>
+
+<Alert
+  type="warning"
+  showText={false}
+  title="Atenção"
+/>
+        </code>
+      </pre>
+
+      <div style="margin-top:14px;font-size:13px;color:#656976;line-height:1.7;">
+        <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+        <div><code>type</code>: success | error | warning | info</div>
+        <div><code>variant</code>: active | light</div>
+        <div><code>showText</code>: controla exibição do body (message)</div>
+        <div><code>maxWidth</code>: evita alerta “esticar a tela” (default: 720px)</div>
+        <div><code>dismissible</code>/<code>onDismiss</code>: controle do fechar</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

@@ -79,6 +79,32 @@ const CloseIcon = ({ color = '#FFFFFF', size = 16 }) => (
   </svg>
 );
 
+// Check circle (success)
+const CheckCircleIcon = ({ color = '#FFFFFF', size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+// Circle x (error)
+const CircleXIcon = ({ color = '#FFFFFF', size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="m15 9-6 6" />
+    <path d="m9 9 6 6" />
+  </svg>
+);
+
+// Triangle alert (warning)
+const TriangleAlertIcon = ({ color = '#FFFFFF', size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
+
 // ==================== TOAST COMPONENT ====================
 const Toast = ({ 
   id,
@@ -88,6 +114,7 @@ const Toast = ({
   message,
   duration = null,
   showProgress = true,
+  showText = true,
   onClose,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -110,46 +137,51 @@ const Toast = ({
   // Configurações de cores por tipo e variante
   const getColors = () => {
     const isActive = variant === 'active';
-    
+
+    // Tema via CSS variables (--ds-*). White-label: cada parceiro sobrescreve --ds-error/success/warning/info.
     const colorMap = {
       success: {
-        bg: isActive ? tokens.colors.semantic.success : tokens.colors.semantic.successLight,
-        text: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.successDark,
-        icon: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.success,
-        close: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.success,
-        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'rgba(4,132,59,0.3)',
-        progressFill: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.successDark,
+        bg: isActive ? 'var(--ds-success)' : 'var(--ds-success-bg)',
+        text: isActive ? '#FFFFFF' : 'var(--ds-success-fg)',
+        icon: isActive ? '#FFFFFF' : 'var(--ds-success)',
+        close: isActive ? '#FFFFFF' : 'var(--ds-success-fg)',
+        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'color-mix(in srgb, var(--ds-success) 30%, transparent)',
+        progressFill: isActive ? '#FFFFFF' : 'var(--ds-success-fg)',
       },
       error: {
-        bg: isActive ? tokens.colors.semantic.error : tokens.colors.semantic.errorLight,
-        text: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.errorDark,
-        icon: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.error,
-        close: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.error,
-        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'rgba(220,38,38,0.3)',
-        progressFill: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.errorDark,
+        bg: isActive ? 'var(--ds-error)' : 'var(--ds-error-bg)',
+        text: isActive ? '#FFFFFF' : 'var(--ds-error-fg)',
+        icon: isActive ? '#FFFFFF' : 'var(--ds-error)',
+        close: isActive ? '#FFFFFF' : 'var(--ds-error-fg)',
+        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'color-mix(in srgb, var(--ds-error) 30%, transparent)',
+        progressFill: isActive ? '#FFFFFF' : 'var(--ds-error-fg)',
       },
       warning: {
-        bg: isActive ? tokens.colors.semantic.warning : tokens.colors.semantic.warningLight,
-        text: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.warningDark,
-        icon: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.warning,
-        close: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.warning,
-        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'rgba(220,104,3,0.3)',
-        progressFill: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.warningDark,
+        bg: isActive ? 'var(--ds-warning)' : 'var(--ds-warning-bg)',
+        text: isActive ? '#FFFFFF' : 'var(--ds-warning-fg)',
+        icon: isActive ? '#FFFFFF' : 'var(--ds-warning)',
+        close: isActive ? '#FFFFFF' : 'var(--ds-warning-fg)',
+        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'color-mix(in srgb, var(--ds-warning) 30%, transparent)',
+        progressFill: isActive ? '#FFFFFF' : 'var(--ds-warning-fg)',
       },
       info: {
-        bg: isActive ? tokens.colors.semantic.info : tokens.colors.semantic.infoLight,
-        text: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.infoDark,
-        icon: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.info,
-        close: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.info,
-        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'rgba(59,130,246,0.3)',
-        progressFill: isActive ? tokens.colors.neutral[0] : tokens.colors.semantic.infoDark,
+        bg: isActive ? 'var(--ds-info)' : 'var(--ds-info-bg)',
+        text: isActive ? '#FFFFFF' : 'var(--ds-info-fg)',
+        icon: isActive ? '#FFFFFF' : 'var(--ds-info)',
+        close: isActive ? '#FFFFFF' : 'var(--ds-info-fg)',
+        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'color-mix(in srgb, var(--ds-info) 30%, transparent)',
+        progressFill: isActive ? '#FFFFFF' : 'var(--ds-info-fg)',
       },
     };
 
-    return colorMap[type];
+    return colorMap[type] || colorMap.info;
   };
 
   const colors = getColors();
+  const shouldRenderText = Boolean(showText) && (title || message);
+  // Toast usa o mesmo ícone "circle-alert" por tipo,
+  // variando apenas cor (alinhado ao Lucide e ao design do Figma).
+  const Icon = InfoIcon;
 
   // Animação de entrada
   useEffect(() => {
@@ -217,15 +249,15 @@ const Toast = ({
 
   const toastStyles = {
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: shouldRenderText ? 'flex-start' : 'center',
     gap: tokens.spacing.sm,
-    padding: tokens.spacing.md,
+    padding: shouldRenderText ? tokens.spacing.md : tokens.spacing.sm,
     backgroundColor: colors.bg,
     borderRadius: tokens.borderRadius.sm,
     boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
     fontFamily: tokens.typography.fontFamily,
-    minWidth: '320px',
-    maxWidth: '480px',
+    minWidth: shouldRenderText ? '320px' : 'unset',
+    maxWidth: shouldRenderText ? '480px' : 'unset',
     position: 'relative',
     overflow: 'hidden',
   };
@@ -296,17 +328,20 @@ const Toast = ({
         role="alert"
         aria-live={ariaLive}
         aria-atomic="true"
+        aria-label={title || message || type}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Icon */}
-        <InfoIcon color={colors.icon} />
+        <Icon color={colors.icon} />
 
-        {/* Content */}
-        <div style={contentStyles}>
-          <p style={titleStyles}>{title}</p>
-          {message && <p style={messageStyles}>{message}</p>}
-        </div>
+        {/* Content (opcional para "sem texto") */}
+        {shouldRenderText && (
+          <div style={contentStyles}>
+            {title && <p style={titleStyles}>{title}</p>}
+            {message && <p style={messageStyles}>{message}</p>}
+          </div>
+        )}
 
         {/* Close Button */}
         <button

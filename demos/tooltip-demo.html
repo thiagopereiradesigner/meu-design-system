@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Tooltip Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    .tooltip-container { position: relative; display: inline-block; }
+
+    .tooltip{
+      position: absolute;
+      background-color: var(--ds-n800);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
+      z-index: 9998;
+    }
+    .tooltip.show{ opacity: 1; visibility: visible; }
+
+    .tooltip::after{
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+
+    .tooltip-top{
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+    }
+    .tooltip-top::after{
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid var(--ds-n800);
+    }
+
+    .tooltip-bottom{
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+    }
+    .tooltip-bottom::after{
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid var(--ds-n800);
+    }
+
+    .tooltip-left{
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%) translateX(-8px);
+    }
+    .tooltip-left::after{
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 6px solid var(--ds-n800);
+    }
+
+    .tooltip-right{
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%) translateX(8px);
+    }
+    .tooltip-right::after{
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 6px solid var(--ds-n800);
+    }
+
+    .btn{
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #d0d0d0;
+      background: #fff;
+      color: var(--ds-n800);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: #F3F4F6; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div style="flex:1;"></div>
+    <span class="ds-topbar-title">Tooltip</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Tooltip (com arrow)</h1>
+    <p class="section-subtitle" style="margin-bottom:28px;">
+      Dica contextual exibida ao passar o mouse ou focar o elemento (com setinha).
+    </p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li>Tooltip usa <code>role="tooltip"</code> e <code>aria-describedby</code> no trigger.</li>
+        <li>Suporta teclado: exibe também em <code>focus</code>/<code>blur</code>.</li>
+        <li>Delay controlado no JS para reduzir poluição visual.</li>
+      </ul>
+    </div>
+
+    <div class="section" style="margin-top:16px;">
+      <div class="section-title" style="margin-bottom:10px;">Preview</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;padding:18px 0;align-items:flex-start;">
+        <div class="tooltip-container" data-delay="200">
+          <button class="btn" type="button" aria-describedby="tip-top">Top</button>
+          <div id="tip-top" class="tooltip tooltip-top" role="tooltip">Tooltip no topo</div>
+        </div>
+        <div class="tooltip-container" data-delay="200">
+          <button class="btn" type="button" aria-describedby="tip-right">Right</button>
+          <div id="tip-right" class="tooltip tooltip-right" role="tooltip">Tooltip à direita</div>
+        </div>
+        <div class="tooltip-container" data-delay="200">
+          <button class="btn" type="button" aria-describedby="tip-bottom">Bottom</button>
+          <div id="tip-bottom" class="tooltip tooltip-bottom" role="tooltip">Tooltip embaixo</div>
+        </div>
+        <div class="tooltip-container" data-delay="200">
+          <button class="btn" type="button" aria-describedby="tip-left">Left</button>
+          <div id="tip-left" class="tooltip tooltip-left" role="tooltip">Tooltip à esquerda</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+        <li><code>div.tooltip-container</code>: wrapper do trigger + tooltip.</li>
+        <li><code>button</code> (ou trigger): elemento alvo com <code>aria-describedby</code>.</li>
+        <li><code>div.tooltip</code>: conteúdo do tooltip (setinha via <code>::after</code>).</li>
+        <li><code>role="tooltip"</code>: identifica a região como tooltip.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">Use um wrapper e um par trigger + tooltip com <code>id</code>/<code>aria-describedby</code>.</div>
+      <pre class="code"><code>{/* HTML + JS mínimo */}
+&lt;div class="tooltip-container" data-delay="200"&gt;
+  &lt;button type="button" aria-describedby="tip-top"&gt;Top&lt;/button&gt;
+  &lt;div id="tip-top" class="tooltip tooltip-top" role="tooltip"&gt;
+    Tooltip no topo
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function setupTooltips(){
+    document.querySelectorAll('.tooltip-container').forEach((container) =&gt; {
+      const btn = container.querySelector('button');
+      const tooltip = container.querySelector('.tooltip');
+      const delay = Number(container.getAttribute('data-delay') || 200);
+
+      let t = null;
+      function show(){ tooltip.classList.add('show'); }
+      function hide(){ tooltip.classList.remove('show'); }
+
+      btn.addEventListener('mouseenter', () =&gt; { clearTimeout(t); t = setTimeout(show, delay); });
+      btn.addEventListener('mouseleave', () =&gt; { clearTimeout(t); hide(); });
+      btn.addEventListener('focus', () =&gt; { clearTimeout(t); t = setTimeout(show, delay); });
+      btn.addEventListener('blur', () =&gt; { clearTimeout(t); hide(); });
+    });
+  })();
+&lt;/script&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">A API do componente segue: <code>content</code>, <code>position</code> e <code>delay</code>.</div>
+      <pre class="code"><code>{/* JSX */}
+import { Tooltip } from '@/components/FinalComponents';
+
+function Example() {
+  return (
+    &lt;Tooltip content="Tooltip no topo" position="top" delay={200}&gt;
+      &lt;button type="button"&gt;Top&lt;/button&gt;
+    &lt;/Tooltip&gt;
+  );
+}
+      </code></pre>
+      <div style="font-size:13px;color:var(--ds-n500);line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color:var(--ds-n800);margin-bottom:6px;">Props principais</div>
+        <div><code>content</code>: texto da dica.</div>
+        <div><code>position</code>: top | right | bottom | left.</div>
+        <div><code>delay</code> (opcional): ms para exibir.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function setupTooltips(){
+      document.querySelectorAll('.tooltip-container').forEach((container) => {
+        const btn = container.querySelector('button');
+        const tooltip = container.querySelector('.tooltip');
+        const delay = Number(container.getAttribute('data-delay') || 200);
+
+        let t = null;
+        function show(){ tooltip.classList.add('show'); }
+        function hide(){ tooltip.classList.remove('show'); }
+
+        btn.addEventListener('mouseenter', () => { clearTimeout(t); t = setTimeout(show, delay); });
+        btn.addEventListener('mouseleave', () => { clearTimeout(t); hide(); });
+        btn.addEventListener('focus', () => { clearTimeout(t); t = setTimeout(show, delay); });
+        btn.addEventListener('blur', () => { clearTimeout(t); hide(); });
+      });
+    })();
+  </script>
+</body>
+</html>
+

@@ -1,6 +1,6 @@
-# 🎨 Portal Empresa - Design System Completo
+# 🎨 TP.IA - Design System Completo
 
-Sistema de design completo e acessível para o Portal Empresa.
+Sistema de design completo e acessível para o TP.IA.
 
 ---
 
@@ -197,7 +197,13 @@ const tokens = {
 6. **TOAST-GUIDE.md** - Toast/Alert
 7. **FORM-COMPONENTS-GUIDE.md** - Textarea, Checkbox, Radio, Switch
 8. **FINAL-COMPONENTS-GUIDE.md** - Spinner, Tooltip, Menu, Tabs, Drawer, Modal, Breadcrumb
-9. **COMO-IMPORTAR-NO-CURSOR.md** - Setup Cursor
+9. **GUIA-LAYOUT-GRID-TIPOGRAFIA.md** - Grid, container e tipografia
+10. **BADGE-GUIDE.md** - Badge (com/sem ícone)
+11. **ALERT-GUIDE.md** - Alert inline (com dismiss e texto opcional)
+12. **DIVIDER-GUIDE.md** - Divider (linha separadora)
+13. **ACCORDION-GUIDE.md** - Accordion (com divider)
+14. **STEPPER-GUIDE.md** - Stepper (progresso sticky)
+15. **COMO-IMPORTAR-NO-CURSOR.md** - Setup Cursor
 
 ---
 
@@ -264,7 +270,7 @@ import {
 ```
 ✅ 17 Componentes
 ✅ 7 Arquivos JSX
-✅ 9 Guias MD
+✅ 12 Guias MD
 ✅ 9 Demos HTML
 ✅ 100% WCAG AA
 ✅ 100% Documentado
@@ -302,4 +308,4 @@ Os guias têm TUDO:
 
 ---
 
-**Design System Portal Empresa - 100% Completo** ✨
+**Design System TP.IA - 100% Completo** ✨

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Empresa - Radio Component</title>
+    <title>TP.IA - Radio Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         /* ── DS Navigation Bar ── */
@@ -30,7 +31,7 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
 
         body {
             font-family: 'Inter', sans-serif;
@@ -38,7 +39,7 @@
             padding: 40px;
             color: #393939;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1440px; margin: 0 auto; }
         .header { text-align: center; margin-bottom: 48px; }
         .header h1 { font-size: 32px; font-weight: 700; color: #005A1A; margin-bottom: 8px; }
         .header p { font-size: 16px; color: #5E5E5E; }
@@ -125,7 +126,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Portal Empresa - Design System</h1>
+            <h1>TP.IA - Design System</h1>
             <p>Componente Radio | Grupos e estados</p>
         </div>
 
@@ -178,12 +179,25 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+            <p class="section-description">
+                Radio group com input nativo e classes para estilização (estado checked/disabled).
+            </p>
+            <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+                <li><code>label.radio-wrapper</code>: wrapper clicável.</li>
+                <li><code>input[type="radio"].radio-input</code>: input nativo (radio).</li>
+                <li><code>span.radio-label</code>: texto da opção.</li>
+                <li><code>div.helper-text</code>: texto de apoio/erro no grupo.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
                 Estrutura base para um grupo de radios vertical.
             </p>
             <div class="code-block">
-<pre><code>&lt;div&gt;
+<pre class="code"><code>&lt;div&gt;
   &lt;div&gt;Método de pagamento&lt;/div&gt;
   &lt;label class="radio-wrapper"&gt;
     &lt;input type="radio" class="radio-input" name="payment" value="credit" checked /&gt;
@@ -195,6 +209,48 @@
   &lt;/label&gt;
 &lt;/div&gt;</code></pre>
             </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (React)</h2>
+            <p class="section-description" style="margin-bottom:12px;">
+                Exemplo usando o componente do design system.
+            </p>
+            <pre class="code" style="font-size:12px;"><code>{/* React */}
+import React, { useState } from 'react';
+import { RadioGroup } from '@/components/Forms/Radio/Radio';
+
+export default function Demo() {
+  const [value, setValue] = useState('credit');
+
+  return (
+    &lt;RadioGroup
+      label="Método de pagamento"
+      name="payment"
+      value={value}
+      onChange={setValue}
+      options={[
+        { label: 'Cartão de crédito', value: 'credit' },
+        { label: 'Cartão de débito', value: 'debit' },
+      ]}
+    /&gt;
+  );
+}
+            </code></pre>
+            <div style="font-size:13px;color:#5E5E5E;line-height:1.7;margin-top:14px;">
+                <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+                <div><code>label</code>, <code>options</code>, <code>value</code>, <code>onChange</code></div>
+                <div><code>direction</code> (vertical/horizontal), <code>disabled</code>, <code>error</code>, <code>helperText</code></div>
+            </div>
+        </div>
+
+        <div class="note">
+            <h3>♿ Nota Acessibilidade</h3>
+            <ul>
+                <li>Inputs nativos (<code>type="radio"</code>) preservam navegação por teclado.</li>
+                <li>Use <code>label</code> e <code>helperText</code> para contexto.</li>
+                <li>Para erro, passe <code>error</code> e garanta contraste.</li>
+            </ul>
         </div>
     </div>
 <!-- DS Navigation Search Script -->

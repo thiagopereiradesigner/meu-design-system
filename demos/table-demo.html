@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Empresa - Table Component</title>
+    <title>TP.IA - Table Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -34,7 +35,7 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
 
         
         body {
@@ -179,8 +180,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 4px 12px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 9999px;
             font-size: 12px;
             font-weight: 500;
             white-space: nowrap;
@@ -306,7 +307,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Portal Empresa - Design System</h1>
+            <h1>TP.IA - Design System</h1>
             <p>Componente Table</p>
         </div>
 
@@ -604,7 +605,60 @@
             </ul>
         </div>
 
+        <div class="section">
+            <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+            <p class="section-description">Estrutura do HTML para a Tabela com status via <code>Badge</code>.</p>
+            <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+                <li><code>table</code>: wrapper principal.</li>
+                <li><code>thead</code> + <code>th</code>: cabeçalho com colunas.</li>
+                <li><code>tbody</code> + <code>tr</code> + <code>td</code>: linhas e células de dados.</li>
+                <li>Status: <code>td</code> contendo <code>span.badge ...</code> (pill/border-radius full).</li>
+                <li>Interação (demo): <code>tr.clickable</code> com handler <code>onclick</code>.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (HTML)</h2>
+            <p class="section-description">Use as classes de status para manter a identidade visual.</p>
+            <pre class="code" style="font-size:12px;"><code>{/* HTML */}
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Nome&lt;/th&gt;
+      &lt;th&gt;Email&lt;/th&gt;
+      &lt;th&gt;Status&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr class="striped clickable" onclick="rowClick('Ana Oliveira')"&gt;
+      &lt;td&gt;Ana Oliveira&lt;/td&gt;
+      &lt;td&gt;ana@empresa.com&lt;/td&gt;
+      &lt;td&gt;
+        &lt;span class="badge badge-success badge-small"&gt;Ativo&lt;/span&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+            </code></pre>
+        </div>
+
         <!-- Design Tokens -->
+        <div class="section">
+            <h2 class="section-title">Como Usar (React)</h2>
+            <p class="section-description">
+                As células de status devem usar o componente <code>Badge</code> com formato pill (radius full).
+                No demo HTML usamos classes equivalentes para o visual; no app Next/React, use <code>Badge</code> real.
+            </p>
+            <pre class="code" style="font-size:12px;background:#F3F3F3;padding:12px;border-radius:12px;overflow-x:auto;">
+<code>{/* Exemplo */}
+import { Badge } from '@/components/ui/Badge';
+
+<Badge variant="success">Ativo</Badge>
+<Badge variant="neutral">Inativo</Badge>
+<Badge variant="warning">Férias</Badge>
+</code>
+            </pre>
+        </div>
         <div class="tokens-grid">
             <h3>🎨 Design Tokens Utilizados</h3>
             <div class="tokens-list">

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Accordion Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    :root{
+      --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ds-success: #04843B;
+      --ds-border: #E0E0E0;
+      --ds-n800: #1A1A1A;
+      --ds-n500: #656976;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--ds-font-family); background: #F9F9F9; color: var(--ds-n800); }
+
+    .ds-topbar{
+      position: sticky; top: 0; z-index: 10;
+      background: #fff; border-bottom: 1px solid #E0E0E0;
+      height: 56px; display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success); }
+
+    .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 40px 16px; }
+    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+
+    h1{ font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--ds-success); }
+    .lead{ font-size: 14px; color: #656976; margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
+
+    .section{
+      background: #fff; border-radius: 12px; border: 1px solid #E0E0E0;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+    .section-subtitle{ font-size: 14px; color: #656976; margin-bottom: 16px; line-height: 1.6; }
+
+    /* Accordion */
+    .accordion{
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .acc-trigger{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border: none;
+      background: transparent;
+      padding: 12px 0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ds-n800);
+    }
+
+    .acc-text{
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .acc-index{
+      font-weight: 500;
+    }
+
+    .acc-title{
+      font-weight: 800;
+    }
+
+    .acc-chevron{
+      width: 18px;
+      height: 18px;
+      transition: transform 200ms ease;
+      color: currentColor;
+    }
+
+    .acc-content{
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 220ms ease;
+    }
+
+    .acc-content-inner{
+      padding: 0 0 16px 0;
+      font-size: 14px;
+      color: var(--ds-n800);
+      line-height: 1.6;
+    }
+
+    .acc-item.open .acc-content{
+      max-height: 420px;
+    }
+
+    .acc-divider{
+      height: 1px;
+      background: var(--ds-border);
+      margin: 0;
+      display: none;
+    }
+
+    .acc-item.open .acc-divider{
+      display: block; /* divider “grudado” após a resposta aberta */
+    }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div style="flex:1;"></div>
+    <span class="ds-topbar-title">Accordion</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1>Accordion</h1>
+    <p class="lead">Estilo semelhante ao shadcn, incluindo divider após a resposta do item aberto.</p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li><strong>Keyboard friendly:</strong> trigger utiliza botão com <code>aria-expanded</code>.</li>
+        <li><strong>Leitura assistida:</strong> conteúdo usa <code>role="region"</code>.</li>
+        <li><strong>Divider “grudado”:</strong> traço aparece após a resposta aberta, mantendo contexto.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Perguntas frequentes</div>
+      <div class="accordion" id="accordion">
+        <div class="acc-item open" data-value="1">
+          <button class="acc-trigger" onclick="toggleAcc(1)" aria-expanded="true">
+            <span class="acc-text">
+              <span class="acc-index">1.</span>
+              <span class="acc-title">O que você precisa saber antes de começar?</span>
+            </span>
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <div class="acc-content">
+            <div class="acc-content-inner">
+              Você consegue montar interfaces consistentes usando tokens e componentes do design system. O objetivo aqui é acelerar o desenvolvimento e manter acessibilidade.
+            </div>
+          </div>
+          <div class="acc-divider"></div>
+        </div>
+
+        <div class="acc-item" data-value="2">
+          <button class="acc-trigger" onclick="toggleAcc(2)" aria-expanded="false">
+            <span class="acc-text">
+              <span class="acc-index">2.</span>
+              <span class="acc-title">Como funciona o white-label?</span>
+            </span>
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(0deg);">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <div class="acc-content">
+            <div class="acc-content-inner">
+              Você altera tokens CSS (cores e tipografia) via variáveis. Os componentes permanecem com a mesma estrutura e semântica.
+            </div>
+          </div>
+          <div class="acc-divider"></div>
+        </div>
+
+        <div class="acc-item" data-value="3">
+          <button class="acc-trigger" onclick="toggleAcc(3)" aria-expanded="false">
+            <span class="acc-text">
+              <span class="acc-index">3.</span>
+              <span class="acc-title">O Accordion é acessível?</span>
+            </span>
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <div class="acc-content">
+            <div class="acc-content-inner">
+              Sim: o trigger usa `aria-expanded`, e o conteúdo respeita leitura consistente por teclado.
+            </div>
+          </div>
+          <div class="acc-divider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+        <li><code>div.acc-item</code>: item da lista (estado open/closed via classe <code>open</code>).</li>
+        <li><code>button.acc-trigger</code>: botão que controla <code>aria-expanded</code>.</li>
+        <li><code>span.acc-index</code> + <code>span.acc-title</code>: separa o “número” do título (o índice não fica tão pesado).</li>
+        <li><code>div.acc-content</code>: container colapsável (altura via CSS).</li>
+        <li><code>div.acc-content-inner</code>: conteúdo de leitura.</li>
+        <li><code>div.acc-divider</code>: separador exibido quando o item está aberto.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">
+        Use o <code>data-value</code> para identificar o item e a função <code>toggleAcc</code> para alternar a classe <code>open</code> e o <code>aria-expanded</code>.
+      </div>
+      <pre class="code"><code>{/* HTML + JS */}
+<div class="accordion" id="accordion">
+  <div class="acc-item open" data-value="1">
+    <button class="acc-trigger" onclick="toggleAcc(1)" aria-expanded="true">
+      <span class="acc-text">
+        <span class="acc-index">1.</span>
+        <span class="acc-title">Pergunta</span>
+      </span>
+      <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </button>
+
+    <div class="acc-content">
+      <div class="acc-content-inner">Resposta...</div>
+    </div>
+
+    <div class="acc-divider"></div>
+  </div>
+</div>
+
+<script>
+  function toggleAcc(val) {
+    const items = document.querySelectorAll(".acc-item");
+    items.forEach((el) =&gt; {
+      const isOpen = String(el.getAttribute("data-value")) === String(val);
+      el.classList.toggle("open", isOpen);
+
+      const btn = el.querySelector(".acc-trigger");
+      if (btn) btn.setAttribute("aria-expanded", String(isOpen));
+
+      const chevron = el.querySelector(".acc-chevron");
+      if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+    });
+  }
+</script>
+      </code></pre>
+    </div>
+
+  <div class="section">
+    <div class="section-title">Como Usar (React)</div>
+    <div class="section-subtitle">
+      Este Accordion renderiza o conteúdo de cada item e, quando aberto, exibe um `Divider` logo após a resposta
+      (estilo shadcn). Para o número não ficar com o mesmo peso do título, o trigger separa “1.” do texto.
+    </div>
+
+    <pre class="code" style="margin-top:0;background:#F3F3F3;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;">
+      <code>{/* JSX */}
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from '@/components/ui/Accordion';
+
+<Accordion type="single" collapsible defaultValue="1">
+  <AccordionItem value="1">
+    <AccordionTrigger>1. O que você precisa saber?</AccordionTrigger>
+    <AccordionContent withDivider>
+      Texto da resposta...
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+      </code>
+    </pre>
+
+    <div style="font-size:13px;color:#656976;line-height:1.7;margin-top:14px;">
+      <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props/observações</div>
+      <div><code>AccordionContent</code>: <code>withDivider</code> controla o traço após a resposta</div>
+      <div><code>AccordionTrigger</code>: neste demo, o formato do texto “1. ...” é usado para exibir índice + título com pesos diferentes</div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAcc(val) {
+      const items = document.querySelectorAll(".acc-item");
+      items.forEach((el) => {
+        const isOpen = String(el.getAttribute("data-value")) === String(val);
+        el.classList.toggle("open", isOpen);
+
+        const btn = el.querySelector(".acc-trigger");
+        if (btn) btn.setAttribute("aria-expanded", String(isOpen));
+
+        const chevron = el.querySelector(".acc-chevron");
+        if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+      });
+    }
+  </script>
+</body>
+</html>
+

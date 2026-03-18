@@ -316,7 +316,7 @@ export default function Home() {
                 <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
               </svg>
             </div>
-            <span style={{ fontSize: 15, fontWeight: 700, color: "#005A1A" }}>Portal Empresa</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: "#005A1A" }}>TP.IA</span>
             <span style={{ fontSize: 13, color: "#C6C6C6", marginLeft: 2 }}>/</span>
             <span style={{ fontSize: 13, color: "#656976" }}>Design System</span>
           </div>
@@ -328,7 +328,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 40px 80px" }}>
+      <main className="ds-container" style={{ padding: "48px 0 80px" }}>
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", background: "#E6F4ED", borderRadius: 9999, fontSize: 12, fontWeight: 500, color: "#005A1A", marginBottom: 16 }}>
@@ -336,7 +336,7 @@ export default function Home() {
             v1.0 — WCAG AA
           </div>
           <h1 style={{ fontSize: 36, fontWeight: 700, color: "#005A1A", marginBottom: 12, lineHeight: 1.2 }}>
-            Portal Empresa<br />Design System
+            TP.IA<br />Design System
           </h1>
           <p style={{ fontSize: 16, color: "#656976", maxWidth: 480, margin: "0 auto 32px" }}>
             Biblioteca de componentes, tokens e diretrizes para construir produtos consistentes e acessíveis.
@@ -356,6 +356,49 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        {/* Layout, Grid e Tipografia */}
+        <section style={{ marginBottom: 32 }}>
+          <h2 className="ds-heading-2" style={{ marginBottom: 12 }}>
+            Layout, grid e tipografia
+          </h2>
+          <p className="ds-body-m" style={{ maxWidth: 780, marginBottom: 16 }}>
+            Padrões mobile first com container de <strong>1440px</strong>, grid de <strong>12 colunas</strong> e escala tipográfica semântica.
+            Para white-label, componentes e layouts usam <code>--ds-*</code> (CSS variables) — a identidade (cores/fonte) pode variar sem quebrar a estrutura.
+          </p>
+
+          <div
+            style={{
+              border: "1px solid var(--ds-border)",
+              borderRadius: 12,
+              background: "var(--ds-bg-subtle)",
+              padding: 16,
+            }}
+          >
+            <div className="ds-body-m" style={{ marginBottom: 10 }}>
+              <strong>Breakpoints</strong>: base → sm (744) → md (1024) → lg (1280) → xl (1728) → full (1920)
+            </div>
+            <div className="ds-body-m" style={{ marginBottom: 10 }}>
+              <strong>Container</strong>: max 1440px + padding 16/24/32
+            </div>
+            <div className="ds-body-m">
+              <strong>Exemplo tipográfico</strong>
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <div className="ds-heading-1">Título H1</div>
+              <div className="ds-subtitle-m" style={{ marginTop: 8 }}>Subtítulo (subtitle-m)</div>
+              <p className="ds-body-m" style={{ marginTop: 8 }}>
+                Parágrafo (body-m) com line-height consistente e contraste AA.
+              </p>
+              <div style={{ marginTop: 10 }}>
+                <span className="ds-label-m">Label (label-m)</span>
+              </div>
+              <div style={{ marginTop: 8 }}>
+                <a className="ds-link" href="../docs/GUIA-LAYOUT-GRID-TIPOGRAFIA.md">Ver guia completo</a>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Search + Filters */}
         <div style={{ marginBottom: 32 }}>
@@ -474,7 +517,7 @@ export default function Home() {
       {/* Footer */}
       <footer style={{ borderTop: "1px solid #E0E0E0", padding: "24px 40px", textAlign: "center" }}>
         <p style={{ fontSize: 12, color: "#999" }}>
-          Portal Empresa Design System — {COMPONENTS.length} componentes · Tokens · WCAG AA
+          TP.IA Design System — {COMPONENTS.length} componentes · Tokens · WCAG AA
         </p>
       </footer>
     </div>

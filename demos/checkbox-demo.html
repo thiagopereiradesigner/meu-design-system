@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Empresa - Checkbox Component</title>
+    <title>TP.IA - Checkbox Component</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         /* ── DS Navigation Bar ── */
@@ -30,7 +31,7 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
 
         body {
             font-family: 'Inter', sans-serif;
@@ -38,7 +39,7 @@
             padding: 40px;
             color: #393939;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1440px; margin: 0 auto; }
         .header { text-align: center; margin-bottom: 48px; }
         .header h1 { font-size: 32px; font-weight: 700; color: #005A1A; margin-bottom: 8px; }
         .header p { font-size: 16px; color: #5E5E5E; }
@@ -131,7 +132,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Portal Empresa - Design System</h1>
+            <h1>TP.IA - Design System</h1>
             <p>Componente Checkbox | Estados e código de uso</p>
         </div>
 
@@ -174,13 +175,26 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title">💻 Como usar (HTML)</h2>
+            <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+            <p class="section-description">
+                Checkbox custom usando input nativo, para manter foco/teclado e leitura por leitores de tela.
+            </p>
+            <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+                <li><code>label.checkbox-wrapper</code>: aumenta a área clicável.</li>
+                <li><code>input.checkbox-input</code>: input nativo (checkbox).</li>
+                <li><code>span.checkbox-label</code>: texto acessível ao lado do checkbox.</li>
+                <li>Estados do demo: <code>checked</code>, <code>disabled</code> e variação de UI via CSS.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
                 Exemplo mínimo de estrutura para checkbox acessível.
             </p>
 
             <div class="code-block">
-<pre><code>&lt;label class="checkbox-wrapper"&gt;
+<pre class="code"><code>&lt;label class="checkbox-wrapper"&gt;
   &lt;input 
     type="checkbox" 
     class="checkbox-input" 
@@ -188,6 +202,43 @@
   &lt;span class="checkbox-label"&gt;Aceito os termos&lt;/span&gt;
 &lt;/label&gt;</code></pre>
             </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (React)</h2>
+            <p class="section-description" style="margin-bottom:12px;">
+                JSX equivalente usando o componente do design system.
+            </p>
+            <pre class="code" style="font-size:12px;"><code>{/* React */}
+import React, { useState } from 'react';
+import { Checkbox } from '@/components/Forms/Checkbox/Checkbox';
+
+export default function Demo() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    &lt;Checkbox
+      label="Aceito os termos e condições"
+      checked={checked}
+      onChange={setChecked}
+    /&gt;
+  );
+}
+            </code></pre>
+            <div style="font-size:13px;color:#5E5E5E;line-height:1.7;margin-top:14px;">
+                <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+                <div><code>label</code>, <code>checked</code>, <code>onChange</code></div>
+                <div><code>disabled</code>, <code>indeterminate</code>, <code>error</code>, <code>helperText</code></div>
+            </div>
+        </div>
+
+        <div class="note">
+            <h3>♿ Nota Acessibilidade</h3>
+            <ul>
+                <li>Use <code>&lt;label&gt;</code> para aumentar a área clicável e facilitar navegação.</li>
+                <li>O input permanece nativo para suporte a teclado/AT.</li>
+                <li>Para erro, mantenha mensagem textual (<code>error</code>) e contraste.</li>
+            </ul>
         </div>
     </div>
 <!-- DS Navigation Search Script -->

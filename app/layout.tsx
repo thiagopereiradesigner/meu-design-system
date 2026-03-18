@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Portal Empresa — Design System",
-  description: "Biblioteca de componentes, tokens e diretrizes do Portal Empresa Design System",
+  title: "TP.IA — Design System",
+  description: "Biblioteca de componentes, tokens e diretrizes do TP.IA Design System",
 };
 
 export default function RootLayout({

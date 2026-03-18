@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Divider Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    :root{
+      --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ds-border: #E0E0E0;
+      --ds-success: #04843B;
+      --ds-n100: #F3F3F3;
+      --ds-n800: #1A1A1A;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--ds-font-family); background: #F9F9F9; color: var(--ds-n800); }
+
+    .ds-topbar{
+      position: sticky; top: 0; z-index: 10;
+      background: #fff; border-bottom: 1px solid #E0E0E0;
+      height: 56px; display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success); }
+    .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 40px 16px; }
+    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+
+    h1{ font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--ds-success); }
+    .lead{ font-size: 14px; color: #656976; margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
+
+    .section{
+      background: #fff; border-radius: 12px; border: 1px solid #E0E0E0;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+    .section-subtitle{ font-size: 14px; color: #656976; margin-bottom: 16px; line-height: 1.6; }
+
+    .divider{
+      width: 100%;
+      height: 1px;
+      background: var(--ds-border);
+      margin: 16px 0;
+    }
+    .divider.thick{ height: 2px; background: var(--ds-success); }
+    .divider.vertical{
+      width: 1px;
+      height: 80px;
+      margin: 0 16px;
+      background: var(--ds-border);
+    }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;" aria-label="Voltar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      Voltar
+    </a>
+    <div style="flex:1;"></div>
+    <span class="ds-topbar-title">Divider</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1>Divider (linha separadora)</h1>
+    <p class="lead">Traço horizontal/vertical com cores e espessuras configuráveis.</p>
+
+    <div class="note">
+      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+      <ul>
+        <li><strong>Separador semântico:</strong> usa <code>role="separator"</code>.</li>
+        <li><strong>Orientação:</strong> <code>aria-orientation</code> acompanha horizontal/vertical.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Horizontal</div>
+      <div class="divider" role="separator" aria-orientation="horizontal"></div>
+      <div class="divider thick" role="separator" aria-orientation="horizontal"></div>
+      <div class="section-subtitle">Observação: siga o contraste e mantenha 1px para seções densas.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Vertical</div>
+      <div style="display:flex;align-items:center;">
+        <div>Coluna A</div>
+        <div class="divider vertical" role="separator" aria-orientation="vertical"></div>
+        <div>Coluna B</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Anatomia do Componente (HTML)</div>
+      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+        <li><code>div.divider</code>: separador base (horizontal).</li>
+        <li><code>div.divider.thick</code>: variação de espessura.</li>
+        <li><code>div.divider.vertical</code>: separador vertical.</li>
+        <li><code>role="separator"</code> + <code>aria-orientation</code>: melhora entendimento para leitores de tela.</li>
+      </ul>
+      <div class="section-subtitle" style="margin-top:12px;">
+        A orientação (horizontal/vertical) deve ser consistente com o layout.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (HTML)</div>
+      <div class="section-subtitle">Estruture o divider como uma única linha <code>div</code>, ajustando classes e atributos de acessibilidade.</div>
+      <pre class="code"><code>{/* HTML */}
+&lt;div class="divider" role="separator" aria-orientation="horizontal"&gt;&lt;/div&gt;
+&lt;div class="divider thick" role="separator" aria-orientation="horizontal"&gt;&lt;/div&gt;
+
+&lt;div style="display:flex;align-items:center;"&gt;
+  &lt;div&gt;Coluna A&lt;/div&gt;
+  &lt;div class="divider vertical" role="separator" aria-orientation="vertical"&gt;&lt;/div&gt;
+  &lt;div&gt;Coluna B&lt;/div&gt;
+&lt;/div&gt;
+      </code></pre>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Como Usar (React)</div>
+      <div class="section-subtitle">
+        Use `Divider` para separar seções/estados e melhorar leitura. Para acessibilidade, ele usa `role="separator"`.
+      </div>
+
+      <pre class="code" style="margin-top:0;background:#F3F3F3;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;">
+        <code>{/* JSX */}
+import { Divider } from '@/components/ui/Divider';
+
+<Divider />
+<Divider thickness={2} margin="16px 0" color="var(--ds-success)" />
+<Divider orientation="vertical" thickness={1} />
+        </code>
+      </pre>
+
+      <div style="font-size:13px;color:#656976;line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color: #1A1A1A;margin-bottom:6px;">Props principais</div>
+        <div><code>orientation</code>: horizontal | vertical</div>
+        <div><code>thickness</code>: espessura (number)</div>
+        <div><code>color</code>: cor (string/var)</div>
+        <div><code>margin</code>: espaçamento (string/number)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

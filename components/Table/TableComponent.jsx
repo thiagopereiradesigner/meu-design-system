@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Badge } from '@/components/Badge/Badge';
 
 // Design Tokens (mesmos do Button, Input, Select)
 const tokens = {
@@ -73,58 +74,6 @@ const tokens = {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
   }
-};
-
-// ==================== BADGE COMPONENT ====================
-const Badge = ({ children, variant = 'success', size = 'medium' }) => {
-  const variants = {
-    success: {
-      backgroundColor: tokens.colors.primary[50],
-      color: tokens.colors.primary[700],
-    },
-    error: {
-      backgroundColor: '#FEE2E2',
-      color: tokens.colors.semantic.error,
-    },
-    warning: {
-      backgroundColor: '#FEF3C7',
-      color: '#92400E',
-    },
-    info: {
-      backgroundColor: '#DBEAFE',
-      color: '#1E40AF',
-    },
-    neutral: {
-      backgroundColor: tokens.colors.neutral[100],
-      color: tokens.colors.content.secondary,
-    }
-  };
-
-  const sizes = {
-    small: {
-      padding: `${tokens.spacing.xxs} ${tokens.spacing.xs}`,
-      fontSize: tokens.typography.fontSize.xs,
-    },
-    medium: {
-      padding: `${tokens.spacing.xxs} ${tokens.spacing.sm}`,
-      fontSize: tokens.typography.fontSize.sm,
-    }
-  };
-
-  const badgeStyles = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: tokens.borderRadius.xs,
-    fontFamily: tokens.typography.fontFamily,
-    fontWeight: tokens.typography.fontWeight.medium,
-    lineHeight: tokens.typography.lineHeight.normal,
-    whiteSpace: 'nowrap',
-    ...variants[variant],
-    ...sizes[size]
-  };
-
-  return <span style={badgeStyles}>{children}</span>;
 };
 
 // ==================== TABLE COMPONENT ====================

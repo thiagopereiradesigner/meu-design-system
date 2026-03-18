@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Empresa - Toast Component (Lucide Icons)</title>
+    <title>TP.IA - Toast Component (Lucide Icons)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -34,7 +35,7 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
 
         
         body {
@@ -45,7 +46,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
@@ -333,8 +334,8 @@
 
     <div class="container">
         <div class="header">
-            <h1>Portal Empresa - Design System</h1>
-            <p>Toast Component (Lucide Icons + Título e Mensagem)</p>
+            <h1>TP.IA - Design System</h1>
+            <p>Toast Component (Lucide Icons + texto opcional)</p>
         </div>
 
         <!-- Active Variant -->
@@ -377,12 +378,38 @@
             </div>
         </div>
 
+        <!-- Icon only -->
+        <div class="section">
+            <h2 class="section-title">🔇 Ícone (sem texto)</h2>
+            <p class="description">Notificação com apenas ícone e botão de fechar (sem título/mensagem).</p>
+
+            <div class="note" style="margin-bottom: 16px;">
+                <h3>Active (Fundo colorido)</h3>
+                <div class="button-grid">
+                    <button class="btn-success" onclick="showToast('success', 'active', false)">✅ Success</button>
+                    <button class="btn-error" onclick="showToast('error', 'active', false)">❌ Error</button>
+                    <button class="btn-warning" onclick="showToast('warning', 'active', false)">⚠️ Warning</button>
+                    <button class="btn-info" onclick="showToast('info', 'active', false)">ℹ️ Info</button>
+                </div>
+            </div>
+
+            <div class="note">
+                <h3>Light (Fundo claro)</h3>
+                <div class="button-grid">
+                    <button class="btn-success-light" onclick="showToast('success', 'light', false)">✅ Success</button>
+                    <button class="btn-error-light" onclick="showToast('error', 'light', false)">❌ Error</button>
+                    <button class="btn-warning-light" onclick="showToast('warning', 'light', false)">⚠️ Warning</button>
+                    <button class="btn-info-light" onclick="showToast('info', 'light', false)">ℹ️ Info</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Features -->
         <div class="note">
             <h3>✨ Melhorias Aplicadas</h3>
             <ul>
                 <li><strong>Ícones do Lucide:</strong> circle-alert e x</li>
-                <li><strong>Título + Mensagem:</strong> Sempre exibidos (como no Figma)</li>
+                <li><strong>Título + Mensagem:</strong> Opcional via `showText` (texto ou só ícone)</li>
                 <li><strong>Texto alinhado à esquerda:</strong> Conforme especificação</li>
                 <li><strong>Animação suave:</strong> Fade + Slide from top (40px)</li>
                 <li><strong>Auto-close:</strong> 3s (success), 4s (info/warning), 5s (error)</li>
@@ -390,6 +417,80 @@
                 <li><strong>Esc fecha:</strong> Acessibilidade de teclado</li>
                 <li><strong>WCAG AA:</strong> Contraste mínimo 4.5:1</li>
             </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Anatomia do Componente (HTML)</div>
+        <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+            <li><code>div#toast-container.toast-container</code>: contêiner fixo (onde as toasts são injetadas).</li>
+            <li><code>div.toast</code>: wrapper da notificação (criado via JS no demo).</li>
+            <li><code>div.toast-icon</code>: ícone do tipo (Lucide-style).</li>
+            <li><code>div.toast-content</code>: agrupador do texto quando <code>showText=true</code>.</li>
+            <li><code>div.toast-title</code>: título (quando habilitado).</li>
+            <li><code>div.toast-message</code>: body/mensagem (quando habilitado).</li>
+            <li><code>button.toast-close</code>: fecha a toast; suportar teclado via foco (botão nativo).</li>
+            <li><code>div.toast-progress</code> + <code>div.toast-progress-bar</code>: barra de progresso por duração.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Como Usar (HTML)</div>
+        <div class="section-subtitle">
+            Copie o contêiner e, no JS, chame <code>showToast(type, variant, showText)</code>.
+            Use <code>showText=false</code> para ícone-only (mantém título/close conforme especificação do demo).
+        </div>
+        <pre class="code"><code>{/* HTML + JS (min) */}
+&lt;div id="toast-container" class="toast-container" role="alert" aria-live="polite" aria-atomic="true"&gt;&lt;/div&gt;
+
+&lt;!-- Depois de incluir/ter as funções showToast/hideToast do demo --&gt;
+&lt;script&gt;
+  showToast('success', 'active', true);
+  showToast('error', 'active', false);
+&lt;/script&gt;
+        </code></pre>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Como Usar (React)</h2>
+        <p class="description" style="margin-bottom:16px;">
+            Use o Toast quando você precisar de feedback temporário. O texto é opcional via <code>showText</code>.
+        </p>
+
+        <pre class="code" style="font-size:12px;background:#F3F3F3;padding:12px;border-radius:12px;overflow-x:auto;">
+<code>{/* JSX */}
+import { ToastProvider, useToast } from '@/components/ui/Toast';
+
+function Page() {
+  const { showToast } = useToast();
+
+  return (
+    <button
+      onClick={() =>
+        showToast({
+          type: 'success',
+          variant: 'active',
+          title: 'Dados salvos!',
+          message: 'Suas informações foram atualizadas.',
+        })
+      }
+    >
+      Salvar
+    </button>
+  );
+}
+
+// Auto-close é interno (default por type).
+// Para ícone-only: showText={false}
+  </code>
+        </pre>
+
+        <div style="font-size:13px;color:#656976;line-height:1.7;margin-top:14px;">
+            <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+            <div><code>type</code>: success | error | warning | info</div>
+            <div><code>variant</code>: active | light</div>
+            <div><code>showText</code>: true (title+message) | false (ícone + close)</div>
+            <div><code>duration</code> (opcional): override</div>
         </div>
     </div>
 
@@ -425,12 +526,28 @@
 
         // Lucide Icons
         const icons = {
-            // circle-alert (info icon)
-            white: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            // Icons por tipo (Lucide-style)
+            successWhite: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" x2="12" y1="16" y2="12"/>
                 <line x1="12" x2="12.01" y1="8" y2="8"/>
             </svg>`,
+            errorWhite: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            warningWhite: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+            infoWhite: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="16" y2="12"/>
+                <line x1="12" x2="12.01" y1="8" y2="8"/>
+            </svg>`,
+
             success: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" x2="12" y1="16" y2="12"/>
@@ -469,7 +586,7 @@
             </svg>`
         };
 
-        function showToast(type, variant) {
+        function showToast(type, variant, showText = true) {
             const container = document.getElementById('toast-container');
             const config = messages[type];
             
@@ -477,16 +594,22 @@
                 hideToast();
             }
 
-            const iconKey = variant === 'active' ? 'white' : type;
+            const iconKey = variant === 'active' ? type + 'White' : type;
             const closeIconKey = variant === 'active' ? 'closeWhite' : 'close' + type.charAt(0).toUpperCase() + type.slice(1);
+
+            const titleHTML = showText ? `<p class="toast-title">${config.title}</p>` : '';
+            const messageHTML = showText ? `<p class="toast-message">${config.message}</p>` : '';
+            const contentHTML = showText ? `
+                    <div class="toast-content">
+                        ${titleHTML}
+                        ${messageHTML}
+                    </div>
+                ` : '';
             
             const toastHTML = `
                 <div class="toast toast-${type}-${variant}">
                     <div class="toast-icon">${icons[iconKey]}</div>
-                    <div class="toast-content">
-                        <p class="toast-title">${config.title}</p>
-                        <p class="toast-message">${config.message}</p>
-                    </div>
+                    ${contentHTML}
                     <button class="toast-close" onclick="hideToast()" aria-label="Fechar notificação">
                         ${icons[closeIconKey]}
                     </button>

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Empresa - Virtual Scrolling Table Demo</title>
+    <title>TP.IA - Virtual Scrolling Table Demo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
     <style>
         * {
             margin: 0;
@@ -34,7 +35,7 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:768px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
 
         
         body {
@@ -201,9 +202,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
             font-weight: 500;
             white-space: nowrap;
         }
@@ -333,9 +334,18 @@
 
     <div class="container">
         <div class="header">
-            <h1>Portal Empresa - Design System</h1>
+            <h1>TP.IA - Design System</h1>
             <p>Table com Virtual Scrolling (10.000 linhas)</p>
         </div>
+
+    <div class="note">
+        <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+        <ul>
+            <li><strong>Badges consistentes:</strong> status usa <code>Badge</code> no estilo pill (radius full).</li>
+            <li><strong>Leitura clara:</strong> contraste e tamanhos alinhados com o DS.</li>
+            <li><strong>Header fixo:</strong> facilita orientação ao rolar.</li>
+        </ul>
+    </div>
 
         <!-- 100 Linhas -->
         <div class="section">
@@ -426,6 +436,52 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+        <p class="section-description">Tabela com virtual scrolling + status via <code>Badge</code> (pill).</p>
+        <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+            <li><code>div.table-container</code>: contêiner onde o JS renderiza o conteúdo visível.</li>
+            <li><code>table</code> (gerado em runtime pelo demo): <code>thead</code> + <code>tbody</code>.</li>
+            <li>Status: <code>span.badge badge-success|badge-warning|badge-neutral</code> dentro de células <code>td</code>.</li>
+            <li>Interação (demo): cabeçalho clicável para sort (opcional no projeto).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Como Usar (HTML)</h2>
+        <p class="section-description">No demo, o HTML da tabela é gerado dinamicamente. Você precisa do contêiner + instanciar o VirtualScrollTable.</p>
+        <pre class="code" style="font-size:12px;"><code>{/* HTML + JS (min) */}
+&lt;div id="table-10000" class="table-container compact"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  const data = generateData(10000);
+  const table = new VirtualScrollTable('table-10000', data, { compact: true });
+&lt;/script&gt;
+
+&lt;!-- quando renderizar linhas, status deve usar: --&gt;
+&lt;span class="badge badge-success"&gt;Ativo&lt;/span&gt;
+&lt;span class="badge badge-warning"&gt;Férias&lt;/span&gt;
+&lt;span class="badge badge-neutral"&gt;Inativo&lt;/span&gt;
+        </code></pre>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Como Usar (React)</h2>
+        <p class="section-description" style="margin-bottom:16px;">
+            Para células de status, use <code>Badge</code> com formato pill (radius full). No app, a renderização do
+            virtual scroll deve preservar o mesmo componente para consistência visual.
+        </p>
+        <pre class="code" style="font-size:12px;background:#F3F3F3;padding:12px;border-radius:12px;overflow-x:auto;">
+<code>{/* JSX */}
+import { Badge } from '@/components/ui/Badge';
+
+<Badge variant="success">Ativo</Badge>
+<Badge variant="warning">Férias</Badge>
+<Badge variant="neutral">Inativo</Badge>
+        </code>
+        </pre>
     </div>
 
     <script>

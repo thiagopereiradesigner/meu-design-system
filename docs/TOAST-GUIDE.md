@@ -126,6 +126,7 @@ interface ToastProps {
   variant?: 'active' | 'light';  // default: 'active'
   title: string;
   message?: string;
+  showText?: boolean;            // default: true (quando false: ícone + close apenas)
   duration?: number;             // default: varia por tipo
   showProgress?: boolean;        // default: true
   onClose?: (id) => void;

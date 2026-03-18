@@ -1,0 +1,131 @@
+:root{
+  --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --ds-success: #04843B;
+  --ds-border: #E0E0E0;
+  --ds-n800: #1A1A1A;
+  --ds-n500: #656976;
+
+  --ds-bg: #FFFFFF;
+  --ds-bg-subtle: #F9F9F9;
+}
+
+body{
+  font-family: var(--ds-font-family);
+  background: var(--ds-bg-subtle);
+  color: var(--ds-n800);
+}
+
+.ds-topbar{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #fff;
+  border-bottom: 1px solid var(--ds-border);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.ds-topbar-title{
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ds-success);
+  white-space: nowrap;
+}
+
+.ds-topbar-spacer{ flex: 1; }
+
+.ds-back-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ds-back-btn:hover{
+  background: #f5f5f5;
+  border-color: var(--ds-success);
+  color: var(--ds-success);
+}
+
+.ds-container{
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 16px;
+}
+
+@media(min-width:744px){
+  .ds-container{ padding-left: 24px; padding-right: 24px; }
+}
+
+.section{
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--ds-border);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.section-title{
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.section-subtitle{
+  font-size: 14px;
+  color: var(--ds-n500);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.note{
+  margin-top: 18px;
+  padding: 24px;
+  background-color: #E6F4ED;
+  border-radius: 12px;
+  border-left: 4px solid var(--ds-success);
+}
+
+.note h3{
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #004D16;
+}
+
+.note ul{
+  font-size: 14px;
+  color: #333333;
+  line-height: 1.6;
+  padding-left: 20px;
+}
+
+pre.code{
+  margin-top: 10px;
+  background: #F3F3F3;
+  border-radius: 12px;
+  padding: 12px;
+  overflow-x: auto;
+  font-size: 12px;
+  color: #2b2b2b;
+  line-height: 1.5;
+}
+
+pre.code code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
