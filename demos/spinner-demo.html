@@ -36,27 +36,45 @@
     .btn{
       padding: 10px 16px;
       border-radius: 8px;
-      border: 1px solid #d0d0d0;
-      background: #fff;
+      border: 1px solid var(--ds-border);
+      background: var(--ds-surface);
       color: var(--ds-n800);
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
     }
-    .btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: #F3F4F6; }
+    .btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: var(--ds-bg-subtle); }
   </style>
 </head>
 <body>
   <nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <a href="index.html" class="ds-back-btn" aria-label="Voltar">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 12L6 8l4-4"/>
-      </svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
       Voltar
     </a>
-    <div style="flex:1;"></div>
     <span class="ds-topbar-title">Spinner</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+      <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+      <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
   </nav>
+
+  <div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+      Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+      <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+      <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+  </div>
 
   <div class="ds-container">
     <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Spinner / Loader</h1>
@@ -139,6 +157,7 @@ function Loading() {
     </div>
   </div>
 
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

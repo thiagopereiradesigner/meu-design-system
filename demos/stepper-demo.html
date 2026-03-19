@@ -7,33 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
-    /* Tokens centralizados em ds-demo-base.css */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: var(--ds-font-family); background: var(--ds-bg); color: var(--ds-fg); }
-
-    .header{
-      background: var(--ds-surface);
-      border-bottom: 1px solid var(--ds-border);
-      height: 56px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      box-shadow: var(--ds-shadow-sm);
-    }
-    .header h1{ font-size: 14px; font-weight: 800; color: var(--ds-success); }
-
-    .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 24px 16px 80px; }
-    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+    /* Header/layout base vêm de ds-demo-base.css */
 
     /* Sticky Stepper “grudado” no header */
     .stepper{
       position: sticky;
       top: 56px;
       z-index: 90;
-      background: #fff;
+      background: var(--ds-surface);
       border-bottom: 1px solid var(--ds-border);
       padding: 12px 0;
       margin-bottom: 18px;
@@ -70,21 +51,23 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      margin: 12px 0 18px;
     }
 
     .btn{
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 8px 16px;
+      border-radius: 9999px;
       border: 1px solid var(--ds-border);
-      background: #fff;
+      background: var(--ds-success-bg);
+      color: var(--ds-success-fg);
       cursor: pointer;
-      font-weight: 800;
-      font-size: 14px;
+      font-weight: 600;
+      font-size: 13px;
     }
+    .btn:hover{ background: var(--ds-bg-subtle); border-color: var(--ds-success); }
 
     .card{
-      background: #fff;
+      background: var(--ds-surface);
       border: 1px solid var(--ds-border);
       border-radius: 12px;
       padding: 18px;
@@ -92,7 +75,7 @@
     .card p{ margin-top: 8px; line-height: 1.7; }
 
     .section{
-      background: #fff;
+      background: var(--ds-surface);
       border: 1px solid var(--ds-border);
       border-radius: 12px;
       padding: 18px;
@@ -106,18 +89,18 @@
     }
     .section-subtitle{
       font-size: 13px;
-      color: #656976;
+      color: var(--ds-fg-muted);
       line-height: 1.6;
       margin-bottom: 14px;
     }
     pre.code{
       margin-top: 10px;
-      background: #F3F3F3;
+      background: var(--ds-bg-subtle);
       border-radius: 10px;
       padding: 12px;
       overflow-x: auto;
       font-size: 12px;
-      color: #2b2b2b;
+      color: var(--ds-fg);
       line-height: 1.5;
     }
     pre.code code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
@@ -125,26 +108,48 @@
 </head>
 <body>
   <nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <a href="index.html" class="ds-back-btn" aria-label="Voltar">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 12L6 8l4-4"/>
-      </svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
       Voltar
     </a>
-    <div style="flex:1;"></div>
-    <span class="ds-topbar-title">Stepper</span>
+    <span class="ds-topbar-title">TP.IA - Design System</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+      <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+      <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
   </nav>
 
-  <div class="stepper" id="stepper">
-    <div class="step-row" id="step-row">
-      <!-- segmentos gerados via JS -->
+  <div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+      Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+      <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+      <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
-    <div class="step-label" id="step-label"></div>
   </div>
 
   <div class="ds-container">
-    <h2 style="font-size:18px;font-weight:900;color:var(--ds-n800);margin-bottom:10px;">Demo do Stepper</h2>
-    <p style="color:#656976;line-height:1.6;margin-bottom:18px;">Verde = steps passados e o step atual. Cinza = o que falta. O nome do step atual fica abaixo.</p>
+    <h2 style="font-size:18px;font-weight:900;color:var(--ds-fg);margin-bottom:10px;">Stepper</h2>
+    <p style="color:var(--ds-fg-muted);line-height:1.6;margin-bottom:18px;">Verde = steps passados e o step atual. Cinza = o que falta. O nome do step atual fica abaixo.</p>
+    <div class="stepper" id="stepper">
+      <div class="step-row" id="step-row">
+        <!-- segmentos gerados via JS -->
+      </div>
+      <div class="step-label" id="step-label"></div>
+    </div>
+    <div class="controls">
+      <button class="btn" onclick="setStep(0)">Ir para Step 1</button>
+      <button class="btn" onclick="setStep(1)">Ir para Step 2</button>
+      <button class="btn" onclick="setStep(2)">Ir para Step 3</button>
+    </div>
 
     <div class="note">
       <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
@@ -157,7 +162,7 @@
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
         <li><code>div.stepper</code>: contêiner do progresso (wrapper).</li>
         <li><code>div.step-row</code>: linha onde os segmentos <code>div.bar-segment</code> são renderizados.</li>
         <li><code>div.bar-segment.active</code>: segmento verde (passados + step atual).</li>
@@ -174,12 +179,12 @@
         Copie o contêiner + IDs e use o JS equivalente para gerar os <code>bar-segment</code> com base em <code>currentStep</code>.
       </div>
       <pre class="code"><code>{/* HTML + JS */}
-<div class="stepper" id="stepper">
-  <div class="step-row" id="step-row"></div>
-  <div class="step-label" id="step-label"></div>
-</div>
+&lt;div class="stepper" id="stepper"&gt;
+  &lt;div class="step-row" id="step-row"&gt;&lt;/div&gt;
+  &lt;div class="step-label" id="step-label"&gt;&lt;/div&gt;
+&lt;/div&gt;
 
-<script>
+&lt;script&gt;
   const steps = [
     { label: 'Termos' },
     { label: 'Confirmação com PIN' },
@@ -193,7 +198,7 @@
     const stepLabel = document.getElementById('step-label');
     stepRow.innerHTML = '';
 
-    steps.forEach((s, idx) => {
+    steps.forEach((s, idx) =&gt; {
       const seg = document.createElement('div');
       seg.className = 'bar-segment';
       if (idx &lt;= currentStep) seg.classList.add('active');
@@ -209,14 +214,8 @@
   }
 
   renderStepper();
-</script>
+&lt;/script&gt;
       </code></pre>
-    </div>
-
-    <div class="controls">
-      <button class="btn" onclick="setStep(0)">Ir para Step 1</button>
-      <button class="btn" onclick="setStep(1)">Ir para Step 2</button>
-      <button class="btn" onclick="setStep(2)">Ir para Step 3</button>
     </div>
 
     <div class="card">
@@ -250,7 +249,7 @@ import { Stepper } from '@/components/ui/Stepper';
 </code></pre>
 
       <div style="font-weight:900;color:var(--ds-n800);margin:14px 0 8px;">Props principais</div>
-      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
         <li><code>steps</code>: lista de labels dos passos</li>
         <li><code>currentStep</code>: índice do step atual (0-based)</li>
         <li><code>sticky</code> (opcional): mantém o stepper fixo abaixo do header</li>
@@ -292,6 +291,7 @@ import { Stepper } from '@/components/ui/Stepper';
     renderStepper();
   </script>
 
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

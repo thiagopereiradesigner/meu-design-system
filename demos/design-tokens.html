@@ -219,7 +219,7 @@
             gap: 8px;
             flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 48px;
+            margin-bottom: 24px;
         }
 
         .token-nav a {
@@ -239,6 +239,32 @@
             background: var(--ds-success-bg);
             border-color: var(--ds-success);
             color: var(--ds-success-fg);
+        }
+
+        /* ── Theme toggle (light/dark) ── */
+        .theme-select-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .theme-select-row label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ds-fg);
+        }
+
+        .theme-select-row select {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
+            color: var(--ds-fg);
+            font-family: var(--ds-font-family);
+            font-weight: 600;
+            cursor: pointer;
         }
 
         /* Section */
@@ -697,6 +723,14 @@
         <a href="#shadows">Sombras</a>
     </div>
 
+    <div class="theme-select-row">
+        <label for="ds-theme-select">Tema</label>
+        <select id="ds-theme-select" aria-label="Selecionar tema">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+    </div>
+
     <!-- ═══════ COLORS ═══════ -->
     <div class="section" id="colors">
         <div class="section-header">
@@ -846,7 +880,7 @@
         { name: 'Radio', file: 'radio-demo.html', cat: 'Formulário' },
         { name: 'Switch', file: 'switch-demo.html', cat: 'Formulário' },
         { name: 'Textarea', file: 'textarea-demo.html', cat: 'Formulário' },
-        { name: 'Table', file: 'table-demo.html', cat: 'Dados' },
+        { name: 'Tabela — scroll virtual', file: 'table-virtual-scroll-demo.html', cat: 'Dados' },
         { name: 'Toast', file: 'toast-demo-updated.html', cat: 'Feedback' },
         { name: 'Design Tokens', file: 'design-tokens.html', cat: 'Fundação' },
         { name: 'Iconografia', file: 'icons-demo.html', cat: 'Fundação' }
@@ -1036,6 +1070,33 @@
 
     setupSearch('ds-nav-search', 'ds-nav-dropdown');
     setupSearch('ds-nav-search-mobile', 'ds-nav-dropdown-mobile');
+
+    // ── Theme: persistência entre páginas ──
+    (function () {
+        var savedTheme = 'light';
+        try {
+            var stored = localStorage.getItem('ds-theme');
+            savedTheme = stored || 'light';
+        } catch (e) {
+            // default (:root)
+        }
+
+        document.documentElement.dataset.dsTheme = savedTheme;
+
+        var sel = document.getElementById('ds-theme-select');
+        if (!sel) return;
+
+        sel.value = savedTheme;
+        sel.addEventListener('change', function () {
+            var next = sel.value || 'light';
+            document.documentElement.dataset.dsTheme = next;
+            try {
+                localStorage.setItem('ds-theme', next);
+            } catch (e) {
+                // ignore
+            }
+        });
+    })();
 
     // ── Hamburger Toggle ──
     const hb = document.getElementById('ds-hamburger');

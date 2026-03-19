@@ -4,6 +4,16 @@
  * Não incluir em `index.html`. Opcional: `data-ds-demo-sidebar="skip"` no <body>.
  */
 (function () {
+  // Tema global para persistir entre páginas (home/cobrindo demos).
+  // `light` é default (tokens em :root); `dark` vem do escopo [data-ds-theme="dark"].
+  try {
+    var savedTheme = localStorage.getItem('ds-theme');
+    var theme = savedTheme || 'light';
+    document.documentElement.dataset.dsTheme = theme;
+  } catch (e) {
+    // Se localStorage estiver bloqueado, fica no default (:root).
+  }
+
   if (document.body.dataset.dsDemoSidebar === 'skip') return;
 
   var nav = document.querySelector('nav.ds-topbar');
@@ -21,25 +31,35 @@
   var main = document.createElement('div');
   main.className = 'ds-demo-main';
 
-  var toMove = [];
+  // Em vez de mover "tudo até algum <script>" (muito sensível ao HTML real),
+  // movemos apenas as estruturas que representam a página:
+  // - `.ds-mobile-menu` (se existir)
+  // - o primeiro "content root": `.ds-container` ou `.container`
+  // Isso torna o layout determinístico e evita quebra em várias páginas.
+  var mobileMenu = null;
+  var contentRoot = null;
+
   var el = nav.nextElementSibling;
-  while (el && el.tagName !== 'SCRIPT') {
-    var next = el.nextElementSibling;
-    toMove.push(el);
-    el = next;
+  while (el) {
+    if (!mobileMenu && el.classList && el.classList.contains('ds-mobile-menu')) {
+      mobileMenu = el;
+    }
+    if (!contentRoot && el.classList && (el.classList.contains('ds-container') || el.classList.contains('container'))) {
+      contentRoot = el;
+      break;
+    }
+    el = el.nextElementSibling;
   }
 
-  if (toMove.length) {
-    nav.parentNode.insertBefore(layout, toMove[0]);
-  } else {
-    nav.parentNode.appendChild(layout);
-  }
+  // fallback: se não acharmos um content root, não quebra; apenas injeta.
+  var firstToMove = mobileMenu || contentRoot || nav.nextElementSibling;
+  if (firstToMove) nav.parentNode.insertBefore(layout, firstToMove);
+  else nav.parentNode.appendChild(layout);
   layout.appendChild(aside);
   layout.appendChild(main);
 
-  toMove.forEach(function (node) {
-    main.appendChild(node);
-  });
+  if (mobileMenu) main.appendChild(mobileMenu);
+  if (contentRoot) main.appendChild(contentRoot);
 
   /** @type {{ file: string, label: string, featured?: boolean }[]} */
   var pages = [
@@ -54,11 +74,8 @@
     { file: 'datepicker-demo.html', label: 'Date Picker' },
     { file: 'divider-demo.html', label: 'Divider' },
     { file: 'drawer-demo.html', label: 'Drawer' },
-    { file: 'final-components-demo.html', label: 'Componentes finais' },
-    { file: 'form-components-demo.html', label: 'Form components' },
     { file: 'icons-demo.html', label: 'Iconografia' },
     { file: 'input-demo.html', label: 'Input' },
-    { file: 'input-select-demo.html', label: 'Input + Select' },
     { file: 'menu-demo.html', label: 'Menu' },
     { file: 'modal-demo.html', label: 'Modal' },
     { file: 'radio-demo.html', label: 'Radio' },
@@ -68,7 +85,6 @@
     { file: 'stepper-demo.html', label: 'Stepper' },
     { file: 'switch-demo.html', label: 'Switch' },
     { file: 'tab-demo.html', label: 'Tab' },
-    { file: 'table-demo.html', label: 'Table' },
     { file: 'table-virtual-scroll-demo.html', label: 'Tabela — scroll virtual' },
     { file: 'textarea-demo.html', label: 'Textarea' },
     { file: 'toast-demo-updated.html', label: 'Toast' },

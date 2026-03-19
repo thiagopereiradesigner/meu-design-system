@@ -13,72 +13,9 @@
             box-sizing: border-box;
         }
 
-        /* ── DS Navigation Bar ── */
-        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
-        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
-        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
-        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
-        .ds-topbar-spacer{flex:1;}
-        .ds-search-wrapper{position:relative;width:280px;}
-        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
-        .ds-search-input:focus{border-color:#04843B;}
-        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
-        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
-        .ds-search-dropdown.open{display:block;}
-        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
-        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
-        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
-        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
-        .ds-hamburger:hover{background:#f5f5f5;}
-        .ds-hamburger svg{color:#333;}
-        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
-        .ds-mobile-menu.open{display:flex;}
-        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
-        .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        /* Header/topbar padronizados em ds-demo-base.css */
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FFFFFF;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #005A1A;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 16px;
-            color: #656976;
-        }
-
-        .section {
-            background: #F9F9F9;
-            padding: 32px;
-            border-radius: 12px;
-            margin-bottom: 32px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1A1A1A;
-            margin-bottom: 24px;
-        }
+        /* Layout/base tokens vêm de ds-demo-base.css */
 
         .size-group {
             margin-bottom: 32px;
@@ -87,13 +24,13 @@
         .size-label {
             font-size: 14px;
             font-weight: 500;
-            color: #656976;
+            color: var(--ds-fg-muted);
             margin-bottom: 16px;
         }
 
         .state-label {
             font-size: 10px;
-            color: #999999;
+            color: var(--ds-fg-subtle);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 8px;
@@ -101,7 +38,7 @@
         }
 
         .color-demo {
-            background: white;
+            background: var(--ds-surface);
             padding: 24px;
             border-radius: 8px;
             margin-bottom: 16px;
@@ -119,7 +56,7 @@
             width: 40px;
             height: 40px;
             border-radius: 4px;
-            border: 1px solid #E0E0E0;
+            border: 1px solid var(--ds-border);
         }
 
         .color-info {
@@ -130,12 +67,12 @@
         .color-name {
             font-size: 12px;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .color-value {
             font-size: 11px;
-            color: #666;
+            color: var(--ds-fg-muted);
             font-family: monospace;
         }
 
@@ -158,7 +95,8 @@
         }
 
         .demo-item {
-            background: #FFFFFF;
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
             border-radius: 8px;
             padding: 24px;
             display: flex;
@@ -170,7 +108,7 @@
         .demo-item-label {
             font-size: 10px;
             font-weight: 500;
-            color: #999;
+            color: var(--ds-fg-subtle);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
@@ -179,21 +117,21 @@
         .note {
             margin-top: 48px;
             padding: 24px;
-            background-color: #E6F4ED;
+            background-color: var(--ds-success-bg);
             border-radius: 12px;
-            border-left: 4px solid #04843B;
+            border-left: 4px solid var(--ds-success);
         }
 
         .note h3 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #004D16;
+            color: var(--ds-success-fg);
         }
 
         .note ul {
             font-size: 14px;
-            color: #333333;
+            color: var(--ds-fg);
             line-height: 1.6;
             padding-left: 20px;
         }
@@ -215,7 +153,7 @@
         .dp-label {
             font-size: 13px;
             font-weight: 500;
-            color: #333333;
+            color: var(--ds-fg);
         }
 
         .dp-label-required {
@@ -234,11 +172,11 @@
             width: 100%;
             height: 48px;
             padding: 12px 44px 12px 16px;
-            border: 1px solid #DDDDDD;
+            border: 1px solid var(--ds-border);
             border-radius: 8px;
             font-size: 14px;
-            color: #1A1A1A;
-            background: #FFFFFF;
+            color: var(--ds-fg);
+            background: var(--ds-surface);
             outline: none;
             cursor: pointer;
             transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -246,7 +184,7 @@
         }
 
         .dp-input::placeholder {
-            color: #999999;
+            color: var(--ds-placeholder);
         }
 
         .dp-input:hover:not(:disabled) {
@@ -255,7 +193,7 @@
 
         .dp-input:focus {
             border-color: #04843B;
-            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+            box-shadow: var(--ds-focus-ring);
         }
 
         .dp-input.dp-input--error {
@@ -267,9 +205,9 @@
         }
 
         .dp-input:disabled {
-            background: #F3F3F3;
-            color: #C6C6C6;
-            border-color: #E0E0E0;
+            background: var(--ds-bg-subtle);
+            color: var(--ds-fg-subtle);
+            border-color: var(--ds-border);
             cursor: not-allowed;
         }
 
@@ -293,7 +231,7 @@
             border: none;
             background: none;
             cursor: pointer;
-            color: #656976;
+            color: var(--ds-fg-muted);
             border-radius: 4px;
             transition: color 0.15s, background 0.15s;
             padding: 0;
@@ -301,19 +239,19 @@
 
         .dp-icon-btn:hover {
             color: #04843B;
-            background: #E6F4ED;
+            background: var(--ds-success-bg);
         }
 
         .dp-input:disabled + .dp-icon-btn,
         .dp-input:disabled ~ .dp-icon-btn {
-            color: #C6C6C6;
+            color: var(--ds-fg-subtle);
             cursor: not-allowed;
             pointer-events: none;
         }
 
         .dp-helper {
             font-size: 12px;
-            color: #656976;
+            color: var(--ds-fg-muted);
         }
 
         .dp-helper--error {
@@ -326,10 +264,10 @@
             top: calc(100% + 6px);
             left: 0;
             z-index: 100;
-            background: #FFFFFF;
-            border: 1px solid #E0E0E0;
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            box-shadow: var(--ds-shadow-md);
             padding: 16px;
             width: 296px;
             user-select: none;
@@ -353,24 +291,24 @@
             justify-content: center;
             width: 32px;
             height: 32px;
-            border: 1px solid #E0E0E0;
+            border: 1px solid var(--ds-border);
             border-radius: 8px;
-            background: #FFFFFF;
+            background: var(--ds-surface);
             cursor: pointer;
-            color: #333333;
+            color: var(--ds-fg);
             transition: all 0.15s;
         }
 
         .dp-nav-btn:hover {
             border-color: #04843B;
             color: #04843B;
-            background: #E6F4ED;
+            background: var(--ds-success-bg);
         }
 
         .dp-month-label {
             font-size: 14px;
             font-weight: 600;
-            color: #1A1A1A;
+            color: var(--ds-fg);
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 6px;
@@ -378,7 +316,7 @@
         }
 
         .dp-month-label:hover {
-            background: #F3F3F3;
+            background: var(--ds-bg-subtle);
         }
 
         /* Weekday row */
@@ -392,7 +330,7 @@
             text-align: center;
             font-size: 11px;
             font-weight: 600;
-            color: #999999;
+            color: var(--ds-fg-subtle);
             padding: 4px 0;
         }
 
@@ -414,15 +352,15 @@
             background: transparent;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
-            color: #333333;
+            color: var(--ds-fg);
             cursor: pointer;
             transition: all 0.1s;
             padding: 0;
         }
 
         .dp-day:hover:not(.dp-day--disabled):not(.dp-day--selected):not(.dp-day--outside) {
-            background: #E6F4ED;
-            color: #04843B;
+            background: var(--ds-success-bg);
+            color: var(--ds-success-fg);
         }
 
         .dp-day--today {
@@ -446,12 +384,12 @@
         }
 
         .dp-day--outside {
-            color: #C6C6C6;
+            color: var(--ds-fg-subtle);
             cursor: default;
         }
 
         .dp-day--disabled {
-            color: #C6C6C6;
+            color: var(--ds-fg-subtle);
             cursor: not-allowed;
             text-decoration: line-through;
         }
@@ -488,7 +426,7 @@
             justify-content: space-between;
             margin-top: 16px;
             padding-top: 16px;
-            border-top: 1px solid #E0E0E0;
+            border-top: 1px solid var(--ds-border);
             gap: 8px;
         }
 
@@ -506,14 +444,14 @@
         }
 
         .dp-footer-today:hover {
-            background: #E6F4ED;
+            background: var(--ds-success-bg);
         }
 
         .dp-footer-clear {
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             font-weight: 500;
-            color: #656976;
+            color: var(--ds-fg-muted);
             background: none;
             border: none;
             cursor: pointer;
@@ -523,7 +461,7 @@
         }
 
         .dp-footer-clear:hover {
-            background: #F3F3F3;
+            background: var(--ds-bg-subtle);
         }
 
         /* ── Range input group ── */
@@ -546,7 +484,7 @@
 
         .dp-range-group .dp-field:last-child .dp-input {
             border-radius: 0 8px 8px 0;
-            border-right: 1px solid #DDDDDD;
+            border-right: 1px solid var(--ds-border);
             border-left: none;
         }
 
@@ -556,9 +494,9 @@
             justify-content: center;
             width: 32px;
             height: 48px;
-            background: #F3F3F3;
-            border-top: 1px solid #DDDDDD;
-            border-bottom: 1px solid #DDDDDD;
+            background: var(--ds-bg-subtle);
+            border-top: 1px solid var(--ds-border);
+            border-bottom: 1px solid var(--ds-border);
             flex-shrink: 0;
         }
 
@@ -569,10 +507,10 @@
         /* ── Inline calendar (no input) ── */
         .dp-inline {
             display: inline-block;
-            background: #FFFFFF;
-            border: 1px solid #E0E0E0;
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
             border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--ds-shadow-sm);
             padding: 16px;
             width: 296px;
         }
@@ -588,7 +526,7 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
-    <span class="ds-topbar-title">Date Picker</span>
+    <span class="ds-topbar-title">TP.IA - Design System</span>
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -611,7 +549,7 @@
 
 <div class="container">
     <div class="header">
-        <h1>TP.IA - Design System</h1>
+        <h1>Date Picker</h1>
         <p>Componente Date Picker | Todos os estados, variantes e interações</p>
     </div>
 
@@ -697,7 +635,7 @@
     <!-- INPUT STATES -->
     <div class="section">
         <h2 class="section-title">📅 Input — Estados do campo</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">O campo de entrada dispara o calendário. Segue os mesmos padrões visuais do componente Input do DS.</p>
+        <p style="font-size:14px;color:var(--ds-fg-muted);margin-bottom:24px;">O campo de entrada dispara o calendário. Segue os mesmos padrões visuais do componente Input do DS.</p>
 
         <!-- Large -->
         <div class="size-group">
@@ -838,7 +776,7 @@
     <!-- CALENDAR STATES -->
     <div class="section">
         <h2 class="section-title">🗓️ Calendário — Estados dos dias</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Visualização dos estados individuais de cada célula de dia dentro do calendário.</p>
+        <p style="font-size:14px;color:var(--ds-fg-muted);margin-bottom:24px;">Visualização dos estados individuais de cada célula de dia dentro do calendário.</p>
 
         <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;">
             <!-- Default calendar -->
@@ -852,47 +790,47 @@
             <!-- Day states legend -->
             <div style="flex:1;min-width:280px;">
                 <div class="size-label" style="margin-bottom:16px;">Estados das células</div>
-                <div style="background:#fff;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+                <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;">
                     <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#333;background:transparent;border:1px solid transparent;">15</div>
+                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:var(--ds-fg);background:transparent;border:1px solid transparent;">15</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:#333;">Default</div>
-                            <div style="font-size:11px;color:#999;">Dia normal, disponível</div>
+                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Default</div>
+                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Dia normal, disponível</div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;">
                         <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#04843B;background:#E6F4ED;">16</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:#333;">Hover</div>
-                            <div style="font-size:11px;color:#999;">Mouse sobre o dia</div>
+                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Hover</div>
+                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Mouse sobre o dia</div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;">
                         <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:700;color:#04843B;border:1.5px solid #04843B;">20</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:#333;">Hoje</div>
-                            <div style="font-size:11px;color:#999;">Data atual, borda verde</div>
+                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Hoje</div>
+                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Data atual, borda verde</div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;">
                         <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:#04843B;">14</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:#333;">Selecionado</div>
-                            <div style="font-size:11px;color:#999;">Data escolhida pelo usuário</div>
+                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Selecionado</div>
+                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Data escolhida pelo usuário</div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;">
                         <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#C6C6C6;text-decoration:line-through;">11</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:#333;">Desabilitado</div>
-                            <div style="font-size:11px;color:#999;">Data bloqueada / fora do range permitido</div>
+                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Desabilitado</div>
+                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Data bloqueada / fora do range permitido</div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;">
                         <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#C6C6C6;">1</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:#333;">Fora do mês</div>
-                            <div style="font-size:11px;color:#999;">Dia de mês anterior/seguinte</div>
+                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Fora do mês</div>
+                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Dia de mês anterior/seguinte</div>
                         </div>
                     </div>
                 </div>
@@ -903,11 +841,11 @@
     <!-- DATE RANGE -->
     <div class="section">
         <h2 class="section-title">📆 Date Range — Seleção de intervalo</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Dois campos ligados para selecionar um período. O calendário mostra o intervalo com destaque visual.</p>
+        <p style="font-size:14px;color:var(--ds-fg-muted);margin-bottom:24px;">Dois campos ligados para selecionar um período. O calendário mostra o intervalo com destaque visual.</p>
 
         <div class="size-group">
             <div class="size-label">Range input — Large (L)</div>
-            <div style="background:#fff;border-radius:8px;padding:24px;">
+            <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;">
                 <div class="dp-range-group">
                     <div class="dp-field">
                         <label class="dp-label">Data inicial</label>
@@ -919,7 +857,7 @@
                         </div>
                     </div>
                     <div class="dp-range-separator" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ds-fg-subtle)" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </div>
                     <div class="dp-field">
                         <label class="dp-label">Data final</label>
@@ -936,15 +874,15 @@
 
         <div class="size-group" style="margin-bottom:0;">
             <div class="size-label">Calendário com intervalo selecionado — interativo</div>
-            <div style="background:#fff;border-radius:8px;padding:24px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
+            <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
                 <div class="dp-inline" id="cal-range">
                     <!-- rendered by JS -->
                 </div>
                 <div style="flex:1;min-width:220px;padding-top:4px;">
-                    <p style="font-size:13px;color:#656976;line-height:1.6;margin-bottom:12px;">Clique em dois dias para definir o intervalo. O período selecionado é destacado em verde claro.</p>
-                    <div style="font-size:13px;color:#333;background:#F3F3F3;border-radius:8px;padding:12px 14px;">
-                        <div style="margin-bottom:4px;"><strong>Início:</strong> <span id="range-start-label" style="color:#04843B;font-weight:600;">—</span></div>
-                        <div><strong>Fim:</strong> <span id="range-end-label" style="color:#04843B;font-weight:600;">—</span></div>
+                    <p style="font-size:13px;color:var(--ds-fg-muted);line-height:1.6;margin-bottom:12px;">Clique em dois dias para definir o intervalo. O período selecionado é destacado em verde claro.</p>
+                    <div style="font-size:13px;color:var(--ds-fg);background:var(--ds-bg-subtle);border-radius:8px;padding:12px 14px;">
+                        <div style="margin-bottom:4px;"><strong>Início:</strong> <span id="range-start-label" style="color:var(--ds-success);font-weight:600;">—</span></div>
+                        <div><strong>Fim:</strong> <span id="range-end-label" style="color:var(--ds-success);font-weight:600;">—</span></div>
                     </div>
                 </div>
             </div>
@@ -954,7 +892,7 @@
     <!-- INTERACTIVE DATE PICKER -->
     <div class="section">
         <h2 class="section-title">⚡ Date Picker interativo</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Clique no campo ou no ícone de calendário para abrir o seletor. Clique fora para fechar.</p>
+        <p style="font-size:14px;color:var(--ds-fg-muted);margin-bottom:24px;">Clique no campo ou no ícone de calendário para abrir o seletor. Clique fora para fechar.</p>
 
         <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
             <!-- Single date picker -->
@@ -1001,7 +939,7 @@
     <!-- COMO USAR -->
     <div class="section">
         <div class="section-title">Anatomia do Componente (HTML)</div>
-        <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+        <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
             <li><code>div.dp-field</code>: wrapper do campo (label + input + helper).</li>
             <li><code>label.dp-label</code> e <code>span.dp-label-required</code>: rótulo e obrigatoriedade.</li>
             <li><code>div.dp-input-wrapper</code>: wrapper relativo que posiciona o botão/ícone.</li>
@@ -1016,8 +954,8 @@
     <div class="section">
         <h2 class="section-title">Como Usar (HTML)</h2>
 
-        <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
-            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">1. Input com calendário (estrutura base)</h3>
+        <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;margin-bottom:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--ds-fg);">1. Input com calendário (estrutura base)</h3>
             <pre class="code" style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;!-- Wrapper com posicionamento relativo --&gt;
 &lt;div style="position: relative; width: fit-content;"&gt;
 
@@ -1049,8 +987,8 @@
 &lt;/div&gt;</code></pre>
         </div>
 
-        <div style="background:#FFFFFF;border-radius:8px;padding:24px;margin-bottom:24px;">
-            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">2. Date Range (dois campos)</h3>
+        <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;margin-bottom:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--ds-fg);">2. Date Range (dois campos)</h3>
             <pre class="code" style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;div class="dp-range-group"&gt;
   &lt;div class="dp-field"&gt;
     &lt;label class="dp-label"&gt;Data inicial&lt;/label&gt;
@@ -1072,9 +1010,9 @@
 &lt;/div&gt;</code></pre>
         </div>
 
-        <div style="background:#FFFFFF;border-radius:8px;padding:24px;">
-            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:#1A1A1A;">3. Classes disponíveis</h3>
-            <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--ds-fg);">3. Classes disponíveis</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:13px;color:var(--ds-fg);">
                 <thead>
                     <tr style="background:#F3F3F3;">
                         <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Classe</th>
@@ -1440,7 +1378,7 @@ function DatePickerField({
 <!-- DS Navigation Search Script -->
 <script>
 (function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Tab',file:'tab-demo.html',cat:'Navegação'},{name:'Date Picker',file:'datepicker-demo.html',cat:'Formulário'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Tab',file:'tab-demo.html',cat:'Navegação'},{name:'Date Picker',file:'datepicker-demo.html',cat:'Formulário'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
     function setupSearch(inputId,dropdownId){
         var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
         if(!si||!dd)return;

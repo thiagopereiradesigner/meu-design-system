@@ -12,88 +12,17 @@
             padding: 0;
             box-sizing: border-box;
         }
-        /* ── DS Navigation Bar ── */
-        .ds-topbar{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
-        .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #d0d0d0;background:#fff;color:#333;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
-        .ds-back-btn:hover{background:#f5f5f5;border-color:#04843B;color:#04843B;}
-        .ds-topbar-title{font-size:14px;font-weight:600;color:#005A1A;white-space:nowrap;}
-        .ds-topbar-spacer{flex:1;}
-        .ds-search-wrapper{position:relative;width:280px;}
-        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid #d0d0d0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
-        .ds-search-input:focus{border-color:#04843B;}
-        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;}
-        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;z-index:1000;}
-        .ds-search-dropdown.open{display:block;}
-        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:#333;font-size:13px;transition:background .1s;}
-        .ds-search-item:hover{background:#E6F4ED;color:#005A1A;}
-        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#f0f0f0;color:#666;margin-left:auto;}
-        .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
-        .ds-hamburger:hover{background:#f5f5f5;}
-        .ds-hamburger svg{color:#333;}
-        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e0e0;box-shadow:0 8px 24px rgba(0,0,0,0.1);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
-        .ds-mobile-menu.open{display:flex;}
-        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
-        .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        /* Header/topbar padronizados em ds-demo-base.css */
 
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FFFFFF;
-            padding: 40px;
-            color: #393939;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #005A1A;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 16px;
-            color: #5E5E5E;
-        }
-
-        .section {
-            background: #F9F9F9;
-            padding: 32px;
-            border-radius: 12px;
-            margin-bottom: 32px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1A1A1A;
-            margin-bottom: 8px;
-        }
-
-        .section-description {
-            font-size: 14px;
-            color: #5E5E5E;
-            margin-bottom: 16px;
-        }
+        /* Layout/base tokens vêm de ds-demo-base.css */
 
         /* VIRTUAL SCROLL TABLE */
         .table-container {
             width: 100%;
             height: 500px;
             border-radius: 8px;
-            border: 1px solid #DDDDDD;
-            background-color: #FFFFFF;
+            border: 1px solid var(--ds-border);
+            background-color: var(--ds-surface);
             overflow: hidden;
             position: relative;
         }
@@ -116,8 +45,8 @@
         }
 
         thead {
-            background-color: #F9F9F9;
-            border-bottom: 2px solid #DDDDDD;
+            background-color: var(--ds-bg-subtle);
+            border-bottom: 2px solid var(--ds-border);
             position: sticky;
             top: 0;
             z-index: 10;
@@ -128,21 +57,21 @@
             text-align: left;
             font-size: 12px;
             font-weight: 600;
-            color: #393939;
+            color: var(--ds-fg);
             white-space: nowrap;
             cursor: pointer;
             user-select: none;
-            background-color: #F9F9F9;
+            background-color: var(--ds-bg-subtle);
         }
 
         th:hover {
-            background-color: #F3F3F3;
+            background-color: var(--ds-surface-elevated);
         }
 
         th.sortable::after {
             content: ' ↕';
             font-size: 10px;
-            color: #727272;
+            color: var(--ds-fg-muted);
             margin-left: 4px;
         }
 
@@ -161,13 +90,13 @@
         }
 
         .table-rows tbody tr {
-            border-bottom: 1px solid #DDDDDD;
+            border-bottom: 1px solid var(--ds-border);
             transition: background-color 0.15s ease;
             height: 53px;
         }
 
         .table-rows tbody tr:nth-child(even) {
-            background-color: #F9F9F9;
+            background-color: var(--ds-bg-subtle);
         }
 
         .table-rows tbody tr:hover {
@@ -181,7 +110,7 @@
         td {
             padding: 16px;
             font-size: 14px;
-            color: #393939;
+            color: var(--ds-fg);
             line-height: 1.5;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -230,7 +159,7 @@
             gap: 24px;
             margin-top: 16px;
             padding: 16px;
-            background: #E6F4ED;
+            background: var(--ds-success-bg);
             border-radius: 8px;
             font-size: 14px;
         }
@@ -242,35 +171,35 @@
 
         .stat-label {
             font-size: 12px;
-            color: #5E5E5E;
+            color: var(--ds-fg-muted);
             margin-bottom: 4px;
         }
 
         .stat-value {
             font-size: 18px;
             font-weight: 700;
-            color: #005A1A;
+            color: var(--ds-success-fg);
         }
 
         /* NOTE */
         .note {
             margin-top: 48px;
             padding: 24px;
-            background-color: #E6F4ED;
+            background-color: var(--ds-success-bg);
             border-radius: 12px;
-            border-left: 4px solid #04843B;
+            border-left: 4px solid var(--ds-success);
         }
 
         .note h3 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #004D16;
+            color: var(--ds-success-fg);
         }
 
         .note ul {
             font-size: 14px;
-            color: #333333;
+            color: var(--ds-fg);
             line-height: 1.6;
             padding-left: 20px;
         }
@@ -286,18 +215,18 @@
         }
 
         .performance-table th {
-            background: #F3F3F3;
+            background: var(--ds-bg-subtle);
             padding: 12px;
             text-align: left;
         }
 
         .performance-table td {
             padding: 12px;
-            border-bottom: 1px solid #DDDDDD;
+            border-bottom: 1px solid var(--ds-border);
         }
 
         .performance-table tr:nth-child(even) {
-            background: #F9F9F9;
+            background: var(--ds-bg-subtle);
         }
     </style>
 </head>
@@ -311,7 +240,7 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
-    <span class="ds-topbar-title">Table Virtual Scroll</span>
+    <span class="ds-topbar-title">TP.IA - Design System</span>
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -334,7 +263,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>TP.IA - Design System</h1>
+            <h1>Tabela — scroll virtual</h1>
             <p>Table com Virtual Scrolling (10.000 linhas)</p>
         </div>
 
@@ -402,7 +331,7 @@
         </div>
 
         <!-- Performance Comparison -->
-        <div class="note" style="margin-top: 24px; background: #F3F3F3; border-left-color: #5E5E5E;">
+        <div class="note" style="margin-top: 24px; background: var(--ds-bg-subtle); border-left-color: var(--ds-border-strong);">
             <h3>📈 Comparação de Performance</h3>
             <table class="performance-table">
                 <thead>
@@ -436,12 +365,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
-
     <div class="section">
         <h2 class="section-title">Anatomia do Componente (HTML)</h2>
         <p class="section-description">Tabela com virtual scrolling + status via <code>Badge</code> (pill).</p>
-        <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+        <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
             <li><code>div.table-container</code>: contêiner onde o JS renderiza o conteúdo visível.</li>
             <li><code>table</code> (gerado em runtime pelo demo): <code>thead</code> + <code>tbody</code>.</li>
             <li>Status: <code>span.badge badge-success|badge-warning|badge-neutral</code> dentro de células <code>td</code>.</li>
@@ -473,7 +400,7 @@
             Para células de status, use <code>Badge</code> com formato pill (radius full). No app, a renderização do
             virtual scroll deve preservar o mesmo componente para consistência visual.
         </p>
-        <pre class="code" style="font-size:12px;background:#F3F3F3;padding:12px;border-radius:12px;overflow-x:auto;">
+        <pre class="code" style="font-size:12px;background:var(--ds-bg-subtle);padding:12px;border-radius:12px;overflow-x:auto;">
 <code>{/* JSX */}
 import { Badge } from '@/components/ui/Badge';
 
@@ -664,7 +591,7 @@ import { Badge } from '@/components/ui/Badge';
 <!-- DS Navigation Search Script -->
 <script>
 (function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Table',file:'table-demo.html',cat:'Dados'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
     function setupSearch(inputId,dropdownId){
         var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
         if(!si||!dd)return;

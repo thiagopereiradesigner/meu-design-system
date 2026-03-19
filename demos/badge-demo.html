@@ -25,7 +25,7 @@
     .ds-back-btn{
       display: inline-flex; align-items: center; gap: 6px;
       padding: 8px 12px; border-radius: 8px;
-      border: 1px solid #d0d0d0; background: #fff; color: #333;
+      border: 1px solid var(--ds-border); background: var(--ds-surface); color: var(--ds-fg);
       font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
     }
     .ds-back-btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: #F3F4F6; }
@@ -40,14 +40,14 @@
     @media(min-width:1280px){ .ds-container{ padding-left: 32px; padding-right: 32px; } }
 
     h1{ font-size: 28px; font-weight: 700; color: var(--ds-success-fg); margin-bottom: 8px; }
-    p.lead{ font-size: 14px; color: #656976; margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
+    p.lead{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
 
     .section{
-      background: #fff; border-radius: 12px; border: 1px solid #E0E0E0;
+      background: var(--ds-surface); border-radius: 12px; border: 1px solid var(--ds-border);
       padding: 24px; margin-bottom: 24px;
     }
     .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 12px; }
-    .section-subtitle{ font-size: 14px; color: #656976; margin-bottom: 16px; line-height: 1.6; }
+    .section-subtitle{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 16px; line-height: 1.6; }
 
     .badge-row{ display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
@@ -78,18 +78,36 @@
 </head>
 <body>
   <nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <a href="index.html" class="ds-back-btn" aria-label="Voltar">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 12L6 8l4-4"/>
-      </svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
       Voltar
     </a>
+    <span class="ds-topbar-title">TP.IA - Design System</span>
     <div class="ds-topbar-spacer"></div>
-    <span class="ds-topbar-title">Badge</span>
+    <div class="ds-search-wrapper">
+      <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+      <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
   </nav>
 
+  <div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+      Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+      <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+      <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+  </div>
+
   <div class="ds-container">
-    <h1>Badges: com ícone e sem ícone</h1>
+    <h1>Badge</h1>
     <p class="lead">
       Variações por tipo (success/error/warning/info/neutral) e um modo opcional de exibir ícone ao lado do texto.
     </p>
@@ -104,7 +122,7 @@
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
         <li><code>span.badge</code>: componente base (pill/arredondado e alinhamento).</li>
         <li><code>span.badge.success|error|warning|info|neutral</code>: variação semântica de cor via classes.</li>
         <li><code>span.badge.small|medium</code>: controle de tamanho (padding e font-size).</li>
@@ -244,7 +262,7 @@
         `Badge` é um componente inline para status/categoria. O formato é sempre pill (radius full) e as cores vêm de CSS variables (white-label).
       </div>
 
-      <pre class="code" style="margin-top:0;background:#F3F3F3;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;">
+      <pre class="code" style="margin-top:0;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;">
         <code>{/* JSX */}
 import { Badge } from '@/components/ui/Badge';
 
@@ -262,8 +280,8 @@ import { Badge } from '@/components/ui/Badge';
         </code>
       </pre>
 
-      <div style="font-size:13px;color:#656976;line-height:1.7;margin-top:14px;">
-        <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+      <div style="font-size:13px;color:var(--ds-fg-muted);line-height:1.7;margin-top:14px;">
+        <div style="font-weight:800;color:var(--ds-fg);margin-bottom:6px;">Props principais</div>
         <div><code>variant</code>: success | error | warning | info | neutral</div>
         <div><code>size</code>: small | medium</div>
         <div><code>showIcon</code> / <code>icon</code> (override)</div>
@@ -272,6 +290,7 @@ import { Badge } from '@/components/ui/Badge';
     </div>
   </div>
 
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

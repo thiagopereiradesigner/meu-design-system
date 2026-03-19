@@ -6,6 +6,17 @@
   <title>TP.IA - Design System</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('ds-theme');
+        var theme = savedTheme || 'light';
+        document.documentElement.dataset.dsTheme = theme;
+      } catch (e) {
+        // Mantém o default do :root em caso de bloqueio de localStorage.
+      }
+    })();
+  </script>
   <style>
     * {
       margin: 0;
@@ -727,12 +738,6 @@
         file: 'datepicker-demo.html'
       },
       {
-        name: 'Table',
-        description: 'Tabelas responsivas com sorting, paginação e virtual scrolling',
-        category: 'data',
-        file: 'table-demo.html'
-      },
-      {
         name: 'Toast',
         description: 'Notificações temporárias para feedback do sistema',
         category: 'feedback',
@@ -817,28 +822,10 @@
         file: 'card-demo.html'
       },
       {
-        name: 'Form components',
-        description: 'Demonstração agrupada de campos de formulário no padrão do DS',
-        category: 'form',
-        file: 'form-components-demo.html'
-      },
-      {
-        name: 'Input + Select',
-        description: 'Campo de texto combinado com seletor no mesmo bloco',
-        category: 'form',
-        file: 'input-select-demo.html'
-      },
-      {
         name: 'Tabela — scroll virtual',
         description: 'Tabela com virtualização para listas grandes',
         category: 'data',
         file: 'table-virtual-scroll-demo.html'
-      },
-      {
-        name: 'Componentes finais',
-        description: 'Composições React/HTML alinhadas ao DS (showcase)',
-        category: 'foundation',
-        file: 'final-components-demo.html'
       }
     ];
 
@@ -944,20 +931,6 @@
           return `
             <div class="preview-inner">
               <textarea class="preview-textarea" placeholder="Escreva aqui..."></textarea>
-            </div>
-          `;
-        case 'Table':
-          return `
-            <div class="preview-inner">
-              <table class="preview-table">
-                <thead>
-                  <tr><th>Nome</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Ana</td><td><span class="preview-badge">Ativo</span></td></tr>
-                  <tr><td>Carlos</td><td><span class="preview-badge">Inativo</span></td></tr>
-                </tbody>
-              </table>
             </div>
           `;
         case 'Toast':
@@ -1200,26 +1173,6 @@
               </div>
             </div>
           `;
-        case 'Form components':
-          return `
-            <div class="preview-inner" style="flex-direction:column;align-items:stretch;gap:8px;padding:10px 14px;">
-              <div style="height:8px;width:40%;border-radius:4px;background:#E8E8E8;"></div>
-              <div style="height:28px;width:100%;border-radius:8px;border:1px solid #E0E0E0;background:#fff;"></div>
-              <div style="display:flex;gap:6px;">
-                <div style="flex:1;height:32px;border-radius:8px;border:1px solid #E0E0E0;"></div>
-                <div style="width:72px;height:32px;border-radius:8px;background:#04843B;"></div>
-              </div>
-            </div>
-          `;
-        case 'Input + Select':
-          return `
-            <div class="preview-inner" style="padding:10px 14px;">
-              <div style="display:flex;width:100%;border:1px solid #E0E0E0;border-radius:10px;overflow:hidden;background:#fff;">
-                <div style="flex:1;padding:8px 10px;font-size:10px;color:#656976;border-right:1px solid #E0E0E0;">Texto…</div>
-                <div style="padding:8px 10px;font-size:10px;color:#04843B;font-weight:600;min-width:56px;">▾ Lista</div>
-              </div>
-            </div>
-          `;
         case 'Tabela — scroll virtual':
           return `
             <div class="preview-inner" style="flex-direction:column;align-items:stretch;gap:6px;padding:8px 12px;">
@@ -1231,19 +1184,6 @@
                   <tr><td>…</td><td>002</td></tr>
                 </tbody>
               </table>
-            </div>
-          `;
-        case 'Componentes finais':
-          return `
-            <div class="preview-inner" style="flex-direction:column;gap:8px;padding:10px 14px;align-items:stretch;">
-              <div style="border-radius:10px;border:1px solid #E0E0E0;padding:10px;background:#fff;">
-                <div style="font-size:10px;font-weight:800;color:#1A1A1A;">Card</div>
-                <div style="margin-top:6px;height:8px;width:70%;background:#E8E8E8;border-radius:4px;"></div>
-              </div>
-              <div style="display:flex;gap:6px;">
-                <div style="flex:1;height:24px;border-radius:9999px;background:#04843B;"></div>
-                <div style="flex:1;height:24px;border-radius:9999px;border:1px solid #E0E0E0;"></div>
-              </div>
             </div>
           `;
         case 'Card':

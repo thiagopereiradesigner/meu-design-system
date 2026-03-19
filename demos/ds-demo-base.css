@@ -8,6 +8,9 @@
   --ds-fg: #1A1A1A;
   --ds-fg-muted: #656976;
   --ds-fg-subtle: #727272;
+  --ds-placeholder: #727272;
+  --ds-icon-muted: var(--ds-n200);
+  --ds-icon-accent: var(--ds-success);
   --ds-n800: var(--ds-fg);
   --ds-n500: var(--ds-fg-muted);
   --ds-n200: #C6C6C6;
@@ -51,6 +54,9 @@
   --ds-fg: #F3F4F6;
   --ds-fg-muted: #9AA1AE;
   --ds-fg-subtle: #818A98;
+  --ds-placeholder: #818A98;
+  --ds-icon-muted: var(--ds-n200);
+  --ds-icon-accent: var(--ds-success);
   --ds-n200: #5F6672;
 
   --ds-bg: #101317;
@@ -108,6 +114,11 @@ body{
   font-weight: 700;
   color: var(--ds-success);
   white-space: nowrap;
+  /* Centraliza o título do header. */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .ds-topbar-spacer{ flex: 1; }
@@ -131,6 +142,157 @@ body{
   background: var(--ds-bg-subtle);
   border-color: var(--ds-success);
   color: var(--ds-success);
+}
+
+/* ── Header com busca (topbar) ── */
+.ds-search-wrapper{
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.ds-search-input{
+  width: 100%;
+  padding: 8px 12px 8px 32px;
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  background: var(--ds-surface);
+  color: var(--ds-fg);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.ds-search-input:focus{
+  border-color: var(--ds-success);
+  box-shadow: var(--ds-focus-ring);
+}
+
+.ds-search-input::placeholder{
+  color: var(--ds-placeholder);
+  opacity: 1;
+}
+
+.ds-search-icon{
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ds-n500);
+  pointer-events: none;
+}
+
+.ds-search-dropdown{
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: auto;
+  width: 100%;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: var(--ds-shadow-md);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.ds-search-dropdown.open{
+  display: block;
+}
+
+.ds-search-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: var(--ds-fg);
+  font-size: 13px;
+  transition: background .1s ease, color .1s ease;
+}
+
+.ds-search-item:hover{
+  background: var(--ds-bg-subtle);
+  color: var(--ds-success);
+}
+
+.ds-search-item-tag{
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--ds-n100);
+  color: var(--ds-fg-muted);
+  margin-left: auto;
+}
+
+.ds-hamburger{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background .15s ease;
+  flex-shrink: 0;
+}
+
+.ds-hamburger:hover{
+  background: var(--ds-bg-subtle);
+}
+
+.ds-hamburger svg{
+  color: var(--ds-fg);
+}
+
+.ds-mobile-menu{
+  display: none;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  background: var(--ds-surface);
+  border-bottom: 1px solid var(--ds-border);
+  box-shadow: var(--ds-shadow-md);
+  padding: 16px;
+  z-index: 998;
+  flex-direction: column;
+  gap: 12px;
+  animation: dsSlideDown .2s ease;
+}
+
+.ds-mobile-menu.open{
+  display: flex;
+}
+
+@keyframes dsSlideDown{
+  from{ opacity:0; transform: translateY(-8px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+.ds-mobile-menu .ds-back-btn{
+  width: 100%;
+  justify-content: center;
+}
+
+.ds-mobile-menu .ds-search-wrapper{
+  width: 100%;
+}
+
+@media(max-width:743px){
+  /* No celular: busca e botão de voltar somem, hamburger aparece. */
+  .ds-back-btn,
+  .ds-search-wrapper{
+    display: none;
+  }
+  .ds-hamburger{
+    display: flex;
+  }
 }
 
 .ds-container{
@@ -207,6 +369,17 @@ body.ds-demo-has-sidebar{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Várias demos usavam padding global no <body> e hacks no .ds-topbar (ex.: margin:-40px)
+     para compensar. No modo com sidebar, isso quebra o alinhamento. */
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Garante box model consistente entre páginas que têm/ não têm reset local */
+body.ds-demo-has-sidebar *,
+body.ds-demo-has-sidebar *::before,
+body.ds-demo-has-sidebar *::after{
+  box-sizing: border-box !important;
 }
 
 .ds-demo-layout{
@@ -217,12 +390,74 @@ body.ds-demo-has-sidebar{
   width: 100%;
 }
 
+/* Modo com sidebar: neutraliza hacks locais que quebram layout e tema. */
+body.ds-demo-has-sidebar .ds-topbar{
+  margin: 0 !important;
+  padding: 0 16px !important;
+  background: var(--ds-surface) !important;
+  border-bottom: 1px solid var(--ds-border) !important;
+  box-shadow: var(--ds-shadow-sm) !important;
+  height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+body.ds-demo-has-sidebar .ds-topbar-title{
+  color: var(--ds-success) !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+body.ds-demo-has-sidebar .ds-back-btn{
+  background: var(--ds-surface) !important;
+  border: 1px solid var(--ds-border) !important;
+  color: var(--ds-fg) !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+}
+
+body.ds-demo-has-sidebar .ds-back-btn:hover{
+  background: var(--ds-bg-subtle) !important;
+  border-color: var(--ds-success) !important;
+  color: var(--ds-success) !important;
+}
+
+body.ds-demo-has-sidebar .ds-hamburger{
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+}
+
+/* Evita stretching do search no flex (min-width: auto causa expansão pelo placeholder). */
+body.ds-demo-has-sidebar .ds-search-wrapper{
+  width: 280px !important;
+  flex: 0 0 280px !important;
+  min-width: 0 !important;
+  max-width: 280px !important;
+}
+
+body.ds-demo-has-sidebar .ds-search-input{
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
 .ds-demo-sidebar{
   flex: 0 0 240px;
   max-width: 280px;
   border-right: 1px solid var(--ds-border);
   background: var(--ds-bg);
   overflow-y: auto;
+  /* Garante scroll interno e sidebar “fixa” no viewport (desktop). */
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  align-self: flex-start;
   padding: 16px 0 24px;
   box-shadow: var(--ds-shadow-sidebar);
 }
@@ -285,7 +520,584 @@ body.ds-demo-has-sidebar{
   flex: 1;
   min-width: 0;
   overflow-x: auto;
+  background: var(--ds-bg);
 }
+
+/* Garante respiro lateral no conteúdo quando o menu lateral é injetado */
+body.ds-demo-has-sidebar .ds-demo-main{
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Força o mesmo grid/padding horizontal em TODAS as demos internas */
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container,
+body.ds-demo-has-sidebar .ds-demo-main > .container{
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  padding-top: 40px !important;
+  padding-bottom: 40px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+@media(min-width:744px){
+  body.ds-demo-has-sidebar .ds-demo-main > .ds-container,
+  body.ds-demo-has-sidebar .ds-demo-main > .container{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* Normaliza demos que usam `.container` em vez de `.ds-container`. */
+.ds-demo-main > .container{
+  padding: 40px 16px !important;
+  background: var(--ds-bg) !important;
+}
+
+@media(min-width:744px){
+  .ds-demo-main > .container{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* Normaliza "gaps" de demos que usam o template antigo (`container` + `.header` + `.section`) */
+body.ds-demo-has-sidebar .ds-demo-main > .container .header{
+  margin-bottom: 48px !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container .note{
+  margin-top: 18px !important;
+  margin-bottom: 24px !important;
+  padding: 24px !important;
+  background-color: var(--ds-success-bg) !important;
+  border-radius: 12px !important;
+  border-left: 4px solid var(--ds-success) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container .section{
+  background: var(--ds-surface) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--ds-border) !important;
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+/* Padroniza cabeçalho e títulos das demos (evita sobrescritas locais por `<style>` no HTML) */
+body.ds-demo-has-sidebar .ds-demo-main > .container .header{
+  text-align: left !important;
+  margin-bottom: 48px !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container .header h1{
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: var(--ds-success) !important;
+  margin-bottom: 8px !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container .header p{
+  font-size: 16px !important;
+  color: var(--ds-fg-muted) !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container .section-title{
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  margin-bottom: 12px !important;
+  color: var(--ds-fg) !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container .note h3{
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  color: var(--ds-success-fg) !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-topbar-title{
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--ds-success) !important;
+  white-space: nowrap !important;
+}
+
+/* Mesma padronização para demos que usam `ds-container` */
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container > h1{
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: var(--ds-success) !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container > h2{
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: var(--ds-success) !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container > p.lead{
+  font-size: 16px !important;
+  color: var(--ds-fg-muted) !important;
+  margin-top: 0 !important;
+  margin-bottom: 28px !important;
+  line-height: 1.6 !important;
+  max-width: 760px !important;
+  text-align: left !important;
+}
+
+/* Mesma regra para páginas que não usam `.header` e usam `.container > h1/h2` */
+body.ds-demo-has-sidebar .ds-demo-main > .container > h1,
+body.ds-demo-has-sidebar .ds-demo-main > .container > h2{
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: var(--ds-success) !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .container > p.lead{
+  font-size: 16px !important;
+  color: var(--ds-fg-muted) !important;
+  margin-top: 0 !important;
+  margin-bottom: 28px !important;
+  line-height: 1.6 !important;
+  max-width: 760px !important;
+  text-align: left !important;
+}
+
+/* Neutraliza hardcodes inline de fundo branco em demos legadas */
+body.ds-demo-has-sidebar .ds-demo-main [style*="background:#fff"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background: #fff"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background:#FFFFFF"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background: #FFFFFF"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background-color:#fff"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background-color: #fff"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background-color:#FFFFFF"],
+body.ds-demo-has-sidebar .ds-demo-main [style*="background-color: #FFFFFF"]{
+  background: var(--ds-surface) !important;
+}
+
+/* Evita textos escuros em blocos de nota (inclui Toast) */
+body.ds-demo-has-sidebar .ds-demo-main .note ul,
+body.ds-demo-has-sidebar .ds-demo-main .note li{
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container .section{
+  background: var(--ds-surface) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--ds-border) !important;
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container .section-title{
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  margin-bottom: 12px !important;
+  color: var(--ds-fg) !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container .section-subtitle{
+  font-size: 14px !important;
+  color: var(--ds-n500) !important;
+  margin-bottom: 16px !important;
+  line-height: 1.6 !important;
+  text-align: left !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note{
+  margin-top: 18px !important;
+  margin-bottom: 24px !important;
+  padding: 24px !important;
+  background-color: var(--ds-success-bg) !important;
+  border-radius: 12px !important;
+  border-left: 4px solid var(--ds-success) !important;
+}
+
+/* Garante respiro após bloco de melhorias/nota */
+body.ds-demo-has-sidebar .ds-demo-main > .container .note + .section,
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note + .section{
+  margin-top: 24px !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note h3{
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  color: var(--ds-success-fg) !important;
+  text-align: left !important;
+}
+
+/* ===== Dark-mode hardcode guards (demos legadas) ===== */
+body.ds-demo-has-sidebar .ds-demo-main .code-block{
+  background: var(--ds-pre-bg) !important;
+  color: var(--ds-pre-fg) !important;
+  border: 1px solid var(--ds-border) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .props-list,
+body.ds-demo-has-sidebar .ds-demo-main .props-list dd,
+body.ds-demo-has-sidebar .ds-demo-main .section-description,
+body.ds-demo-has-sidebar .ds-demo-main .subtitle{
+  color: var(--ds-fg-muted) !important;
+}
+
+/* Input / Select / Textarea / Switch */
+body.ds-demo-has-sidebar .ds-demo-main .field-label-text,
+body.ds-demo-has-sidebar .ds-demo-main .field-sublabel,
+body.ds-demo-has-sidebar .ds-demo-main .field-helper,
+body.ds-demo-has-sidebar .ds-demo-main .switch-label,
+body.ds-demo-has-sidebar .ds-demo-main .textarea-label{
+  color: var(--ds-fg) !important;
+}
+
+/* Checkbox / Radio textos com contraste consistente */
+body.ds-demo-has-sidebar .ds-demo-main .checkbox-label,
+body.ds-demo-has-sidebar .ds-demo-main .radio-label,
+body.ds-demo-has-sidebar .ds-demo-main .helper-text{
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-sublabel,
+body.ds-demo-has-sidebar .ds-demo-main .field-helper,
+body.ds-demo-has-sidebar .ds-demo-main .section-description,
+body.ds-demo-has-sidebar .ds-demo-main .description{
+  color: var(--ds-fg-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container,
+body.ds-demo-has-sidebar .ds-demo-main .select-dropdown,
+body.ds-demo-has-sidebar .ds-demo-main .select-search input{
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-border) !important;
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input,
+body.ds-demo-has-sidebar .ds-demo-main .select-text,
+body.ds-demo-has-sidebar .ds-demo-main .select-option{
+  color: var(--ds-fg) !important;
+}
+
+/* Ajuste de espaçamento tipográfico para Input/Select (evita texto "grudado") */
+body.ds-demo-has-sidebar .ds-demo-main .field-label{
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 12px !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-label-text,
+body.ds-demo-has-sidebar .ds-demo-main .field-sublabel{
+  line-height: 1.4 !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container{
+  gap: 10px !important;
+  margin-top: 0 !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input,
+body.ds-demo-has-sidebar .ds-demo-main .select-text{
+  line-height: 1.4 !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-helper{
+  margin-top: 8px !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+/* Respiro entre descrição da seção e grid de campos (Input/Select) */
+body.ds-demo-has-sidebar .ds-demo-main .section-description + .grid{
+  margin-top: 10px !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main input::placeholder,
+body.ds-demo-has-sidebar .ds-demo-main textarea::placeholder{
+  color: var(--ds-placeholder) !important;
+  opacity: 1 !important;
+}
+
+/* Drawer / Modal: ícones e select unificados pelo tema */
+body.ds-demo-has-sidebar .ds-demo-main .drawer .close-btn,
+body.ds-demo-has-sidebar .ds-demo-main .modal .close-btn{
+  color: var(--ds-icon-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .drawer .close-btn svg,
+body.ds-demo-has-sidebar .ds-demo-main .modal .close-btn svg{
+  stroke: currentColor !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .drawer .close-btn:hover,
+body.ds-demo-has-sidebar .ds-demo-main .modal .close-btn:hover{
+  color: var(--ds-icon-muted) !important;
+  background: var(--ds-bg-subtle) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .drawer select,
+body.ds-demo-has-sidebar .ds-demo-main .modal select{
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  padding-right: 36px !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 16px 16px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2304843B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .drawer select:required:invalid,
+body.ds-demo-has-sidebar .ds-demo-main .modal select:required:invalid{
+  color: var(--ds-placeholder) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .drawer select option,
+body.ds-demo-has-sidebar .ds-demo-main .modal select option{
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input::placeholder,
+body.ds-demo-has-sidebar .ds-demo-main .select-text:not(.has-value){
+  color: var(--ds-placeholder) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .select-search input::placeholder,
+body.ds-demo-has-sidebar .ds-demo-main textarea::placeholder{
+  color: var(--ds-placeholder) !important;
+  opacity: 1 !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container:focus-within,
+body.ds-demo-has-sidebar .ds-demo-main .select-search input:focus{
+  box-shadow: var(--ds-focus-ring) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container.disabled{
+  background: var(--ds-bg-subtle) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .select-option:hover:not(.disabled),
+body.ds-demo-has-sidebar .ds-demo-main .select-option.selected{
+  background: var(--ds-success-bg) !important;
+  color: var(--ds-success-fg) !important;
+}
+
+/* Datepicker */
+body.ds-demo-has-sidebar .ds-demo-main .dp-label,
+body.ds-demo-has-sidebar .ds-demo-main .dp-helper,
+body.ds-demo-has-sidebar .ds-demo-main .dp-weekday{
+  color: var(--ds-fg-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .dp-input,
+body.ds-demo-has-sidebar .ds-demo-main .dp-popover,
+body.ds-demo-has-sidebar .ds-demo-main .dp-day,
+body.ds-demo-has-sidebar .ds-demo-main .dp-month-label,
+body.ds-demo-has-sidebar .ds-demo-main .dp-nav-btn,
+body.ds-demo-has-sidebar .ds-demo-main .dp-footer-today,
+body.ds-demo-has-sidebar .ds-demo-main .dp-footer-clear{
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-border) !important;
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .dp-input::placeholder,
+body.ds-demo-has-sidebar .ds-demo-main .dp-day--outside,
+body.ds-demo-has-sidebar .ds-demo-main .dp-day--disabled{
+  color: var(--ds-placeholder) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .dp-day:hover:not(.dp-day--disabled):not(.dp-day--selected):not(.dp-day--outside){
+  background: var(--ds-success-bg) !important;
+  color: var(--ds-success-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .dp-day--selected,
+body.ds-demo-has-sidebar .ds-demo-main .dp-day--range-start,
+body.ds-demo-has-sidebar .ds-demo-main .dp-day--range-end{
+  background: var(--ds-success) !important;
+  color: var(--ds-bg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .dp-day--range-between{
+  background: var(--ds-success-bg) !important;
+  color: var(--ds-success-fg) !important;
+}
+
+/* Tabs */
+body.ds-demo-has-sidebar .ds-demo-main .tab-group--line{
+  border-bottom-color: var(--ds-border) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab-group--pill{
+  background: var(--ds-neutral-bg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab--line,
+body.ds-demo-has-sidebar .ds-demo-main .tab--pill{
+  color: var(--ds-fg-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab--line:hover:not(:disabled):not(.tab--active),
+body.ds-demo-has-sidebar .ds-demo-main .tab--pill:hover:not(:disabled):not(.tab--active){
+  color: var(--ds-success) !important;
+  background: var(--ds-success-bg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab--line.tab--active{
+  color: var(--ds-success) !important;
+  border-bottom-color: var(--ds-success) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab--pill.tab--active{
+  background: var(--ds-surface-elevated) !important;
+  color: var(--ds-success) !important;
+  box-shadow: var(--ds-shadow-sm) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab-panel-card{
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-border) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab-panel-card h3{
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .tab-panel-card p{
+  color: var(--ds-fg-muted) !important;
+}
+
+/* Tabela virtual */
+body.ds-demo-has-sidebar .ds-demo-main .table-container,
+body.ds-demo-has-sidebar .ds-demo-main .table-scroll-area,
+body.ds-demo-has-sidebar .ds-demo-main .table-virtual-body{
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-border) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .table-rows tbody tr{
+  background: var(--ds-surface) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .table-rows tbody tr:nth-child(even){
+  background: var(--ds-bg-subtle) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .table-rows tbody tr:hover{
+  background: var(--ds-success-bg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .table-container th,
+body.ds-demo-has-sidebar .ds-demo-main .table-container td,
+body.ds-demo-has-sidebar .ds-demo-main .performance-table th,
+body.ds-demo-has-sidebar .ds-demo-main .performance-table td{
+  color: var(--ds-fg) !important;
+  border-color: var(--ds-border) !important;
+}
+
+/* Iconografia */
+body.ds-demo-has-sidebar .ds-demo-main .header-ref,
+body.ds-demo-has-sidebar .ds-demo-main .icon-search,
+body.ds-demo-has-sidebar .ds-demo-main .cat-btn,
+body.ds-demo-has-sidebar .ds-demo-main .icon-card{
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-border) !important;
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .icon-search-wrap svg,
+body.ds-demo-has-sidebar .ds-demo-main .icon-count,
+body.ds-demo-has-sidebar .ds-demo-main .section-label,
+body.ds-demo-has-sidebar .ds-demo-main .icon-card-name{
+  color: var(--ds-fg-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .icon-card svg{
+  stroke: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .icon-card:hover{
+  background: var(--ds-success-bg) !important;
+  border-color: var(--ds-success) !important;
+  box-shadow: var(--ds-shadow-success) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .icon-card:hover svg,
+body.ds-demo-has-sidebar .ds-demo-main .icon-card:hover .icon-card-name{
+  color: var(--ds-success-fg) !important;
+  stroke: var(--ds-success-fg) !important;
+}
+
+/* Toast */
+body.ds-demo-has-sidebar .ds-demo-main .description{
+  color: var(--ds-fg-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .toast{
+  background: var(--ds-surface-elevated) !important;
+  border-color: var(--ds-border) !important;
+  box-shadow: var(--ds-shadow-md) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-message{
+  color: var(--ds-fg) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-close{
+  color: var(--ds-fg-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-close:hover{
+  background: var(--ds-bg-subtle) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-active{ background: var(--ds-success) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-error-active{ background: var(--ds-error) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-warning-active{ background: var(--ds-warning) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-info-active{ background: var(--ds-info) !important; }
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-active .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-active .toast-message,
+body.ds-demo-has-sidebar .ds-demo-main .toast-error-active .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-error-active .toast-message,
+body.ds-demo-has-sidebar .ds-demo-main .toast-warning-active .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-warning-active .toast-message,
+body.ds-demo-has-sidebar .ds-demo-main .toast-info-active .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-info-active .toast-message{
+  color: #FFFFFF !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-light{ background: var(--ds-success-bg) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-error-light{ background: var(--ds-error-bg) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-warning-light{ background: var(--ds-warning-bg) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-info-light{ background: var(--ds-info-bg) !important; }
+
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-light .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-light .toast-message{ color: var(--ds-success-fg) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-error-light .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-error-light .toast-message{ color: var(--ds-error-fg) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-warning-light .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-warning-light .toast-message{ color: var(--ds-warning-fg) !important; }
+body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-title,
+body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: var(--ds-info-fg) !important; }
 
 @media (max-width: 900px){
   .ds-demo-layout{
@@ -293,6 +1105,9 @@ body.ds-demo-has-sidebar{
   }
   .ds-demo-sidebar{
     flex: 0 0 auto;
+    position: relative;
+    top: auto;
+    height: auto;
     max-width: none;
     width: 100%;
     border-right: none;
@@ -303,5 +1118,50 @@ body.ds-demo-has-sidebar{
   .ds-demo-sidebar__nav{
     position: relative;
   }
+}
+
+/* Fallback dark guards (sem depender da injeção do sidebar) */
+[data-ds-theme="dark"] .field-label-text,
+[data-ds-theme="dark"] .field-sublabel,
+[data-ds-theme="dark"] .field-helper,
+[data-ds-theme="dark"] .switch-label,
+[data-ds-theme="dark"] .textarea-label,
+[data-ds-theme="dark"] .section-description,
+[data-ds-theme="dark"] .description{
+  color: var(--ds-fg-muted) !important;
+}
+
+[data-ds-theme="dark"] .field-input,
+[data-ds-theme="dark"] .select-text,
+[data-ds-theme="dark"] .select-option{
+  color: var(--ds-fg) !important;
+}
+
+[data-ds-theme="dark"] .field-input-container,
+[data-ds-theme="dark"] .select-dropdown,
+[data-ds-theme="dark"] .dp-input,
+[data-ds-theme="dark"] .dp-popover,
+[data-ds-theme="dark"] .tab-panel-card,
+[data-ds-theme="dark"] .table-container,
+[data-ds-theme="dark"] .toast{
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-border) !important;
+}
+
+[data-ds-theme="dark"] .ds-demo-main,
+[data-ds-theme="dark"] .ds-demo-main > .container,
+[data-ds-theme="dark"] .ds-demo-main > .ds-container{
+  background: var(--ds-bg) !important;
+}
+
+[data-ds-theme="dark"] [style*="background:#fff"],
+[data-ds-theme="dark"] [style*="background: #fff"],
+[data-ds-theme="dark"] [style*="background:#FFFFFF"],
+[data-ds-theme="dark"] [style*="background: #FFFFFF"],
+[data-ds-theme="dark"] [style*="background-color:#fff"],
+[data-ds-theme="dark"] [style*="background-color: #fff"],
+[data-ds-theme="dark"] [style*="background-color:#FFFFFF"],
+[data-ds-theme="dark"] [style*="background-color: #FFFFFF"]{
+  background: var(--ds-surface) !important;
 }
 

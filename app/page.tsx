@@ -74,10 +74,10 @@ const COMPONENTS = [
     preview: "datepicker",
   },
   {
-    name: "Table",
-    description: "Tabelas responsivas com sorting e paginação",
+    name: "Tabela — scroll virtual",
+    description: "Tabela com virtualização para listas grandes",
     category: "Dados",
-    file: "table-demo.html",
+    file: "table-virtual-scroll-demo.html",
     preview: "table",
   },
   {
