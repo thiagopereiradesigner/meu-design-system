@@ -1,15 +1,24 @@
 :root{
   --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
+  /* Semantic text/icon contract (theme-ready source of truth) */
+  --ds-text-primary: #1A1A1A;
+  --ds-text-secondary: #656976;
+  --ds-text-tertiary: #727272;
+  --ds-placeholder: #727272;
+
   --ds-success: #04843B;
   --ds-success-hover: #036d31;
   --ds-border: #E0E0E0;
   --ds-separator-light: #EEEEEE;
-  --ds-fg: #1A1A1A;
-  --ds-fg-muted: #656976;
-  --ds-fg-subtle: #727272;
-  --ds-placeholder: #727272;
-  --ds-icon-muted: var(--ds-n200);
+  --ds-fg: var(--ds-text-primary);
+  --ds-fg-muted: var(--ds-text-secondary);
+  --ds-fg-subtle: var(--ds-text-tertiary);
+  --ds-content-primary: var(--ds-text-primary);
+  --ds-content-secondary: var(--ds-text-secondary);
+  --ds-content-tertiary: var(--ds-text-tertiary);
+  --ds-on-inverse: #FFFFFF;
+  --ds-icon-muted: #C6C6C6;
   --ds-icon-accent: var(--ds-success);
   --ds-n800: var(--ds-fg);
   --ds-n500: var(--ds-fg-muted);
@@ -47,15 +56,23 @@
 }
 
 [data-ds-theme="dark"]{
+  --ds-text-primary: #F3F4F6;
+  --ds-text-secondary: #9AA1AE;
+  --ds-text-tertiary: #818A98;
+  --ds-placeholder: #818A98;
+
   --ds-success: #22C55E;
   --ds-success-hover: #16A34A;
   --ds-border: #2A2E36;
   --ds-separator-light: #313640;
-  --ds-fg: #F3F4F6;
-  --ds-fg-muted: #9AA1AE;
-  --ds-fg-subtle: #818A98;
-  --ds-placeholder: #818A98;
-  --ds-icon-muted: var(--ds-n200);
+  --ds-fg: var(--ds-text-primary);
+  --ds-fg-muted: var(--ds-text-secondary);
+  --ds-fg-subtle: var(--ds-text-tertiary);
+  --ds-content-primary: var(--ds-text-primary);
+  --ds-content-secondary: var(--ds-text-secondary);
+  --ds-content-tertiary: var(--ds-text-tertiary);
+  --ds-on-inverse: #FFFFFF;
+  --ds-icon-muted: #5F6672;
   --ds-icon-accent: var(--ds-success);
   --ds-n200: #5F6672;
 
@@ -793,6 +810,26 @@ body.ds-demo-has-sidebar .ds-demo-main .select-option{
   color: var(--ds-fg) !important;
 }
 
+body.ds-demo-has-sidebar .ds-demo-main .select-container .chevron{
+  color: var(--ds-icon-accent) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .select-container .chevron path{
+  stroke: currentColor !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container.disabled .chevron{
+  color: var(--ds-icon-muted) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-label .icon-sm{
+  color: var(--ds-text-secondary) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .field-label .icon-sm [stroke]{
+  stroke: currentColor !important;
+}
+
 /* Ajuste de espaçamento tipográfico para Input/Select (evita texto "grudado") */
 body.ds-demo-has-sidebar .ds-demo-main .field-label{
   display: flex !important;
@@ -855,6 +892,8 @@ body.ds-demo-has-sidebar .ds-demo-main .drawer select,
 body.ds-demo-has-sidebar .ds-demo-main .modal select{
   -webkit-appearance: none !important;
   appearance: none !important;
+  background-color: var(--ds-surface) !important;
+  color: var(--ds-fg) !important;
   padding-right: 36px !important;
   background-repeat: no-repeat !important;
   background-position: right 12px center !important;
@@ -870,6 +909,13 @@ body.ds-demo-has-sidebar .ds-demo-main .modal select:required:invalid{
 body.ds-demo-has-sidebar .ds-demo-main .drawer select option,
 body.ds-demo-has-sidebar .ds-demo-main .modal select option{
   color: var(--ds-fg) !important;
+  background: var(--ds-surface) !important;
+}
+
+body.ds-demo-has-sidebar .ds-demo-main .drawer select option:disabled,
+body.ds-demo-has-sidebar .ds-demo-main .modal select option:disabled{
+  color: var(--ds-placeholder) !important;
+  background: var(--ds-surface) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .field-input::placeholder,

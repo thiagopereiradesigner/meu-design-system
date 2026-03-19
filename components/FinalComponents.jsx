@@ -23,13 +23,13 @@ const tokens = {
       900: 'var(--ds-n900, #000000)',
     },
     content: {
-      primary: 'var(--ds-content-primary, #393939)',
-      secondary: 'var(--ds-content-secondary, #5E5E5E)',
-      tertiary: 'var(--ds-content-tertiary, #727272)',
+      primary: 'var(--ds-content-primary, var(--ds-text-primary, #1A1A1A))',
+      secondary: 'var(--ds-content-secondary, var(--ds-text-secondary, #656976))',
+      tertiary: 'var(--ds-content-tertiary, var(--ds-text-tertiary, #727272))',
       inverse: 'var(--ds-on-inverse, #FFFFFF)',
     },
     border: {
-      primary: 'var(--ds-content-primary, #393939)',
+      primary: 'var(--ds-content-primary, var(--ds-text-primary, #1A1A1A))',
       secondary: 'var(--ds-border, #E0E0E0)',
     },
     overlay: 'var(--ds-overlay-scrim, rgba(0, 0, 0, 0.5))',
