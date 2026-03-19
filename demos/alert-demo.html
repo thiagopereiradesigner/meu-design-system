@@ -7,37 +7,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
-    :root{
-      --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --ds-success: #04843B;
-      --ds-success-bg: #E6F4ED;
-      --ds-success-fg: #005A1A;
-
-      --ds-error: #DC2626;
-      --ds-error-bg: #FEE2E2;
-      --ds-error-fg: #DC2626;
-
-      --ds-warning: #DC6803;
-      --ds-warning-bg: #FEF3C7;
-      --ds-warning-fg: #92400E;
-
-      --ds-info: #3B82F6;
-      --ds-info-bg: #DBEAFE;
-      --ds-info-fg: #1E40AF;
-
-      --ds-neutral-bg: #F3F3F3;
-      --ds-neutral-fg: #656976;
-    }
+    /* Tokens centralizados em ds-demo-base.css */
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: var(--ds-font-family); background: #F9F9F9; color: #1A1A1A; }
+    body { font-family: var(--ds-font-family); background: var(--ds-bg); color: var(--ds-fg); }
 
     .ds-topbar{
       position: sticky; top: 0; z-index: 10;
-      background: #fff; border-bottom: 1px solid #E0E0E0;
+      background: var(--ds-surface); border-bottom: 1px solid var(--ds-border);
       height: 56px; display: flex; align-items: center; gap: 12px;
       padding: 0 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: var(--ds-shadow-sm);
     }
     @media(min-width:744px){ .ds-topbar{ padding: 0 24px; } }
     @media(min-width:1280px){ .ds-topbar{ padding: 0 32px; } }
@@ -345,6 +325,8 @@ import { Alert } from '@/components/ui/Alert';
       </div>
     </div>
   </div>
+
+<script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
 

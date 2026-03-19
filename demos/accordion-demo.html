@@ -7,22 +7,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
-    :root{
-      --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --ds-success: #04843B;
-      --ds-border: #E0E0E0;
-      --ds-n800: #1A1A1A;
-      --ds-n500: #656976;
-    }
+    /* Tokens centralizados em ds-demo-base.css */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: var(--ds-font-family); background: #F9F9F9; color: var(--ds-n800); }
+    body { font-family: var(--ds-font-family); background: var(--ds-bg); color: var(--ds-fg); }
 
     .ds-topbar{
       position: sticky; top: 0; z-index: 10;
-      background: #fff; border-bottom: 1px solid #E0E0E0;
+      background: var(--ds-surface); border-bottom: 1px solid var(--ds-border);
       height: 56px; display: flex; align-items: center; gap: 12px;
       padding: 0 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: var(--ds-shadow-sm);
     }
     .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success); }
 
@@ -301,6 +295,8 @@ import {
       });
     }
   </script>
+
+<script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
 

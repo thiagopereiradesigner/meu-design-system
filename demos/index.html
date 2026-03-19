@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TP.IA - Design System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
   <style>
     * {
       margin: 0;
@@ -11,101 +13,250 @@
       box-sizing: border-box;
     }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f5f5f5;
-      color: #1a1a1a;
+    body.index-portal {
+      font-family: var(--ds-font-family);
+      background: var(--ds-bg);
+      color: var(--ds-fg);
     }
 
-    /* Header */
-    .header {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 24px 32px;
+    /* Barra superior — tokens DS (referência portal) */
+    .top-bar {
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      background: var(--ds-bg);
+      border-bottom: 1px solid var(--ds-border);
+      box-shadow: var(--ds-shadow-sm);
     }
 
-    .header h1 {
-      font-size: 24px;
+    .top-bar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .top-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .top-bar-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, var(--ds-success) 0%, var(--ds-success-hover) 100%);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ds-bg);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .top-bar-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ds-n800);
+      letter-spacing: -0.02em;
+    }
+
+    .top-bar-slash {
+      color: var(--ds-n500);
+      font-weight: 500;
+    }
+
+    .top-bar-cta {
+      font-size: 13px;
       font-weight: 600;
+      color: var(--ds-success);
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 8px 14px;
+      border-radius: 9999px;
+      border: 1px solid var(--ds-success);
+      background: var(--ds-bg);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .top-bar-cta:hover {
+      background: var(--ds-success-bg);
+      color: var(--ds-success-fg);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 40px 24px 32px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 800;
+      color: var(--ds-success-fg);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: var(--ds-n500);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      min-width: 100px;
+    }
+
+    .hero-stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ds-success);
+      line-height: 1.1;
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--ds-n500);
+      margin-top: 4px;
+    }
+
+    .hero-stat-sep {
+      width: 1px;
+      height: 40px;
+      background: var(--ds-border);
+      flex-shrink: 0;
+    }
+
+    /* Busca e filtros */
+    .controls {
+      background: var(--ds-bg);
+      border-top: 1px solid var(--ds-border);
+      padding: 20px 24px 24px;
       margin-bottom: 8px;
     }
 
-    .header p {
-      color: #666;
-      font-size: 14px;
-    }
-
-    /* Search and Filters */
-    .controls {
-      background: #fff;
-      padding: 20px 32px;
-      margin-bottom: 24px;
+    .controls-inner {
+      max-width: 1280px;
+      margin: 0 auto;
       display: flex;
+      flex-direction: column;
       gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
     }
 
-    .search-box {
-      flex: 1;
-      min-width: 300px;
-    }
-
-    .search-box input {
+    .search-wrap {
+      position: relative;
       width: 100%;
-      padding: 12px 16px;
-      border: 1px solid #d0d0d0;
-      border-radius: 8px;
-      font-size: 14px;
+      max-width: 560px;
     }
 
-    .search-box input:focus {
+    .search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ds-n500);
+      pointer-events: none;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--ds-font-family);
+      background: var(--ds-bg);
+      color: var(--ds-n800);
+    }
+
+    .search-wrap input:focus {
       outline: none;
-      border-color: #0066cc;
+      border-color: var(--ds-success);
+      box-shadow: var(--ds-focus-ring);
+    }
+
+    .search-wrap input::placeholder {
+      color: var(--ds-n500);
     }
 
     .filter-buttons {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
     }
 
     .filter-btn {
       padding: 8px 16px;
-      border: 1px solid #d0d0d0;
-      background: #fff;
-      border-radius: 6px;
+      border: 1px solid var(--ds-border);
+      background: var(--ds-bg);
+      border-radius: 9999px;
       cursor: pointer;
       font-size: 14px;
-      transition: all 0.2s;
+      font-weight: 600;
+      font-family: var(--ds-font-family);
+      color: var(--ds-n800);
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
 
     .filter-btn:hover {
-      background: #f5f5f5;
+      background: var(--ds-bg-subtle);
     }
 
     .filter-btn.active {
-      background: #0066cc;
-      color: #fff;
-      border-color: #0066cc;
+      background: var(--ds-success);
+      color: var(--ds-bg);
+      border-color: var(--ds-success);
     }
 
-    /* Component Grid */
+    /* Grelha de componentes */
+    #components-grid {
+      scroll-margin-top: 72px;
+    }
+
     .components-grid {
-      padding: 0 32px 32px;
+      padding: 24px 24px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
     }
 
+    @media (min-width: 1100px) {
+      .components-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     .component-card {
-      background: #fff;
+      background: var(--ds-bg);
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid var(--ds-border);
+      box-shadow: none;
       transition: transform 0.2s, box-shadow 0.2s;
       cursor: pointer;
       text-decoration: none;
@@ -114,18 +265,28 @@
     }
 
     .component-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform: translateY(-3px);
+      box-shadow: var(--ds-shadow-md, 0 12px 28px rgba(0,0,0,0.1));
+    }
+
+    .component-card--tokens {
+      border: 2px solid var(--ds-success);
+      box-shadow: none;
+    }
+
+    .component-card--tokens:hover {
+      box-shadow: var(--ds-shadow-success, 0 12px 32px rgba(4,132,59,0.18));
     }
 
     .component-preview {
-      background: #ffffff;
+      background: var(--ds-bg-subtle);
       height: 160px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       padding: 16px;
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .component-preview::after {
@@ -133,43 +294,51 @@
       position: absolute;
       bottom: 8px;
       right: 8px;
-      background: rgba(255,255,255,0.9);
+      background: var(--ds-surface-elevated);
       padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ds-n500);
+      border: 1px solid var(--ds-border);
     }
 
     .component-info {
-      padding: 20px;
+      padding: 18px 20px 20px;
     }
 
     .component-name {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ds-n800);
       margin-bottom: 8px;
+      line-height: 1.25;
     }
 
     .component-description {
       font-size: 14px;
-      color: #666;
+      color: var(--ds-n500);
       margin-bottom: 12px;
       line-height: 1.5;
     }
 
     .component-meta {
       display: flex;
-      gap: 12px;
-      font-size: 12px;
-      color: #999;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .component-tag {
-      background: #f0f0f0;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--ds-success-bg);
+      color: var(--ds-success-fg);
     }
 
     /* Mini prévias dos componentes nos cards */
@@ -178,8 +347,8 @@
       max-width: 260px;
       height: 100%;
       border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      background: #ffffff;
+      border: 1px solid var(--ds-border);
+      background: var(--ds-bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -199,20 +368,20 @@
       padding: 8px 14px;
       border-radius: 9999px;
       border: none;
-      background: #04843B;
-      color: #fff;
+      background: var(--ds-success);
+      color: var(--ds-bg);
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .preview-button-secondary {
       padding: 8px 14px;
       border-radius: 9999px;
-      border: 1px solid #04843B;
-      background: #ffffff;
-      color: #04843B;
+      border: 1px solid var(--ds-success);
+      background: var(--ds-bg);
+      color: var(--ds-success);
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .preview-input {
@@ -220,9 +389,9 @@
       min-width: 0;
       padding: 6px 10px;
       border-radius: 4px;
-      border: 1px solid #DDDDDD;
+      border: 1px solid var(--ds-border);
       font-size: 12px;
-      color: #393939;
+      color: var(--ds-n800);
     }
 
     .preview-select {
@@ -230,9 +399,9 @@
       min-width: 0;
       padding: 6px 10px;
       border-radius: 4px;
-      border: 1px solid #DDDDDD;
+      border: 1px solid var(--ds-border);
       font-size: 12px;
-      color: #393939;
+      color: var(--ds-n800);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -244,8 +413,8 @@
       width: 14px;
       height: 14px;
       border-radius: 3px;
-      border: 1px solid #DDDDDD;
-      background: #ffffff;
+      border: 1px solid var(--ds-border);
+      background: var(--ds-bg);
     }
 
     .preview-radio {
@@ -256,7 +425,7 @@
       width: 32px;
       height: 16px;
       border-radius: 9999px;
-      background: #C6C6C6;
+      background: var(--ds-n200);
       position: relative;
     }
 
@@ -267,7 +436,7 @@
       width: 12px;
       height: 12px;
       border-radius: 9999px;
-      background: #ffffff;
+      background: var(--ds-bg);
       box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
 
@@ -275,10 +444,10 @@
       width: 100%;
       height: 48px;
       border-radius: 4px;
-      border: 1px solid #DDDDDD;
+      border: 1px solid var(--ds-border);
       font-size: 11px;
       padding: 6px 8px;
-      color: #393939;
+      color: var(--ds-n800);
       resize: none;
     }
 
@@ -291,7 +460,7 @@
     .preview-table th,
     .preview-table td {
       padding: 4px 6px;
-      border-bottom: 1px solid #EEEEEE;
+      border-bottom: 1px solid var(--ds-separator-light);
       text-align: left;
     }
 
@@ -300,8 +469,8 @@
       align-items: center;
       padding: 2px 8px;
       border-radius: 9999px;
-      background: #E6F4ED;
-      color: #005A1A;
+      background: var(--ds-success-bg);
+      color: var(--ds-success-fg);
       font-size: 10px;
       font-weight: 500;
     }
@@ -309,8 +478,8 @@
     .preview-toast {
       width: 100%;
       border-radius: 6px;
-      background: #04843B;
-      color: #ffffff;
+      background: var(--ds-success);
+      color: var(--ds-bg);
       padding: 8px 10px;
       font-size: 11px;
       display: flex;
@@ -320,7 +489,7 @@
 
     .preview-tab-group {
       width: 100%;
-      border-bottom: 1px solid #E0E0E0;
+      border-bottom: 1px solid var(--ds-border);
       display: flex;
       gap: 0;
     }
@@ -330,43 +499,43 @@
       border: none;
       border-bottom: 2px solid transparent;
       background: transparent;
-      color: #656976;
+      color: var(--ds-n500);
       font-size: 10px;
       font-weight: 500;
       cursor: pointer;
     }
 
     .preview-tab-active {
-      color: #04843B;
-      border-bottom-color: #04843B;
+      color: var(--ds-success);
+      border-bottom-color: var(--ds-success);
       font-weight: 600;
     }
 
     .preview-dp-input {
       width: 100%;
       padding: 5px 28px 5px 8px;
-      border: 1px solid #DDDDDD;
+      border: 1px solid var(--ds-border);
       border-radius: 6px;
       font-size: 10px;
-      color: #999;
-      background: #fff;
+      color: var(--ds-n500);
+      background: var(--ds-bg);
     }
 
     .preview-dp-cal {
       width: 100%;
-      border: 1px solid #E0E0E0;
+      border: 1px solid var(--ds-border);
       border-radius: 6px;
       overflow: hidden;
     }
 
     .preview-dp-cal-header {
-      background: #F9F9F9;
+      background: var(--ds-bg);
       padding: 4px 6px;
       font-size: 9px;
       font-weight: 600;
-      color: #333;
+      color: var(--ds-n800);
       text-align: center;
-      border-bottom: 1px solid #E0E0E0;
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .preview-dp-cal-grid {
@@ -384,109 +553,96 @@
       aspect-ratio: 1;
       font-size: 8px;
       border-radius: 3px;
-      color: #333;
+      color: var(--ds-n800);
     }
 
     .preview-dp-cal-day--selected {
-      background: #04843B;
-      color: #fff;
+      background: var(--ds-success);
+      color: var(--ds-bg);
       font-weight: 600;
     }
 
     .preview-dp-cal-day--today {
-      color: #04843B;
+      color: var(--ds-success);
       font-weight: 700;
-      border: 1px solid #04843B;
+      border: 1px solid var(--ds-success);
     }
 
     .preview-dp-cal-day--range {
-      background: #E6F4ED;
-      color: #005A1A;
+      background: var(--ds-success-bg);
+      color: var(--ds-success-fg);
     }
 
     .preview-dp-cal-day--muted {
-      color: #C6C6C6;
+      color: var(--ds-n200);
     }
 
-    /* Empty State */
+    /* Empty state */
     .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: #999;
+      color: var(--ds-n500);
     }
 
     .empty-state h3 {
       font-size: 18px;
       margin-bottom: 8px;
-    }
-
-    /* Stats */
-    .stats {
-      padding: 0 32px 24px;
-      display: flex;
-      gap: 24px;
-    }
-
-    .stat-card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      flex: 1;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .stat-number {
-      font-size: 32px;
-      font-weight: 700;
-      color: #0066cc;
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 14px;
-      color: #666;
+      color: var(--ds-n800);
     }
   </style>
 </head>
-<body>
-  <!-- Header -->
-  <header class="header">
-    <h1>TP.IA Design System</h1>
-    <p>Biblioteca de componentes reutilizáveis com tokens de design e documentação completa</p>
+<body class="index-portal">
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-brand">
+        <span class="top-bar-logo" aria-hidden="true">TP</span>
+        <div class="top-bar-title">TP.IA <span class="top-bar-slash">/</span> Design System</div>
+      </div>
+      <a href="design-tokens.html" class="top-bar-cta">Ver tokens →</a>
+    </div>
   </header>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat-card">
-      <div class="stat-number" id="total-components">0</div>
-      <div class="stat-label">Componentes</div>
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="hero-title">TP.IA Design System</h1>
+    <p class="hero-sub">Biblioteca de componentes reutilizáveis com tokens de design e documentação completa</p>
+    <div class="hero-stats" role="group" aria-label="Indicadores do design system">
+      <div class="hero-stat">
+        <span class="hero-stat-value" id="total-components">0</span>
+        <span class="hero-stat-label">Componentes</span>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">150+</span>
+        <span class="hero-stat-label">Design Tokens</span>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">AA</span>
+        <span class="hero-stat-label">WCAG</span>
+      </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">150+</div>
-      <div class="stat-label">Design Tokens</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">WCAG AA</div>
-      <div class="stat-label">Acessibilidade</div>
-    </div>
-  </div>
+  </section>
 
-  <!-- Search and Filters -->
   <div class="controls">
-    <div class="search-box">
-      <input 
-        type="text" 
-        id="search-input" 
-        placeholder="Buscar componentes (ex: button, input, form...)"
-      >
-    </div>
-    <div class="filter-buttons">
-      <button class="filter-btn active" data-filter="all">Todos</button>
-      <button class="filter-btn" data-filter="foundation">Fundação</button>
-      <button class="filter-btn" data-filter="form">Formulários</button>
-      <button class="filter-btn" data-filter="data">Dados</button>
-      <button class="filter-btn" data-filter="feedback">Feedback</button>
-      <button class="filter-btn" data-filter="navigation">Navegação</button>
+    <div class="controls-inner">
+      <div class="search-wrap search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Buscar componentes..."
+          autocomplete="off"
+          aria-label="Buscar componentes"
+        >
+      </div>
+      <div class="filter-buttons" role="group" aria-label="Filtrar por categoria">
+        <button type="button" class="filter-btn active" data-filter="all">Todos</button>
+        <button type="button" class="filter-btn" data-filter="foundation">Fundação</button>
+        <button type="button" class="filter-btn" data-filter="form">Formulário</button>
+        <button type="button" class="filter-btn" data-filter="data">Dados</button>
+        <button type="button" class="filter-btn" data-filter="feedback">Feedback</button>
+        <button type="button" class="filter-btn" data-filter="navigation">Navegação</button>
+      </div>
     </div>
   </div>
 
@@ -526,8 +682,7 @@
         name: 'Button',
         description: 'Botões com múltiplas variantes (primary, secondary, ghost) e estados interativos',
         category: 'form',
-        file: 'button-demo.html',
-        gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        file: 'button-demo.html'
       },
       {
         name: 'Input',
@@ -654,8 +809,54 @@
         description: 'Navegação entre seções com variantes linha e pílula, suporte a ícones e badges',
         category: 'navigation',
         file: 'tab-demo.html'
+      },
+      {
+        name: 'Card',
+        description: 'Superfícies compostas: formulário, evento, imagem e banners com tokens do DS',
+        category: 'foundation',
+        file: 'card-demo.html'
+      },
+      {
+        name: 'Form components',
+        description: 'Demonstração agrupada de campos de formulário no padrão do DS',
+        category: 'form',
+        file: 'form-components-demo.html'
+      },
+      {
+        name: 'Input + Select',
+        description: 'Campo de texto combinado com seletor no mesmo bloco',
+        category: 'form',
+        file: 'input-select-demo.html'
+      },
+      {
+        name: 'Tabela — scroll virtual',
+        description: 'Tabela com virtualização para listas grandes',
+        category: 'data',
+        file: 'table-virtual-scroll-demo.html'
+      },
+      {
+        name: 'Componentes finais',
+        description: 'Composições React/HTML alinhadas ao DS (showcase)',
+        category: 'foundation',
+        file: 'final-components-demo.html'
       }
     ];
+
+    (function reorderCatalog() {
+      const i = components.findIndex(c => c.file === 'design-tokens.html');
+      if (i === -1) return;
+      const dt = components.splice(i, 1)[0];
+      components.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+      components.unshift(dt);
+    })();
+
+    const CATEGORY_LABELS = {
+      foundation: 'Fundação',
+      form: 'Formulário',
+      data: 'Dados',
+      feedback: 'Feedback',
+      navigation: 'Navegação',
+    };
 
     // Referências
     const grid = document.getElementById('components-grid');
@@ -999,6 +1200,65 @@
               </div>
             </div>
           `;
+        case 'Form components':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:stretch;gap:8px;padding:10px 14px;">
+              <div style="height:8px;width:40%;border-radius:4px;background:#E8E8E8;"></div>
+              <div style="height:28px;width:100%;border-radius:8px;border:1px solid #E0E0E0;background:#fff;"></div>
+              <div style="display:flex;gap:6px;">
+                <div style="flex:1;height:32px;border-radius:8px;border:1px solid #E0E0E0;"></div>
+                <div style="width:72px;height:32px;border-radius:8px;background:#04843B;"></div>
+              </div>
+            </div>
+          `;
+        case 'Input + Select':
+          return `
+            <div class="preview-inner" style="padding:10px 14px;">
+              <div style="display:flex;width:100%;border:1px solid #E0E0E0;border-radius:10px;overflow:hidden;background:#fff;">
+                <div style="flex:1;padding:8px 10px;font-size:10px;color:#656976;border-right:1px solid #E0E0E0;">Texto…</div>
+                <div style="padding:8px 10px;font-size:10px;color:#04843B;font-weight:600;min-width:56px;">▾ Lista</div>
+              </div>
+            </div>
+          `;
+        case 'Tabela — scroll virtual':
+          return `
+            <div class="preview-inner" style="flex-direction:column;align-items:stretch;gap:6px;padding:8px 12px;">
+              <div style="font-size:9px;font-weight:700;color:#04843B;text-transform:uppercase;letter-spacing:0.04em;">Virtual scroll</div>
+              <table class="preview-table" style="margin:0;">
+                <thead><tr><th>Nome</th><th>ID</th></tr></thead>
+                <tbody>
+                  <tr><td>…</td><td>001</td></tr>
+                  <tr><td>…</td><td>002</td></tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        case 'Componentes finais':
+          return `
+            <div class="preview-inner" style="flex-direction:column;gap:8px;padding:10px 14px;align-items:stretch;">
+              <div style="border-radius:10px;border:1px solid #E0E0E0;padding:10px;background:#fff;">
+                <div style="font-size:10px;font-weight:800;color:#1A1A1A;">Card</div>
+                <div style="margin-top:6px;height:8px;width:70%;background:#E8E8E8;border-radius:4px;"></div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <div style="flex:1;height:24px;border-radius:9999px;background:#04843B;"></div>
+                <div style="flex:1;height:24px;border-radius:9999px;border:1px solid #E0E0E0;"></div>
+              </div>
+            </div>
+          `;
+        case 'Card':
+          return `
+            <div class="preview-inner" style="padding:0;overflow:hidden;flex-direction:column;align-items:stretch;border-radius:10px;border:1px solid #E0E0E0;background:#fff;">
+              <div style="height:56px;background:#F9F9F9;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;justify-content:center;gap:6px;">
+                <span style="width:28px;height:10px;border-radius:4px;background:#04843B;"></span>
+                <span style="width:18px;height:10px;border-radius:4px;background:#E6F4ED;"></span>
+              </div>
+              <div style="padding:10px 12px;text-align:left;">
+                <div style="font-size:11px;font-weight:800;color:#1A1A1A;margin-bottom:4px;">Card</div>
+                <div style="font-size:9px;color:#656976;line-height:1.3;">Outline · evento · imagem</div>
+              </div>
+            </div>
+          `;
         default:
           return `
             <div class="preview-inner">
@@ -1027,7 +1287,7 @@
       emptyState.style.display = 'none';
 
       grid.innerHTML = filtered.map(comp => `
-        <a href="${comp.file}" class="component-card">
+        <a href="${comp.file}" class="component-card${comp.file === 'design-tokens.html' ? ' component-card--tokens' : ''}">
           <div class="component-preview">
             ${getPreviewMarkup(comp.name)}
           </div>
@@ -1035,7 +1295,7 @@
             <div class="component-name">${comp.name}</div>
             <div class="component-description">${comp.description}</div>
             <div class="component-meta">
-              <span class="component-tag">${comp.category}</span>
+              <span class="component-tag">${CATEGORY_LABELS[comp.category] || comp.category}</span>
             </div>
           </div>
         </a>

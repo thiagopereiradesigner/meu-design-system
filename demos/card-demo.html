@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP.IA - Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ds-demo-base.css">
+  <style>
+    /* Tokens centralizados em ds-demo-base.css */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--ds-font-family); background: var(--ds-bg); color: var(--ds-fg); }
+
+    .ds-topbar{
+      position: sticky; top: 0; z-index: 10;
+      background: var(--ds-bg); border-bottom: 1px solid var(--ds-border);
+      height: 56px; display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      box-shadow: var(--ds-shadow-sm);
+    }
+    .ds-back-btn{
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 8px;
+      border: 1px solid var(--ds-border); background: var(--ds-bg); color: var(--ds-n800);
+      font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .ds-back-btn:hover{ border-color: var(--ds-success); color: var(--ds-success); }
+    .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success-fg); }
+    .ds-topbar-spacer{ flex: 1; }
+
+    .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 40px 16px; }
+    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+
+    h1{ font-size: 28px; font-weight: 800; margin-bottom: 8px; color: var(--ds-success-fg); }
+    .lead{ font-size: 14px; color: var(--ds-n500); margin-bottom: 20px; line-height: 1.6; max-width: 760px; }
+
+    .token-nav{
+      display: flex; flex-wrap: wrap; gap: 10px 16px;
+      margin-bottom: 28px; font-size: 13px; font-weight: 600;
+    }
+    .token-nav a{ color: var(--ds-success); text-decoration: none; }
+    .token-nav a:hover{ text-decoration: underline; }
+
+    .section{ margin-bottom: 28px; }
+    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+    .section-subtitle{ font-size: 14px; color: var(--ds-n500); margin-bottom: 14px; line-height: 1.6; }
+
+    .demo-wrap{ margin-bottom: 28px; }
+
+    /* Card surface */
+    .ds-card{
+      border-radius: 12px; background: var(--ds-bg); color: var(--ds-n800);
+      border: 1px solid var(--ds-border);
+    }
+    .ds-card--outline{ border-color: var(--ds-border); }
+    .ds-card--elevated{ border: none; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .ds-card__body{ padding: 20px 22px; }
+    .ds-card__header{ margin-bottom: 12px; }
+    .ds-card__title-row{ display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .ds-card__title{ font-size: 18px; font-weight: 800; line-height: 1.25; }
+    .ds-card__action{ font-size: 13px; font-weight: 700; color: var(--ds-success); text-decoration: none; white-space: nowrap; }
+    .ds-card__action:hover{ text-decoration: underline; }
+    .ds-card__description{ margin-top: 6px; font-size: 14px; color: var(--ds-n500); line-height: 1.5; }
+    .ds-card__content{ display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+    .ds-card__divider{ border: none; border-top: 1px solid var(--ds-border); margin: 18px 0; }
+    .ds-card__footer{ display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .ds-card__badges{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .ds-card__meta{ display: flex; flex-direction: column; gap: 8px; margin: 10px 0 12px; font-size: 13px; color: var(--ds-n500); }
+    .ds-card__meta-row{ display: flex; align-items: center; gap: 8px; }
+    .ds-card__meta-row svg{ flex-shrink: 0; color: var(--ds-n500); }
+    .ds-card__hint{ font-size: 12px; color: var(--ds-n500); text-align: center; margin-top: 8px; }
+    .ds-card__eyebrow{ font-size: 12px; font-weight: 700; color: var(--ds-success); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+    .ds-card__media{
+      width: 100%; height: auto; max-height: 168px; object-fit: cover;
+      display: block; border-bottom: 1px solid var(--ds-border);
+    }
+    .ds-card--feature .ds-card__body{ padding-top: 18px; }
+
+    .demo-grid{ display: grid; gap: 20px; }
+    @media(min-width:900px){ .demo-grid--2{ grid-template-columns: 1fr 1fr; } }
+
+    .badge{
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 9999px; font-weight: 600; border: 1px solid transparent;
+    }
+    .badge.small{ padding: 2px 8px; font-size: 10px; }
+    .badge.medium{ padding: 4px 10px; font-size: 12px; }
+    .badge.primary-solid{ background: var(--ds-success); color: var(--ds-bg); }
+    .badge.neutral{ background: var(--ds-neutral-bg); color: var(--ds-neutral-fg); }
+    .badge.info{ background: var(--ds-info-bg); color: var(--ds-info-fg); }
+
+    .ds-label-row{ display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .ds-label{ font-size: 13px; font-weight: 700; color: var(--ds-n800); }
+    .ds-input{
+      width: 100%; padding: 10px 12px; border-radius: 8px;
+      border: 1px solid var(--ds-border); font-size: 14px; font-family: inherit;
+      color: var(--ds-n800); background: var(--ds-bg);
+    }
+    .ds-input:focus{
+      outline: none; border-color: var(--ds-success);
+      box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.12);
+    }
+    .ds-input::placeholder{ color: var(--ds-n500); }
+    .ds-link{ font-size: 13px; font-weight: 600; color: var(--ds-success); text-decoration: none; }
+    .ds-link:hover{ text-decoration: underline; }
+
+    .btn{
+      font-family: var(--ds-font-family); font-weight: 600; font-size: 14px; line-height: 1.5;
+      border-radius: 9999px; border: none; cursor: pointer; transition: all 0.2s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-block{ width: 100%; padding: 10px 16px; min-height: 44px; }
+    .btn-primary{ background: var(--ds-success); color: var(--ds-bg); }
+    .btn-primary:hover:not(:disabled){ background: var(--ds-success-hover); }
+    .btn-secondary{
+      background: var(--ds-success-bg); color: var(--ds-success-fg);
+      border: 1px solid transparent;
+    }
+    .btn-outline{
+      background: var(--ds-bg); color: var(--ds-n800); border: 1px solid var(--ds-border);
+    }
+    .btn-outline:hover:not(:disabled){ background: var(--ds-bg-subtle); }
+    .btn-outline-success{
+      background: var(--ds-bg); color: var(--ds-success); border: 1px solid var(--ds-success);
+    }
+    .btn-outline-success:hover:not(:disabled){
+      background: var(--ds-success-bg); color: var(--ds-success-fg);
+    }
+    .btn:disabled{ opacity: 0.55; cursor: not-allowed; }
+
+    .ds-showcase-card{
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--ds-border);
+      background: var(--ds-bg); max-width: 280px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .ds-showcase-card__preview{
+      height: 120px; background: var(--ds-bg-subtle); display: flex; align-items: center; justify-content: center;
+      border-bottom: 1px solid var(--ds-border);
+    }
+    .ds-showcase-card__body{ padding: 16px 18px; }
+    .ds-showcase-card__title{ font-size: 16px; font-weight: 800; margin-bottom: 8px; color: var(--ds-n800); }
+    .ds-showcase-card__desc{ font-size: 13px; color: var(--ds-n500); line-height: 1.45; }
+    .ds-showcase-card__meta{ margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <nav class="ds-topbar">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar ao portal">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+      Voltar
+    </a>
+    <div class="ds-topbar-spacer"></div>
+    <span class="ds-topbar-title">Card</span>
+  </nav>
+
+  <div class="ds-container">
+    <h1>Card</h1>
+    <p class="lead">
+      O <strong>Card</strong> agrupa conteúdo relacionado: formulários de login, eventos, destaques com imagem ou variações estilo grid do portal.
+      Use quando precisar de uma superfície legível, com hierarquia clara e ações no rodapé.
+    </p>
+
+    <div class="note">
+      <h3>♿ Acessibilidade</h3>
+      <ul>
+        <li><strong>Landmark:</strong> use <code>article</code> ou <code>section</code> com <code>aria-labelledby</code> apontando para o título.</li>
+        <li><strong>Formulário:</strong> associe <code>label</code> + <code>for</code> / <code>id</code>; foco na ordem: título → campos → ações.</li>
+        <li><strong>Imagem:</strong> <code>alt</code> descritivo em <code>img.ds-card__media</code>.</li>
+        <li><strong>SSO:</strong> botão secundário visível (outline verde) mantém hierarquia com a ação primária “Entrar”.</li>
+      </ul>
+    </div>
+
+    <nav class="token-nav" aria-label="Seções da página">
+      <a href="#anatomia">Anatomia</a>
+      <a href="#como-html">Como usar (HTML)</a>
+      <a href="#como-react">Como usar (React)</a>
+      <a href="#exemplos">Exemplos</a>
+    </nav>
+
+    <div class="section" id="anatomia">
+      <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+      <p class="section-subtitle">Partes usadas nesta página:</p>
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.75;font-size:14px;">
+        <li><code>.ds-card</code> + <code>ds-card--outline</code> | <code>ds-card--elevated</code> | <code>ds-card--feature</code>.</li>
+        <li><code>.ds-card__media</code> — imagem no topo (ratio controlado por <code>max-height</code>).</li>
+        <li><code>.ds-card__body</code>, <code>.ds-card__header</code>, <code>.ds-card__title-row</code>, <code>.ds-card__title</code>, <code>.ds-card__action</code>.</li>
+        <li><code>.ds-card__eyebrow</code>, <code>.ds-card__description</code>, <code>.ds-card__content</code>, <code>.ds-card__divider</code>, <code>.ds-card__footer</code>.</li>
+        <li><code>.badge</code> + <code>.primary-solid</code> | <code>.neutral</code> | <code>.info</code> + <code>.small</code> | <code>.medium</code>.</li>
+        <li><code>.btn</code> + <code>.btn-primary</code> | <code>.btn-secondary</code> | <code>.btn-outline</code> | <code>.btn-outline-success</code> + <code>.btn-block</code> (SSO / secundário em verde).</li>
+        <li><code>.ds-showcase-card*</code> — variante estilo grid do portal.</li>
+      </ul>
+    </div>
+
+    <div class="section" id="como-html">
+      <h2 class="section-title">Como Usar (HTML)</h2>
+      <p class="section-subtitle">Formulário com primária + SSO em outline verde.</p>
+      <pre class="code"><code>&lt;article class="ds-card ds-card--outline" aria-labelledby="login-title"&gt;
+  &lt;div class="ds-card__body"&gt;
+    &lt;div class="ds-card__header"&gt;
+      &lt;div class="ds-card__title-row"&gt;
+        &lt;h2 id="login-title" class="ds-card__title"&gt;Entrar&lt;/h2&gt;
+        &lt;a href="/signup" class="ds-card__action"&gt;Criar conta&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;p class="ds-card__description"&gt;Use seu e-mail corporativo.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-card__content"&gt;
+      &lt;!-- inputs --&gt;
+    &lt;/div&gt;
+    &lt;hr class="ds-card__divider" role="separator" /&gt;
+    &lt;div class="ds-card__footer"&gt;
+      &lt;button type="button" class="btn btn-primary btn-block"&gt;Entrar&lt;/button&gt;
+      &lt;button type="button" class="btn btn-outline-success btn-block"&gt;Continuar com SSO&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+</code></pre>
+    </div>
+
+    <div class="section" id="como-react">
+      <h2 class="section-title">Como Usar (React)</h2>
+      <p class="section-subtitle">Componentes em <code>FinalComponents.jsx</code>: <code>Card</code>, <code>CardHeader</code>, <code>CardTitle</code>, <code>CardDescription</code>, <code>CardContent</code>, <code>CardFooter</code>.</p>
+      <pre class="code"><code>import {
+  Card, CardHeader, CardTitle, CardDescription,
+  CardContent, CardFooter,
+} from './components/FinalComponents';
+
+export function LoginCard() {
+  return (
+    &lt;Card variant="outline" padding="md" style={{ maxWidth: 420 }}&gt;
+      &lt;CardHeader action={&lt;a href="/signup"&gt;Criar conta&lt;/a&gt;}&gt;
+        &lt;CardTitle id="login-title"&gt;Entrar na conta&lt;/CardTitle&gt;
+        &lt;CardDescription&gt;Digite seu e-mail.&lt;/CardDescription&gt;
+      &lt;/CardHeader&gt;
+      &lt;CardContent&gt;{/* inputs */}&lt;/CardContent&gt;
+      &lt;CardFooter&gt;
+        &lt;button type="button" className="btn btn-primary btn-block"&gt;Entrar&lt;/button&gt;
+        &lt;button type="button" className="btn btn-outline-success btn-block"&gt;Continuar com SSO&lt;/button&gt;
+      &lt;/CardFooter&gt;
+    &lt;/Card&gt;
+  );
+}
+</code></pre>
+      <p class="section-subtitle" style="margin-top:16px;"><strong>Props principais</strong></p>
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.75;font-size:14px;">
+        <li><code>variant</code>: <code>elevated</code> | <code>outline</code> | <code>ghost</code> | <code>feature</code></li>
+        <li><code>padding</code>: <code>none</code> | <code>sm</code> | <code>md</code> | <code>lg</code></li>
+        <li><code>as</code> (Card): <code>section</code> | <code>article</code> | <code>div</code></li>
+        <li><code>CardHeader</code>: <code>action</code> opcional</li>
+        <li>No HTML/CSS do DS, use <code>btn-outline-success</code> para SSO alinhado à marca.</li>
+      </ul>
+    </div>
+
+    <div class="section" id="exemplos">
+      <h2 class="section-title">Exemplos (componentes ao vivo)</h2>
+      <p class="section-subtitle">Tokens e botões alinhados ao DS; SSO com <code>btn-outline-success</code>. Use como referência visual após copiar os snippets acima.</p>
+
+      <div class="demo-wrap">
+        <p class="section-subtitle" style="margin-bottom:12px;"><strong>1) Formulário</strong></p>
+        <article class="ds-card ds-card--outline" style="max-width:420px;" aria-labelledby="card-login-title">
+          <div class="ds-card__body">
+            <div class="ds-card__header">
+              <div class="ds-card__title-row">
+                <h2 id="card-login-title" class="ds-card__title">Entrar na conta</h2>
+                <a href="#" class="ds-card__action">Criar conta</a>
+              </div>
+              <p class="ds-card__description">Digite seu e-mail para acessar o portal.</p>
+            </div>
+            <div class="ds-card__content">
+              <div>
+                <label class="ds-label" for="demo-email">E-mail</label>
+                <input id="demo-email" class="ds-input" type="email" autocomplete="email" placeholder="voce@empresa.com" />
+              </div>
+              <div>
+                <div class="ds-label-row">
+                  <label class="ds-label" for="demo-pass">Senha</label>
+                  <a href="#" class="ds-link">Esqueceu a senha?</a>
+                </div>
+                <input id="demo-pass" class="ds-input" type="password" autocomplete="current-password" placeholder="••••••••" />
+              </div>
+            </div>
+            <hr class="ds-card__divider" role="separator" />
+            <div class="ds-card__footer">
+              <button type="button" class="btn btn-primary btn-block">Entrar</button>
+              <button type="button" class="btn btn-outline-success btn-block">Continuar com SSO</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="demo-wrap">
+        <p class="section-subtitle" style="margin-bottom:12px;"><strong>2) Evento / listagem</strong></p>
+        <div class="demo-grid demo-grid--2">
+          <article class="ds-card ds-card--elevated" aria-labelledby="ev1-title">
+            <div class="ds-card__body">
+              <div class="ds-card__badges">
+                <span class="badge primary-solid medium">Curso</span>
+                <span class="badge neutral medium">Presencial</span>
+              </div>
+              <h2 id="ev1-title" class="ds-card__title">Design System na prática</h2>
+              <div class="ds-card__meta">
+                <div class="ds-card__meta-row">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  <span>12 e 13 de abril · 9h</span>
+                </div>
+                <div class="ds-card__meta-row">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>São Paulo</span>
+                </div>
+              </div>
+              <div class="ds-card__footer" style="padding-top:8px;">
+                <button type="button" class="btn btn-primary btn-block">Garantir minha vaga</button>
+              </div>
+            </div>
+          </article>
+          <article class="ds-card ds-card--outline" aria-labelledby="ev2-title">
+            <div class="ds-card__body">
+              <div class="ds-card__badges">
+                <span class="badge primary-solid medium">Evento</span>
+                <span class="badge info medium">Online</span>
+              </div>
+              <h2 id="ev2-title" class="ds-card__title">Live: tokens e temas</h2>
+              <div class="ds-card__footer" style="padding-top:8px;">
+                <button type="button" class="btn btn-secondary btn-block" disabled aria-disabled="true">Esgotado</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="demo-wrap">
+        <p class="section-subtitle" style="margin-bottom:12px;"><strong>3) Destaque com imagem</strong></p>
+        <article class="ds-card ds-card--feature ds-card--outline" style="max-width:360px;" aria-labelledby="feat-title">
+          <img class="ds-card__media" src="https://picsum.photos/seed/tpia-card/640/360" width="640" height="360" alt="Equipe colaborando em workshop" loading="lazy" />
+          <div class="ds-card__body">
+            <p class="ds-card__eyebrow">Especialista</p>
+            <h2 id="feat-title" class="ds-card__title">Implemente o DS com acompanhamento</h2>
+            <p class="ds-card__description">Sessões para alinhar tokens, componentes e acessibilidade.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="demo-wrap">
+        <p class="section-subtitle" style="margin-bottom:12px;"><strong>4) Card estilo portal</strong></p>
+        <div class="ds-showcase-card" role="article" aria-label="Card exemplo portal">
+          <div class="ds-showcase-card__preview">
+            <div style="display:flex;gap:8px;">
+              <span style="width:36px;height:36px;border-radius:8px;background:var(--ds-success);"></span>
+              <span style="width:36px;height:36px;border-radius:8px;background:var(--ds-success-bg);"></span>
+            </div>
+          </div>
+          <div class="ds-showcase-card__body">
+            <div class="ds-showcase-card__meta">
+              <span class="badge primary-solid small">Fundação</span>
+            </div>
+            <div class="ds-showcase-card__title">Design Tokens</div>
+            <p class="ds-showcase-card__desc">Cores, tipografia e espaçamentos do sistema.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="ds-demo-sidebar.js" defer></script>
+</body>
+</html>

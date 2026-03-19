@@ -1,60 +1,66 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
 
-// Design Tokens (Portal Empresa)
+/**
+ * Tema único: valores via CSS variables de demos/ds-demo-base.css (:root).
+ * Importe ds-demo-base.css na app para whitelabel; fallbacks mantêm preview sem CSS.
+ */
 const tokens = {
   colors: {
     primary: {
-      50: '#E6F4ED',
-      500: '#04843B',
-      600: '#067647',
-      700: '#005A1A',
+      50: 'var(--ds-success-bg, #E6F4ED)',
+      500: 'var(--ds-success, #04843B)',
+      600: 'var(--ds-success-hover, #067647)',
+      700: 'var(--ds-success-fg, #005A1A)',
     },
     neutral: {
-      0: '#FFFFFF',
-      50: '#F9F9F9',
-      100: '#F3F3F3',
-      200: '#C6C6C6',
-      500: '#656976',
-      700: '#333333',
-      800: '#1A1A1A',
-      900: '#000000',
+      0: 'var(--ds-bg, #FFFFFF)',
+      50: 'var(--ds-bg-subtle, #F9F9F9)',
+      100: 'var(--ds-n100, #F3F3F3)',
+      200: 'var(--ds-n200, #C6C6C6)',
+      500: 'var(--ds-n500, #656976)',
+      700: 'var(--ds-n700, #333333)',
+      800: 'var(--ds-n800, #1A1A1A)',
+      900: 'var(--ds-n900, #000000)',
     },
     content: {
-      primary: '#393939',
-      secondary: '#5E5E5E',
-      tertiary: '#727272',
-      inverse: '#FFFFFF',
+      primary: 'var(--ds-content-primary, #393939)',
+      secondary: 'var(--ds-content-secondary, #5E5E5E)',
+      tertiary: 'var(--ds-content-tertiary, #727272)',
+      inverse: 'var(--ds-on-inverse, #FFFFFF)',
     },
     border: {
-      primary: '#393939',
-      secondary: '#DDDDDD',
+      primary: 'var(--ds-content-primary, #393939)',
+      secondary: 'var(--ds-border, #E0E0E0)',
     },
-    overlay: 'rgba(0, 0, 0, 0.5)',
+    overlay: 'var(--ds-overlay-scrim, rgba(0, 0, 0, 0.5))',
+    shadowOverlay: 'var(--ds-shadow-overlay, 0 20px 25px rgba(0, 0, 0, 0.15))',
+    brandSecondary900: 'var(--ds-color-brand-secondary-900, #273959)',
   },
   spacing: {
-    xxs: '4px',
-    xs: '8px',
-    sm: '12px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
-    xxl: '48px',
+    xxs: 'var(--ds-space-xxs, 4px)',
+    xs: 'var(--ds-space-xs, 8px)',
+    sm: 'var(--ds-space-sm, 12px)',
+    md: 'var(--ds-space-md, 16px)',
+    lg: 'var(--ds-space-lg, 24px)',
+    xl: 'var(--ds-space-xl, 32px)',
+    xxl: 'var(--ds-space-xxl, 48px)',
   },
   borderRadius: {
-    xs: '4px',
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
+    xs: 'var(--ds-radius-xs, 4px)',
+    sm: 'var(--ds-radius-sm, 8px)',
+    md: 'var(--ds-radius-md, 12px)',
+    lg: 'var(--ds-radius-lg, 16px)',
   },
   typography: {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: "var(--ds-font-family, 'Inter', sans-serif)",
     fontSize: {
-      xs: '10px',
-      sm: '12px',
-      md: '14px',
-      lg: '16px',
-      xl: '18px',
-      xxl: '24px',
+      xs: 'var(--ds-text-xs, 10px)',
+      sm: 'var(--ds-text-sm, 12px)',
+      md: 'var(--ds-text-md, 14px)',
+      lg: 'var(--ds-text-lg, 16px)',
+      xl: 'var(--ds-text-xl, 18px)',
+      xxl: 'var(--ds-text-2xl, 24px)',
+      xxxl: 'var(--ds-text-3xl, 32px)',
     },
     fontWeight: {
       regular: 400,
@@ -67,15 +73,17 @@ const tokens = {
     },
   },
   shadows: {
-    sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
-    md: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
-    xl: '0 20px 25px rgba(0, 0, 0, 0.15)',
+    sm: 'var(--ds-shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.05))',
+    md: 'var(--ds-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1))',
+    lg: 'var(--ds-shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.1))',
+    xl: 'var(--ds-shadow-xl, 0 20px 25px rgba(0, 0, 0, 0.15))',
   },
   zIndex: {
     tooltip: 9998,
-    drawer: 9999,
-    modal: 10000,
+    drawerBackdrop: 9999,
+    drawerPanel: 10000,
+    modalBackdrop: 10050,
+    modalPanel: 10051,
   },
 };
 
@@ -190,6 +198,194 @@ export const SkeletonProfileRow = ({
       <Skeleton width={titleWidth} height={lineHeight} rounded="full" />
       <Skeleton width={subtitleWidth} height={lineHeight} rounded="full" />
     </div>
+  </div>
+);
+
+// ==================== CARD (composição estilo shadcn + variantes DS) ====================
+const cardVariantStyles = {
+  elevated: {
+    backgroundColor: tokens.colors.neutral[0],
+    border: `1px solid ${tokens.colors.border.secondary}`,
+    boxShadow: tokens.shadows.lg,
+    borderRadius: tokens.borderRadius.md,
+  },
+  outline: {
+    backgroundColor: tokens.colors.neutral[0],
+    border: `1px solid ${tokens.colors.border.secondary}`,
+    boxShadow: 'none',
+    borderRadius: tokens.borderRadius.md,
+  },
+  ghost: {
+    backgroundColor: 'transparent',
+    border: `1px dashed ${tokens.colors.border.secondary}`,
+    boxShadow: 'none',
+    borderRadius: tokens.borderRadius.md,
+  },
+  feature: {
+    backgroundColor: tokens.colors.neutral[0],
+    border: `1px solid ${tokens.colors.border.secondary}`,
+    boxShadow: tokens.shadows.md,
+    borderRadius: tokens.borderRadius.lg,
+  },
+  filledPrimary: {
+    backgroundColor: tokens.colors.primary[500],
+    border: 'none',
+    boxShadow: tokens.shadows.md,
+    borderRadius: tokens.borderRadius.md,
+    color: tokens.colors.content.inverse,
+  },
+  filledSecondary: {
+    backgroundColor: tokens.colors.brandSecondary900,
+    border: 'none',
+    boxShadow: tokens.shadows.lg,
+    borderRadius: tokens.borderRadius.md,
+    color: tokens.colors.content.inverse,
+  },
+};
+
+const cardPaddingMap = {
+  none: '0',
+  sm: tokens.spacing.sm,
+  md: tokens.spacing.lg,
+  lg: tokens.spacing.xl,
+};
+
+export const Card = ({
+  variant = 'outline',
+  padding = 'md',
+  as: Comp = 'div',
+  children,
+  style = {},
+  ...rest
+}) => {
+  const v = cardVariantStyles[variant] || cardVariantStyles.outline;
+  const isFilled = variant === 'filledPrimary' || variant === 'filledSecondary';
+  const innerColor = isFilled ? { color: tokens.colors.content.inverse } : {};
+
+  return (
+    <Comp
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: 0,
+        overflow: 'hidden',
+        ...v,
+        ...style,
+      }}
+      {...rest}
+    >
+      <div
+        style={{
+          padding: cardPaddingMap[padding] ?? cardPaddingMap.md,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: tokens.spacing.md,
+          flex: 1,
+          ...innerColor,
+        }}
+      >
+        {children}
+      </div>
+    </Comp>
+  );
+};
+
+export const CardHeader = ({ children, action, style = {} }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: tokens.spacing.xs,
+      ...style,
+    }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: tokens.spacing.sm,
+      }}
+    >
+      <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
+      {action ? (
+        <div style={{ flexShrink: 0, fontSize: tokens.typography.fontSize.md, fontWeight: tokens.typography.fontWeight.semibold }}>
+          {action}
+        </div>
+      ) : null}
+    </div>
+  </div>
+);
+
+export const CardTitle = ({
+  children,
+  as: Tag = 'h2',
+  id,
+  tone = 'default',
+  style = {},
+  ...rest
+}) =>
+  React.createElement(
+    Tag,
+    {
+      id,
+      style: {
+        fontSize: tokens.typography.fontSize.xl,
+        fontWeight: tokens.typography.fontWeight.bold,
+        margin: 0,
+        lineHeight: 1.25,
+        color:
+          tone === 'onFilled'
+            ? tokens.colors.content.inverse
+            : tokens.colors.content.primary,
+        ...style,
+      },
+      ...rest,
+    },
+    children,
+  );
+
+export const CardDescription = ({
+  children,
+  style = {},
+  tone = 'default',
+  ...rest
+}) => (
+  <p
+    style={{
+      margin: 0,
+      fontSize: tokens.typography.fontSize.md,
+      color:
+        tone === 'onFilled'
+          ? 'color-mix(in srgb, var(--ds-on-inverse, #ffffff) 92%, transparent)'
+          : tokens.colors.content.secondary,
+      lineHeight: tokens.typography.lineHeight.normal,
+      ...style,
+    }}
+    {...rest}
+  >
+    {children}
+  </p>
+);
+
+export const CardContent = ({ children, style = {}, ...rest }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md, ...style }} {...rest}>
+    {children}
+  </div>
+);
+
+export const CardFooter = ({ children, style = {}, ...rest }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: tokens.spacing.sm,
+      paddingTop: tokens.spacing.xs,
+      ...style,
+    }}
+    {...rest}
+  >
+    {children}
   </div>
 );
 
@@ -487,8 +683,9 @@ export const Drawer = ({
   onClose,
   children,
   title,
-  position = 'right', // 'left', 'right'
+  position = 'right', // 'left', 'right', 'bottom'
   width = '400px',
+  height = '340px',
 }) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -523,29 +720,40 @@ export const Drawer = ({
     right: 0,
     bottom: 0,
     backgroundColor: tokens.colors.overlay,
-    zIndex: tokens.zIndex.drawer,
+    zIndex: tokens.zIndex.drawerBackdrop,
     opacity: isAnimating ? 1 : 0,
     transition: 'opacity 0.3s ease',
   };
 
+  const isBottom = position === 'bottom';
+
   const drawerStyles = {
     position: 'fixed',
-    top: 0,
+    top: isBottom ? 'auto' : 0,
     bottom: 0,
-    [position]: 0,
-    width: width,
+    left: isBottom ? 0 : 'auto',
+    right: position === 'right' || isBottom ? 0 : 'auto',
+    [position === 'left' ? 'left' : 'right']: !isBottom ? 0 : undefined,
+    width: isBottom ? 'auto' : width,
+    height: isBottom ? height : '100vh',
     backgroundColor: tokens.colors.neutral[0],
-    boxShadow: tokens.shadows.xl,
-    zIndex: tokens.zIndex.drawer + 1,
+    boxShadow: tokens.colors.shadowOverlay,
+    zIndex: tokens.zIndex.drawerPanel,
     display: 'flex',
     flexDirection: 'column',
-    transform: isAnimating ? 'translateX(0)' : `translateX(${position === 'right' ? '100%' : '-100%'})`,
+    borderTopLeftRadius: isBottom ? tokens.borderRadius.md : 0,
+    borderTopRightRadius: isBottom ? tokens.borderRadius.md : 0,
+    transform: isAnimating
+      ? 'translate(0, 0)'
+      : isBottom
+        ? 'translateY(100%)'
+        : `translateX(${position === 'right' ? '100%' : '-100%'})`,
     transition: 'transform 0.3s ease',
     fontFamily: tokens.typography.fontFamily,
   };
 
   const headerStyles = {
-    padding: tokens.spacing.lg,
+    padding: `${tokens.spacing.md} ${tokens.spacing.lg}`,
     borderBottom: `1px solid ${tokens.colors.border.secondary}`,
     display: 'flex',
     justifyContent: 'space-between',
@@ -555,7 +763,8 @@ export const Drawer = ({
   const titleStyles = {
     fontSize: tokens.typography.fontSize.xl,
     fontWeight: tokens.typography.fontWeight.semibold,
-    color: tokens.colors.content.primary,
+    color: tokens.colors.neutral[800],
+    margin: 0,
   };
 
   const closeButtonStyles = {
@@ -568,6 +777,7 @@ export const Drawer = ({
     justifyContent: 'center',
     borderRadius: tokens.borderRadius.xs,
     transition: 'background-color 0.15s ease',
+    color: tokens.colors.neutral[200],
   };
 
   const contentStyles = {
@@ -583,13 +793,14 @@ export const Drawer = ({
         <div style={headerStyles}>
           <h2 style={titleStyles}>{title}</h2>
           <button
+            type="button"
             style={closeButtonStyles}
             onClick={onClose}
             aria-label="Fechar"
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.neutral[100]}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.content.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -662,16 +873,18 @@ export const Modal = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: tokens.zIndex.modal,
+    zIndex: tokens.zIndex.modalBackdrop,
     opacity: isAnimating ? 1 : 0,
     transition: 'opacity 0.3s ease',
     padding: tokens.spacing.lg,
   };
 
   const modalStyles = {
+    position: 'relative',
+    zIndex: tokens.zIndex.modalPanel,
     backgroundColor: tokens.colors.neutral[0],
     borderRadius: tokens.borderRadius.md,
-    boxShadow: tokens.shadows.xl,
+    boxShadow: tokens.colors.shadowOverlay,
     width: '100%',
     maxWidth: sizes[size],
     maxHeight: '90vh',
@@ -694,7 +907,7 @@ export const Modal = ({
   const titleStyles = {
     fontSize: tokens.typography.fontSize.xl,
     fontWeight: tokens.typography.fontWeight.semibold,
-    color: tokens.colors.content.primary,
+    color: tokens.colors.neutral[800],
     margin: 0,
   };
 
@@ -708,6 +921,7 @@ export const Modal = ({
     justifyContent: 'center',
     borderRadius: tokens.borderRadius.xs,
     transition: 'background-color 0.15s ease',
+    color: tokens.colors.neutral[200],
   };
 
   const contentStyles = {
@@ -730,13 +944,14 @@ export const Modal = ({
             {title && <h2 id="modal-title" style={titleStyles}>{title}</h2>}
             {showCloseButton && (
               <button
+                type="button"
                 style={closeButtonStyles}
                 onClick={onClose}
                 aria-label="Fechar"
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.neutral[100]}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.content.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"/>
                   <line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
@@ -872,24 +1087,24 @@ export default function FinalComponentsDemo() {
   ];
 
   const containerStyle = {
-    padding: '40px',
-    backgroundColor: '#F9F9F9',
+    padding: tokens.spacing.xl,
+    backgroundColor: tokens.colors.neutral[50],
     minHeight: '100vh',
     fontFamily: tokens.typography.fontFamily,
   };
 
   const sectionStyle = {
-    marginBottom: '48px',
-    padding: '32px',
-    backgroundColor: '#FFFFFF',
-    borderRadius: '12px',
+    marginBottom: tokens.spacing.xxl,
+    padding: tokens.spacing.xl,
+    backgroundColor: tokens.colors.neutral[0],
+    borderRadius: tokens.borderRadius.md,
   };
 
   const titleStyle = {
-    fontSize: '24px',
+    fontSize: tokens.typography.fontSize.xxl,
     fontWeight: 700,
-    marginBottom: '24px',
-    color: '#1A1A1A',
+    marginBottom: tokens.spacing.lg,
+    color: tokens.colors.neutral[800],
   };
 
   const gridStyle = {
@@ -900,12 +1115,12 @@ export default function FinalComponentsDemo() {
   };
 
   const buttonStyle = {
-    padding: '12px 24px',
+    padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
     backgroundColor: tokens.colors.primary[500],
-    color: 'white',
+    color: tokens.colors.content.inverse,
     border: 'none',
-    borderRadius: '8px',
-    fontSize: '14px',
+    borderRadius: tokens.borderRadius.sm,
+    fontSize: tokens.typography.fontSize.md,
     fontWeight: 600,
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
@@ -914,12 +1129,72 @@ export default function FinalComponentsDemo() {
   return (
     <div style={containerStyle}>
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px', color: '#005A1A' }}>
+        <h1 style={{ fontSize: tokens.typography.fontSize.xxxl, fontWeight: 700, marginBottom: tokens.spacing.xs, color: tokens.colors.primary[700] }}>
           Portal Empresa - Design System
         </h1>
-        <p style={{ fontSize: '16px', color: '#5E5E5E' }}>
+        <p style={{ fontSize: tokens.typography.fontSize.lg, color: tokens.colors.content.secondary }}>
           Spinner, Skeleton, Tooltip, Menu, Tabs, Drawer, Modal & Breadcrumb
         </p>
+      </div>
+
+      {/* CARD */}
+      <div style={sectionStyle}>
+        <h2 style={titleStyle}>🃏 Card</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
+          <Card variant="outline" as="section" aria-labelledby="demo-card-login-title">
+            <CardHeader
+              action={
+                <a href="#card" style={{ color: tokens.colors.primary[600], textDecoration: 'none', fontWeight: 600 }}>
+                  Criar conta
+                </a>
+              }
+            >
+              <CardTitle id="demo-card-login-title">Entrar</CardTitle>
+              <CardDescription>Use seu e-mail corporativo.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <input
+                type="email"
+                placeholder="voce@empresa.com"
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: 8,
+                  border: `1px solid ${tokens.colors.border.secondary}`,
+                  fontSize: 14,
+                }}
+              />
+            </CardContent>
+            <CardFooter>
+              <button type="button" style={{ ...buttonStyle, width: '100%', borderRadius: 9999 }}>
+                Continuar
+              </button>
+            </CardFooter>
+          </Card>
+
+          <Card variant="filledPrimary" as="section" aria-labelledby="demo-card-banner-title" padding="lg">
+            <CardHeader>
+              <CardTitle id="demo-card-banner-title" tone="onFilled">
+                Conta digital
+              </CardTitle>
+              <CardDescription tone="onFilled">Abertura rápida com o DS TP.IA.</CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <button
+                type="button"
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: 'color-mix(in srgb, var(--ds-on-inverse, #ffffff) 20%, transparent)',
+                  border: `1px solid color-mix(in srgb, var(--ds-on-inverse, #ffffff) 50%, transparent)`,
+                  width: '100%',
+                  borderRadius: 9999,
+                }}
+              >
+                Saiba mais
+              </button>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
 
       {/* BREADCRUMB */}
@@ -953,15 +1228,15 @@ export default function FinalComponentsDemo() {
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <div style={{ textAlign: 'center' }}>
             <Spinner size="small" />
-            <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Small</p>
+            <p style={{ marginTop: tokens.spacing.xs, fontSize: tokens.typography.fontSize.sm, color: tokens.colors.content.secondary }}>Small</p>
           </div>
           <div style={{ textAlign: 'center' }}>
             <Spinner size="medium" />
-            <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Medium</p>
+            <p style={{ marginTop: tokens.spacing.xs, fontSize: tokens.typography.fontSize.sm, color: tokens.colors.content.secondary }}>Medium</p>
           </div>
           <div style={{ textAlign: 'center' }}>
             <Spinner size="large" />
-            <p style={{ marginTop: '8px', fontSize: '12px', color: '#5E5E5E' }}>Large</p>
+            <p style={{ marginTop: tokens.spacing.xs, fontSize: tokens.typography.fontSize.sm, color: tokens.colors.content.secondary }}>Large</p>
           </div>
         </div>
       </div>
@@ -969,7 +1244,7 @@ export default function FinalComponentsDemo() {
       {/* SKELETON */}
       <div style={sectionStyle}>
         <h2 style={titleStyle}>◻ Skeleton (shadcn-like)</h2>
-        <div style={{ padding: '16px', background: '#fff', border: '1px solid #E0E0E0', borderRadius: '12px', maxWidth: '360px' }}>
+        <div style={{ padding: tokens.spacing.md, background: tokens.colors.neutral[0], border: `1px solid ${tokens.colors.border.secondary}`, borderRadius: tokens.borderRadius.md, maxWidth: '360px' }}>
           <SkeletonProfileRow />
         </div>
       </div>
