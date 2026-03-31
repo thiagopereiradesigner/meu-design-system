@@ -58,10 +58,11 @@
       border: 1px solid var(--ds-border);
       width: 100%;
       max-width: 720px;
+      box-shadow: var(--ds-shadow-md);
     }
     .alert.align-center{ align-items: center; padding: 12px; }
 
-    /* Fixo na viewport: centro horizontal + sombra md (centro superior / centro inferior) */
+    /* Fixo na viewport: centro horizontal (centro superior / inferior) — uso na aplicação; não exige demo ao vivo na página */
     .alert.alert--floating{
       position: fixed;
       z-index: 9990;
@@ -69,14 +70,23 @@
       transform: translateX(-50%);
       width: calc(100% - 32px);
       max-width: 720px;
-      box-shadow: var(--ds-shadow-md);
     }
     .alert.alert--floating.alert--anchor-top{
-      top: 72px;
+      top: max(72px, env(safe-area-inset-top, 0px));
     }
     .alert.alert--floating.alert--anchor-bottom{
-      bottom: 24px;
+      bottom: calc(24px + env(safe-area-inset-bottom, 0px));
       top: auto;
+    }
+
+    @media (max-width: 743px){
+      .alert .alert-close{
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
 
     .alert .alert-text{ display: flex; flex-direction: column; gap: 4px; }
@@ -146,7 +156,7 @@
 
   <div class="ds-container">
     <h1>Alert</h1>
-    <p class="lead">Ícone por tipo e opção de texto, botão de fechar (dismiss), variante <strong>inline</strong> no fluxo ou <strong>fixa</strong> na viewport (<strong>centro superior</strong> ou <strong>centro inferior</strong> / rodapé) com <code>var(--ds-shadow-md)</code>.</p>
+    <p class="lead">Ícone por tipo e opção de texto, botão de fechar (dismiss), sombra <code>var(--ds-shadow-md)</code>. No fluxo fica <strong>inline</strong>; fora do fluxo o padrão de ancoragem é <strong>centro superior</strong> na viewport (classes <code>alert--floating</code> + <code>alert--anchor-top</code>). Centro inferior é opcional (<code>alert--anchor-bottom</code>).</p>
 
     <div class="note">
       <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
@@ -154,13 +164,14 @@
         <li><strong>Semântica:</strong> `role="alert"` no componente React.</li>
         <li><strong>Controle visual:</strong> alternativa `showText={false}` mantém título sem reduzir entendimento.</li>
         <li><strong>Fechamento:</strong> botão de dismiss com <code>aria-label</code>.</li>
+        <li><strong>Mobile:</strong> hit-area do fechar ≥ 44×44px (viewport estreito; ver diretriz em <code>.cursor/rules/ds-mobile-responsive.mdc</code>).</li>
       </ul>
     </div>
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
       <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:13px;">
-        <li><code>div.alert</code>: wrapper (modificadores <code>active</code>/<code>light</code>, tipo <code>success|error|warning|info</code>; opcional <code>alert--floating</code> + <code>alert--anchor-top</code> = centro superior, <code>alert--anchor-bottom</code> = centro inferior + sombra <code>var(--ds-shadow-md)</code>).</li>
+        <li><code>div.alert</code>: wrapper com sombra <code>var(--ds-shadow-md)</code> (modificadores <code>active</code>/<code>light</code>, tipo <code>success|error|warning|info</code>; opcional <code>alert--floating</code> + <code>alert--anchor-top</code> = centro superior, <code>alert--anchor-bottom</code> = centro inferior).</li>
         <li><code>role="alert"</code>: anuncia conteúdo para leitores de tela (quando renderizado no fluxo).</li>
         <li><code>svg</code>: ícone do tipo (success/error/warning/info).</li>
         <li><code>div.alert-text</code>: agrupador do texto.</li>
@@ -195,8 +206,8 @@
   &lt;button class="alert-close" aria-label="Fechar alerta" onclick="..."&gt;...&lt;/button&gt;
 &lt;/div&gt;
 
-&lt;!-- Fixo + sombra md (viewport) --&gt;
-&lt;div class="alert active info alert--floating alert--anchor-bottom" role="alert" aria-live="polite"&gt;
+&lt;!-- Fixo centro superior (viewport) — mesma sombra md dos inline --&gt;
+&lt;div class="alert active success alert--floating alert--anchor-top" role="alert" aria-live="polite"&gt;
   ...
 &lt;/div&gt;
       </code></pre>
@@ -333,18 +344,17 @@
     </div>
 
     <div class="section">
-      <div class="section-title">Posição fixa (centro superior / inferior) + sombra</div>
+      <div class="section-title">Posição fixa (centro superior)</div>
       <div class="section-subtitle">
-        Dois exemplos usam <code>position: fixed</code>, centralizados na horizontal (<code>left: 50%</code> + <code>translateX(-50%)</code>):
-        um em <strong>centro superior</strong> (abaixo da topbar) e outro em <strong>centro inferior</strong> (rodapé da viewport). Ambos usam <code>box-shadow: var(--ds-shadow-md)</code>.
-        Role a página para ver que permanecem fixos; use o fechar para dispensar.
+        Esta página mostra só os alertas <strong>inline</strong> acima. Para uso na aplicação com <code>position: fixed</code>, centralize na horizontal (<code>left: 50%</code> + <code>translateX(-50%)</code>) e ancore em <strong>centro superior</strong> com <code>alert--floating alert--anchor-top</code> (abaixo da barra; respeita <code>safe-area</code> no topo).
+        Opcionalmente, <code>alert--anchor-bottom</code> fixa no rodapé (com <code>safe-area</code> inferior). Todos os alertas usam <code>box-shadow: var(--ds-shadow-md)</code>.
       </div>
     </div>
 
     <div class="section">
       <div class="section-title">Como Usar (React)</div>
       <div class="section-subtitle">
-        Alert pode ser <strong>inline</strong> (fluxo) ou <strong>fixo</strong> (ex.: <code>placement=&quot;top&quot;</code> = centro superior, <code>&quot;bottom&quot;</code> = centro inferior + sombra).
+        Alert pode ser <strong>inline</strong> (fluxo) ou <strong>fixo</strong> com <code>placement=&quot;top&quot;</code> (centro superior na viewport). <code>&quot;bottom&quot;</code> é opcional (centro inferior). Sombra: <code>var(--ds-shadow-md)</code>.
         Pode exibir <code>message</code> e/ou apenas <code>title</code> (quando <code>showText={false}</code>).
       </div>
 
@@ -374,40 +384,9 @@ import { Alert } from '@/components/ui/Alert';
         <div><code>showText</code>: controla exibição do body (message)</div>
         <div><code>maxWidth</code>: evita alerta “esticar a tela” (default: 720px)</div>
         <div><code>dismissible</code>/<code>onDismiss</code>: controle do fechar</div>
-        <div><code>placement</code> (opcional): <code>inline</code> (default) | <code>top</code> (centro superior) | <code>bottom</code> (centro inferior) — fixos recebem sombra md</div>
+        <div><code>placement</code> (opcional): <code>inline</code> (default) | <code>top</code> (centro superior) | <code>bottom</code> (centro inferior)</div>
       </div>
     </div>
-  </div>
-
-  <!-- Demos fixos na viewport (fora do fluxo do .ds-container) -->
-  <div class="alert active success alert--floating alert--anchor-top" id="alert-demo-fixed-top" role="alert" aria-live="polite">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
-    </svg>
-    <div class="alert-text">
-      <div class="alert-title">Centro superior</div>
-      <div class="alert-message">Alerta fixo abaixo da barra; rolar a página não move o bloco.</div>
-    </div>
-    <button type="button" class="alert-close" onclick="document.getElementById('alert-demo-fixed-top').remove()" aria-label="Fechar alerta">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  </div>
-
-  <div class="alert active info alert--floating alert--anchor-bottom" id="alert-demo-fixed-bottom" role="alert" aria-live="polite">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-    </svg>
-    <div class="alert-text">
-      <div class="alert-title">Centro inferior</div>
-      <div class="alert-message">Ancoragem no rodapé da viewport, mesma sombra do DS.</div>
-    </div>
-    <button type="button" class="alert-close" onclick="document.getElementById('alert-demo-fixed-bottom').remove()" aria-label="Fechar alerta">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
   </div>
 
 <script src="ds-demo-topbar-search.js" defer></script>

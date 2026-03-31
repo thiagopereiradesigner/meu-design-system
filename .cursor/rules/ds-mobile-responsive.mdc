@@ -1,0 +1,37 @@
+---
+description: Diretrizes de layout responsivo e mobile para o design system (demos, tokens e componentes)
+globs: demos/**/*
+alwaysApply: true
+---
+
+# Design System — Mobile e responsivo (diretriz global)
+
+Objetivo: **todo componente e toda página de demo** deve ser utilizável em telas pequenas e touch, sem depender de desktop.
+
+## Viewport e base
+- Toda página HTML deve incluir `<meta name="viewport" content="width=device-width, initial-scale=1.0">`.
+- Preferir **tokens** `var(--ds-*)` para cores, bordas e sombras; evitar hex/rgba fixos quando existir token equivalente em `ds-demo-base.css`.
+
+## Largura e overflow
+- Conteúdo principal deve funcionar em **largura mínima ~320px** sem quebrar layout de forma inaceitável.
+- Evitar **scroll horizontal** não intencional (exceto padrões explícitos: tabela com scroll, carrossel, etc.).
+- Larguras máximas (`max-width`) e `width: 100%` com `box-sizing: border-box` devem ser coerentes com o grid do demo (`.ds-container`, seções).
+
+## Breakpoints (referência do projeto)
+- Ajustar padding e densidade em **≤743px** vs **≥744px** quando houver layout em coluna / topbar (hamburger, menu mobile).
+- Em **≥1280px**, manter respiro lateral consistente quando já existir no demo.
+
+## Touch e alvo de toque
+- Controles interativos (botões, ícones de fechar, áreas clicáveis principais) devem ter área tocável **≥ 44×44px** em viewports estreitos, quando possível (padding no hit-area, não só ícone minúsculo).
+- Manter espaçamento entre alvos para reduzir toques errados.
+
+## Conteúdo fixo / sobreposto (modais, drawers, alertas fixos)
+- Usar **`z-index`** coerente com a pilha do DS (topbar, overlays).
+- Em **alertas ou barras fixas no rodapé**, considerar **`env(safe-area-inset-*)`** (notch / home indicator) para não colidir com a área segura do dispositivo.
+
+## Acessibilidade (ligação com mobile)
+- Zoom até **200%** não deve cortar conteúdo essencial sem alternativa (reflow / scroll interno documentado).
+- Foco visível e ordem de tabulação usáveis com teclado em viewport estreita.
+
+## Verificação
+- Antes de considerar um demo “pronto”, validar em **DevTools** (iPhone / largura ~390px) ou dispositivo real: leitura, toque, ausência de overflow horizontal acidental.
