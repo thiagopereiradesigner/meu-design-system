@@ -49,7 +49,7 @@
       width: 18px;
       height: 18px;
       transition: transform 200ms ease;
-      color: currentColor;
+      color: var(--ds-icon-accent);
     }
 
     .acc-content{
@@ -65,9 +65,7 @@
       line-height: 1.6;
     }
 
-    .acc-item.open .acc-content{
-      max-height: 420px;
-    }
+    /* Altura do painel: definida em JS (scrollHeight) para não cortar conteúdo */
 
     .acc-divider{
       height: 1px;
@@ -119,7 +117,7 @@
       <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
       <ul>
         <li><strong>Keyboard friendly:</strong> trigger utiliza botão com <code>aria-expanded</code>.</li>
-        <li><strong>Leitura assistida:</strong> conteúdo usa <code>role="region"</code>.</li>
+        <li><strong>Leitura assistida:</strong> cada painel usa <code>role="region"</code>, <code>aria-labelledby</code> no trigger, <code>aria-controls</code> no botão e <code>aria-hidden</code> quando fechado.</li>
         <li><strong>Divider “grudado”:</strong> traço aparece após a resposta aberta, mantendo contexto.</li>
       </ul>
     </div>
@@ -128,16 +126,16 @@
       <div class="section-title">Perguntas frequentes</div>
       <div class="accordion" id="accordion">
         <div class="acc-item open" data-value="1">
-          <button class="acc-trigger" onclick="toggleAcc(1)" aria-expanded="true">
+          <button type="button" class="acc-trigger" id="acc-trigger-1" onclick="toggleAcc(1)" aria-expanded="true" aria-controls="acc-panel-1">
             <span class="acc-text">
               <span class="acc-index">1.</span>
               <span class="acc-title">O que você precisa saber antes de começar?</span>
             </span>
-            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
-          <div class="acc-content">
+          <div class="acc-content" id="acc-panel-1" role="region" aria-labelledby="acc-trigger-1" aria-hidden="false">
             <div class="acc-content-inner">
               Você consegue montar interfaces consistentes usando tokens e componentes do design system. O objetivo aqui é acelerar o desenvolvimento e manter acessibilidade.
             </div>
@@ -146,16 +144,16 @@
         </div>
 
         <div class="acc-item" data-value="2">
-          <button class="acc-trigger" onclick="toggleAcc(2)" aria-expanded="false">
+          <button type="button" class="acc-trigger" id="acc-trigger-2" onclick="toggleAcc(2)" aria-expanded="false" aria-controls="acc-panel-2">
             <span class="acc-text">
               <span class="acc-index">2.</span>
               <span class="acc-title">Como funciona o white-label?</span>
             </span>
-            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(0deg);">
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
-          <div class="acc-content">
+          <div class="acc-content" id="acc-panel-2" role="region" aria-labelledby="acc-trigger-2" aria-hidden="true">
             <div class="acc-content-inner">
               Você altera tokens CSS (cores e tipografia) via variáveis. Os componentes permanecem com a mesma estrutura e semântica.
             </div>
@@ -164,16 +162,16 @@
         </div>
 
         <div class="acc-item" data-value="3">
-          <button class="acc-trigger" onclick="toggleAcc(3)" aria-expanded="false">
+          <button type="button" class="acc-trigger" id="acc-trigger-3" onclick="toggleAcc(3)" aria-expanded="false" aria-controls="acc-panel-3">
             <span class="acc-text">
               <span class="acc-index">3.</span>
               <span class="acc-title">O Accordion é acessível?</span>
             </span>
-            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
-          <div class="acc-content">
+          <div class="acc-content" id="acc-panel-3" role="region" aria-labelledby="acc-trigger-3" aria-hidden="true">
             <div class="acc-content-inner">
               Sim: o trigger usa `aria-expanded`, e o conteúdo respeita leitura consistente por teclado.
             </div>
@@ -184,11 +182,11 @@
     </div>
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:13px;">
         <li><code>div.acc-item</code>: item da lista (estado open/closed via classe <code>open</code>).</li>
-        <li><code>button.acc-trigger</code>: botão que controla <code>aria-expanded</code>.</li>
+        <li><code>button.acc-trigger</code>: <code>type="button"</code>, <code>id</code> único, <code>aria-expanded</code> e <code>aria-controls</code> apontando para o painel.</li>
         <li><code>span.acc-index</code> + <code>span.acc-title</code>: separa o “número” do título (o índice não fica tão pesado).</li>
-        <li><code>div.acc-content</code>: container colapsável (altura via CSS).</li>
+        <li><code>div.acc-content</code>: painel colapsável com <code>role="region"</code>, <code>aria-labelledby</code> e <code>aria-hidden</code>; altura aberta via JS (<code>scrollHeight</code>), fechado com <code>max-height: 0</code>.</li>
         <li><code>div.acc-content-inner</code>: conteúdo de leitura.</li>
         <li><code>div.acc-divider</code>: separador exibido quando o item está aberto.</li>
       </ul>
@@ -198,21 +196,22 @@
       <div class="section-title">Como Usar (HTML)</div>
       <div class="section-subtitle">
         Use o <code>data-value</code> para identificar o item e a função <code>toggleAcc</code> para alternar a classe <code>open</code> e o <code>aria-expanded</code>.
+        A altura do painel é calculada com <code>scrollHeight</code> (sem <code>max-height</code> fixo), para o texto nunca ser cortado.
       </div>
       <pre class="code"><code>{/* HTML + JS */}
 &lt;div class="accordion" id="accordion"&gt;
   &lt;div class="acc-item open" data-value="1"&gt;
-    &lt;button class="acc-trigger" onclick="toggleAcc(1)" aria-expanded="true"&gt;
+    &lt;button type="button" class="acc-trigger" id="acc-trigger-1" onclick="toggleAcc(1)" aria-expanded="true" aria-controls="acc-panel-1"&gt;
       &lt;span class="acc-text"&gt;
         &lt;span class="acc-index"&gt;1.&lt;/span&gt;
         &lt;span class="acc-title"&gt;Pergunta&lt;/span&gt;
       &lt;/span&gt;
-      &lt;svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"&gt;
+      &lt;svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"&gt;
         &lt;path d="M6 9l6 6 6-6" /&gt;
       &lt;/svg&gt;
     &lt;/button&gt;
 
-    &lt;div class="acc-content"&gt;
+    &lt;div class="acc-content" id="acc-panel-1" role="region" aria-labelledby="acc-trigger-1" aria-hidden="false"&gt;
       &lt;div class="acc-content-inner"&gt;Resposta...&lt;/div&gt;
     &lt;/div&gt;
 
@@ -221,17 +220,59 @@
 &lt;/div&gt;
 
 &lt;script&gt;
+  function syncAccordionHeights() {
+    document.querySelectorAll(".acc-item").forEach((el) =&gt; {
+      const content = el.querySelector(".acc-content");
+      const inner = el.querySelector(".acc-content-inner");
+      if (!content) return;
+      if (el.classList.contains("open") &amp;&amp; inner) {
+        content.style.maxHeight = inner.scrollHeight + "px";
+      } else {
+        content.style.maxHeight = "0px";
+      }
+    });
+  }
+
   function toggleAcc(val) {
     const items = document.querySelectorAll(".acc-item");
+    const target = document.querySelector('.acc-item[data-value="' + val + '"]');
+    const shouldOpen = target ? !target.classList.contains("open") : false;
     items.forEach((el) =&gt; {
-      const isOpen = String(el.getAttribute("data-value")) === String(val);
+      const isTarget = String(el.getAttribute("data-value")) === String(val);
+      const isOpen = shouldOpen &amp;&amp; isTarget;
       el.classList.toggle("open", isOpen);
       const btn = el.querySelector(".acc-trigger");
       if (btn) btn.setAttribute("aria-expanded", String(isOpen));
+      const panel = el.querySelector(".acc-content");
+      if (panel) panel.setAttribute("aria-hidden", String(!isOpen));
       const chevron = el.querySelector(".acc-chevron");
       if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
     });
+    requestAnimationFrame(syncAccordionHeights);
   }
+
+  function debounce(fn, ms) {
+    var t;
+    return function () {
+      clearTimeout(t);
+      t = setTimeout(fn, ms);
+    };
+  }
+
+  syncAccordionHeights();
+  window.addEventListener("resize", debounce(function () {
+    requestAnimationFrame(syncAccordionHeights);
+  }, 150));
+  if (typeof ResizeObserver !== "undefined") {
+    document.querySelectorAll(".acc-content-inner").forEach(function (inner) {
+      new ResizeObserver(function () {
+        requestAnimationFrame(syncAccordionHeights);
+      }).observe(inner);
+    });
+  }
+  window.addEventListener("load", function () {
+    requestAnimationFrame(syncAccordionHeights);
+  });
 &lt;/script&gt;
       </code></pre>
     </div>
@@ -271,19 +312,67 @@ import {
   </div>
 
   <script>
-    function toggleAcc(val) {
-      const items = document.querySelectorAll(".acc-item");
-      items.forEach((el) => {
-        const isOpen = String(el.getAttribute("data-value")) === String(val);
-        el.classList.toggle("open", isOpen);
+  function syncAccordionHeights() {
+    document.querySelectorAll(".acc-item").forEach((el) => {
+      const content = el.querySelector(".acc-content");
+      const inner = el.querySelector(".acc-content-inner");
+      if (!content) return;
+      if (el.classList.contains("open") && inner) {
+        content.style.maxHeight = inner.scrollHeight + "px";
+      } else {
+        content.style.maxHeight = "0px";
+      }
+    });
+  }
 
-        const btn = el.querySelector(".acc-trigger");
-        if (btn) btn.setAttribute("aria-expanded", String(isOpen));
+  function toggleAcc(val) {
+    const items = document.querySelectorAll(".acc-item");
+    const target = document.querySelector('.acc-item[data-value="' + val + '"]');
+    const shouldOpen = target ? !target.classList.contains("open") : false;
 
-        const chevron = el.querySelector(".acc-chevron");
-        if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+    items.forEach((el) => {
+      const isTarget = String(el.getAttribute("data-value")) === String(val);
+      const isOpen = shouldOpen && isTarget;
+
+      el.classList.toggle("open", isOpen);
+
+      const btn = el.querySelector(".acc-trigger");
+      if (btn) btn.setAttribute("aria-expanded", String(isOpen));
+
+      const panel = el.querySelector(".acc-content");
+      if (panel) panel.setAttribute("aria-hidden", String(!isOpen));
+
+      const chevron = el.querySelector(".acc-chevron");
+      if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+    });
+    requestAnimationFrame(syncAccordionHeights);
+  }
+
+  function debounce(fn, ms) {
+    var t;
+    return function () {
+      clearTimeout(t);
+      t = setTimeout(fn, ms);
+    };
+  }
+
+  syncAccordionHeights();
+  window.addEventListener("resize", debounce(function () {
+    requestAnimationFrame(syncAccordionHeights);
+  }, 150));
+
+  if (typeof ResizeObserver !== "undefined") {
+    document.querySelectorAll(".acc-content-inner").forEach(function (inner) {
+      var ro = new ResizeObserver(function () {
+        requestAnimationFrame(syncAccordionHeights);
       });
-    }
+      ro.observe(inner);
+    });
+  }
+
+  window.addEventListener("load", function () {
+    requestAnimationFrame(syncAccordionHeights);
+  });
   </script>
   </div>
 
