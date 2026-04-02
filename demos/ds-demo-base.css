@@ -194,6 +194,13 @@
   --ds-radius-md: 8px;
   --ds-radius-lg: 12px;
   --ds-radius-full: 9999px;
+
+  /* Select dropdown: scroll e scrollbar (sobrescrever por tema / marca) */
+  --ds-select-dropdown-max-height: min(15rem, 50vh);
+  --ds-scrollbar-track: var(--ds-bg-subtle);
+  --ds-scrollbar-thumb: color-mix(in srgb, var(--ds-success) 32%, var(--ds-neutral-200));
+  --ds-scrollbar-thumb-hover: color-mix(in srgb, var(--ds-success) 48%, var(--ds-neutral-300));
+  --ds-select-option-checkbox-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath stroke='%23000' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.2 6.5 11 12.5 4.5'/%3E%3C/svg%3E");
 }
 
 [data-ds-theme="dark"]{
@@ -376,6 +383,11 @@
   --ds-radius-md: 8px;
   --ds-radius-lg: 12px;
   --ds-radius-full: 9999px;
+
+  --ds-select-dropdown-max-height: min(15rem, 45vh);
+  --ds-scrollbar-track: var(--ds-neutral-800);
+  --ds-scrollbar-thumb: color-mix(in srgb, var(--ds-success) 38%, var(--ds-neutral-600));
+  --ds-scrollbar-thumb-hover: color-mix(in srgb, var(--ds-success) 52%, var(--ds-neutral-500));
 }
 
 body{
@@ -1097,10 +1109,26 @@ body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note h3{
   border: 1px solid var(--ds-border);
   border-radius: var(--ds-radius-sm);
   box-shadow: var(--ds-shadow-md);
-  max-height: 240px;
+  max-height: var(--ds-select-dropdown-max-height);
   overflow-y: auto;
   z-index: 1000;
   display: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-scrollbar-thumb) var(--ds-scrollbar-track);
+}
+.select-dropdown::-webkit-scrollbar{
+  width: var(--ds-space-sm);
+}
+.select-dropdown::-webkit-scrollbar-track{
+  background: var(--ds-scrollbar-track);
+  border-radius: var(--ds-radius-sm);
+}
+.select-dropdown::-webkit-scrollbar-thumb{
+  background: var(--ds-scrollbar-thumb);
+  border-radius: var(--ds-radius-full);
+}
+.select-dropdown::-webkit-scrollbar-thumb:hover{
+  background: var(--ds-scrollbar-thumb-hover);
 }
 .select-dropdown.open{
   display: block;
@@ -1125,6 +1153,134 @@ body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note h3{
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+/* Linha com ícone à esquerda + rótulo (+ opcional check à direita) */
+.select-option.select-option--row{
+  justify-content: flex-start;
+  gap: var(--ds-space-md);
+}
+.select-option__icon{
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--ds-icon-muted);
+}
+.select-option__icon path,
+.select-option__icon circle,
+.select-option__icon line,
+.select-option__icon polyline,
+.select-option__icon rect{
+  stroke: currentColor;
+}
+.select-option__icon[fill="currentColor"],
+.select-option__icon path[fill="currentColor"]{
+  fill: currentColor;
+  stroke: none;
+}
+.select-option:hover:not(.disabled) .select-option__icon,
+.select-option.selected .select-option__icon{
+  color: var(--ds-icon-accent);
+}
+.select-option.disabled .select-option__icon{
+  opacity: 0.65;
+}
+.select-option__label{
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.select-option__check{
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--ds-success);
+}
+.select-option__check path{
+  stroke: currentColor;
+}
+
+/* Linha com checkbox (filtros, multi-select) — use <label class="select-option select-option--checkbox"> */
+label.select-option.select-option--checkbox{
+  cursor: pointer;
+  margin: 0;
+  font-weight: inherit;
+}
+.select-option.select-option--checkbox{
+  justify-content: flex-start;
+  gap: var(--ds-space-md);
+}
+.select-option.select-option--checkbox .select-option__label{
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.select-dropdown .select-option__checkbox{
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-surface);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  margin: 0;
+  align-self: center;
+}
+.select-dropdown .select-option__checkbox:hover:not(:disabled){
+  border-color: var(--ds-success);
+}
+.select-dropdown .select-option__checkbox:focus{
+  outline: none;
+}
+.select-dropdown .select-option__checkbox:focus-visible{
+  box-shadow: var(--ds-focus-ring);
+  border-color: var(--ds-success);
+}
+.select-dropdown .select-option__checkbox:checked{
+  background-color: var(--ds-success);
+  border-color: var(--ds-success);
+}
+.select-dropdown .select-option__checkbox:checked::after{
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  transform: translate(-50%, -50%);
+  background-color: var(--ds-on-inverse);
+  -webkit-mask-image: var(--ds-select-option-checkbox-mask);
+  mask-image: var(--ds-select-option-checkbox-mask);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.select-dropdown .select-option__checkbox:disabled{
+  cursor: not-allowed;
+  background-color: var(--ds-bg-subtle);
+  border-color: var(--ds-border);
+  opacity: 0.85;
+}
+.select-option.select-option--checkbox:has(.select-option__checkbox:disabled){
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+@media (max-width: 743px){
+  .select-option.select-option--checkbox{
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+}
+
 .select-container .chevron{
   width: 20px;
   height: 20px;
@@ -1168,6 +1324,47 @@ body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note h3{
   background: var(--ds-surface);
   color: var(--ds-fg);
 }
+
+/* Rodapé do painel (ex.: confirmar filtros) */
+.select-dropdown__footer{
+  padding: var(--ds-space-md) var(--ds-space-lg);
+  border-top: 1px solid var(--ds-border);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--ds-space-sm);
+  flex-shrink: 0;
+  background: var(--ds-surface);
+}
+.select-dropdown__btn-primary{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--ds-space-lg);
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-font-size-md);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--ds-on-inverse);
+  background: var(--ds-success);
+  border: none;
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.select-dropdown__btn-primary:hover{
+  background: var(--ds-success-hover);
+}
+.select-dropdown__btn-primary:focus-visible{
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+.select-dropdown__btn-primary:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .drawer .select-dropdown,
 .modal .select-dropdown{
   z-index: 10050;
@@ -1221,6 +1418,10 @@ body.ds-demo-has-sidebar .ds-demo-main .select-search input{
   background: var(--ds-surface) !important;
   border-color: var(--ds-border) !important;
   color: var(--ds-fg) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .select-dropdown__footer{
+  background: var(--ds-surface) !important;
+  border-top-color: var(--ds-border) !important;
 }
 
 /* Contorno padrão e estados (igual input-demo + Select base); !important só onde precisa bater com outros guards. */

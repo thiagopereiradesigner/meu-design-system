@@ -702,6 +702,12 @@
         file: 'input-demo.html'
       },
       {
+        name: 'Lista do select (menu)',
+        description: 'Painel interno do Select: opções, busca, estados e linhas com ícone + texto (tokens e tema)',
+        category: 'form',
+        file: 'select-menu-list-demo.html'
+      },
+      {
         name: 'Select',
         description: 'Dropdown para seleção de opções com busca e estados',
         category: 'form',
@@ -883,6 +889,15 @@
                   <span>Selecione...</span>
                   <span>▾</span>
                 </div>
+              </div>
+            </div>
+          `;
+        case 'Lista do select (menu)':
+          return `
+            <div class="preview-inner" style="justify-content:flex-start;">
+              <div style="display:flex;flex-direction:column;gap:2px;width:100%;max-width:130px;padding:6px;border:1px solid var(--ds-border);border-radius:8px;background:var(--ds-surface);">
+                <div style="font-size:10px;padding:5px 8px;border-radius:6px;background:var(--ds-success-bg);color:var(--ds-success-fg);font-weight:600;">Ativa</div>
+                <div style="font-size:10px;padding:5px 8px;color:var(--ds-fg-muted);">Outra</div>
               </div>
             </div>
           `;

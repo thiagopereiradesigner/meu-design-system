@@ -7,6 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
+    :root {
+      --modal-demo-touch-target: 44px;
+    }
+
     /* Subconjunto do botão do DS (mesmas classes da button-demo) */
     .btn{
       font-family: var(--ds-font-family);
@@ -48,18 +52,18 @@
     .modal-overlay{
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5);
+      background: var(--ds-backdrop-scrim);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      padding: 24px;
+      padding: var(--ds-space-xl);
     }
     .modal-overlay.show{ display: flex; }
 
     .modal{
       background: var(--ds-surface);
-      border-radius: 12px;
+      border-radius: var(--ds-radius-lg);
       box-shadow: var(--ds-shadow-md);
       width: 100%;
       max-width: 600px;
@@ -69,39 +73,78 @@
       opacity: 1;
     }
 
+    /* Header: ritmo drawer, padding vertical um pouco mais apertado para o divisor colar ao título */
     .modal-header{
-      padding: 24px;
+      flex-shrink: 0;
+      padding: var(--ds-space-sm) var(--ds-space-lg);
+      padding-top: max(var(--ds-space-sm), env(safe-area-inset-top, 0px));
       border-bottom: 1px solid var(--ds-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: var(--ds-space-md);
     }
 
     .modal-title{
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--ds-fg);
+      font-size: var(--ds-font-size-lg);
+      font-weight: var(--ds-font-weight-semibold);
+      color: var(--ds-text-primary);
       margin: 0;
+      line-height: var(--ds-line-height-tight);
     }
 
     .modal-content{
-      padding: 24px;
+      padding: var(--ds-space-lg);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .modal-content p{
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.5;
-      color: var(--ds-fg-muted);
+      font-size: var(--ds-font-size-md);
+      font-weight: var(--ds-font-weight-regular);
+      line-height: var(--ds-line-height-normal);
+      color: var(--ds-text-secondary);
+    }
+    .modal-content p + p{
+      margin-top: var(--ds-space-md);
     }
 
-    .close-btn{
-      /* Layout base; cor/estado agora vem do CSS global */
-      padding: 0;
-      min-width: 40px;
-      min-height: 40px;
+    .modal-footer{
       flex-shrink: 0;
+      padding: var(--ds-space-md) var(--ds-space-lg);
+      padding-bottom: max(var(--ds-space-md), env(safe-area-inset-bottom, 0px));
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: var(--ds-space-md);
+      flex-wrap: wrap;
+    }
+
+    /* Close: ícone 16px + traço mais fino (menos peso visual); área tocável 44px */
+    .modal-header .close-btn{
+      flex-shrink: 0;
+      padding: 0;
+      margin: 0;
+      min-width: var(--modal-demo-touch-target);
+      min-height: var(--modal-demo-touch-target);
+      border-radius: var(--ds-radius-md);
+      color: var(--ds-text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-header .close-btn:hover{
+      color: var(--ds-text-primary);
+      background-color: var(--ds-bg-subtle);
+    }
+    .modal-header .close-btn:focus-visible{
+      outline: none;
+      box-shadow: var(--ds-focus-ring);
+    }
+    .modal-header .close-btn svg{
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      stroke-width: 1.5;
     }
   </style>
 </head>
@@ -158,8 +201,8 @@
         <div class="modal" id="modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <div class="modal-header">
             <h2 class="modal-title" id="modal-title">Confirmar Ação</h2>
-            <button class="btn btn-ghost btn-medium close-btn" id="modal-close-btn" type="button" onclick="closeModal()" aria-label="Fechar Modal">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button class="btn btn-ghost close-btn" id="modal-close-btn" type="button" onclick="closeModal()" aria-label="Fechar Modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
@@ -167,15 +210,13 @@
           </div>
 
           <div class="modal-content">
-            <div style="display:flex;flex-direction:column;gap:14px;">
-              <p>Você tem certeza que deseja realizar esta ação?</p>
-              <p>Esta operação não pode ser desfeita.</p>
+            <p>Você tem certeza que deseja realizar esta ação?</p>
+            <p>Esta operação não pode ser desfeita.</p>
+          </div>
 
-              <div style="display:flex;gap:12px;justify-content:flex-end;">
-                <button class="btn btn-primary btn-medium" type="button" onclick="confirmModal()">Confirmar</button>
-                <button class="btn btn-secondary btn-medium" type="button" onclick="closeModal()">Cancelar</button>
-              </div>
-            </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-medium" type="button" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-primary btn-medium" type="button" onclick="confirmModal()">Confirmar</button>
           </div>
         </div>
       </div>
@@ -184,10 +225,12 @@
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
       <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
-        <li><code>div.modal-overlay</code>: overlay escurecida + fechamento ao clicar fora.</li>
+        <li><code>div.modal-overlay</code>: overlay (<code>--ds-backdrop-scrim</code>) + fechamento ao clicar fora.</li>
         <li><code>div.modal</code>: container do diálogo (role/aria).</li>
+        <li><code>div.modal-header</code>: título + fechar (mesmo ritmo visual que <code>drawer-header</code>).</li>
+        <li><code>div.modal-footer</code>: ações — <strong>Cancelar</strong> à esquerda, <strong>Confirmar</strong> à direita (primário).</li>
         <li><code>role="dialog"</code> + <code>aria-modal="true"</code> para leitores de tela.</li>
-        <li><code>button.close-btn</code>: fechar.</li>
+        <li><code>button.close-btn</code>: fechar (ícone 16px, traço 1.5; área tocável 44px).</li>
       </ul>
     </div>
 
@@ -204,6 +247,10 @@
       &lt;button type="button" onclick="closeModal()"&gt;Fechar&lt;/button&gt;
     &lt;/div&gt;
     &lt;div class="modal-content"&gt;...&lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;button type="button" onclick="closeModal()"&gt;Cancelar&lt;/button&gt;
+      &lt;button type="button" onclick="confirm()"&gt;Confirmar&lt;/button&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -245,8 +292,8 @@ function ConfirmDialog() {
       &gt;
         &lt;p&gt;Você tem certeza que deseja realizar esta ação?&lt;/p&gt;
         &lt;div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}&gt;
-          &lt;button type="button"&gt;Confirmar&lt;/button&gt;
           &lt;button type="button"&gt;Cancelar&lt;/button&gt;
+          &lt;button type="button"&gt;Confirmar&lt;/button&gt;
         &lt;/div&gt;
       &lt;/Modal&gt;
     &lt;/&gt;

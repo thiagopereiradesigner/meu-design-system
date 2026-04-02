@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP.IA - Lista do select (menu)</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('ds-theme') || 'light';
+                document.documentElement.dataset.dsTheme = t;
+            } catch (e) {}
+        })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ds-demo-base.css">
+    <style>
+        :root {
+            --sml-demo-page-pad: 16px;
+            --sml-demo-after-topbar: 24px;
+        }
+        @media (min-width: 744px) {
+            :root {
+                --sml-demo-page-pad: 24px;
+                --sml-demo-after-topbar: 32px;
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --sml-demo-page-pad: 40px;
+                --sml-demo-after-topbar: 40px;
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body.ds-select-menu-list-demo {
+            font-family: var(--ds-font-family);
+            background-color: var(--ds-bg);
+            padding: var(--sml-demo-page-pad);
+            color: var(--ds-fg);
+        }
+
+        .ds-select-menu-list-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--sml-demo-page-pad)) var(--sml-demo-after-topbar);
+            width: calc(100% + 2 * var(--sml-demo-page-pad));
+            box-sizing: border-box;
+        }
+
+        .container { max-width: 56rem; margin: 0 auto; }
+
+        .header { text-align: center; margin-bottom: var(--ds-space-xl); }
+        @media (min-width: 744px) {
+            .header { margin-bottom: var(--ds-space-2xl); }
+        }
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--ds-success);
+            margin-bottom: var(--ds-space-sm);
+        }
+        .header .lead {
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            max-width: 40rem;
+            margin: 0 auto;
+        }
+        .header .lead a { color: var(--ds-success); }
+
+        .section {
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
+            padding: var(--ds-space-xl);
+            border-radius: var(--ds-radius-lg);
+            margin-bottom: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .section {
+                padding: var(--ds-space-2xl);
+                margin-bottom: var(--ds-space-2xl);
+            }
+        }
+
+        .section-title {
+            font-size: clamp(1.125rem, 2vw, 1.5rem);
+            font-weight: 700;
+            margin-bottom: var(--ds-space-sm);
+            color: var(--ds-fg);
+        }
+        .section-description {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            margin-bottom: var(--ds-space-lg);
+            line-height: var(--ds-line-height-normal);
+        }
+
+        .subtitle {
+            font-size: var(--ds-font-size-lg);
+            font-weight: 600;
+            margin: var(--ds-space-xl) 0 var(--ds-space-md);
+            color: var(--ds-fg);
+        }
+        .subtitle:first-child { margin-top: 0; }
+
+        /* Painel estático: lista visível sem abrir o Select completo */
+        .select-menu-list-demo__frame {
+            position: relative;
+            max-width: min(100%, 22rem);
+            border: 1px solid var(--ds-border);
+            border-radius: var(--ds-radius-md);
+            overflow: hidden;
+            background: var(--ds-surface);
+        }
+        .select-menu-list-demo__frame .select-dropdown {
+            position: relative;
+            top: auto;
+            left: auto;
+            right: auto;
+            display: block;
+            max-height: var(--ds-select-dropdown-max-height);
+            box-shadow: none;
+            border: none;
+            border-radius: 0;
+            z-index: 1;
+        }
+        /* Cap menor só para forçar scroll com muitas linhas nesta demo */
+        .select-menu-list-demo__frame--scroll .select-dropdown {
+            max-height: min(10rem, 36vh);
+        }
+        .select-menu-list-demo__frame .select-dropdown.open {
+            display: block;
+        }
+        .select-menu-list-demo__caption {
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-fg-muted);
+            margin-bottom: var(--ds-space-sm);
+        }
+
+        .demo-grid {
+            display: grid;
+            gap: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .demo-grid--two {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: start;
+            }
+        }
+
+        .code-block {
+            margin-top: var(--ds-space-lg);
+            padding: var(--ds-space-lg);
+            background: var(--ds-pre-bg);
+            color: var(--ds-pre-fg);
+            border-radius: var(--ds-radius-md);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: var(--ds-font-size-sm);
+            overflow-x: auto;
+        }
+
+        .anatomy-list {
+            padding-left: var(--ds-space-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            font-size: var(--ds-font-size-md);
+        }
+
+        .props-block {
+            margin-top: var(--ds-space-lg);
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+        }
+        .props-block strong {
+            display: block;
+            color: var(--ds-fg);
+            margin-bottom: var(--ds-space-sm);
+        }
+    </style>
+</head>
+<body class="ds-select-menu-list-demo">
+<nav class="ds-topbar">
+    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+    </a>
+    <span class="ds-topbar-title">TP.IA - Design System</span>
+    <div class="ds-topbar-spacer"></div>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" aria-label="Buscar componentes">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
+    </div>
+</nav>
+<div class="ds-mobile-menu" id="ds-mobile-menu">
+    <a href="index.html" class="ds-back-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar ao Portal
+    </a>
+    <div class="ds-search-wrapper">
+        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" aria-label="Buscar componentes">
+        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Lista do select (menu)</h1>
+        <p class="lead">O painel interno do Select (<code>.select-dropdown</code>) agrupa opções clicáveis (<code>.select-option</code>), opcionalmente com busca (<code>.select-search</code>). Cores, scrollbar e altura máxima usam tokens (<code>var(--ds-*)</code>) — novos temas podem sobrescrever essas variáveis. A página completa do campo está em <a href="select-demo.html">Select</a>.</p>
+    </div>
+
+    <div class="note">
+        <h3>♿ Nota Acessibilidade</h3>
+        <ul>
+            <li>Em implementações customizadas, considere <code>role="listbox"</code> no painel e <code>role="option"</code> em cada linha, com teclado (setas, Home/End, Escape) e foco visível.</li>
+            <li>Opções desabilitadas: use <code>.disabled</code> e <code>aria-disabled="true"</code>; não dispare seleção ao clicar.</li>
+            <li>Mantenha contraste de texto e de estados de hover/selecionado; teste zoom 200% e largura mínima ~320px.</li>
+            <li>Área tocável: linhas devem ser confortáveis em touch (padding vertical generoso já vem dos tokens do DS).</li>
+            <li>Listas longas: mantenha <code>overflow-y: auto</code> e altura máxima via <code>var(--ds-select-dropdown-max-height)</code>; a barra de rolagem usa <code>var(--ds-scrollbar-*)</code> (Firefox <code>scrollbar-color</code> + WebKit).</li>
+            <li>Checkbox na linha: use <code>&lt;label class="select-option select-option--checkbox"&gt;</code> com <code>input.select-option__checkbox</code>; preserve foco visível e não feche o painel ao marcar sem querer (ex.: <code>stopPropagation</code> no container em JS se necessário).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Exemplos (lista estática)</h2>
+        <p class="section-description">Pré-visualizações com <code>.select-dropdown.open</code> dentro de um frame — úteis para documentar o menu sem o trigger.</p>
+
+        <div class="demo-grid demo-grid--two">
+            <div>
+                <h3 class="subtitle">Padrão</h3>
+                <p class="select-menu-list-demo__caption">Normal, selecionada (<code>.selected</code>) e desabilitada (<code>.disabled</code>).</p>
+                <div class="select-menu-list-demo__frame" role="presentation">
+                    <div class="select-dropdown open" id="demo-list-default">
+                        <div class="select-option"><span class="select-option__label">São Paulo</span></div>
+                        <div class="select-option selected"><span class="select-option__label">Rio de Janeiro</span></div>
+                        <div class="select-option disabled"><span class="select-option__label">Indisponível</span></div>
+                        <div class="select-option"><span class="select-option__label">Belo Horizonte</span></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="subtitle">Com busca</h3>
+                <p class="select-menu-list-demo__caption">Mesmo bloco usado no Select com filtro — campo fixo no topo do painel.</p>
+                <div class="select-menu-list-demo__frame" role="presentation">
+                    <div class="select-dropdown open">
+                        <div class="select-search">
+                            <input type="search" placeholder="Buscar..." aria-label="Filtrar opções" autocomplete="off">
+                        </div>
+                        <div>
+                            <div class="select-option"><span class="select-option__label">Brasil</span></div>
+                            <div class="select-option selected"><span class="select-option__label">Portugal</span></div>
+                            <div class="select-option"><span class="select-option__label">Moçambique</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="subtitle">Ícones + texto</h3>
+        <p class="select-menu-list-demo__caption">Use <code>.select-option--row</code>, <code>.select-option__icon</code>, <code>.select-option__label</code> e, na opção ativa, <code>.select-option__check</code> (decoração; combine com <code>aria-selected</code> em produção).</p>
+        <div class="select-menu-list-demo__frame" role="presentation">
+            <div class="select-dropdown open">
+                <div class="select-option select-option--row">
+                    <svg class="select-option__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2" stroke-width="2" fill="none"/><path d="M2 10h20" stroke-width="2" fill="none"/></svg>
+                    <span class="select-option__label">Cartão de crédito</span>
+                </div>
+                <div class="select-option select-option--row selected">
+                    <svg class="select-option__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span class="select-option__label">PIX</span>
+                    <svg class="select-option__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="select-option select-option--row disabled">
+                    <svg class="select-option__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span class="select-option__label">Boleto (indisponível)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="subtitle">Lista longa (scroll)</h3>
+        <p class="select-menu-list-demo__caption">Muitas opções com altura limitada: o painel usa <code>max-height: var(--ds-select-dropdown-max-height)</code> no DS; aqui o frame <code>--scroll</code> reduz o teto só para exibir a rolagem. A barra segue <code>--ds-scrollbar-track</code> / <code>--ds-scrollbar-thumb</code>.</p>
+        <div class="select-menu-list-demo__frame select-menu-list-demo__frame--scroll" role="presentation">
+            <div class="select-dropdown open" aria-label="Lista de estados (exemplo)">
+                <div class="select-option"><span class="select-option__label">Acre</span></div>
+                <div class="select-option"><span class="select-option__label">Alagoas</span></div>
+                <div class="select-option"><span class="select-option__label">Amapá</span></div>
+                <div class="select-option"><span class="select-option__label">Amazonas</span></div>
+                <div class="select-option"><span class="select-option__label">Bahia</span></div>
+                <div class="select-option"><span class="select-option__label">Ceará</span></div>
+                <div class="select-option selected"><span class="select-option__label">Distrito Federal</span></div>
+                <div class="select-option"><span class="select-option__label">Espírito Santo</span></div>
+                <div class="select-option"><span class="select-option__label">Goiás</span></div>
+                <div class="select-option"><span class="select-option__label">Maranhão</span></div>
+                <div class="select-option"><span class="select-option__label">Mato Grosso</span></div>
+                <div class="select-option"><span class="select-option__label">Mato Grosso do Sul</span></div>
+                <div class="select-option"><span class="select-option__label">Minas Gerais</span></div>
+                <div class="select-option"><span class="select-option__label">Pará</span></div>
+                <div class="select-option"><span class="select-option__label">Paraíba</span></div>
+                <div class="select-option"><span class="select-option__label">Paraná</span></div>
+                <div class="select-option"><span class="select-option__label">Pernambuco</span></div>
+                <div class="select-option"><span class="select-option__label">Piauí</span></div>
+                <div class="select-option"><span class="select-option__label">Rio de Janeiro</span></div>
+                <div class="select-option"><span class="select-option__label">Rio Grande do Norte</span></div>
+            </div>
+        </div>
+
+        <h3 class="subtitle">Com checkbox</h3>
+        <p class="select-menu-list-demo__caption">Para filtros ou seleção múltipla: <code>label.select-option.select-option--checkbox</code> + <code>input.select-option__checkbox</code> (estilos no base, alinhados ao Checkbox do DS).</p>
+        <div class="select-menu-list-demo__frame" role="presentation">
+            <div class="select-dropdown open" role="group" aria-label="Exemplo com checkboxes">
+                <label class="select-option select-option--checkbox">
+                    <input type="checkbox" class="select-option__checkbox" checked>
+                    <span class="select-option__label">Incluir concluídos</span>
+                </label>
+                <label class="select-option select-option--checkbox">
+                    <input type="checkbox" class="select-option__checkbox">
+                    <span class="select-option__label">Somente com anexo</span>
+                </label>
+                <label class="select-option select-option--checkbox disabled">
+                    <input type="checkbox" class="select-option__checkbox" disabled aria-disabled="true">
+                    <span class="select-option__label">Opção indisponível (desabilitada)</span>
+                </label>
+                <div class="select-dropdown__footer">
+                    <button type="button" class="select-dropdown__btn-primary">Concluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+        <p class="section-description">Partes do menu interno reutilizadas pelo Select custom e por outros painéis (drawer, modal).</p>
+        <ul class="anatomy-list">
+            <li><code>div.select-dropdown</code>: superfície rolável; <code>max-height: var(--ds-select-dropdown-max-height)</code>; scrollbar via <code>--ds-scrollbar-*</code>. Classe <code>.open</code> controla visibilidade quando acoplada ao trigger.</li>
+            <li><code>div.select-search</code> (opcional): wrapper do input de filtro.</li>
+            <li><code>div.select-option</code> ou <code>label.select-option</code>: linha; modifique com <code>.selected</code>, <code>.disabled</code>, <code>.select-option--row</code> (ícone + texto), <code>.select-option--checkbox</code> (com <code>input.select-option__checkbox</code>).</li>
+            <li><code>svg.select-option__icon</code>, <code>span.select-option__label</code>, <code>svg.select-option__check</code>: composição da linha com ícones.</li>
+            <li><code>div.select-dropdown__footer</code> + <code>button.select-dropdown__btn-primary</code>: ação no rodapé do painel (tokens do DS).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Como Usar (HTML)</h2>
+        <p class="section-description">Lista com ícone, scroll, checkbox e rodapé com botão primário.</p>
+        <div class="code-block">
+<pre class="code"><code>&lt;!-- Scroll + tema: use as vars do base (--ds-select-dropdown-max-height, --ds-scrollbar-*) --&gt;
+&lt;div class="select-dropdown open"&gt;
+  &lt;div class="select-option"&gt;&lt;span class="select-option__label"&gt;Item 1&lt;/span&gt;&lt;/div&gt;
+  &lt;!-- ... muitas linhas ... --&gt;
+&lt;/div&gt;
+
+&lt;label class="select-option select-option--checkbox"&gt;
+  &lt;input type="checkbox" class="select-option__checkbox" /&gt;
+  &lt;span class="select-option__label"&gt;Filtrar por arquivo&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;div class="select-dropdown__footer"&gt;
+  &lt;button type="button" class="select-dropdown__btn-primary"&gt;Concluir&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="select-option select-option--row"&gt;
+  &lt;svg class="select-option__icon" viewBox="0 0 24 24" aria-hidden="true"&gt;...&lt;/svg&gt;
+  &lt;span class="select-option__label"&gt;PIX&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Como Usar (React)</h2>
+        <p class="section-description">Exemplo de dados para mapear linhas com ícone opcional e estado.</p>
+        <div class="code-block">
+<pre class="code"><code>const options = [
+  { id: 'pix', label: 'PIX', icon: &lt;PixIcon className="select-option__icon" /&gt; },
+  { id: 'card', label: 'Cartão', disabled: true },
+];
+
+function SelectMenuList({ options, value, onSelect }) {
+  return (
+    &lt;div className="select-dropdown open" role="listbox"&gt;
+      {options.map((opt) =&gt; (
+        &lt;div
+          key={opt.id}
+          role="option"
+          aria-selected={value === opt.id}
+          aria-disabled={opt.disabled}
+          className={
+            'select-option select-option--row' +
+            (value === opt.id ? ' selected' : '') +
+            (opt.disabled ? ' disabled' : '')
+          }
+          onClick={() =&gt; !opt.disabled &amp;&amp; onSelect(opt.id)}
+        &gt;
+          {opt.icon}
+          &lt;span className="select-option__label"&gt;{opt.label}&lt;/span&gt;
+          {value === opt.id ? (
+            &lt;CheckIcon className="select-option__check" aria-hidden /&gt;
+          ) : null}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="props-block">
+            <strong>Props / campos úteis</strong>
+            <div><code>options[]</code>: <code>id</code>, <code>label</code>, <code>icon?</code>, <code>disabled?</code></div>
+            <div><code>value</code>, <code>onSelect(id)</code> — espelha seleção atual.</div>
+            <div>Para checkboxes, mantenha estado em objeto ou Set; opcional <code>onToggleFilter(key, checked)</code>.</div>
+            <div>Combine com o trigger do <a href="select-demo.html">Select</a> para abrir/fechar o painel.</div>
+        </div>
+    </div>
+</div>
+
+<script src="ds-demo-topbar-search.js" defer></script>
+<script src="ds-demo-sidebar.js" defer></script>
+</body>
+</html>

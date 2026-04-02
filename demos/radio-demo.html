@@ -4,73 +4,294 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Radio Component</title>
+    <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        /* Header/topbar padronizados em ds-demo-base.css */
+        :root {
+            --rd-demo-page-pad: 16px;
+            --rd-demo-after-topbar: 24px;
+        }
+        @media (min-width: 744px) {
+            :root {
+                --rd-demo-page-pad: 24px;
+                --rd-demo-after-topbar: 32px;
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --rd-demo-page-pad: 40px;
+                --rd-demo-after-topbar: 40px;
+            }
+        }
 
-        body {
-            font-family: 'Inter', sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body.ds-radio-demo {
+            font-family: var(--ds-font-family);
             background-color: var(--ds-bg);
-            padding: 40px;
+            padding: var(--rd-demo-page-pad);
             color: var(--ds-fg);
         }
+
+        .ds-radio-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--rd-demo-page-pad)) var(--rd-demo-after-topbar);
+            width: calc(100% + 2 * var(--rd-demo-page-pad));
+            box-sizing: border-box;
+        }
+
         .container { max-width: 1440px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 48px; }
-        .header h1 { font-size: 32px; font-weight: 700; color: var(--ds-success); margin-bottom: 8px; }
-        .header p { font-size: 16px; color: var(--ds-fg-muted); }
-        .section { background: var(--ds-surface); border: 1px solid var(--ds-border); padding: 32px; border-radius: 12px; margin-bottom: 32px; }
-        .section-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: var(--ds-fg); }
-        .section-description { font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 16px; }
-        .subtitle { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: var(--ds-fg); }
-        .column { display: flex; flex-direction: column; gap: 12px; }
+        .header { text-align: center; margin-bottom: var(--ds-space-xl); }
+        @media (min-width: 744px) {
+            .header { margin-bottom: var(--ds-space-2xl); }
+        }
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--ds-success);
+            margin-bottom: var(--ds-space-sm);
+        }
+        .header .lead {
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            max-width: 40rem;
+            margin: 0 auto;
+        }
+        .section {
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
+            padding: var(--ds-space-xl);
+            border-radius: var(--ds-radius-lg);
+            margin-bottom: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .section {
+                padding: var(--ds-space-2xl);
+                margin-bottom: var(--ds-space-2xl);
+            }
+        }
+        .section-title {
+            font-size: clamp(1.125rem, 2vw, 1.5rem);
+            font-weight: 700;
+            margin-bottom: var(--ds-space-sm);
+            color: var(--ds-fg);
+        }
+        .section-description {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            margin-bottom: var(--ds-space-lg);
+            line-height: var(--ds-line-height-normal);
+        }
+        .section-description--tight-top {
+            margin-top: calc(-1 * var(--ds-space-sm));
+        }
+        .subtitle {
+            font-size: var(--ds-font-size-lg);
+            font-weight: 600;
+            margin: var(--ds-space-xl) 0 var(--ds-space-lg);
+            color: var(--ds-fg);
+        }
+        .subtitle:first-of-type {
+            margin-top: 0;
+        }
+        .column { display: flex; flex-direction: column; gap: var(--ds-space-md); }
+        @media (min-width: 744px) {
+            .column { gap: var(--ds-space-lg); }
+        }
+        .radio-demo-group-label {
+            font-weight: 500;
+            margin-bottom: var(--ds-space-xs);
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg);
+        }
+        .radio-demo-row {
+            display: flex;
+            gap: var(--ds-space-lg);
+            flex-wrap: wrap;
+        }
+        .radio-demo-states-divider {
+            font-weight: 500;
+            margin: var(--ds-space-md) 0 var(--ds-space-xs);
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg);
+        }
+        .radio-demo-anatomy-list {
+            padding-left: var(--ds-space-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            font-size: var(--ds-font-size-md);
+        }
+        .radio-demo-props {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            margin-top: var(--ds-space-lg);
+        }
+        .radio-demo-props__title {
+            font-weight: 800;
+            color: var(--ds-fg);
+            margin-bottom: var(--ds-space-sm);
+        }
         .radio-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--ds-space-sm);
             cursor: pointer;
             user-select: none;
         }
+        .radio-wrapper:has(.radio-input:disabled) {
+            cursor: not-allowed;
+        }
+        .radio-wrapper:has(.radio-input:disabled) .radio-label {
+            color: var(--ds-fg-muted);
+        }
+
+        /* Tamanho médio (default) */
         .radio-input {
             appearance: none;
             width: 20px;
             height: 20px;
+            box-sizing: border-box;
             border: 1.5px solid var(--ds-border);
             border-radius: 50%;
-            background-color: white;
+            background-color: var(--ds-surface);
             cursor: pointer;
             position: relative;
-            transition: all 0.15s ease;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
             flex-shrink: 0;
         }
-        .radio-input:checked { border-color: var(--ds-success); }
+        .radio-input--sm {
+            width: 16px;
+            height: 16px;
+            border-width: 1.5px;
+        }
+        .radio-input--sm:checked::after {
+            width: 8px;
+            height: 8px;
+        }
+        .radio-input--md {
+            width: 20px;
+            height: 20px;
+        }
+        .radio-input--md:checked::after {
+            width: 10px;
+            height: 10px;
+        }
+        .radio-input--lg {
+            width: 24px;
+            height: 24px;
+            border-width: 2px;
+        }
+        .radio-input--lg:checked::after {
+            width: 12px;
+            height: 12px;
+        }
+
+        .radio-input:not(:disabled):hover {
+            border-color: color-mix(in srgb, var(--ds-success) 45%, var(--ds-border));
+        }
+        .radio-input:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .radio-input:checked {
+            border-color: var(--ds-success);
+        }
         .radio-input:checked::after {
             content: '';
             position: absolute;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
             width: 10px;
             height: 10px;
             border-radius: 50%;
             background-color: var(--ds-success);
         }
-        .radio-input:disabled { opacity: 0.5; cursor: not-allowed; }
-        .radio-label { font-size: 14px; color: var(--ds-fg); }
-        .helper-text { font-size: 12px; color: var(--ds-fg-muted); margin-top: 4px; }
+
+        .radio-input:disabled {
+            opacity: 0.85;
+            cursor: not-allowed;
+            border-color: var(--ds-border);
+            background-color: var(--ds-bg-subtle);
+        }
+        .radio-input:disabled:checked {
+            border-color: var(--ds-border);
+        }
+        .radio-input:disabled:checked::after {
+            background-color: var(--ds-fg-muted);
+        }
+
+        .radio-wrapper--error .radio-input {
+            border-color: var(--ds-error);
+        }
+        .radio-wrapper--error .radio-input:checked {
+            border-color: var(--ds-error);
+        }
+        .radio-wrapper--error .radio-input:checked::after {
+            background-color: var(--ds-error);
+        }
+        .radio-wrapper--error .radio-label {
+            color: var(--ds-error);
+        }
+
+        .radio-label { font-size: var(--ds-font-size-md); color: var(--ds-fg); line-height: var(--ds-line-height-normal); }
+        .radio-label--sm { font-size: var(--ds-font-size-sm); }
+        .radio-label--lg { font-size: var(--ds-font-size-lg); }
+        @media (max-width: 743px) {
+            .radio-wrapper {
+                min-height: 44px;
+                padding: var(--ds-space-xs) 0;
+                box-sizing: border-box;
+            }
+        }
+        .radio-size-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--ds-space-lg);
+            align-items: flex-start;
+        }
+        .radio-size-showcase__col {
+            display: flex;
+            flex-direction: column;
+            gap: var(--ds-space-md);
+            min-width: min(100%, 12.5rem);
+            flex: 1 1 11.25rem;
+        }
+        .radio-size-showcase__label {
+            font-weight: 500;
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-fg-muted);
+        }
+        .helper-text {
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-fg-muted);
+            margin-top: var(--ds-space-xs);
+        }
+        .helper-text--error {
+            color: var(--ds-error);
+        }
         .code-block {
-            margin-top: 16px;
-            padding: 16px;
+            margin-top: var(--ds-space-lg);
+            padding: var(--ds-space-lg);
             background: var(--ds-pre-bg);
             color: var(--ds-pre-fg);
-            border-radius: 8px;
+            border-radius: var(--ds-radius-md);
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
+            font-size: var(--ds-font-size-sm);
             overflow-x: auto;
+        }
+        .section .pre-code-react {
+            font-size: var(--ds-font-size-sm);
+        }
+        .section-description--react-gap {
+            margin-bottom: var(--ds-space-md);
         }
     </style>
 </head>
-<body>
+<body class="ds-radio-demo">
 <!-- DS Navigation Bar -->
 <nav class="ds-topbar">
     <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
@@ -104,18 +325,26 @@
     <div class="container">
         <div class="header">
             <h1>Radio</h1>
-            <p>Componente Radio | Grupos e estados</p>
+            <p class="lead">O radio permite escolher uma única opção entre várias no mesmo grupo (<code>name</code> igual). Use em formulários de pagamento, preferências ou qualquer fluxo em que as alternativas se excluam mutuamente.</p>
+        </div>
+
+        <div class="note">
+            <h3>♿ Nota Acessibilidade</h3>
+            <ul>
+                <li>Prefira <code>input type="radio"</code> nativo com <code>label</code> envolvendo ou associado por <code>for</code>/<code>id</code>; mantenha foco visível (<code>:focus-visible</code> / <code>box-shadow: var(--ds-focus-ring)</code>).</li>
+                <li>Agrupe opções relacionadas com o mesmo <code>name</code>; em React, o <code>RadioGroup</code> usa <code>role="radiogroup"</code> com <code>aria-labelledby</code> no título do grupo e <code>aria-describedby</code> na mensagem de erro ou texto de ajuda.</li>
+                <li>Para <code>disabled</code>, preserve o estado no DOM e evite depender só de opacidade: contraste ainda deve ser legível; não remova o foco de elementos habilitados adjacentes.</li>
+                <li>Com erro de validação, exponha mensagem ligada ao grupo (<code>aria-invalid</code>, texto de erro legível).</li>
+            </ul>
         </div>
 
         <div class="section">
-            <h2 class="section-title">🔘 Radio</h2>
-            <p class="section-description">
-                Usado para seleção única entre múltiplas opções. Apenas um item do grupo pode estar selecionado.
-            </p>
+            <h2 class="section-title">🔘 Exemplos</h2>
+            <p class="section-description">Grupos verticais e horizontais, tamanhos do círculo (<code>radio-input--sm</code> / <code>--md</code> padrão / <code>--lg</code>) e estados desabilitado, selecionado e erro.</p>
 
             <h3 class="subtitle">Radio Group (Vertical)</h3>
             <div class="column">
-                <div style="font-weight: 500; margin-bottom: 4px;">Método de pagamento</div>
+                <div class="radio-demo-group-label">Método de pagamento</div>
                 <label class="radio-wrapper">
                     <input type="radio" class="radio-input" name="payment" value="credit" checked>
                     <span class="radio-label">Cartão de crédito</span>
@@ -137,52 +366,132 @@
 
             <h3 class="subtitle">Radio Group (Horizontal)</h3>
             <div>
-                <div style="font-weight: 500; margin-bottom: 4px;">Tamanho</div>
-                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                <div class="radio-demo-group-label">Canal de contato</div>
+                <div class="radio-demo-row">
                     <label class="radio-wrapper">
-                        <input type="radio" class="radio-input" name="size" value="small" checked>
-                        <span class="radio-label">Pequeno</span>
+                        <input type="radio" class="radio-input" name="channel" value="email" checked>
+                        <span class="radio-label">E-mail</span>
                     </label>
                     <label class="radio-wrapper">
-                        <input type="radio" class="radio-input" name="size" value="medium">
-                        <span class="radio-label">Médio</span>
+                        <input type="radio" class="radio-input" name="channel" value="phone">
+                        <span class="radio-label">Telefone</span>
                     </label>
                     <label class="radio-wrapper">
-                        <input type="radio" class="radio-input" name="size" value="large">
-                        <span class="radio-label">Grande</span>
+                        <input type="radio" class="radio-input" name="channel" value="whatsapp">
+                        <span class="radio-label">WhatsApp</span>
                     </label>
                 </div>
+            </div>
+
+            <h3 class="subtitle">Variantes de tamanho</h3>
+            <p class="section-description section-description--tight-top">Cada coluna é um grupo próprio: o círculo e o ponto interno mudam de escala. Opcional: <code>radio-label--sm</code> / <code>radio-label--lg</code> para alinhar o texto.</p>
+            <div class="radio-size-showcase">
+                <div class="radio-size-showcase__col">
+                    <div class="radio-size-showcase__label">Pequeno (16px)</div>
+                    <label class="radio-wrapper">
+                        <input type="radio" class="radio-input radio-input--sm" name="demo-sm" value="a" checked>
+                        <span class="radio-label radio-label--sm">Opção A</span>
+                    </label>
+                    <label class="radio-wrapper">
+                        <input type="radio" class="radio-input radio-input--sm" name="demo-sm" value="b">
+                        <span class="radio-label radio-label--sm">Opção B</span>
+                    </label>
+                </div>
+                <div class="radio-size-showcase__col">
+                    <div class="radio-size-showcase__label">Médio (20px, padrão)</div>
+                    <label class="radio-wrapper">
+                        <input type="radio" class="radio-input radio-input--md" name="demo-md" value="a" checked>
+                        <span class="radio-label">Opção A</span>
+                    </label>
+                    <label class="radio-wrapper">
+                        <input type="radio" class="radio-input radio-input--md" name="demo-md" value="b">
+                        <span class="radio-label">Opção B</span>
+                    </label>
+                </div>
+                <div class="radio-size-showcase__col">
+                    <div class="radio-size-showcase__label">Grande (24px)</div>
+                    <label class="radio-wrapper">
+                        <input type="radio" class="radio-input radio-input--lg" name="demo-lg" value="a" checked>
+                        <span class="radio-label radio-label--lg">Opção A</span>
+                    </label>
+                    <label class="radio-wrapper">
+                        <input type="radio" class="radio-input radio-input--lg" name="demo-lg" value="b">
+                        <span class="radio-label radio-label--lg">Opção B</span>
+                    </label>
+                </div>
+            </div>
+
+            <h3 class="subtitle">Estados</h3>
+            <div class="column">
+                <div class="radio-demo-group-label">Desabilitado (não selecionado / selecionado)</div>
+                <label class="radio-wrapper">
+                    <input type="radio" class="radio-input" name="ship-ro" value="std" checked>
+                    <span class="radio-label">Padrão (5–7 dias)</span>
+                </label>
+                <label class="radio-wrapper">
+                    <input type="radio" class="radio-input" name="ship-ro" value="exp" disabled>
+                    <span class="radio-label">Expresso (indisponível)</span>
+                </label>
+                <label class="radio-wrapper">
+                    <input type="radio" class="radio-input" name="plan-ro" value="free" disabled>
+                    <span class="radio-label">Plano gratuito (encerrado)</span>
+                </label>
+                <label class="radio-wrapper">
+                    <input type="radio" class="radio-input" name="plan-ro" value="pro" checked disabled>
+                    <span class="radio-label">Plano atual (somente leitura)</span>
+                </label>
+                <div class="radio-demo-states-divider">Erro de validação (<code>radio-wrapper--error</code>)</div>
+                <label class="radio-wrapper radio-wrapper--error">
+                    <input type="radio" class="radio-input" name="terms-err" value="yes">
+                    <span class="radio-label">Aceito os termos</span>
+                </label>
+                <label class="radio-wrapper radio-wrapper--error">
+                    <input type="radio" class="radio-input" name="terms-err" value="no">
+                    <span class="radio-label">Não aceito</span>
+                </label>
+                <div class="helper-text helper-text--error">Selecione uma opção para continuar.</div>
             </div>
         </div>
 
         <div class="section">
             <h2 class="section-title">Anatomia do Componente (HTML)</h2>
             <p class="section-description">
-                Radio group com input nativo e classes para estilização (estado checked/disabled).
+                Radio group com input nativo e classes para tamanho, estados e erro.
             </p>
-            <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
-                <li><code>label.radio-wrapper</code>: wrapper clicável.</li>
-                <li><code>input[type="radio"].radio-input</code>: input nativo (radio).</li>
-                <li><code>span.radio-label</code>: texto da opção.</li>
-                <li><code>div.helper-text</code>: texto de apoio/erro no grupo.</li>
+            <ul class="radio-demo-anatomy-list">
+                <li><code>label.radio-wrapper</code>: área clicável; use <code>radio-wrapper--error</code> quando o grupo estiver inválido.</li>
+                <li><code>input[type="radio"].radio-input</code>: controle; modifique com <code>radio-input--sm</code>, <code>radio-input--md</code>, <code>radio-input--lg</code>; atributo <code>disabled</code> para inativo.</li>
+                <li><code>span.radio-label</code> (e <code>radio-label--sm</code> / <code>radio-label--lg</code>): rótulo da opção.</li>
+                <li><code>div.helper-text</code>: texto de apoio ou mensagem de erro abaixo do grupo.</li>
             </ul>
         </div>
 
         <div class="section">
             <h2 class="section-title">Como Usar (HTML)</h2>
             <p class="section-description">
-                Estrutura base para um grupo de radios vertical.
+                Grupo vertical médio; opção desabilitada; variante grande com rótulo grande.
             </p>
             <div class="code-block">
-<pre class="code"><code>&lt;div&gt;
+<pre class="code"><code>&lt;div class="column"&gt;
   &lt;div&gt;Método de pagamento&lt;/div&gt;
   &lt;label class="radio-wrapper"&gt;
-    &lt;input type="radio" class="radio-input" name="payment" value="credit" checked /&gt;
-    &lt;span class="radio-label"&gt;Cartão de crédito&lt;/span&gt;
+    &lt;input type="radio" class="radio-input radio-input--md" name="pay" value="credit" checked /&gt;
+    &lt;span class="radio-label"&gt;Cartão&lt;/span&gt;
   &lt;/label&gt;
   &lt;label class="radio-wrapper"&gt;
-    &lt;input type="radio" class="radio-input" name="payment" value="debit" /&gt;
-    &lt;span class="radio-label"&gt;Cartão de débito&lt;/span&gt;
+    &lt;input type="radio" class="radio-input radio-input--md" name="pay" value="pix" /&gt;
+    &lt;span class="radio-label"&gt;PIX&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class="radio-wrapper"&gt;
+    &lt;input type="radio" class="radio-input radio-input--md" name="pay" value="old" disabled /&gt;
+    &lt;span class="radio-label"&gt;Legado (indisponível)&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="column"&gt;
+  &lt;div&gt;Escala grande (outro grupo)&lt;/div&gt;
+  &lt;label class="radio-wrapper"&gt;
+    &lt;input type="radio" class="radio-input radio-input--lg" name="sizeDemo" value="lg" checked /&gt;
+    &lt;span class="radio-label radio-label--lg"&gt;Grande&lt;/span&gt;
   &lt;/label&gt;
 &lt;/div&gt;</code></pre>
             </div>
@@ -190,10 +499,10 @@
 
         <div class="section">
             <h2 class="section-title">Como Usar (React)</h2>
-            <p class="section-description" style="margin-bottom:12px;">
+            <p class="section-description section-description--react-gap">
                 Exemplo usando o componente do design system.
             </p>
-            <pre class="code" style="font-size:12px;"><code>{/* React */}
+            <pre class="code pre-code-react"><code>{/* React */}
 import React, { useState } from 'react';
 import { RadioGroup } from '@/components/Forms/Radio/Radio';
 
@@ -206,34 +515,27 @@ export default function Demo() {
       name="payment"
       value={value}
       onChange={setValue}
+      size="md"
       options={[
         { label: 'Cartão de crédito', value: 'credit' },
         { label: 'Cartão de débito', value: 'debit' },
+        { label: 'PIX indisponível', value: 'pix', disabled: true },
       ]}
     /&gt;
   );
 }
             </code></pre>
-            <div style="font-size:13px;color:var(--ds-fg-muted);line-height:1.7;margin-top:14px;">
-                <div style="font-weight:800;color:var(--ds-fg);margin-bottom:6px;">Props principais</div>
-                <div><code>label</code>, <code>options</code>, <code>value</code>, <code>onChange</code></div>
-                <div><code>direction</code> (vertical/horizontal), <code>disabled</code>, <code>error</code>, <code>helperText</code></div>
+            <div class="radio-demo-props">
+                <div class="radio-demo-props__title">Props principais</div>
+                <div><code>label</code>, <code>options</code> (<code>label</code>, <code>value</code>, <code>disabled</code> opcional), <code>value</code>, <code>onChange</code></div>
+                <div><code>size</code> (<code>'sm'</code> | <code>'md'</code> | <code>'lg'</code>), <code>direction</code>, <code>disabled</code>, <code>error</code>, <code>helperText</code>, <code>name</code></div>
             </div>
-        </div>
-
-        <div class="note">
-            <h3>♿ Nota Acessibilidade</h3>
-            <ul>
-                <li>Inputs nativos (<code>type="radio"</code>) preservam navegação por teclado.</li>
-                <li>Use <code>label</code> e <code>helperText</code> para contexto.</li>
-                <li>Para erro, passe <code>error</code> e garanta contraste.</li>
-            </ul>
         </div>
     </div>
 <!-- DS Navigation Search Script -->
 <script>
 (function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
+    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Lista do select (menu)',file:'select-menu-list-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
     function setupSearch(inputId,dropdownId){
         var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
         if(!si||!dd)return;

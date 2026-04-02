@@ -11,7 +11,7 @@ Sistema de design completo e acessível para o TP.IA.
 #### **Core Inputs (3):**
 - Button - 3 variantes, 3 tamanhos
 - Input - Com validação e ícones
-- Select - Com busca
+- Select - Com busca; a **lista interna do menu** (`.select-dropdown`, `.select-option`, busca, ícones + texto) está documentada em `demos/select-menu-list-demo.html`, com tokens e suporte a tema claro/escuro
 
 #### **Form Components (4):**
 - Textarea - Multi-linha com contador

@@ -4,27 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Select Component</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('ds-theme') || 'light';
+                document.documentElement.dataset.dsTheme = t;
+            } catch (e) {}
+        })();
+    </script>
+    <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
+        :root {
+            --sel-demo-page-pad: 16px;
+            --sel-demo-after-topbar: 24px;
+        }
+        @media (min-width: 744px) {
+            :root {
+                --sel-demo-page-pad: 24px;
+                --sel-demo-after-topbar: 32px;
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --sel-demo-page-pad: 40px;
+                --sel-demo-after-topbar: 40px;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Header/topbar padronizados em ds-demo-base.css */
+        body.ds-select-demo {
+            font-family: var(--ds-font-family);
+            background-color: var(--ds-bg);
+            padding: var(--sel-demo-page-pad);
+            color: var(--ds-fg);
+        }
 
-        /* Layout/base tokens vêm de ds-demo-base.css */
+        .ds-select-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--sel-demo-page-pad)) var(--sel-demo-after-topbar);
+            width: calc(100% + 2 * var(--sel-demo-page-pad));
+            box-sizing: border-box;
+        }
+
+        .container { max-width: 1440px; margin: 0 auto; }
+
+        .header { text-align: center; margin-bottom: var(--ds-space-xl); }
+        @media (min-width: 744px) {
+            .header { margin-bottom: var(--ds-space-2xl); }
+        }
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--ds-success);
+            margin-bottom: var(--ds-space-sm);
+        }
+        .header p {
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
+        }
+
+        .section {
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
+            padding: var(--ds-space-xl);
+            border-radius: var(--ds-radius-lg);
+            margin-bottom: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .section {
+                padding: var(--ds-space-2xl);
+                margin-bottom: var(--ds-space-2xl);
+            }
+        }
+
+        .section-title {
+            font-size: clamp(1.125rem, 2vw, 1.5rem);
+            font-weight: 700;
+            margin-bottom: var(--ds-space-sm);
+            color: var(--ds-fg);
+        }
+        .section-description {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            margin-bottom: var(--ds-space-lg);
+            line-height: var(--ds-line-height-normal);
+        }
+        .section-subtitle {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            max-width: 42rem;
+            margin: 0 auto var(--ds-space-xl);
+            text-align: center;
+        }
+        .section-subtitle a { color: var(--ds-success); }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 18.75rem), 1fr));
+            gap: var(--ds-space-xl);
+            margin-bottom: var(--ds-space-xl);
         }
 
-        /* FIELD BASE — mesmo ritmo que input-demo (label→controle 4px) */
         .field {
             width: 100%;
             display: flex;
@@ -41,10 +128,10 @@
         }
 
         .field-label-text {
-            font-size: 12px;
+            font-size: var(--ds-font-size-sm);
             font-weight: 600;
-            color: var(--ds-text-primary);
-            line-height: 1.4;
+            color: var(--ds-fg);
+            line-height: var(--ds-line-height-tight);
         }
 
         .field-label-text.error {
@@ -52,10 +139,10 @@
         }
 
         .field-sublabel {
-            font-size: 12px;
+            font-size: var(--ds-font-size-sm);
             font-weight: 400;
-            color: var(--ds-text-secondary);
-            line-height: 1.4;
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-tight);
         }
 
         .field-helper {
@@ -63,37 +150,36 @@
             align-items: center;
             gap: var(--ds-space-sm);
             margin-top: var(--ds-space-sm);
-            font-size: 12px;
-            color: var(--ds-text-secondary);
-            line-height: 1.4;
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-tight);
         }
 
         .field-helper.error {
             color: var(--ds-error);
         }
 
-        /* SELECT: estrutura em ds-demo-base.css + ds-demo-select.js */
-
         .icon-sm {
-            width: 16px;
-            height: 16px;
+            width: var(--ds-space-lg);
+            height: var(--ds-space-lg);
             flex-shrink: 0;
+            color: var(--ds-fg-muted);
         }
 
         .code-block {
-            margin-top: 16px;
-            padding: 16px;
+            margin-top: var(--ds-space-lg);
+            padding: var(--ds-space-lg);
             background: var(--ds-pre-bg);
             color: var(--ds-pre-fg);
             border-radius: var(--ds-radius-md);
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
+            font-size: var(--ds-font-size-sm);
             overflow-x: auto;
         }
 
         .props-list {
-            margin-top: 16px;
-            font-size: 13px;
+            margin-top: var(--ds-space-lg);
+            font-size: var(--ds-font-size-md);
             color: var(--ds-fg);
         }
 
@@ -102,11 +188,18 @@
         }
 
         .props-list dd {
-            margin: 0 0 8px 0;
+            margin: 0 0 var(--ds-space-sm) 0;
+        }
+
+        .select-anatomy-list {
+            padding-left: var(--ds-space-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            font-size: var(--ds-font-size-md);
         }
     </style>
 </head>
-<body>
+<body class="ds-select-demo">
 <!-- DS Navigation Bar -->
 <nav class="ds-topbar">
     <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
@@ -120,7 +213,7 @@
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" aria-label="Buscar componentes">
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
@@ -132,7 +225,7 @@
     </a>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" aria-label="Buscar componentes">
         <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
 </div>
@@ -147,15 +240,17 @@
         <p class="section-subtitle">
             Dropdown de seleção única com estados (normal, erro e disabled), com opção de busca no conteúdo.
             Estilos partilhados em <code>ds-demo-base.css</code>; comportamento em <code>ds-demo-select.js</code> (reutilizado no Drawer e noutras demos).
+            O painel interno (lista de opções, busca, ícones) está documentado em <a href="select-menu-list-demo.html">Lista do select (menu)</a>.
         </p>
 
         <!-- Nota Acessibilidade (WCAG/ARIA) -->
         <div class="note">
             <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
             <ul>
-                <li>Garanta que a área clicável do trigger possua rótulo textual (via <code>field-label</code>).</li>
+                <li>Garanta que a área clicável do trigger possua rótulo textual (via <code>field-label</code>) e foco visível (<code>:focus-within</code> no trigger já usa <code>var(--ds-focus-ring)</code> no DS).</li>
                 <li>Para erro, aplique <code>.error</code> no container e use helper text como mensagem única de feedback.</li>
-                <li>Para disabled, combine <code>.disabled</code> no trigger e bloqueie interações via JS.</li>
+                <li>Para disabled, combine <code>.disabled</code> no trigger e bloqueie interações via JS; mantenha contraste legível em tema claro/escuro.</li>
+                <li>Em mobile, o trigger já respeita altura mínima confortável; evite scroll horizontal involuntário no painel.</li>
             </ul>
         </div>
 
@@ -335,14 +430,14 @@
         <!-- Anatomia -->
         <div class="section">
             <div class="section-title">Anatomia do Componente (HTML)</div>
-            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+            <ul class="select-anatomy-list">
                 <li><code>div.field</code>: wrapper do componente.</li>
                 <li><code>div.field-label</code>: container da label; use <code>span.field-label-text</code> e opcional <code>span.field-sublabel</code>.</li>
                 <li><code>div.select-container</code>: wrapper do trigger + dropdown.</li>
                 <li><code>div.field-input-container</code>: área clicável do trigger (aplique <code>.error</code> ou <code>.disabled</code> aqui).</li>
                 <li><code>span.select-text</code>: texto exibido no trigger (use <code>.has-value</code> quando tiver valor selecionado).</li>
-                <li><code>div.select-dropdown</code>: container das opções (aparece/oculta via <code>.open</code>).</li>
-                <li><code>div.select-option</code>: cada opção do dropdown; opções desabilitadas devem ter classe <code>disabled</code>.</li>
+                <li><code>div.select-dropdown</code>: container das opções (aparece/oculta via <code>.open</code>); altura máxima e scrollbar usam <code>var(--ds-select-dropdown-max-height)</code> e <code>var(--ds-scrollbar-*)</code> no base.</li>
+                <li><code>div.select-option</code>: cada opção do dropdown; opções desabilitadas devem ter classe <code>disabled</code>. Linhas com ícone: <code>.select-option--row</code>, <code>.select-option__icon</code>, <code>.select-option__label</code> — ver <a href="select-menu-list-demo.html">Lista do select (menu)</a>.</li>
                 <li><code>div.field-helper</code>: mensagem abaixo do campo; use <code>.error</code> para erro.</li>
             </ul>
         </div>
@@ -473,28 +568,7 @@ function SelectField({
     </div>
 
     <script src="ds-demo-select.js"></script>
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
-
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

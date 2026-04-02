@@ -18,6 +18,7 @@
     { name: 'Drawer', file: 'drawer-demo.html', cat: 'Navegação' },
     { name: 'Iconografia', file: 'icons-demo.html', cat: 'Fundação' },
     { name: 'Input', file: 'input-demo.html', cat: 'Formulário' },
+    { name: 'Lista do select (menu)', file: 'select-menu-list-demo.html', cat: 'Formulário' },
     { name: 'Menu', file: 'menu-demo.html', cat: 'Navegação' },
     { name: 'Modal', file: 'modal-demo.html', cat: 'Feedback' },
     { name: 'Radio', file: 'radio-demo.html', cat: 'Formulário' },

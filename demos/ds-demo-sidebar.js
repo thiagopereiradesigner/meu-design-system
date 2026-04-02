@@ -76,6 +76,7 @@
     { file: 'drawer-demo.html', label: 'Drawer' },
     { file: 'icons-demo.html', label: 'Iconografia' },
     { file: 'input-demo.html', label: 'Input' },
+    { file: 'select-menu-list-demo.html', label: 'Lista do select (menu)' },
     { file: 'menu-demo.html', label: 'Menu' },
     { file: 'modal-demo.html', label: 'Modal' },
     { file: 'radio-demo.html', label: 'Radio' },
