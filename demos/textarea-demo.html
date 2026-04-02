@@ -4,66 +4,242 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Textarea Component</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('ds-theme') || 'light';
+                document.documentElement.dataset.dsTheme = t;
+            } catch (e) {}
+        })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        /* Header/topbar padronizados em ds-demo-base.css */
+        :root {
+            --ta-demo-page-pad: var(--ds-space-lg);
+            --ta-demo-after-topbar: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            :root {
+                --ta-demo-page-pad: var(--ds-space-xl);
+                --ta-demo-after-topbar: var(--ds-space-2xl);
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --ta-demo-page-pad: 40px;
+                --ta-demo-after-topbar: 40px;
+            }
+        }
 
-        /* Layout/base tokens vêm de ds-demo-base.css */
+        body.ds-textarea-demo {
+            font-family: var(--ds-font-family);
+            background-color: var(--ds-bg);
+            color: var(--ds-fg);
+            padding: var(--ta-demo-page-pad);
+            margin: 0;
+        }
+
+        body.ds-textarea-demo *,
+        body.ds-textarea-demo *::before,
+        body.ds-textarea-demo *::after {
+            box-sizing: border-box;
+        }
+
+        .ds-textarea-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--ta-demo-page-pad)) var(--ta-demo-after-topbar);
+            width: calc(100% + 2 * var(--ta-demo-page-pad));
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .header {
+                margin-bottom: var(--ds-space-2xl);
+            }
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: var(--ds-font-weight-bold);
+            color: var(--ds-success);
+            margin-bottom: var(--ds-space-sm);
+        }
+
+        .header .lead {
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr;
+            gap: var(--ds-space-xl);
+            margin-bottom: var(--ds-space-xl);
         }
-        .textarea-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-        .textarea-label { font-size: 14px; font-weight: 500; color: var(--ds-fg); }
+        @media (min-width: 744px) {
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
+            }
+        }
+
+        .textarea-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: var(--ds-space-xs);
+            width: 100%;
+        }
+
+        .textarea-label {
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-medium);
+            color: var(--ds-fg);
+            line-height: var(--ds-line-height-normal);
+        }
+
+        /* Mesmo contrato de hover/focus do input (field-input-container) */
         textarea {
             width: 100%;
-            padding: 12px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
+            padding: var(--ds-space-md);
+            font-size: var(--ds-font-size-md);
+            font-family: var(--ds-font-family);
             color: var(--ds-fg);
             background-color: var(--ds-surface);
             border: 1px solid var(--ds-border);
-            border-radius: 8px;
+            border-radius: var(--ds-radius-md);
             outline: none;
             resize: vertical;
-            transition: all 0.15s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            line-height: var(--ds-line-height-normal);
+            min-height: 6rem;
         }
-        textarea:focus {
+
+        textarea::placeholder {
+            color: var(--ds-placeholder);
+            opacity: 1;
+        }
+
+        textarea:hover:not(:disabled):not(.error) {
+            border-color: var(--ds-success);
+        }
+
+        textarea.error:hover:not(:disabled) {
+            border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface));
+        }
+
+        textarea:focus-visible {
             border-color: var(--ds-success);
             box-shadow: var(--ds-focus-ring);
         }
-        textarea.error { border-color: var(--ds-error); }
+
+        textarea.error {
+            border-color: var(--ds-error);
+        }
+
+        textarea.error:focus-visible {
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent);
+        }
+
         textarea:disabled {
             background-color: var(--ds-bg-subtle);
-            color: var(--ds-fg-subtle);
+            color: var(--ds-fg-muted);
             cursor: not-allowed;
+            border-color: var(--ds-border);
+            opacity: 1;
         }
-        .helper-text { font-size: 12px; color: var(--ds-fg-muted); }
-        .error-text { font-size: 12px; color: var(--ds-error); }
-        .char-count { font-size: 12px; color: var(--ds-fg-muted); text-align: right; }
-        .code-block {
-            margin-top: 16px;
-            padding: 16px;
-            background: var(--ds-pre-bg);
-            color: var(--ds-pre-fg);
-            border-radius: 8px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
-            overflow-x: auto;
+
+        .helper-text {
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-normal);
+            margin-top: var(--ds-space-sm);
+        }
+
+        .error-text {
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-error);
+            line-height: var(--ds-line-height-normal);
+            margin-top: var(--ds-space-sm);
+        }
+
+        .textarea-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--ds-space-md);
+            margin-top: var(--ds-space-sm);
+            flex-wrap: wrap;
+        }
+
+        .char-count {
+            font-size: var(--ds-font-size-sm);
+            color: var(--ds-fg-muted);
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .textarea-demo__subtitle {
+            font-size: var(--ds-font-size-lg);
+            font-weight: var(--ds-font-weight-semibold);
+            color: var(--ds-fg);
+            margin: var(--ds-space-xl) 0 var(--ds-space-md);
+        }
+
+        .textarea-demo__subtitle:first-of-type {
+            margin-top: 0;
+        }
+
+        .textarea-demo__anatomy-list {
+            padding-left: var(--ds-space-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            font-size: var(--ds-font-size-md);
+        }
+
+        .props-list {
+            margin-top: var(--ds-space-lg);
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg);
+        }
+
+        .props-list dt {
+            font-weight: var(--ds-font-weight-semibold);
+        }
+
+        .props-list dd {
+            margin: 0 0 var(--ds-space-sm) 0;
+            color: var(--ds-fg-muted);
+        }
+
+        .textarea-demo__lead {
+            margin-bottom: var(--ds-space-lg);
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
         }
     </style>
 </head>
-<body>
-<!-- DS Navigation Bar -->
+<body class="ds-textarea-demo">
 <nav class="ds-topbar">
     <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <a href="index.html" class="ds-back-btn">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
@@ -71,11 +247,11 @@
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
-<!-- DS Mobile Menu -->
+
 <div class="ds-mobile-menu" id="ds-mobile-menu">
     <a href="index.html" class="ds-back-btn">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
@@ -83,7 +259,7 @@
     </a>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
 </div>
@@ -91,147 +267,98 @@
     <div class="container">
         <div class="header">
             <h1>Textarea</h1>
-            <p>Componente Textarea | Estados e código de uso</p>
+            <p class="lead">Campo multilinhas com hover e foco alinhados ao Input/Select (<code>--ds-success</code>, <code>--ds-focus-ring</code>), estados de erro e texto auxiliar com contraste legível.</p>
         </div>
 
-        <!-- Lead -->
-        <p class="section-subtitle">
-            Textarea com estados (normal, erro e disabled), helper text e contador opcional de caracteres.
+        <p class="section-subtitle textarea-demo__lead">
+            Estados normais, erro e desabilitado; helper e contador opcionais. Mobile-first com área de toque confortável.
         </p>
 
-        <!-- Nota Acessibilidade (WCAG/ARIA) -->
         <div class="note">
-            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <h3>Acessibilidade</h3>
             <ul>
-                <li>Use <code>label</code> textual associado ao <code>textarea</code> para contexto.</li>
-                <li>Para erro, aplique classes <code>error</code> e mantenha a mensagem em texto visível.</li>
-                <li>Para disabled, use o atributo <code>disabled</code> para impedir interação.</li>
+                <li><code>label</code> associado ao campo; <code>aria-invalid</code> quando houver erro.</li>
+                <li>Foco visível: <code>--ds-focus-ring</code>; texto auxiliar em <code>--ds-fg-muted</code> (contraste sobre <code>--ds-bg</code>).</li>
+                <li><code>disabled</code> remove edição; cores em <code>--ds-fg-muted</code> / <code>--ds-bg-subtle</code>.</li>
             </ul>
         </div>
 
         <div class="section">
-            <h2 class="section-title">📝 Textarea</h2>
+            <h2 class="section-title">Textarea</h2>
             <p class="section-description">
-                Campo de texto multilinhas com suporte a estados, helper text e contador de caracteres.
+                Hover reforça borda com <code>--ds-success</code> (igual input/select); foco combina borda + halo do DS.
             </p>
 
-            <h3 style="font-size:16px;font-weight:600;margin:24px 0 16px;">Basic</h3>
+            <h3 class="textarea-demo__subtitle">Basic</h3>
             <div class="grid">
                 <div class="textarea-wrapper">
-                    <label class="textarea-label">Comentário</label>
+                    <label class="textarea-label" for="textarea1">Comentário</label>
                     <textarea rows="4" placeholder="Digite seu comentário..." id="textarea1"></textarea>
                     <div class="helper-text">Compartilhe sua opinião</div>
                 </div>
-                
+
                 <div class="textarea-wrapper">
-                    <label class="textarea-label">Descrição</label>
+                    <label class="textarea-label" for="textarea2">Descrição</label>
                     <textarea rows="4" placeholder="Descreva o problema..." maxlength="500" id="textarea2"></textarea>
-                    <div style="display:flex;justify-content:space-between;">
+                    <div class="textarea-meta-row">
                         <div class="helper-text">Máximo de 500 caracteres</div>
                         <div class="char-count"><span id="count">0</span>/500</div>
                     </div>
                 </div>
             </div>
 
-            <h3 style="font-size:16px;font-weight:600;margin:24px 0 16px;">States</h3>
+            <h3 class="textarea-demo__subtitle">States</h3>
             <div class="grid">
                 <div class="textarea-wrapper">
-                    <label class="textarea-label">Com Erro</label>
-                    <textarea rows="4" placeholder="Digite algo..." class="error"></textarea>
+                    <label class="textarea-label" for="textarea-err">Com erro</label>
+                    <textarea id="textarea-err" rows="4" placeholder="Digite algo..." class="error" aria-invalid="true"></textarea>
                     <div class="error-text">Este campo é obrigatório</div>
                 </div>
-                
+
                 <div class="textarea-wrapper">
-                    <label class="textarea-label">Desabilitado</label>
-                    <textarea rows="4" disabled>Texto não editável</textarea>
+                    <label class="textarea-label" for="textarea-dis">Desabilitado</label>
+                    <textarea id="textarea-dis" rows="4" disabled>Texto não editável</textarea>
                 </div>
             </div>
         </div>
 
-        <!-- Anatomia -->
         <div class="section">
             <div class="section-title">Anatomia do Componente (HTML)</div>
-            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
-                <li><code>div.textarea-wrapper</code>: wrapper do textarea (label + campo + helper).</li>
-                <li><code>label.textarea-label</code>: rótulo do campo.</li>
-                <li><code>textarea</code>: controle nativo; use <code>rows</code> e <code>maxlength</code>.</li>
-                <li><code>textarea.error</code>: estado de erro (borda/estilo).</li>
-                <li><code>textarea:disabled</code>: estado desabilitado.</li>
-                <li><code>div.helper-text</code>: mensagem de apoio.</li>
-                <li><code>div.char-count</code>: contador (quando aplicável).</li>
+            <ul class="textarea-demo__anatomy-list">
+                <li><code>div.textarea-wrapper</code>: agrupa label, <code>textarea</code> e mensagens.</li>
+                <li><code>label.textarea-label</code> + <code>for</code> apontando ao <code>id</code> do campo.</li>
+                <li><code>textarea</code>: classes <code>error</code> opcional; <code>disabled</code> nativo.</li>
+                <li><code>div.helper-text</code> / <code>div.error-text</code> / contador.</li>
             </ul>
         </div>
 
         <div class="section">
-            <h2 class="section-title">Como Usar (HTML)</h2>
-            <p class="section-description">
-                Estrutura base para o uso de textarea com helper text e contador.
-            </p>
-
-            <div class="code-block">
-<pre class="code"><code>&lt;div class="textarea-wrapper"&gt;
-  &lt;label class="textarea-label"&gt;Comentário&lt;/label&gt;
-  &lt;textarea 
-    rows="4" 
-    placeholder="Digite seu comentário..."&gt;&lt;/textarea&gt;
-  &lt;div class="helper-text"&gt;Helper text opcional&lt;/div&gt;
+            <div class="section-title">Como Usar (HTML)</div>
+            <p class="section-description">Estrutura base com hover/focus via CSS do demo (tokens <code>--ds-*</code>).</p>
+            <pre class="code"><code>&lt;div class="textarea-wrapper"&gt;
+  &lt;label class="textarea-label" for="msg"&gt;Comentário&lt;/label&gt;
+  &lt;textarea id="msg" rows="4" placeholder="…"&gt;&lt;/textarea&gt;
+  &lt;div class="helper-text"&gt;Texto auxiliar&lt;/div&gt;
 &lt;/div&gt;</code></pre>
-            </div>
         </div>
 
-        <!-- Como Usar (React) -->
         <div class="section">
             <div class="section-title">Como Usar (React)</div>
-            <p class="section-description">
-                Snippet React para controlar o valor do <code>&lt;textarea&gt;</code> e manter o mesmo HTML.
-            </p>
+            <p class="section-description">Componente <code>Textarea</code> em <code>components/Forms/Textarea/Textarea.jsx</code> com borda dinâmica e variáveis CSS para tema.</p>
+            <pre class="code"><code>import { Textarea } from '@/components/Forms/Textarea/Textarea';
 
-            <div class="code-block">
-<pre class="code"><code>import React, { useState } from 'react';
-
-function TextareaField({
-  label,
-  placeholder = '',
-  helperText = '',
-  error = false,
-  disabled = false,
-  rows = 4,
-  maxLength,
-}) {
-  const [value, setValue] = useState('');
-  return (
-    &lt;div className="textarea-wrapper"&gt;
-      &lt;label className="textarea-label"&gt;{label}&lt;/label&gt;
-      &lt;textarea
-        rows={rows}
-        placeholder={placeholder}
-        className={error ? 'error' : undefined}
-        disabled={disabled}
-        maxLength={maxLength}
-        value={value}
-        onChange={(e) =&gt; setValue(e.target.value)}
-      /&gt;
-      {helperText ? &lt;div className="helper-text"&gt;{helperText}&lt;/div&gt; : null}
-    &lt;/div&gt;
-  );
-}</code></pre>
-            </div>
-
+&lt;Textarea
+  label="Descrição"
+  placeholder="…"
+  helperText="Opcional"
+  error=""
+  rows={4}
+/&gt;</code></pre>
             <dl class="props-list">
-                <dt>label</dt>
-                <dd>Texto exibido em <code>label.textarea-label</code>.</dd>
-
-                <dt>placeholder</dt>
-                <dd>Valor padrão do campo.</dd>
-
-                <dt>helperText</dt>
-                <dd>Conteúdo do bloco <code>.helper-text</code>.</dd>
-
-                <dt>error</dt>
-                <dd>Quando <code>true</code>, aplica classe <code>error</code>.</dd>
-
-                <dt>disabled</dt>
-                <dd>Quando <code>true</code>, aplica atributo <code>disabled</code>.</dd>
+                <dt>label / placeholder / helperText / error</dt>
+                <dd>Conteúdo e validação visual.</dd>
+                <dt>disabled / rows / maxLength / showCharCount</dt>
+                <dd>Comportamento e limite de caracteres.</dd>
             </dl>
         </div>
     </div>
@@ -239,34 +366,14 @@ function TextareaField({
     <script>
         const textarea2 = document.getElementById('textarea2');
         const countSpan = document.getElementById('count');
-        
-        textarea2.addEventListener('input', () => {
-            countSpan.textContent = textarea2.value.length;
-        });
+        if (textarea2 && countSpan) {
+            textarea2.addEventListener('input', function () {
+                countSpan.textContent = String(textarea2.value.length);
+            });
+        }
     </script>
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Lista do select (menu)',file:'select-menu-list-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
 
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
-

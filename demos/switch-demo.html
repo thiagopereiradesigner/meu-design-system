@@ -4,65 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Switch Component</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('ds-theme') || 'light';
+                document.documentElement.dataset.dsTheme = t;
+            } catch (e) {}
+        })();
+    </script>
+    <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        /* Header/topbar padronizados em ds-demo-base.css */
+        :root {
+            --sw-demo-page-pad: var(--ds-space-lg);
+            --sw-demo-after-topbar: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            :root {
+                --sw-demo-page-pad: var(--ds-space-xl);
+                --sw-demo-after-topbar: var(--ds-space-2xl);
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --sw-demo-page-pad: 40px;
+                --sw-demo-after-topbar: 40px;
+            }
+        }
 
-        /* Layout/base tokens vêm de ds-demo-base.css */
-        .subtitle { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: var(--ds-fg); }
-        .column { display: flex; flex-direction: column; gap: 16px; }
+        body.ds-switch-demo {
+            font-family: var(--ds-font-family);
+            background-color: var(--ds-bg);
+            padding: var(--sw-demo-page-pad);
+            color: var(--ds-fg);
+            margin: 0;
+        }
+
+        body.ds-switch-demo *,
+        body.ds-switch-demo *::before,
+        body.ds-switch-demo *::after {
+            box-sizing: border-box;
+        }
+
+        .ds-switch-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--sw-demo-page-pad)) var(--sw-demo-after-topbar);
+            width: calc(100% + 2 * var(--sw-demo-page-pad));
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .header {
+                margin-bottom: var(--ds-space-2xl);
+            }
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: var(--ds-font-weight-bold);
+            color: var(--ds-success);
+            margin-bottom: var(--ds-space-sm);
+        }
+
+        .header .lead {
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            max-width: 40rem;
+            margin: 0 auto;
+        }
+
+        .subtitle {
+            font-size: var(--ds-font-size-lg);
+            font-weight: var(--ds-font-weight-semibold);
+            margin: var(--ds-space-xl) 0 var(--ds-space-md);
+            color: var(--ds-fg);
+        }
+
+        .subtitle:first-of-type {
+            margin-top: 0;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--ds-space-md);
+        }
+        @media (min-width: 744px) {
+            .column {
+                gap: var(--ds-space-lg);
+            }
+        }
+
         .switch-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--ds-space-sm);
             cursor: pointer;
             user-select: none;
+            font-family: inherit;
         }
+
+        @media (max-width: 743px) {
+            .switch-wrapper {
+                min-height: 44px;
+                padding: var(--ds-space-xs) 0;
+            }
+        }
+
+        /* Tamanhos: mobile-first (base = médio) */
         .switch-track {
+            --sw-track-w: 44px;
+            --sw-track-h: 24px;
+            --sw-thumb: 20px;
+            --sw-inset: 2px;
             position: relative;
-            width: 44px;
-            height: 24px;
+            width: var(--sw-track-w);
+            height: var(--sw-track-h);
             background-color: var(--ds-n200);
-            border-radius: 12px;
+            border-radius: var(--ds-radius-full);
             transition: background-color 0.2s ease;
             flex-shrink: 0;
         }
-        .switch-track.checked { background-color: var(--ds-success); }
+
+        .switch-track--sm {
+            --sw-track-w: 36px;
+            --sw-track-h: 20px;
+            --sw-thumb: 16px;
+        }
+
+        .switch-track--lg {
+            --sw-track-w: 52px;
+            --sw-track-h: 28px;
+            --sw-thumb: 24px;
+        }
+
+        .switch-track.checked {
+            background-color: var(--ds-success);
+        }
+
         .switch-thumb {
             position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            border-radius: 50%;
+            top: var(--sw-inset);
+            left: var(--sw-inset);
+            width: var(--sw-thumb);
+            height: var(--sw-thumb);
+            background-color: var(--ds-on-inverse);
+            border-radius: var(--ds-radius-full);
             transition: left 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--ds-shadow-sm);
         }
-        .switch-track.checked .switch-thumb { left: 22px; }
-        .switch-track.disabled { opacity: 0.5; cursor: not-allowed; }
-        .switch-label { font-size: 14px; color: var(--ds-fg); }
-        .code-block {
-            margin-top: 16px;
-            padding: 16px;
-            background: var(--ds-pre-bg);
-            color: var(--ds-pre-fg);
-            border-radius: 8px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
-            overflow-x: auto;
+
+        .switch-track.checked .switch-thumb {
+            left: calc(var(--sw-track-w) - var(--sw-thumb) - var(--sw-inset));
+        }
+
+        .switch-track.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .switch-wrapper--disabled {
+            cursor: not-allowed;
+        }
+
+        .switch-track:focus {
+            outline: none;
+        }
+
+        .switch-track:focus-visible {
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .switch-track.checked:focus-visible {
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .switch-label {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg);
+            line-height: var(--ds-line-height-normal);
+        }
+
+        .switch-wrapper--sm .switch-label {
+            font-size: var(--ds-font-size-sm);
+        }
+
+        .switch-wrapper--lg .switch-label {
+            font-size: var(--ds-font-size-lg);
+        }
+
+        .switch-demo__anatomy-list {
+            padding-left: var(--ds-space-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            font-size: var(--ds-font-size-md);
+        }
+
+        .switch-demo__anatomy-list li {
+            margin-bottom: var(--ds-space-xs);
+        }
+
+        .props-list {
+            margin-top: var(--ds-space-lg);
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg);
+        }
+
+        .props-list dt {
+            font-weight: var(--ds-font-weight-semibold);
+        }
+
+        .props-list dd {
+            margin: 0 0 var(--ds-space-sm) 0;
+            color: var(--ds-fg-muted);
         }
     </style>
 </head>
-<body>
-<!-- DS Navigation Bar -->
+<body class="ds-switch-demo">
 <nav class="ds-topbar">
     <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <a href="index.html" class="ds-back-btn">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
@@ -74,7 +247,7 @@
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
-<!-- DS Mobile Menu -->
+
 <div class="ds-mobile-menu" id="ds-mobile-menu">
     <a href="index.html" class="ds-back-btn">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
@@ -90,166 +263,151 @@
     <div class="container">
         <div class="header">
             <h1>Switch</h1>
-            <p>Componente Switch | On/Off acessível</p>
+            <p class="lead">Alternância ligado/desligado para preferências binárias (notificações, modo escuro, etc.). Três tamanhos (sm / md / lg), estados desabilitados e suporte a teclado com <code>role="switch"</code>.</p>
         </div>
 
-        <!-- Lead -->
-        <p class="section-subtitle">
-            Switch acessível para alternar estados (on/off), com suporte a disabled e navegação via teclado.
-        </p>
-
-        <!-- Nota Acessibilidade (WCAG/ARIA) -->
         <div class="note">
-            <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
+            <h3>Acessibilidade</h3>
             <ul>
-                <li>Use um elemento focável (ou <code>role="switch"</code>) para anunciar o estado ao leitor de tela.</li>
-                <li>Quando estiver em <code>disabled</code>, mantenha o switch não interativo e com estado visual coerente.</li>
-                <li>Garanta que o estado atual seja refletido imediatamente na UI (classe <code>.checked</code>).</li>
+                <li><code>role="switch"</code> e <code>aria-checked</code> refletem o estado (atualizado pelo script desta página).</li>
+                <li>Teclado: <kbd>Enter</kbd> e <kbd>Espaço</kbd> alternam quando o trilho está focável (<code>tabindex="0"</code>).</li>
+                <li><code>disabled</code>: sem foco no trilho; <code>aria-disabled="true"</code> e opacidade reduzida.</li>
+                <li>Em viewports estreitas, o rótulo + padding da linha ampliam a área tocável (~44px de altura).</li>
             </ul>
         </div>
 
         <div class="section">
-            <h2 class="section-title">🎚️ Switch</h2>
+            <div class="section-title">Anatomia do Componente (HTML)</div>
+            <ul class="switch-demo__anatomy-list">
+                <li><code>label.switch-wrapper</code> (+ opcional <code>switch-wrapper--sm</code> / <code>--lg</code>): alinha trilho e texto; aumenta área clicável.</li>
+                <li><code>div.switch-track</code> (+ <code>switch-track--sm</code> | <code>switch-track--lg</code>; padrão = médio): trilho; classes <code>checked</code> e <code>disabled</code>.</li>
+                <li><code>div.switch-thumb</code>: indicador que desliza; posição vem do CSS (<code>calc</code> com variáveis do tamanho).</li>
+                <li><code>span.switch-label</code>: texto do controle.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Como Usar (HTML)</div>
             <p class="section-description">
-                Componente para alternar rapidamente entre dois estados (ligado/desligado).
+                Três larguras via modificadores no trilho (<code>switch-track--sm</code>, padrão médio, <code>switch-track--lg</code>). Opcional: classes <code>switch-wrapper--sm</code> / <code>--lg</code> para escalar a tipografia do rótulo.
             </p>
 
-            <h3 class="subtitle">Basic</h3>
+            <h3 class="subtitle">Tamanhos</h3>
             <div class="column">
-                <label class="switch-wrapper">
-                    <div class="switch-track" onclick="toggleSwitch(this)">
+                <label class="switch-wrapper switch-wrapper--sm">
+                    <div class="switch-track switch-track--sm" data-switch-interactive>
                         <div class="switch-thumb"></div>
                     </div>
-                    <span class="switch-label">Ativar notificações</span>
+                    <span class="switch-label">Pequeno (sm)</span>
                 </label>
-                
                 <label class="switch-wrapper">
-                    <div class="switch-track checked" onclick="toggleSwitch(this)">
+                    <div class="switch-track" data-switch-interactive>
                         <div class="switch-thumb"></div>
                     </div>
-                    <span class="switch-label">Modo escuro</span>
+                    <span class="switch-label">Médio (padrão)</span>
+                </label>
+                <label class="switch-wrapper switch-wrapper--lg">
+                    <div class="switch-track switch-track--lg" data-switch-interactive>
+                        <div class="switch-thumb"></div>
+                    </div>
+                    <span class="switch-label">Grande (lg)</span>
                 </label>
             </div>
 
-            <h3 class="subtitle">States</h3>
+            <h3 class="subtitle">Estados</h3>
             <div class="column">
-                <label class="switch-wrapper">
-                    <div class="switch-track disabled">
+                <label class="switch-wrapper switch-wrapper--disabled">
+                    <div class="switch-track disabled" role="switch" aria-checked="false" aria-disabled="true">
                         <div class="switch-thumb"></div>
                     </div>
                     <span class="switch-label">Desabilitado (off)</span>
                 </label>
-                
-                <label class="switch-wrapper">
-                    <div class="switch-track checked disabled">
+                <label class="switch-wrapper switch-wrapper--disabled">
+                    <div class="switch-track checked disabled" role="switch" aria-checked="true" aria-disabled="true">
                         <div class="switch-thumb"></div>
                     </div>
                     <span class="switch-label">Desabilitado (on)</span>
                 </label>
             </div>
-        </div>
 
-        <!-- Anatomia -->
-        <div class="section">
-            <div class="section-title">Anatomia do Componente (HTML)</div>
-            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
-                <li><code>label.switch-wrapper</code>: rótulo clicável (aumenta área de interação).</li>
-                <li><code>div.switch-track</code>: trilho do switch; use <code>.checked</code> para ligado e <code>.disabled</code> para desabilitado.</li>
-                <li><code>div.switch-thumb</code>: “bolinha” que se move quando o switch é ativado.</li>
-                <li><code>span.switch-label</code>: texto do controle.</li>
-                <li>JS: função <code>toggleSwitch(element)</code> alterna <code>.checked</code> e respeita <code>.disabled</code>.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Como Usar (HTML)</h2>
-            <p class="section-description">
-                Estrutura mínima de um switch controlado via JavaScript.
-            </p>
-            <div class="code-block">
-<pre class="code"><code>&lt;label class="switch-wrapper"&gt;
-  &lt;div class="switch-track" onclick="toggleSwitch(this)"&gt;
+            <pre class="code"><code>&lt;label class="switch-wrapper switch-wrapper--sm"&gt;
+  &lt;div class="switch-track switch-track--sm" role="switch" aria-checked="false" tabindex="0"&gt;
     &lt;div class="switch-thumb"&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;span class="switch-label"&gt;Ativar notificações&lt;/span&gt;
+  &lt;span class="switch-label"&gt;Pequeno&lt;/span&gt;
 &lt;/label&gt;</code></pre>
-            </div>
         </div>
 
-        <!-- Como Usar (React) -->
         <div class="section">
             <div class="section-title">Como Usar (React)</div>
             <p class="section-description">
-                Snippet React para controlar <code>checked</code> no estado e manter o mesmo layout HTML.
+                O componente <code>Switch</code> usa variáveis CSS do design system (<code>--ds-success</code>, <code>--ds-n200</code>, <code>--ds-font-family</code>, etc.) quando a folha de tokens/tema estiver carregada.
             </p>
 
-            <div class="code-block">
-<pre class="code"><code>import React, { useState } from 'react';
+            <pre class="code"><code>import { Switch } from '@/components/Forms/Switch/Switch';
 
-function SwitchField({ label, disabled = false, defaultChecked = false }) {
-  const [checked, setChecked] = useState(defaultChecked);
-
-  return (
-    &lt;label className="switch-wrapper"&gt;
-      &lt;div
-        className={"switch-track" + (checked ? " checked" : "") + (disabled ? " disabled" : "")}
-        onClick={() =&gt; {
-          if (disabled) return;
-          setChecked((v) =&gt; !v);
-        }}
-        role="switch"
-        aria-checked={checked}
-      &gt;
-        &lt;div className="switch-thumb"&gt;&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;span className="switch-label"&gt;{label}&lt;/span&gt;
-    &lt;/label&gt;
-  );
-}</code></pre>
-            </div>
+&lt;Switch label="Notificações" size="small" checked={on} onChange={setOn} /&gt;
+&lt;Switch label="Padrão" size="medium" checked={x} onChange={setX} /&gt;
+&lt;Switch label="Destaque" size="large" checked={y} onChange={setY} /&gt;</code></pre>
 
             <dl class="props-list">
                 <dt>label</dt>
-                <dd>Texto do controle (<code>span.switch-label</code>).</dd>
+                <dd>Texto exibido ao lado do trilho.</dd>
+
+                <dt>checked / onChange</dt>
+                <dd>Modo controlado; sem <code>checked</code>, o componente mantém estado interno.</dd>
 
                 <dt>disabled</dt>
-                <dd>Quando <code>true</code>, bloqueia click e adiciona classe <code>.disabled</code>.</dd>
+                <dd>Bloqueia interação e reduz opacidade.</dd>
 
-                <dt>defaultChecked</dt>
-                <dd>Estado inicial do switch (equivalente a <code>.checked</code>).</dd>
+                <dt>size</dt>
+                <dd><code>"small"</code> | <code>"medium"</code> (padrão) | <code>"large"</code>.</dd>
+
+                <dt>labelPosition</dt>
+                <dd><code>"right"</code> (padrão) ou <code>"left"</code>.</dd>
             </dl>
         </div>
     </div>
 
     <script>
-        function toggleSwitch(element) {
-            if (element.classList.contains('disabled')) return;
-            element.classList.toggle('checked');
-        }
-    </script>
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Lista do select (menu)',file:'select-menu-list-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
+        (function () {
+            function toggleSwitch(track) {
+                if (track.classList.contains('disabled')) return;
+                track.classList.toggle('checked');
+                track.setAttribute('aria-checked', track.classList.contains('checked') ? 'true' : 'false');
+            }
 
+            function initSwitches() {
+                document.querySelectorAll('.switch-wrapper').forEach(function (wrapper) {
+                    var track = wrapper.querySelector('.switch-track');
+                    if (!track || !track.hasAttribute('data-switch-interactive')) return;
+                    if (track.classList.contains('disabled')) return;
+
+                    track.setAttribute('role', 'switch');
+                    track.setAttribute('aria-checked', track.classList.contains('checked') ? 'true' : 'false');
+                    track.setAttribute('tabindex', '0');
+
+                    wrapper.addEventListener('click', function () {
+                        toggleSwitch(track);
+                    });
+                    track.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            toggleSwitch(track);
+                        }
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initSwitches);
+            } else {
+                initSwitches();
+            }
+        })();
+    </script>
+
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
-

@@ -7,16 +7,16 @@ export const Switch = ({
   checked = false,
   onChange,
   disabled = false,
-  size = 'medium', // 'small', 'medium'
-  labelPosition = 'right', // 'left', 'right'
+  size = 'medium', // 'small' | 'medium' | 'large'
+  labelPosition = 'right', // 'left' | 'right'
 }) => {
   const [internalChecked, setInternalChecked] = useState(checked);
-  
+
   const isChecked = checked !== undefined ? checked : internalChecked;
 
   const handleChange = () => {
     if (disabled) return;
-    
+
     const newChecked = !isChecked;
     if (onChange) {
       onChange(newChecked);
@@ -31,16 +31,25 @@ export const Switch = ({
       height: 20,
       thumbSize: 16,
       thumbOffset: 2,
+      labelFont: `var(--ds-font-size-sm, ${tokens.typography.fontSize.sm})`,
     },
     medium: {
       width: 44,
       height: 24,
       thumbSize: 20,
       thumbOffset: 2,
+      labelFont: `var(--ds-font-size-md, ${tokens.typography.fontSize.md})`,
+    },
+    large: {
+      width: 52,
+      height: 28,
+      thumbSize: 24,
+      thumbOffset: 2,
+      labelFont: `var(--ds-font-size-lg, ${tokens.typography.fontSize.lg})`,
     },
   };
 
-  const currentSize = sizes[size];
+  const currentSize = sizes[size] || sizes.medium;
 
   const containerStyles = {
     display: 'flex',
@@ -49,14 +58,16 @@ export const Switch = ({
     flexDirection: labelPosition === 'left' ? 'row-reverse' : 'row',
     cursor: disabled ? 'not-allowed' : 'pointer',
     userSelect: 'none',
-    fontFamily: tokens.typography.fontFamily,
+    fontFamily: 'var(--ds-font-family, system-ui, sans-serif)',
   };
 
   const switchTrackStyles = {
     position: 'relative',
     width: `${currentSize.width}px`,
     height: `${currentSize.height}px`,
-    backgroundColor: isChecked ? tokens.colors.primary[500] : tokens.colors.neutral[200],
+    backgroundColor: isChecked
+      ? `var(--ds-success, ${tokens.colors.primary[500]})`
+      : `var(--ds-n200, ${tokens.colors.neutral[200]})`,
     borderRadius: `${currentSize.height / 2}px`,
     transition: 'background-color 0.2s ease',
     opacity: disabled ? 0.5 : 1,
@@ -71,15 +82,17 @@ export const Switch = ({
       : `${currentSize.thumbOffset}px`,
     width: `${currentSize.thumbSize}px`,
     height: `${currentSize.thumbSize}px`,
-    backgroundColor: tokens.colors.neutral[0],
+    backgroundColor: `var(--ds-on-inverse, ${tokens.colors.neutral[0]})`,
     borderRadius: '50%',
     transition: 'left 0.2s ease',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    boxShadow: 'var(--ds-shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.12))',
   };
 
   const labelStyles = {
-    fontSize: tokens.typography.fontSize.md,
-    color: disabled ? tokens.colors.content.tertiary : tokens.colors.content.primary,
+    fontSize: currentSize.labelFont,
+    color: disabled
+      ? `var(--ds-fg-subtle, ${tokens.colors.content.tertiary})`
+      : `var(--ds-fg, ${tokens.colors.content.primary})`,
     lineHeight: tokens.typography.lineHeight.normal,
   };
 
@@ -92,4 +105,3 @@ export const Switch = ({
     </label>
   );
 };
-

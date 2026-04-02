@@ -195,6 +195,12 @@
   --ds-radius-lg: 12px;
   --ds-radius-full: 9999px;
 
+  /* Altura da topbar (sticky stepper, menu mobile, sidebar — sobrescrever em temas custom) */
+  --ds-topbar-height: 56px;
+
+  /* Skeleton: contraste sobre surface/bg (evita branco em branco no tema claro) */
+  --ds-skeleton-fill: color-mix(in srgb, var(--ds-fg) 11%, var(--ds-bg));
+
   /* Select dropdown: scroll e scrollbar (sobrescrever por tema / marca) */
   --ds-select-dropdown-max-height: min(15rem, 50vh);
   --ds-scrollbar-track: var(--ds-bg-subtle);
@@ -402,7 +408,7 @@ body{
   z-index: 999;
   background: var(--ds-surface);
   border-bottom: 1px solid var(--ds-border);
-  height: 56px;
+  height: var(--ds-topbar-height);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -554,7 +560,7 @@ body{
 .ds-mobile-menu{
   display: none;
   position: fixed;
-  top: 56px;
+  top: var(--ds-topbar-height);
   left: 0;
   right: 0;
   background: var(--ds-surface);
@@ -698,7 +704,7 @@ body.ds-demo-has-sidebar .ds-topbar{
   background: var(--ds-surface) !important;
   border-bottom: 1px solid var(--ds-border) !important;
   box-shadow: var(--ds-shadow-sm) !important;
-  height: 56px !important;
+  height: var(--ds-topbar-height) !important;
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
@@ -756,8 +762,8 @@ body.ds-demo-has-sidebar .ds-search-input{
   overflow-y: auto;
   /* Garante scroll interno e sidebar “fixa” no viewport (desktop). */
   position: sticky;
-  top: 56px;
-  height: calc(100vh - 56px);
+  top: var(--ds-topbar-height);
+  height: calc(100vh - var(--ds-topbar-height));
   align-self: flex-start;
   padding: 16px 0 24px;
   box-shadow: var(--ds-shadow-sidebar);
@@ -1286,12 +1292,12 @@ label.select-option.select-option--checkbox{
   height: 20px;
   flex-shrink: 0;
   transition: transform 0.2s ease, color 0.2s ease;
-  color: var(--ds-icon-muted);
+  color: var(--ds-icon-accent);
 }
 .select-container > .field-input-container:hover:not(.disabled):not(.error) .chevron,
 .select-container > .field-input-container:focus-within:not(.disabled):not(.error) .chevron,
 .select-container > .field-input-container:not(.disabled):not(.error) .chevron.open{
-  color: var(--ds-icon-accent);
+  color: var(--ds-success-hover);
 }
 .select-container > .field-input-container.error .chevron{
   color: var(--ds-error);
@@ -1448,15 +1454,15 @@ body.ds-demo-has-sidebar .ds-demo-main .select-option{
   color: var(--ds-fg) !important;
 }
 
-/* Chevron do Select: repouso muted, hover/foco/aberto = accent (igual contorno do Input) */
+/* Chevron do Select: repouso = accent (verde marca); hover/foco/aberto = success-hover */
 body.ds-demo-has-sidebar .ds-demo-main .select-container .chevron{
-  color: var(--ds-icon-muted) !important;
+  color: var(--ds-icon-accent) !important;
   transition: transform 0.2s ease, color 0.2s ease !important;
 }
 body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container:hover:not(.disabled):not(.error) .chevron,
 body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container:focus-within:not(.disabled):not(.error) .chevron,
 body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container:not(.disabled):not(.error) .chevron.open{
-  color: var(--ds-icon-accent) !important;
+  color: var(--ds-success-hover) !important;
 }
 body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container.error .chevron{
   color: var(--ds-error) !important;

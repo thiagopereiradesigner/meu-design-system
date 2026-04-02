@@ -241,6 +241,13 @@ export default function FormComponentsDemo() {
             checked={switch2}
             onChange={setSwitch2}
           />
+
+          <Switch
+            label="Large"
+            size="large"
+            checked={switch1}
+            onChange={setSwitch1}
+          />
         </div>
 
         <h3 style={subtitleStyle}>Label Position</h3>

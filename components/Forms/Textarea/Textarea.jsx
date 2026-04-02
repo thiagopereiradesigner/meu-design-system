@@ -13,10 +13,11 @@ export const Textarea = ({
   rows = 4,
   maxLength,
   showCharCount = false,
-  resize = 'vertical', // 'vertical', 'horizontal', 'both', 'none'
+  resize = 'vertical',
   required = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [internalValue, setInternalValue] = useState(value);
 
   const currentValue = value !== undefined ? value : internalValue;
@@ -25,7 +26,7 @@ export const Textarea = ({
   const handleChange = (e) => {
     const newValue = e.target.value;
     if (maxLength && newValue.length > maxLength) return;
-    
+
     if (onChange) {
       onChange(e);
     } else {
@@ -33,58 +34,78 @@ export const Textarea = ({
     }
   };
 
+  const borderColor = (() => {
+    if (hasError) {
+      if (isHovered && !disabled) {
+        return `color-mix(in srgb, var(--ds-error, ${tokens.colors.semantic.error}) 68%, var(--ds-surface, ${tokens.colors.neutral[0]}))`;
+      }
+      return `var(--ds-error, ${tokens.colors.semantic.error})`;
+    }
+    if (isFocused) {
+      return `var(--ds-success, ${tokens.colors.primary[500]})`;
+    }
+    if (isHovered && !disabled) {
+      return `var(--ds-success, ${tokens.colors.primary[500]})`;
+    }
+    return `var(--ds-border, ${tokens.colors.border.secondary})`;
+  })();
+
+  const boxShadow =
+    isFocused && !hasError && !disabled
+      ? 'var(--ds-focus-ring, 0 0 0 3px rgba(4,132,59,0.14))'
+      : hasError && isFocused
+        ? `0 0 0 3px color-mix(in srgb, var(--ds-error, ${tokens.colors.semantic.error}) 14%, transparent)`
+        : 'none';
+
   const containerStyles = {
     display: 'flex',
     flexDirection: 'column',
-    gap: tokens.spacing.xs,
+    gap: `var(--ds-space-xs, ${tokens.spacing.xs})`,
     width: '100%',
-    fontFamily: tokens.typography.fontFamily,
+    fontFamily: 'var(--ds-font-family, system-ui, sans-serif)',
   };
 
   const labelStyles = {
-    fontSize: tokens.typography.fontSize.md,
+    fontSize: `var(--ds-font-size-md, ${tokens.typography.fontSize.md})`,
     fontWeight: tokens.typography.fontWeight.medium,
-    color: disabled ? tokens.colors.content.tertiary : tokens.colors.content.primary,
+    color: disabled
+      ? `var(--ds-fg-subtle, ${tokens.colors.content.tertiary})`
+      : `var(--ds-fg, ${tokens.colors.content.primary})`,
     lineHeight: tokens.typography.lineHeight.normal,
-  };
-
-  const textareaWrapperStyles = {
-    position: 'relative',
-    width: '100%',
   };
 
   const textareaStyles = {
     width: '100%',
-    padding: tokens.spacing.sm,
-    fontSize: tokens.typography.fontSize.md,
-    fontFamily: tokens.typography.fontFamily,
+    padding: `var(--ds-space-md, ${tokens.spacing.sm})`,
+    fontSize: `var(--ds-font-size-md, ${tokens.typography.fontSize.md})`,
+    fontFamily: 'var(--ds-font-family, system-ui, sans-serif)',
     lineHeight: tokens.typography.lineHeight.normal,
-    color: disabled ? tokens.colors.content.tertiary : tokens.colors.content.primary,
-    backgroundColor: disabled ? tokens.colors.neutral[50] : tokens.colors.neutral[0],
-    border: `1px solid ${
-      hasError
-        ? tokens.colors.semantic.error
-        : isFocused
-        ? tokens.colors.primary[500]
-        : tokens.colors.border.secondary
-    }`,
-    borderRadius: tokens.borderRadius.sm,
+    color: disabled
+      ? `var(--ds-fg-muted, ${tokens.colors.content.tertiary})`
+      : `var(--ds-fg, ${tokens.colors.content.primary})`,
+    backgroundColor: disabled
+      ? `var(--ds-bg-subtle, ${tokens.colors.neutral[50]})`
+      : `var(--ds-surface, ${tokens.colors.neutral[0]})`,
+    border: `1px solid ${borderColor}`,
+    borderRadius: `var(--ds-radius-md, ${tokens.borderRadius.sm})`,
     outline: 'none',
     resize: resize,
-    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
     cursor: disabled ? 'not-allowed' : 'text',
-    boxShadow: isFocused && !hasError ? `0 0 0 3px ${tokens.colors.primary[50]}` : 'none',
+    boxShadow,
   };
 
   const helperTextStyles = {
-    fontSize: tokens.typography.fontSize.sm,
-    color: hasError ? tokens.colors.semantic.error : tokens.colors.content.secondary,
+    fontSize: `var(--ds-font-size-sm, ${tokens.typography.fontSize.sm})`,
+    color: hasError
+      ? `var(--ds-error, ${tokens.colors.semantic.error})`
+      : `var(--ds-fg-muted, ${tokens.colors.content.secondary})`,
     lineHeight: tokens.typography.lineHeight.normal,
   };
 
   const charCountStyles = {
-    fontSize: tokens.typography.fontSize.sm,
-    color: tokens.colors.content.tertiary,
+    fontSize: `var(--ds-font-size-sm, ${tokens.typography.fontSize.sm})`,
+    color: `var(--ds-fg-muted, ${tokens.colors.content.tertiary})`,
     textAlign: 'right',
   };
 
@@ -92,7 +113,7 @@ export const Textarea = ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: tokens.spacing.sm,
+    gap: `var(--ds-space-sm, ${tokens.spacing.sm})`,
   };
 
   return (
@@ -100,25 +121,27 @@ export const Textarea = ({
       {label && (
         <label style={labelStyles}>
           {label}
-          {required && <span style={{ color: tokens.colors.semantic.error }}> *</span>}
+          {required && (
+            <span style={{ color: `var(--ds-error, ${tokens.colors.semantic.error})` }}> *</span>
+          )}
         </label>
       )}
-      
-      <div style={textareaWrapperStyles}>
-        <textarea
-          style={textareaStyles}
-          placeholder={placeholder}
-          value={currentValue}
-          onChange={handleChange}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          disabled={disabled}
-          rows={rows}
-          maxLength={maxLength}
-          aria-invalid={hasError}
-          aria-describedby={error ? 'error-message' : helperText ? 'helper-text' : undefined}
-        />
-      </div>
+
+      <textarea
+        style={textareaStyles}
+        placeholder={placeholder}
+        value={currentValue}
+        onChange={handleChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onMouseEnter={() => !disabled && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        disabled={disabled}
+        rows={rows}
+        maxLength={maxLength}
+        aria-invalid={hasError}
+        aria-describedby={error ? 'error-message' : helperText ? 'helper-text' : undefined}
+      />
 
       {(helperText || error || showCharCount) && (
         <div style={bottomRowStyles}>
@@ -134,7 +157,7 @@ export const Textarea = ({
               </p>
             )}
           </div>
-          
+
           {showCharCount && maxLength && (
             <span style={charCountStyles}>
               {currentValue.length}/{maxLength}
@@ -145,4 +168,3 @@ export const Textarea = ({
     </div>
   );
 };
-

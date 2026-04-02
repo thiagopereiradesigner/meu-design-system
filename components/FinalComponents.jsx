@@ -612,38 +612,58 @@ export const Tabs = ({
 
   const tabsContainerStyles = {
     display: 'flex',
-    gap: variant === 'underline' ? tokens.spacing.lg : tokens.spacing.xs,
-    borderBottom: variant === 'underline' ? `1px solid ${tokens.colors.border.secondary}` : 'none',
-    fontFamily: tokens.typography.fontFamily,
+    flexWrap: 'wrap',
+    alignItems: 'flex-end',
+    gap: variant === 'underline' ? tokens.spacing.md : tokens.spacing.xs,
+    borderBottom: variant === 'underline' ? '1px solid var(--ds-border, #DDDDDD)' : 'none',
+    fontFamily: 'var(--ds-font-family, system-ui, sans-serif)',
   };
 
   const getTabStyles = (isActive) => {
     if (variant === 'underline') {
       return {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: tokens.spacing.xs,
         padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-        fontSize: tokens.typography.fontSize.md,
+        fontSize: `var(--ds-font-size-md, ${tokens.typography.fontSize.md})`,
         fontWeight: isActive ? tokens.typography.fontWeight.semibold : tokens.typography.fontWeight.regular,
-        color: isActive ? tokens.colors.primary[500] : tokens.colors.content.secondary,
+        color: isActive
+          ? `var(--ds-success, ${tokens.colors.primary[500]})`
+          : `var(--ds-fg-muted, ${tokens.colors.content.secondary})`,
         cursor: 'pointer',
-        transition: 'all 0.15s ease',
-        borderBottom: isActive ? `2px solid ${tokens.colors.primary[500]}` : '2px solid transparent',
+        transition: 'color 0.15s ease, border-color 0.15s ease',
+        borderBottom: isActive
+          ? `2px solid var(--ds-success, ${tokens.colors.primary[500]})`
+          : '2px solid transparent',
         marginBottom: '-1px',
         userSelect: 'none',
-      };
-    } else {
-      // Filled/Pill style - rounded pills como na imagem
-      return {
-        padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
-        fontSize: tokens.typography.fontSize.md,
-        fontWeight: tokens.typography.fontWeight.medium,
-        color: isActive ? tokens.colors.content.primary : tokens.colors.content.secondary,
-        backgroundColor: isActive ? tokens.colors.primary[50] : 'transparent',
-        cursor: 'pointer',
-        transition: 'all 0.15s ease',
-        borderRadius: '100px', // Pill shape
-        userSelect: 'none',
+        background: 'transparent',
+        borderTop: 'none',
+        borderLeft: 'none',
+        borderRight: 'none',
       };
     }
+    return {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: tokens.spacing.xs,
+      padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
+      fontSize: `var(--ds-font-size-md, ${tokens.typography.fontSize.md})`,
+      fontWeight: tokens.typography.fontWeight.medium,
+      color: isActive
+        ? `var(--ds-success, ${tokens.colors.primary[500]})`
+        : `var(--ds-fg-muted, ${tokens.colors.content.secondary})`,
+      backgroundColor: isActive
+        ? `var(--ds-surface, ${tokens.colors.neutral[0]})`
+        : 'transparent',
+      boxShadow: isActive ? 'var(--ds-shadow-sm, 0 2px 8px rgba(0,0,0,0.06))' : 'none',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      borderRadius: '100px',
+      userSelect: 'none',
+      border: 'none',
+    };
   };
 
   return (
@@ -653,23 +673,14 @@ export const Tabs = ({
           key={tab.id}
           style={getTabStyles(currentActive === tab.id)}
           onClick={() => handleTabClick(tab.id)}
-          onMouseEnter={(e) => {
-            if (currentActive !== tab.id) {
-              e.currentTarget.style.color = variant === 'underline' 
-                ? tokens.colors.content.primary 
-                : tokens.colors.content.primary;
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (currentActive !== tab.id) {
-              e.currentTarget.style.color = variant === 'underline'
-                ? tokens.colors.content.secondary
-                : tokens.colors.content.primary;
-            }
-          }}
           role="tab"
           aria-selected={currentActive === tab.id}
         >
+          {tab.icon ? (
+            <span style={{ display: 'inline-flex', flexShrink: 0, color: 'currentColor' }} aria-hidden="true">
+              {tab.icon}
+            </span>
+          ) : null}
           {tab.label}
         </div>
       ))}
@@ -1081,7 +1092,18 @@ export default function FinalComponentsDemo() {
   ];
 
   const tabs = [
-    { id: 'tab1', label: 'Visão Geral' },
+    {
+      id: 'tab1',
+      label: 'Visão Geral',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+      ),
+    },
     { id: 'tab2', label: 'Detalhes' },
     { id: 'tab3', label: 'Configurações' },
   ];

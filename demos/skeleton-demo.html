@@ -9,11 +9,11 @@
   <style>
     @keyframes ds-skeleton-pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.45; }
+      50% { opacity: 0.62; }
     }
 
     .skeleton {
-      background-color: var(--ds-surface-elevated);
+      background-color: var(--ds-skeleton-fill);
       animation: ds-skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
 
@@ -144,7 +144,7 @@
         <li><code>.skeleton-profile</code>: flex horizontal, alinhamento vertical central, gap 16px.</li>
         <li><code>.skeleton.skeleton-avatar</code>: 48×48px, <code>rounded-full</code> (placeholder de avatar).</li>
         <li><code>.skeleton-lines</code>: coluna com gap 8px; linhas com altura 16px e larguras ~250px / ~200px, <code>rounded-full</code> (pílula).</li>
-        <li><code>.skeleton</code> + <code>@keyframes ds-skeleton-pulse</code>: cor de fundo neutra e pulse de opacidade.</li>
+        <li><code>.skeleton</code> + <code>@keyframes ds-skeleton-pulse</code>: fundo <code>var(--ds-skeleton-fill)</code> (mix fg/bg no <code>ds-demo-base.css</code>) e pulse de opacidade.</li>
       </ul>
     </div>
 

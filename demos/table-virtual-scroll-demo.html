@@ -4,23 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Virtual Scrolling Table Demo</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('ds-theme') || 'light';
+                document.documentElement.dataset.dsTheme = t;
+            } catch (e) {}
+        })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
+        :root {
+            /* Alturas de linha (px) — lidas pelo VirtualScrollTable via getComputedStyle */
+            --vs-table-row-default: 53px;
+            --vs-table-row-compact: 45px;
+            /* Viewport da tabela: mobile-first, sem altura fixa em px */
+            --vs-table-viewport-min: 17.5rem;
+            --vs-table-viewport-preferred: 50vh;
+            --vs-table-viewport-max: 35rem;
+            --vs-demo-page-pad: var(--ds-space-lg);
+            --vs-demo-after-topbar: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            :root {
+                --vs-demo-page-pad: var(--ds-space-xl);
+                --vs-demo-after-topbar: var(--ds-space-2xl);
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --vs-demo-page-pad: 40px;
+                --vs-demo-after-topbar: 40px;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        /* Header/topbar padronizados em ds-demo-base.css */
 
-        /* Layout/base tokens vêm de ds-demo-base.css */
+        body.ds-table-vs-demo {
+            font-family: var(--ds-font-family);
+            background-color: var(--ds-bg);
+            color: var(--ds-fg);
+            padding: var(--vs-demo-page-pad);
+        }
+
+        .ds-table-vs-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--vs-demo-page-pad)) var(--vs-demo-after-topbar);
+            width: calc(100% + 2 * var(--vs-demo-page-pad));
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--ds-space-xl);
+        }
+        @media (min-width: 744px) {
+            .header {
+                margin-bottom: var(--ds-space-2xl);
+            }
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: var(--ds-font-weight-bold);
+            color: var(--ds-success);
+            margin-bottom: var(--ds-space-sm);
+        }
+
+        .header .lead {
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        .ds-table-vs-demo .section-description {
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            margin-bottom: var(--ds-space-lg);
+            line-height: var(--ds-line-height-relaxed);
+        }
+
+        .table-vs-demo__lead {
+            margin-bottom: var(--ds-space-lg);
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+        }
+
+        .ds-table-vs-demo .note {
+            margin-top: var(--ds-space-xl);
+        }
+
+        .ds-table-vs-demo .note:first-of-type {
+            margin-top: 0;
+        }
+
+        .note--muted {
+            margin-top: var(--ds-space-lg);
+            background-color: var(--ds-bg-subtle);
+            border-left-color: var(--ds-border);
+        }
+
+        .note--muted h3 {
+            color: var(--ds-fg);
+        }
 
         /* VIRTUAL SCROLL TABLE */
         .table-container {
             width: 100%;
-            height: 500px;
-            border-radius: 8px;
+            height: clamp(
+                var(--vs-table-viewport-min),
+                var(--vs-table-viewport-preferred),
+                var(--vs-table-viewport-max)
+            );
+            min-height: var(--vs-table-viewport-min);
+            border-radius: var(--ds-radius-md);
             border: 1px solid var(--ds-border);
             background-color: var(--ds-surface);
             overflow: hidden;
@@ -32,6 +145,7 @@
             height: 100%;
             overflow: auto;
             position: relative;
+            -webkit-overflow-scrolling: touch;
         }
 
         .table-virtual-body {
@@ -53,26 +167,34 @@
         }
 
         th {
-            padding: 16px;
+            padding: var(--ds-space-md) var(--ds-space-lg);
             text-align: left;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: var(--ds-font-size-sm);
+            font-weight: var(--ds-font-weight-semibold);
             color: var(--ds-fg);
             white-space: nowrap;
             cursor: pointer;
             user-select: none;
             background-color: var(--ds-bg-subtle);
+            min-height: 44px;
+            box-sizing: border-box;
+            vertical-align: middle;
         }
 
         th:hover {
             background-color: var(--ds-surface-elevated);
         }
 
+        th:focus-visible {
+            outline: 2px solid var(--ds-success);
+            outline-offset: -2px;
+        }
+
         th.sortable::after {
             content: ' ↕';
-            font-size: 10px;
+            font-size: var(--ds-font-size-xs);
             color: var(--ds-fg-muted);
-            margin-left: 4px;
+            margin-left: var(--ds-space-xs);
         }
 
         th.sorted-asc::after {
@@ -92,7 +214,7 @@
         .table-rows tbody tr {
             border-bottom: 1px solid var(--ds-border);
             transition: background-color 0.15s ease;
-            height: 53px;
+            height: var(--vs-table-row-default);
         }
 
         .table-rows tbody tr:nth-child(even) {
@@ -108,22 +230,22 @@
         }
 
         td {
-            padding: 16px;
-            font-size: 14px;
+            padding: var(--ds-space-md) var(--ds-space-lg);
+            font-size: var(--ds-font-size-md);
             color: var(--ds-fg);
-            line-height: 1.5;
+            line-height: var(--ds-line-height-normal);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .compact .table-rows tbody tr {
-            height: 45px;
+            height: var(--vs-table-row-compact);
         }
 
         .compact td,
         .compact th {
-            padding: 12px;
+            padding: var(--ds-space-md);
         }
 
         /* BADGE */
@@ -131,10 +253,10 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            font-size: 12px;
-            font-weight: 500;
+            padding: var(--ds-space-xs) var(--ds-space-sm);
+            border-radius: var(--ds-radius-full);
+            font-size: var(--ds-font-size-sm);
+            font-weight: var(--ds-font-weight-medium);
             white-space: nowrap;
         }
 
@@ -145,7 +267,7 @@
 
         .badge-warning {
             background-color: var(--ds-warning-bg);
-            color: var(--ds-warning-fg);
+            color: var(--ds-warning-solid-fg);
         }
 
         .badge-neutral {
@@ -156,84 +278,97 @@
         /* STATS */
         .stats {
             display: flex;
-            gap: 24px;
-            margin-top: 16px;
-            padding: 16px;
+            flex-wrap: wrap;
+            gap: var(--ds-space-xl);
+            margin-top: var(--ds-space-lg);
+            padding: var(--ds-space-lg);
             background: var(--ds-success-bg);
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: var(--ds-radius-md);
+            font-size: var(--ds-font-size-md);
         }
 
         .stat-item {
             display: flex;
             flex-direction: column;
+            min-width: min(100%, 10rem);
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: var(--ds-font-size-sm);
             color: var(--ds-fg-muted);
-            margin-bottom: 4px;
+            margin-bottom: var(--ds-space-xs);
         }
 
         .stat-value {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: var(--ds-font-size-xl);
+            font-weight: var(--ds-font-weight-bold);
             color: var(--ds-success-fg);
-        }
-
-        /* NOTE */
-        .note {
-            margin-top: 48px;
-            padding: 24px;
-            background-color: var(--ds-success-bg);
-            border-radius: 12px;
-            border-left: 4px solid var(--ds-success);
-        }
-
-        .note h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--ds-success-fg);
-        }
-
-        .note ul {
-            font-size: 14px;
-            color: var(--ds-fg);
-            line-height: 1.6;
-            padding-left: 20px;
-        }
-
-        .note ul li {
-            margin-bottom: 4px;
         }
 
         .performance-table {
             width: 100%;
-            margin-top: 24px;
-            font-size: 14px;
+            margin-top: var(--ds-space-lg);
+            font-size: var(--ds-font-size-md);
         }
 
         .performance-table th {
             background: var(--ds-bg-subtle);
-            padding: 12px;
+            padding: var(--ds-space-md);
             text-align: left;
+            position: static;
+            cursor: default;
+            min-height: 0;
+        }
+
+        .performance-table th:hover {
+            background: var(--ds-bg-subtle);
         }
 
         .performance-table td {
-            padding: 12px;
+            padding: var(--ds-space-md);
             border-bottom: 1px solid var(--ds-border);
         }
 
         .performance-table tr:nth-child(even) {
             background: var(--ds-bg-subtle);
         }
+
+        .table-vs-demo__anatomy-list {
+            padding-left: var(--ds-space-lg);
+            color: var(--ds-fg-muted);
+            line-height: var(--ds-line-height-relaxed);
+            font-size: var(--ds-font-size-md);
+        }
+
+        .table-vs-demo__anatomy-list li {
+            margin-bottom: var(--ds-space-sm);
+        }
+
+        .props-list {
+            margin-top: var(--ds-space-lg);
+            font-size: var(--ds-font-size-sm);
+        }
+
+        .props-list dt {
+            font-weight: var(--ds-font-weight-semibold);
+            color: var(--ds-fg);
+            margin-top: var(--ds-space-md);
+        }
+
+        .props-list dt:first-child {
+            margin-top: 0;
+        }
+
+        .props-list dd {
+            margin: 0 0 var(--ds-space-sm) 0;
+            color: var(--ds-fg-muted);
+        }
     </style>
 </head>
-<body>
+<body class="ds-table-vs-demo">
 <!-- DS Navigation Bar -->
 <nav class="ds-topbar">
-    <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
+    <button class="ds-hamburger" id="ds-hamburger" type="button" aria-label="Menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
     <a href="index.html" class="ds-back-btn">
@@ -244,11 +379,10 @@
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
-<!-- DS Mobile Menu -->
 <div class="ds-mobile-menu" id="ds-mobile-menu">
     <a href="index.html" class="ds-back-btn">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
@@ -256,7 +390,7 @@
     </a>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
 </div>
@@ -264,22 +398,73 @@
     <div class="container">
         <div class="header">
             <h1>Tabela — scroll virtual</h1>
-            <p>Table com Virtual Scrolling (10.000 linhas)</p>
+            <p class="lead">Lista tabular com <strong>virtual scrolling</strong>: só as linhas visíveis entram no DOM, mantendo desempenho estável com milhares de registros. Cabeçalho fixo, ordenação opcional e status com contraste adequado (<code>--ds-success-fg</code> / <code>--ds-warning-solid-fg</code>).</p>
         </div>
 
-    <div class="note">
-        <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
-        <ul>
-            <li><strong>Badges consistentes:</strong> status usa <code>Badge</code> no estilo pill (radius full).</li>
-            <li><strong>Leitura clara:</strong> contraste e tamanhos alinhados com o DS.</li>
-            <li><strong>Header fixo:</strong> facilita orientação ao rolar.</li>
-        </ul>
-    </div>
+        <p class="section-subtitle table-vs-demo__lead">
+            Use em tabelas densas (filas, logs, diretórios). Em telas estreitas, o viewport usa <code>clamp</code> e cabeçalhos com área mínima de toque; role sem overflow horizontal indesejado.
+        </p>
+
+        <div class="note">
+            <h3>Acessibilidade</h3>
+            <ul>
+                <li><strong>Cabeçalhos:</strong> <code>th</code> com <code>min-height: 44px</code> e <code>focus-visible</code> para ordenação por teclado.</li>
+                <li><strong>Contraste:</strong> texto de célula em <code>--ds-fg</code>; badges usam pares <code>--ds-*-bg</code> / <code>--ds-*-fg</code> (ou <code>--ds-warning-solid-fg</code> sobre fundo de aviso).</li>
+                <li><strong>Leitura + zoom:</strong> fontes em tokens <code>--ds-font-size-*</code>; contêiner com altura fluida (sem valor fixo único em px).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+            <p class="section-description">Estrutura gerada pelo demo de referência.</p>
+            <ul class="table-vs-demo__anatomy-list">
+                <li><code>div.table-container</code> (opcional <code>compact</code>): viewport com borda e altura fluida.</li>
+                <li><code>div.table-scroll-area</code>: área com <code>overflow: auto</code> e scroll suave em touch.</li>
+                <li><code>div.table-virtual-body</code> + <code>table</code> do cabeçalho + <code>div</code> das linhas visíveis.</li>
+                <li>Células de status: <code>span.badge</code> com <code>badge-success</code> / <code>badge-warning</code> / <code>badge-neutral</code>.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (HTML)</h2>
+            <p class="section-description">Contêiner no markup; o script instancia <code>VirtualScrollTable</code> e preenche o DOM. Ajuste <code>--vs-table-row-*</code> no CSS se mudar a densidade das linhas.</p>
+            <pre class="code"><code>&lt;div id="table-10000" class="table-container compact"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  const data = generateData(10000);
+  const table = new VirtualScrollTable('table-10000', data, { compact: true });
+&lt;/script&gt;
+
+&lt;!-- Status nas células --&gt;
+&lt;span class="badge badge-success"&gt;Ativo&lt;/span&gt;
+&lt;span class="badge badge-warning"&gt;Férias&lt;/span&gt;
+&lt;span class="badge badge-neutral"&gt;Inativo&lt;/span&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Como Usar (React)</h2>
+            <p class="section-description">Em produção, prefira uma lib de virtualização (<abbr title="ex.: TanStack Table + virtual">TanStack</abbr>, etc.) e o mesmo sistema de tokens para linhas e badges.</p>
+            <pre class="code"><code>import { Badge } from '@/components/ui/Badge';
+
+&lt;Badge variant="success"&gt;Ativo&lt;/Badge&gt;
+&lt;Badge variant="warning"&gt;Férias&lt;/Badge&gt;
+&lt;Badge variant="neutral"&gt;Inativo&lt;/Badge&gt;</code></pre>
+            <dl class="props-list">
+                <dt>rowHeight / estimateSize</dt>
+                <dd>Alinhar às variáveis <code>--vs-table-row-default</code> / <code>compact</code>.</dd>
+                <dt>overscan / buffer</dt>
+                <dd>Linhas extras fora da viewport (no demo: <code>bufferCount: 5</code>).</dd>
+                <dt>sorting (opcional)</dt>
+                <dd>Ordenação no cliente antes de fatiar índices visíveis.</dd>
+                <dt>Badge variant</dt>
+                <dd>Mapear <code>success</code> / <code>warning</code> / <code>neutral</code> como no HTML.</dd>
+            </dl>
+        </div>
 
         <!-- 100 Linhas -->
         <div class="section">
-            <h2 class="section-title">📊 100 Linhas (Scroll Normal)</h2>
-            <p class="section-description">Lista pequena funciona normalmente</p>
+            <h2 class="section-title">100 linhas (scroll normal)</h2>
+            <p class="section-description">Lista pequena: virtual scroll e scroll clássico se comportam bem.</p>
             <div id="table-100" class="table-container"></div>
             <div class="stats">
                 <div class="stat-item">
@@ -288,19 +473,19 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Linhas Renderizadas</div>
-                    <div class="stat-value" id="rendered-100">~15</div>
+                    <div class="stat-value" id="rendered-100">—</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Performance</div>
-                    <div class="stat-value">✅ Rápido</div>
+                    <div class="stat-value">Rápido</div>
                 </div>
             </div>
         </div>
 
         <!-- 10.000 Linhas -->
         <div class="section">
-            <h2 class="section-title">⚡ 10.000 Linhas (Virtual Scrolling)</h2>
-            <p class="section-description">Performance perfeita mesmo com milhares de linhas!</p>
+            <h2 class="section-title">10.000 linhas (virtual scrolling)</h2>
+            <p class="section-description">Modo <code>compact</code>: linhas mais baixas via <code>--vs-table-row-compact</code>.</p>
             <div id="table-10000" class="table-container compact"></div>
             <div class="stats">
                 <div class="stat-item">
@@ -309,127 +494,85 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Linhas Renderizadas</div>
-                    <div class="stat-value" id="rendered-10000">~15</div>
+                    <div class="stat-value" id="rendered-10000">—</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Performance</div>
-                    <div class="stat-value">⚡ Instantâneo</div>
+                    <div class="stat-value">Estável</div>
                 </div>
             </div>
         </div>
 
-        <!-- Performance Info -->
         <div class="note">
-            <h3>⚡ Como Funciona o Virtual Scrolling</h3>
+            <h3>Como funciona o virtual scrolling</h3>
             <ul>
-                <li><strong>Renderiza apenas o visível:</strong> Apenas ~15-20 linhas são criadas no DOM</li>
-                <li><strong>Scroll ilimitado:</strong> Pode ter 10.000, 100.000 linhas sem lag</li>
-                <li><strong>Performance constante:</strong> Mesma velocidade com 100 ou 1 milhão de linhas</li>
-                <li><strong>Header fixo:</strong> Cabeçalho sempre visível ao rolar</li>
-                <li><strong>Buffer inteligente:</strong> 5 linhas extras acima/abaixo para transição suave</li>
+                <li><strong>Só o visível:</strong> cerca de 15–25 nós de linha no DOM, conforme altura do viewport.</li>
+                <li><strong>Escala:</strong> dezenas de milhares de linhas sem custo proporcional de layout.</li>
+                <li><strong>Cabeçalho:</strong> <code>position: sticky</code> dentro da área de rolagem.</li>
+                <li><strong>Buffer:</strong> linhas extras acima/abaixo para transição suave ao rolar.</li>
             </ul>
         </div>
 
-        <!-- Performance Comparison -->
-        <div class="note" style="margin-top: 24px; background: var(--ds-bg-subtle); border-left-color: var(--ds-border-strong);">
-            <h3>📈 Comparação de Performance</h3>
+        <div class="note note--muted">
+            <h3>Comparação de performance (ilustrativa)</h3>
             <table class="performance-table">
                 <thead>
                     <tr>
                         <th>Linhas</th>
-                        <th>Scroll Normal</th>
-                        <th>Virtual Scroll</th>
+                        <th>Scroll normal</th>
+                        <th>Virtual scroll</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>100</td>
-                        <td>✅ Rápido (~16ms)</td>
-                        <td>✅ Rápido (~16ms)</td>
+                        <td>Rápido (~16ms)</td>
+                        <td>Rápido (~16ms)</td>
                     </tr>
                     <tr>
                         <td>1.000</td>
-                        <td>⚠️ Lento (~450ms)</td>
-                        <td>✅ Rápido (~16ms)</td>
+                        <td>Mais pesado (~450ms)</td>
+                        <td>Rápido (~16ms)</td>
                     </tr>
                     <tr>
                         <td>10.000</td>
-                        <td>❌ Trava (~5.000ms)</td>
-                        <td>✅ Rápido (~16ms)</td>
+                        <td>Arriscado (~5s)</td>
+                        <td>Rápido (~16ms)</td>
                     </tr>
                     <tr>
                         <td>100.000</td>
-                        <td>❌ Impossível</td>
-                        <td>✅ Rápido (~16ms)</td>
+                        <td>Impraticável</td>
+                        <td>Rápido (~16ms)</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    <div class="section">
-        <h2 class="section-title">Anatomia do Componente (HTML)</h2>
-        <p class="section-description">Tabela com virtual scrolling + status via <code>Badge</code> (pill).</p>
-        <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
-            <li><code>div.table-container</code>: contêiner onde o JS renderiza o conteúdo visível.</li>
-            <li><code>table</code> (gerado em runtime pelo demo): <code>thead</code> + <code>tbody</code>.</li>
-            <li>Status: <code>span.badge badge-success|badge-warning|badge-neutral</code> dentro de células <code>td</code>.</li>
-            <li>Interação (demo): cabeçalho clicável para sort (opcional no projeto).</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2 class="section-title">Como Usar (HTML)</h2>
-        <p class="section-description">No demo, o HTML da tabela é gerado dinamicamente. Você precisa do contêiner + instanciar o VirtualScrollTable.</p>
-        <pre class="code" style="font-size:12px;"><code>{/* HTML + JS (min) */}
-&lt;div id="table-10000" class="table-container compact"&gt;&lt;/div&gt;
-
-&lt;script&gt;
-  const data = generateData(10000);
-  const table = new VirtualScrollTable('table-10000', data, { compact: true });
-&lt;/script&gt;
-
-&lt;!-- quando renderizar linhas, status deve usar: --&gt;
-&lt;span class="badge badge-success"&gt;Ativo&lt;/span&gt;
-&lt;span class="badge badge-warning"&gt;Férias&lt;/span&gt;
-&lt;span class="badge badge-neutral"&gt;Inativo&lt;/span&gt;
-        </code></pre>
-    </div>
-
-    <div class="section">
-        <h2 class="section-title">Como Usar (React)</h2>
-        <p class="section-description" style="margin-bottom:16px;">
-            Para células de status, use <code>Badge</code> com formato pill (radius full). No app, a renderização do
-            virtual scroll deve preservar o mesmo componente para consistência visual.
-        </p>
-        <pre class="code" style="font-size:12px;background:var(--ds-bg-subtle);padding:12px;border-radius:12px;overflow-x:auto;">
-<code>{/* JSX */}
-import { Badge } from '@/components/ui/Badge';
-
-<Badge variant="success">Ativo</Badge>
-<Badge variant="warning">Férias</Badge>
-<Badge variant="neutral">Inativo</Badge>
-        </code>
-        </pre>
     </div>
 
     <script>
-        // Generate dataset
+        function readCssPx(varName, fallback) {
+            var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            if (!v) return fallback;
+            var n = parseFloat(v);
+            return isNaN(n) ? fallback : n;
+        }
+
         function generateData(count) {
-            const firstNames = ['João', 'Maria', 'Pedro', 'Ana', 'Carlos', 'Beatriz', 'Rafael', 'Juliana', 'Lucas', 'Fernanda', 'Bruno', 'Camila', 'Diego', 'Elena', 'Felipe'];
-            const lastNames = ['Silva', 'Santos', 'Costa', 'Oliveira', 'Ferreira', 'Rodrigues', 'Almeida', 'Lima', 'Souza', 'Pereira', 'Carvalho', 'Ribeiro', 'Martins', 'Rocha', 'Alves'];
-            const roles = ['Desenvolvedor', 'Designer', 'Product Manager', 'Analista de Dados', 'QA Engineer', 'DevOps', 'Tech Lead'];
-            const departments = ['Tecnologia', 'Produto', 'Analytics', 'Marketing', 'Vendas'];
-            const statuses = ['active', 'inactive', 'vacation'];
-            
-            const data = [];
-            for (let i = 0; i < count; i++) {
-                const firstName = firstNames[i % firstNames.length];
-                const lastName = lastNames[Math.floor(i / firstNames.length) % lastNames.length];
-                const name = `${firstName} ${lastName}`;
-                
+            var firstNames = ['João', 'Maria', 'Pedro', 'Ana', 'Carlos', 'Beatriz', 'Rafael', 'Juliana', 'Lucas', 'Fernanda', 'Bruno', 'Camila', 'Diego', 'Elena', 'Felipe'];
+            var lastNames = ['Silva', 'Santos', 'Costa', 'Oliveira', 'Ferreira', 'Rodrigues', 'Almeida', 'Lima', 'Souza', 'Pereira', 'Carvalho', 'Ribeiro', 'Martins', 'Rocha', 'Alves'];
+            var roles = ['Desenvolvedor', 'Designer', 'Product Manager', 'Analista de Dados', 'QA Engineer', 'DevOps', 'Tech Lead'];
+            var departments = ['Tecnologia', 'Produto', 'Analytics', 'Marketing', 'Vendas'];
+            var statuses = ['active', 'inactive', 'vacation'];
+            var data = [];
+            var i;
+            for (i = 0; i < count; i++) {
+                var firstName = firstNames[i % firstNames.length];
+                var lastName = lastNames[Math.floor(i / firstNames.length) % lastNames.length];
+                var name = firstName + ' ' + lastName;
                 data.push({
                     id: i + 1,
-                    name,
-                    email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@empresa.com`,
+                    name: name,
+                    email: firstName.toLowerCase() + '.' + lastName.toLowerCase() + '@empresa.com',
                     role: roles[i % roles.length],
                     status: statuses[i % statuses.length],
                     department: departments[i % departments.length],
@@ -438,178 +581,179 @@ import { Badge } from '@/components/ui/Badge';
             return data;
         }
 
-        // Virtual Scroll Table
-        class VirtualScrollTable {
-            constructor(containerId, data, options = {}) {
-                this.container = document.getElementById(containerId);
-                this.data = data;
-                this.rowHeight = options.compact ? 45 : 53;
-                this.containerHeight = 500;
-                this.visibleCount = Math.ceil(this.containerHeight / this.rowHeight);
-                this.bufferCount = 5;
-                this.scrollTop = 0;
-                this.sortKey = null;
-                this.sortDirection = null;
-                
-                this.init();
-            }
-
-            init() {
-                const scrollArea = document.createElement('div');
-                scrollArea.className = 'table-scroll-area';
-                scrollArea.addEventListener('scroll', (e) => this.handleScroll(e));
-                
-                const virtualBody = document.createElement('div');
-                virtualBody.className = 'table-virtual-body';
-                virtualBody.style.height = `${this.data.length * this.rowHeight}px`;
-                
-                // Header
-                const headerTable = document.createElement('table');
-                headerTable.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th class="sortable" data-key="id">ID</th>
-                            <th class="sortable" data-key="name">Nome</th>
-                            <th class="sortable" data-key="email">Email</th>
-                            <th class="sortable" data-key="department">Departamento</th>
-                            <th class="sortable" data-key="status">Status</th>
-                        </tr>
-                    </thead>
-                `;
-                
-                // Add sort handlers
-                headerTable.querySelectorAll('th.sortable').forEach(th => {
-                    th.addEventListener('click', () => this.handleSort(th.dataset.key));
-                });
-                
-                // Rows container
-                this.rowsContainer = document.createElement('div');
-                this.rowsContainer.style.position = 'relative';
-                
-                virtualBody.appendChild(headerTable);
-                virtualBody.appendChild(this.rowsContainer);
-                scrollArea.appendChild(virtualBody);
-                this.container.appendChild(scrollArea);
-                
-                this.scrollArea = scrollArea;
-                this.render();
-            }
-
-            handleScroll(e) {
-                this.scrollTop = e.target.scrollTop;
-                this.render();
-            }
-
-            handleSort(key) {
-                if (this.sortKey === key) {
-                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-                } else {
-                    this.sortKey = key;
-                    this.sortDirection = 'asc';
-                }
-                
-                this.data.sort((a, b) => {
-                    const aVal = a[key];
-                    const bVal = b[key];
-                    const result = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
-                    return this.sortDirection === 'asc' ? result : -result;
-                });
-                
-                // Update header
-                this.container.querySelectorAll('th').forEach(th => {
-                    th.classList.remove('sorted-asc', 'sorted-desc');
-                    if (th.dataset.key === key) {
-                        th.classList.add(`sorted-${this.sortDirection}`);
-                    }
-                });
-                
-                this.render();
-            }
-
-            render() {
-                const startIndex = Math.max(0, Math.floor(this.scrollTop / this.rowHeight) - this.bufferCount);
-                const endIndex = Math.min(this.data.length, startIndex + this.visibleCount + this.bufferCount * 2);
-                const visibleData = this.data.slice(startIndex, endIndex);
-                const offsetY = startIndex * this.rowHeight;
-                
-                const rowsTable = document.createElement('table');
-                rowsTable.className = 'table-rows';
-                rowsTable.style.transform = `translateY(${offsetY}px)`;
-                
-                const tbody = document.createElement('tbody');
-                
-                visibleData.forEach((row, idx) => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'clickable';
-                    
-                    const statusBadge = row.status === 'active' ? 
-                        '<span class="badge badge-success">Ativo</span>' :
-                        row.status === 'vacation' ?
-                        '<span class="badge badge-warning">Férias</span>' :
-                        '<span class="badge badge-neutral">Inativo</span>';
-                    
-                    tr.innerHTML = `
-                        <td>${row.id}</td>
-                        <td>${row.name}</td>
-                        <td>${row.email}</td>
-                        <td>${row.department}</td>
-                        <td>${statusBadge}</td>
-                    `;
-                    
-                    tr.addEventListener('click', () => {
-                        console.log('Clicou em:', row.name);
-                        alert(`Funcionário: ${row.name}\nEmail: ${row.email}\nDepartamento: ${row.department}`);
-                    });
-                    
-                    tbody.appendChild(tr);
-                });
-                
-                rowsTable.appendChild(tbody);
-                this.rowsContainer.innerHTML = '';
-                this.rowsContainer.appendChild(rowsTable);
-                
-                // Update stats
-                const renderedCount = endIndex - startIndex;
-                const statsElement = document.getElementById(`rendered-${this.data.length}`);
-                if (statsElement) {
-                    statsElement.textContent = `~${renderedCount}`;
-                }
-            }
+        function VirtualScrollTable(containerId, data, options) {
+            options = options || {};
+            this.container = document.getElementById(containerId);
+            this.data = data;
+            this.compact = !!options.compact;
+            this.rowHeight = this.compact
+                ? readCssPx('--vs-table-row-compact', 45)
+                : readCssPx('--vs-table-row-default', 53);
+            this.containerHeight = 400;
+            this.visibleCount = 12;
+            this.bufferCount = 5;
+            this.scrollTop = 0;
+            this.sortKey = null;
+            this.sortDirection = null;
+            this.scrollArea = null;
+            this.rowsContainer = null;
+            this.virtualBody = null;
+            this._onResize = null;
+            this.init();
         }
 
-        // Initialize tables
-        const data100 = generateData(100);
-        const data10000 = generateData(10000);
-        
+        VirtualScrollTable.prototype.syncLayout = function () {
+            if (!this.scrollArea) return;
+            var h = this.scrollArea.clientHeight;
+            /* Fallback se layout ainda não mediu (ex.: primeira pintura) */
+            this.containerHeight = h > 0 ? h : Math.max(280, Math.floor(window.innerHeight * 0.4));
+            this.visibleCount = Math.ceil(this.containerHeight / this.rowHeight) + 2;
+            this.render();
+        };
+
+        VirtualScrollTable.prototype.init = function () {
+            var self = this;
+            var scrollArea = document.createElement('div');
+            scrollArea.className = 'table-scroll-area';
+            scrollArea.addEventListener('scroll', function (e) {
+                self.handleScroll(e);
+            });
+
+            var virtualBody = document.createElement('div');
+            virtualBody.className = 'table-virtual-body';
+            virtualBody.style.height = this.data.length * this.rowHeight + 'px';
+
+            var headerTable = document.createElement('table');
+            headerTable.innerHTML =
+                '<thead><tr>' +
+                '<th class="sortable" data-key="id" tabindex="0" role="columnheader">ID</th>' +
+                '<th class="sortable" data-key="name" tabindex="0" role="columnheader">Nome</th>' +
+                '<th class="sortable" data-key="email" tabindex="0" role="columnheader">Email</th>' +
+                '<th class="sortable" data-key="department" tabindex="0" role="columnheader">Departamento</th>' +
+                '<th class="sortable" data-key="status" tabindex="0" role="columnheader">Status</th>' +
+                '</tr></thead>';
+
+            headerTable.querySelectorAll('th.sortable').forEach(function (th) {
+                th.addEventListener('click', function () {
+                    self.handleSort(th.dataset.key);
+                });
+                th.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        self.handleSort(th.dataset.key);
+                    }
+                });
+            });
+
+            this.rowsContainer = document.createElement('div');
+            this.rowsContainer.style.position = 'relative';
+
+            virtualBody.appendChild(headerTable);
+            virtualBody.appendChild(this.rowsContainer);
+            scrollArea.appendChild(virtualBody);
+            this.container.appendChild(scrollArea);
+
+            this.scrollArea = scrollArea;
+            this.virtualBody = virtualBody;
+
+            this._onResize = function () {
+                self.syncLayout();
+            };
+            window.addEventListener('resize', this._onResize);
+
+            requestAnimationFrame(function () {
+                self.syncLayout();
+                if (self.virtualBody) {
+                    self.virtualBody.style.height = self.data.length * self.rowHeight + 'px';
+                }
+            });
+        };
+
+        VirtualScrollTable.prototype.handleScroll = function (e) {
+            this.scrollTop = e.target.scrollTop;
+            this.render();
+        };
+
+        VirtualScrollTable.prototype.handleSort = function (key) {
+            var self = this;
+            if (this.sortKey === key) {
+                this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                this.sortKey = key;
+                this.sortDirection = 'asc';
+            }
+            this.data.sort(function (a, b) {
+                var aVal = a[key];
+                var bVal = b[key];
+                var result = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+                return self.sortDirection === 'asc' ? result : -result;
+            });
+            this.container.querySelectorAll('th').forEach(function (th) {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+                if (th.dataset.key === key) {
+                    th.classList.add('sorted-' + self.sortDirection);
+                }
+            });
+            this.render();
+        };
+
+        VirtualScrollTable.prototype.render = function () {
+            var startIndex = Math.max(0, Math.floor(this.scrollTop / this.rowHeight) - this.bufferCount);
+            var endIndex = Math.min(this.data.length, startIndex + this.visibleCount + this.bufferCount * 2);
+            var visibleData = this.data.slice(startIndex, endIndex);
+            var offsetY = startIndex * this.rowHeight;
+
+            var rowsTable = document.createElement('table');
+            rowsTable.className = 'table-rows';
+            rowsTable.style.transform = 'translateY(' + offsetY + 'px)';
+
+            var tbody = document.createElement('tbody');
+            var self = this;
+
+            visibleData.forEach(function (row) {
+                var tr = document.createElement('tr');
+                tr.className = 'clickable';
+                var statusBadge =
+                    row.status === 'active'
+                        ? '<span class="badge badge-success">Ativo</span>'
+                        : row.status === 'vacation'
+                          ? '<span class="badge badge-warning">Férias</span>'
+                          : '<span class="badge badge-neutral">Inativo</span>';
+                tr.innerHTML =
+                    '<td>' +
+                    row.id +
+                    '</td><td>' +
+                    row.name +
+                    '</td><td>' +
+                    row.email +
+                    '</td><td>' +
+                    row.department +
+                    '</td><td>' +
+                    statusBadge +
+                    '</td>';
+                tr.addEventListener('click', function () {
+                    window.alert('Funcionário: ' + row.name + '\nEmail: ' + row.email + '\nDepartamento: ' + row.department);
+                });
+                tbody.appendChild(tr);
+            });
+
+            rowsTable.appendChild(tbody);
+            this.rowsContainer.innerHTML = '';
+            this.rowsContainer.appendChild(rowsTable);
+
+            var renderedCount = endIndex - startIndex;
+            var statsElement = document.getElementById('rendered-' + this.data.length);
+            if (statsElement) {
+                statsElement.textContent = '~' + renderedCount;
+            }
+        };
+
+        var data100 = generateData(100);
+        var data10000 = generateData(10000);
         new VirtualScrollTable('table-100', data100);
         new VirtualScrollTable('table-10000', data10000, { compact: true });
-        
-        console.log('✅ Tabelas carregadas!');
-        console.log('📊 100 linhas renderizadas');
-        console.log('⚡ 10.000 linhas com virtual scrolling');
     </script>
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Lista do select (menu)',file:'select-menu-list-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
-
-<script src="ds-demo-sidebar.js" defer></script>
+    <script src="ds-demo-topbar-search.js" defer></script>
+    <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

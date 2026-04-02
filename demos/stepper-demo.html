@@ -4,109 +4,216 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TP.IA - Stepper Component</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('ds-theme') || 'light';
+        document.documentElement.dataset.dsTheme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
-    /* Header/layout base vêm de ds-demo-base.css */
+    :root {
+      --st-demo-page-pad: var(--ds-space-lg);
+      --st-demo-after-topbar: var(--ds-space-xl);
+    }
+    @media (min-width: 744px) {
+      :root {
+        --st-demo-page-pad: var(--ds-space-xl);
+        --st-demo-after-topbar: var(--ds-space-2xl);
+      }
+    }
+    @media (min-width: 1024px) {
+      :root {
+        --st-demo-page-pad: 40px;
+        --st-demo-after-topbar: 40px;
+      }
+    }
 
-    /* Sticky Stepper “grudado” no header */
-    .stepper{
+    body.ds-stepper-demo {
+      font-family: var(--ds-font-family);
+      background-color: var(--ds-bg);
+      padding: var(--st-demo-page-pad);
+      color: var(--ds-fg);
+      margin: 0;
+    }
+
+    body.ds-stepper-demo *,
+    body.ds-stepper-demo *::before,
+    body.ds-stepper-demo *::after {
+      box-sizing: border-box;
+    }
+
+    .ds-stepper-demo .ds-topbar {
+      margin: 0 calc(-1 * var(--st-demo-page-pad)) var(--st-demo-after-topbar);
+      width: calc(100% + 2 * var(--st-demo-page-pad));
+      box-sizing: border-box;
+    }
+
+    .ds-stepper-demo .ds-container > h2 {
+      font-size: clamp(1.125rem, 3vw, 1.75rem);
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-success);
+      margin: 0 0 var(--ds-space-sm) 0;
+      line-height: var(--ds-line-height-tight);
+    }
+
+    .ds-stepper-demo p.lead {
+      margin: 0 0 var(--ds-space-lg) 0;
+      font-size: var(--ds-font-size-lg);
+      color: var(--ds-fg-muted);
+      line-height: var(--ds-line-height-relaxed);
+      max-width: 48rem;
+    }
+
+    .ds-stepper-demo .section-title {
+      color: var(--ds-success);
+    }
+
+    /* Sticky abaixo da topbar (altura temática via --ds-topbar-height) */
+    .stepper {
       position: sticky;
-      top: 56px;
+      top: var(--ds-topbar-height);
       z-index: 90;
       background: var(--ds-surface);
       border-bottom: 1px solid var(--ds-border);
-      padding: 12px 0;
-      margin-bottom: 18px;
+      padding: var(--ds-space-md) 0;
+      margin-bottom: var(--ds-space-lg);
     }
 
-    .step-row{
+    .step-row {
       display: flex;
       align-items: center;
-      padding: 0 16px;
-      gap: 6px;
+      padding: 0;
+      gap: var(--ds-space-sm);
     }
-    @media(min-width:744px){ .step-row{ padding-left: 24px; padding-right: 24px; } }
+    @media (min-width: 744px) {
+      .step-row {
+        gap: var(--ds-space-md);
+      }
+    }
 
-    .bar-segment{
+    .bar-segment {
       flex: 1;
-      height: 6px;
-      border-radius: 9999px;
+      height: var(--ds-space-sm);
+      border-radius: var(--ds-radius-full);
       background: var(--ds-border);
     }
-    .bar-segment.active{
+    .bar-segment.active {
       background: var(--ds-success);
     }
 
-    .step-label{
-      padding: 8px 16px 0;
-      font-size: 12px;
-      font-weight: 900;
+    .step-label {
+      padding: var(--ds-space-sm) 0 0;
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-bold);
       color: var(--ds-success);
       text-align: center;
+      line-height: var(--ds-line-height-normal);
     }
-    @media(min-width:744px){ .step-label{ padding-left: 24px; padding-right: 24px; } }
 
-    .controls{
+    .controls {
       display: flex;
-      gap: 12px;
+      gap: var(--ds-space-md);
       flex-wrap: wrap;
-      margin: 12px 0 18px;
+      margin: var(--ds-space-md) 0 var(--ds-space-lg);
     }
 
-    .btn{
-      padding: 8px 16px;
-      border-radius: 9999px;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: var(--ds-space-sm) var(--ds-space-lg);
+      border-radius: var(--ds-radius-full);
       border: 1px solid var(--ds-border);
       background: var(--ds-success-bg);
       color: var(--ds-success-fg);
       cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
+      font-family: inherit;
+      font-weight: var(--ds-font-weight-semibold);
+      font-size: var(--ds-font-size-md);
+      line-height: var(--ds-line-height-tight);
     }
-    .btn:hover{ background: var(--ds-bg-subtle); border-color: var(--ds-success); }
-
-    .card{
-      background: var(--ds-surface);
-      border: 1px solid var(--ds-border);
-      border-radius: 12px;
-      padding: 18px;
-    }
-    .card p{ margin-top: 8px; line-height: 1.7; }
-
-    .section{
-      background: var(--ds-surface);
-      border: 1px solid var(--ds-border);
-      border-radius: 12px;
-      padding: 18px;
-      margin-top: 18px;
-    }
-    .section-title{
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--ds-success);
-      margin-bottom: 8px;
-    }
-    .section-subtitle{
-      font-size: 13px;
-      color: var(--ds-fg-muted);
-      line-height: 1.6;
-      margin-bottom: 14px;
-    }
-    pre.code{
-      margin-top: 10px;
+    .btn:hover {
       background: var(--ds-bg-subtle);
-      border-radius: 10px;
-      padding: 12px;
-      overflow-x: auto;
-      font-size: 12px;
-      color: var(--ds-fg);
-      line-height: 1.5;
+      border-color: var(--ds-success);
     }
-    pre.code code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .btn:focus {
+      outline: none;
+    }
+    .btn:focus-visible {
+      box-shadow: var(--ds-focus-ring);
+    }
+    @media (min-width: 744px) {
+      .btn {
+        min-height: 0;
+        padding: var(--ds-space-sm) var(--ds-space-lg);
+      }
+    }
+
+    .stepper-demo__card {
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius-lg);
+      padding: var(--ds-space-lg);
+      margin-top: var(--ds-space-xl);
+    }
+    @media (min-width: 744px) {
+      .stepper-demo__card {
+        padding: var(--ds-space-xl);
+      }
+    }
+
+    .stepper-demo__card-title {
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-fg);
+      font-size: var(--ds-font-size-lg);
+    }
+
+    .stepper-demo__card p {
+      margin-top: var(--ds-space-sm);
+      line-height: var(--ds-line-height-relaxed);
+      color: var(--ds-fg-muted);
+      font-size: var(--ds-font-size-md);
+    }
+
+    .stepper-demo__card p:first-of-type {
+      margin-top: var(--ds-space-md);
+    }
+
+    .stepper-demo__list {
+      padding-left: var(--ds-space-lg);
+      color: var(--ds-fg-muted);
+      line-height: var(--ds-line-height-relaxed);
+      font-size: var(--ds-font-size-md);
+    }
+
+    .stepper-demo__list li {
+      margin-bottom: var(--ds-space-xs);
+    }
+
+    .stepper-demo__react-label {
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-fg);
+      font-size: var(--ds-font-size-md);
+      margin-bottom: var(--ds-space-sm);
+    }
+
+    .stepper-demo__react-label--spaced {
+      margin-top: var(--ds-space-md);
+      margin-bottom: var(--ds-space-sm);
+    }
+
+    .section-subtitle--tight-top {
+      margin-top: var(--ds-space-md);
+    }
   </style>
 </head>
-<body>
+<body class="ds-stepper-demo">
   <nav class="ds-topbar">
     <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -137,8 +244,19 @@
   </div>
 
   <div class="ds-container">
-    <h2 style="font-size:18px;font-weight:900;color:var(--ds-fg);margin-bottom:10px;">Stepper</h2>
-    <p style="color:var(--ds-fg-muted);line-height:1.6;margin-bottom:18px;">Verde = steps passados e o step atual. Cinza = o que falta. O nome do step atual fica abaixo.</p>
+    <h2>Stepper</h2>
+    <p class="lead">Barra de progresso por segmentos: o passo atual e os anteriores usam a cor de sucesso; o que falta fica neutro. O rótulo do passo atual aparece abaixo da barra. Use em fluxos curtos (ex.: termos → confirmação → sucesso).</p>
+
+    <div class="note">
+      <h3>Acessibilidade</h3>
+      <ul>
+        <li><strong>Sticky:</strong> o stepper permanece visível ao rolar, alinhado à topbar.</li>
+        <li><strong>Contraste:</strong> cores via tokens do DS (<code>--ds-success</code>, <code>--ds-border</code>).</li>
+        <li><strong>Rótulo textual:</strong> o passo atual é anunciado visualmente; em produto, associe a <code>aria-current="step"</code> no passo ativo quando for navegação por lista.</li>
+        <li><strong>Teclado:</strong> estes botões de demo têm foco visível (<code>:focus-visible</code>).</li>
+      </ul>
+    </div>
+
     <div class="stepper" id="stepper">
       <div class="step-row" id="step-row">
         <!-- segmentos gerados via JS -->
@@ -146,30 +264,21 @@
       <div class="step-label" id="step-label"></div>
     </div>
     <div class="controls">
-      <button class="btn" onclick="setStep(0)">Ir para Step 1</button>
-      <button class="btn" onclick="setStep(1)">Ir para Step 2</button>
-      <button class="btn" onclick="setStep(2)">Ir para Step 3</button>
-    </div>
-
-    <div class="note">
-      <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
-      <ul>
-        <li><strong>Sticky consistente:</strong> stepper permanece visível durante o fluxo.</li>
-        <li><strong>Contraste:</strong> cores baseadas no design system (sucesso/borda).</li>
-        <li><strong>Rótulo do passo atual:</strong> ajuda navegação e entendimento do progresso.</li>
-      </ul>
+      <button type="button" class="btn" onclick="setStep(0)">Ir para Step 1</button>
+      <button type="button" class="btn" onclick="setStep(1)">Ir para Step 2</button>
+      <button type="button" class="btn" onclick="setStep(2)">Ir para Step 3</button>
     </div>
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
-        <li><code>div.stepper</code>: contêiner do progresso (wrapper).</li>
+      <ul class="stepper-demo__list">
+        <li><code>div.stepper</code>: contêiner do progresso (wrapper sticky).</li>
         <li><code>div.step-row</code>: linha onde os segmentos <code>div.bar-segment</code> são renderizados.</li>
-        <li><code>div.bar-segment.active</code>: segmento verde (passados + step atual).</li>
-        <li><code>div.step-label</code>: rótulo do step atual (texto abaixo do progresso).</li>
+        <li><code>div.bar-segment.active</code>: segmento preenchido (passados + passo atual).</li>
+        <li><code>div.step-label</code>: rótulo do passo atual (texto abaixo da barra).</li>
       </ul>
-      <div class="section-subtitle" style="margin-top:12px;">
-        Neste demo, o markup do row/label fica fixo e os segmentos são adicionados via JS para facilitar a reutilização.
+      <div class="section-subtitle section-subtitle--tight-top">
+        Neste demo, o markup do row e do label fica fixo e os segmentos são adicionados via JS para facilitar a reutilização.
       </div>
     </div>
 
@@ -178,8 +287,7 @@
       <div class="section-subtitle">
         Copie o contêiner + IDs e use o JS equivalente para gerar os <code>bar-segment</code> com base em <code>currentStep</code>.
       </div>
-      <pre class="code"><code>{/* HTML + JS */}
-&lt;div class="stepper" id="stepper"&gt;
+      <pre class="code"><code>&lt;div class="stepper" id="stepper"&gt;
   &lt;div class="step-row" id="step-row"&gt;&lt;/div&gt;
   &lt;div class="step-label" id="step-label"&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -214,15 +322,14 @@
   }
 
   renderStepper();
-&lt;/script&gt;
-      </code></pre>
+&lt;/script&gt;</code></pre>
     </div>
 
-    <div class="card">
-      <div style="font-weight:900;">Conteúdo da página</div>
+    <div class="stepper-demo__card">
+      <div class="stepper-demo__card-title">Conteúdo da página</div>
       <p>Role para ver que o stepper permanece grudado abaixo do header.</p>
-      <p>Exemplo: você pode usar isso como base para fluxos com “Termos -> PIN -> Sucesso”.</p>
-      <p style="margin-top:14px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <p>Exemplo: você pode usar isso como base para fluxos com “Termos → PIN → Sucesso”.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
@@ -230,30 +337,28 @@
     <div class="section">
       <div class="section-title">Como Usar (React)</div>
       <div class="section-subtitle">
-        O título do step atual deve ficar centralizado e com fonte reduzida para não “estourar” o fluxo.
-        O stepper é <code>sticky</code> logo abaixo do header.
+        O título do passo atual deve ficar centralizado e com tipografia reduzida para não competir com o conteúdo do fluxo.
+        O stepper pode ser <code>sticky</code> logo abaixo do header; use o token CSS <code>--ds-topbar-height</code> (ou a prop <code>offsetTop</code>) para alinhar a outros temas.
       </div>
 
-      <div style="font-weight:900;color:var(--ds-n800);margin-bottom:8px;">Exemplo</div>
-      <pre class="code"><code>{/* JSX */}
-import { Stepper } from '@/components/ui/Stepper';
+      <div class="stepper-demo__react-label">Exemplo</div>
+      <pre class="code"><code>import { Stepper } from '@/components/ui/Stepper';
 
-<Stepper
+&lt;Stepper
   steps={[
     { label: 'Termos' },
     { label: 'Confirmação com PIN' },
     { label: 'Sucesso' },
   ]}
   currentStep={1}
-/>
-</code></pre>
+/&gt;</code></pre>
 
-      <div style="font-weight:900;color:var(--ds-n800);margin:14px 0 8px;">Props principais</div>
-      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
+      <div class="stepper-demo__react-label stepper-demo__react-label--spaced">Props principais</div>
+      <ul class="stepper-demo__list">
         <li><code>steps</code>: lista de labels dos passos</li>
-        <li><code>currentStep</code>: índice do step atual (0-based)</li>
+        <li><code>currentStep</code>: índice do passo atual (0-based)</li>
         <li><code>sticky</code> (opcional): mantém o stepper fixo abaixo do header</li>
-        <li><code>offsetTop</code> (opcional): altura do header (default: 56)</li>
+        <li><code>offsetTop</code> (opcional): deslocamento em px (equivalente a <code>--ds-topbar-height</code> no HTML/CSS)</li>
       </ul>
     </div>
   </div>
@@ -275,7 +380,6 @@ import { Stepper } from '@/components/ui/Stepper';
       steps.forEach((s, idx) => {
         const seg = document.createElement("div");
         seg.className = "bar-segment";
-        // Segmentos até o step atual ficam verdes (passados + atual).
         if (idx <= currentStep) seg.classList.add("active");
         stepRow.appendChild(seg);
       });
@@ -291,8 +395,7 @@ import { Stepper } from '@/components/ui/Stepper';
     renderStepper();
   </script>
 
-<script src="ds-demo-topbar-search.js" defer></script>
-<script src="ds-demo-sidebar.js" defer></script>
+  <script src="ds-demo-topbar-search.js" defer></script>
+  <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
-
