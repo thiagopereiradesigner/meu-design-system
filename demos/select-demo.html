@@ -72,125 +72,12 @@
             color: var(--ds-error);
         }
 
-        /* SELECT */
-        .select-container {
-            position: relative;
-        }
-
-        .field-input-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 16px;
-            background-color: var(--ds-surface);
-            border: 1px solid var(--ds-border);
-            border-radius: var(--ds-radius-sm);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .field-input-container:hover:not(.disabled) {
-            border-color: var(--ds-success);
-        }
-
-        .field-input-container.error {
-            border-color: var(--ds-error);
-        }
-
-        .field-input-container.disabled {
-            background-color: var(--ds-bg-subtle);
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .select-text {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--ds-placeholder);
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .select-text.has-value {
-            color: var(--ds-fg);
-        }
-
-        .select-dropdown {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: var(--ds-surface);
-            border: 1px solid var(--ds-border);
-            border-radius: var(--ds-radius-sm);
-            box-shadow: var(--ds-shadow-md);
-            max-height: 240px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-
-        .select-dropdown.open {
-            display: block;
-        }
-
-        .select-option {
-            padding: 12px 16px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.15s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .select-option:hover:not(.disabled) {
-            background-color: var(--ds-success-bg);
-        }
-
-        .select-option.selected {
-            background-color: var(--ds-success-bg);
-        }
-
-        .select-option.disabled {
-            color: var(--ds-fg-subtle);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .chevron {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-            transition: transform 0.2s ease;
-        }
-
-        .chevron.open {
-            transform: rotate(180deg);
-        }
+        /* SELECT: estrutura em ds-demo-base.css + ds-demo-select.js */
 
         .icon-sm {
             width: 16px;
             height: 16px;
             flex-shrink: 0;
-        }
-
-        .select-search {
-            padding: 8px;
-            border-bottom: 1px solid var(--ds-border);
-        }
-
-        .select-search input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid var(--ds-border);
-            border-radius: 4px;
-            font-size: 12px;
-            font-family: var(--ds-font-family);
-            outline: none;
         }
 
         .code-block {
@@ -259,6 +146,7 @@
         <!-- Lead -->
         <p class="section-subtitle">
             Dropdown de seleção única com estados (normal, erro e disabled), com opção de busca no conteúdo.
+            Estilos partilhados em <code>ds-demo-base.css</code>; comportamento em <code>ds-demo-select.js</code> (reutilizado no Drawer e noutras demos).
         </p>
 
         <!-- Nota Acessibilidade (WCAG/ARIA) -->
@@ -584,52 +472,7 @@ function SelectField({
         </div>
     </div>
 
-    <script>
-        function toggleDropdown(selectId) {
-            const dropdown = document.getElementById(selectId + '-dropdown');
-            const chevron = document.getElementById(selectId + '-chevron');
-            const isOpen = dropdown.classList.contains('open');
-            
-            document.querySelectorAll('.select-dropdown').forEach(d => d.classList.remove('open'));
-            document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
-            
-            if (!isOpen) {
-                dropdown.classList.add('open');
-                if (chevron) chevron.classList.add('open');
-            }
-        }
-
-        function selectOption(selectId, value, element) {
-            if (element.classList.contains('disabled')) return;
-            
-            const text = document.getElementById(selectId + '-text');
-            text.textContent = value;
-            text.classList.add('has-value');
-            
-            const container = element.parentElement;
-            container.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            
-            toggleDropdown(selectId);
-        }
-
-        function filterOptions(selectId, searchTerm) {
-            const optionsContainer = document.getElementById(selectId + '-options');
-            const options = optionsContainer.querySelectorAll('.select-option');
-            
-            options.forEach(option => {
-                const label = option.getAttribute('data-label').toLowerCase();
-                option.style.display = label.includes(searchTerm.toLowerCase()) ? 'flex' : 'none';
-            });
-        }
-
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.select-container')) {
-                document.querySelectorAll('.select-dropdown').forEach(d => d.classList.remove('open'));
-                document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
-            }
-        });
-    </script>
+    <script src="ds-demo-select.js"></script>
 <!-- DS Navigation Search Script -->
 <script>
 (function(){

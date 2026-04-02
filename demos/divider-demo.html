@@ -14,35 +14,35 @@
     .ds-topbar{
       position: sticky; top: 0; z-index: 10;
       background: var(--ds-surface); border-bottom: 1px solid var(--ds-border);
-      height: 56px; display: flex; align-items: center; gap: 12px;
-      padding: 0 16px;
+      height: 56px; display: flex; align-items: center; gap: var(--ds-space-md);
+      padding: 0 var(--ds-space-lg);
       box-shadow: var(--ds-shadow-sm);
     }
     .ds-topbar-title{ font-size: 14px; font-weight: 700; color: var(--ds-success); }
-    .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 40px 16px; }
-    @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
+    .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 40px var(--ds-space-lg); box-sizing: border-box; }
+    @media(min-width:744px){ .ds-container{ padding-left: var(--ds-space-xl); padding-right: var(--ds-space-xl); } }
 
-    h1{ font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--ds-success); }
-    .lead{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 28px; line-height: 1.6; max-width: 760px; }
+    h1{ font-size: 28px; font-weight: 700; margin-bottom: var(--ds-space-sm); color: var(--ds-success); }
+    .lead{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: calc(var(--ds-space-xl) + var(--ds-space-xs)); line-height: 1.6; max-width: 760px; }
 
     .section{
-      background: var(--ds-surface); border-radius: 12px; border: 1px solid var(--ds-border);
-      padding: 24px; margin-bottom: 24px;
+      background: var(--ds-surface); border-radius: var(--ds-radius-lg); border: 1px solid var(--ds-border);
+      padding: var(--ds-space-xl); margin-bottom: var(--ds-space-xl);
     }
-    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 12px; }
-    .section-subtitle{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 16px; line-height: 1.6; }
+    .section-title{ font-size: 18px; font-weight: 800; margin-bottom: var(--ds-space-md); }
+    .section-subtitle{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: var(--ds-space-lg); line-height: 1.6; }
 
     .divider{
       width: 100%;
       height: 1px;
       background: var(--ds-border);
-      margin: 16px 0;
+      margin: var(--ds-space-lg) 0;
     }
     .divider.thick{ height: 2px; background: var(--ds-success); }
     .divider.vertical{
       width: 1px;
       height: 80px;
-      margin: 0 16px;
+      margin: 0 var(--ds-space-lg);
       background: var(--ds-border);
     }
   </style>
@@ -107,13 +107,13 @@
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
+      <ul style="padding-left:var(--ds-space-lg);color:var(--ds-fg-muted);line-height:1.7;font-size:13px;">
         <li><code>div.divider</code>: separador base (horizontal).</li>
         <li><code>div.divider.thick</code>: variação de espessura.</li>
         <li><code>div.divider.vertical</code>: separador vertical.</li>
         <li><code>role="separator"</code> + <code>aria-orientation</code>: melhora entendimento para leitores de tela.</li>
       </ul>
-      <div class="section-subtitle" style="margin-top:12px;">
+      <div class="section-subtitle" style="margin-top:var(--ds-space-md);">
         A orientação (horizontal/vertical) deve ser consistente com o layout.
       </div>
     </div>
@@ -139,18 +139,18 @@
         Use `Divider` para separar seções/estados e melhorar leitura. Para acessibilidade, ele usa `role="separator"`.
       </div>
 
-      <pre class="code" style="margin-top:0;border-radius:12px;padding:12px;overflow-x:auto;font-size:12px;">
+      <pre class="code" style="margin-top:0;border-radius:var(--ds-radius-lg);padding:var(--ds-space-md);overflow-x:auto;font-size:12px;">
         <code>{/* JSX */}
 import { Divider } from '@/components/ui/Divider';
 
 <Divider />
-<Divider thickness={2} margin="16px 0" color="var(--ds-success)" />
+<Divider thickness={2} margin="var(--ds-space-lg) 0" color="var(--ds-success)" />
 <Divider orientation="vertical" thickness={1} />
         </code>
       </pre>
 
-      <div style="font-size:13px;color:var(--ds-fg-muted);line-height:1.7;margin-top:14px;">
-        <div style="font-weight:800;color:var(--ds-fg);margin-bottom:6px;">Props principais</div>
+      <div style="font-size:13px;color:var(--ds-fg-muted);line-height:1.7;margin-top:var(--ds-space-md);">
+        <div style="font-weight:800;color:var(--ds-fg);margin-bottom:var(--ds-space-sm);">Props principais</div>
         <div><code>orientation</code>: horizontal | vertical</div>
         <div><code>thickness</code>: espessura (number)</div>
         <div><code>color</code>: cor (string/var)</div>

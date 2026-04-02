@@ -1028,6 +1028,148 @@ body.ds-demo-has-sidebar .ds-demo-main > .ds-container .note h3{
   text-align: left !important;
 }
 
+/*
+ * DS Select (dropdown custom) — fonte única para select-demo, drawer, etc.
+ * Escopo: apenas .select-container > .field-input-container (o Input usa .field-input-container fora deste pai).
+ */
+.select-container{
+  position: relative;
+}
+.select-container > .field-input-container{
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-md);
+  padding: var(--ds-space-md) var(--ds-space-lg);
+  min-height: 44px;
+  box-sizing: border-box;
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+/* Hover / foco alinhados ao Input (input-demo) */
+.select-container > .field-input-container:hover:not(.disabled):not(.error){
+  border-color: var(--ds-success);
+}
+.select-container > .field-input-container.error:hover:not(.disabled){
+  border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface));
+}
+.select-container > .field-input-container.error{
+  border-color: var(--ds-error);
+}
+.select-container > .field-input-container.disabled{
+  background-color: var(--ds-bg-subtle);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.select-container > .field-input-container:focus-within:not(.disabled):not(.error){
+  border-color: var(--ds-success);
+  box-shadow: var(--ds-focus-ring);
+}
+.select-container > .field-input-container.error:focus-within{
+  border-color: var(--ds-error);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent);
+}
+.select-text{
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ds-placeholder);
+  font-size: var(--ds-font-size-md);
+  line-height: 1.4;
+  text-align: left;
+}
+.select-text.has-value{
+  color: var(--ds-fg);
+}
+.select-dropdown{
+  position: absolute;
+  top: calc(100% + var(--ds-space-xs));
+  left: 0;
+  right: 0;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  box-shadow: var(--ds-shadow-md);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+.select-dropdown.open{
+  display: block;
+}
+.select-option{
+  padding: var(--ds-space-md) var(--ds-space-lg);
+  cursor: pointer;
+  font-size: var(--ds-font-size-md);
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.select-option:hover:not(.disabled){
+  background-color: var(--ds-success-bg);
+}
+.select-option.selected{
+  background-color: var(--ds-success-bg);
+}
+.select-option.disabled{
+  color: var(--ds-fg-subtle);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.select-container .chevron{
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+  color: var(--ds-icon-muted);
+}
+.select-container > .field-input-container:hover:not(.disabled):not(.error) .chevron,
+.select-container > .field-input-container:focus-within:not(.disabled):not(.error) .chevron,
+.select-container > .field-input-container:not(.disabled):not(.error) .chevron.open{
+  color: var(--ds-icon-accent);
+}
+.select-container > .field-input-container.error .chevron{
+  color: var(--ds-error);
+}
+.select-container > .field-input-container.error:hover:not(.disabled) .chevron{
+  color: color-mix(in srgb, var(--ds-error) 52%, var(--ds-surface));
+}
+.select-container > .field-input-container.disabled .chevron{
+  color: var(--ds-icon-muted);
+}
+.select-container .chevron.open{
+  transform: rotate(180deg);
+}
+.select-container .chevron path{
+  stroke: currentColor;
+}
+.select-search{
+  padding: var(--ds-space-sm);
+  border-bottom: 1px solid var(--ds-border);
+}
+.select-search input{
+  width: 100%;
+  padding: var(--ds-space-sm);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  font-size: var(--ds-font-size-sm);
+  font-family: var(--ds-font-family);
+  outline: none;
+  box-sizing: border-box;
+  background: var(--ds-surface);
+  color: var(--ds-fg);
+}
+.drawer .select-dropdown,
+.modal .select-dropdown{
+  z-index: 10050;
+}
+
 /* ===== Dark-mode hardcode guards (demos legadas) ===== */
 body.ds-demo-has-sidebar .ds-demo-main .code-block{
   background: var(--ds-pre-bg) !important;
@@ -1065,12 +1207,35 @@ body.ds-demo-has-sidebar .ds-demo-main .description{
   color: var(--ds-fg-muted) !important;
 }
 
-body.ds-demo-has-sidebar .ds-demo-main .field-input-container,
+/* Fundo/texto com !important; borda do wrapper Input/Select sem !important para não anular hover/foco (verde). */
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container{
+  background: var(--ds-surface) !important;
+  color: var(--ds-fg) !important;
+}
+
 body.ds-demo-has-sidebar .ds-demo-main .select-dropdown,
 body.ds-demo-has-sidebar .ds-demo-main .select-search input{
   background: var(--ds-surface) !important;
   border-color: var(--ds-border) !important;
   color: var(--ds-fg) !important;
+}
+
+/* Contorno padrão e estados (igual input-demo + Select base); !important só onde precisa bater com outros guards. */
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container:not(.error){
+  border-color: var(--ds-border);
+}
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container.error{
+  border-color: var(--ds-error) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container:hover:not(.disabled):not(.error),
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container:focus-within:not(.disabled):not(.error){
+  border-color: var(--ds-success) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container.error:hover:not(.disabled){
+  border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface)) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container.error:focus-within{
+  border-color: var(--ds-error) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .field-input,
@@ -1079,8 +1244,21 @@ body.ds-demo-has-sidebar .ds-demo-main .select-option{
   color: var(--ds-fg) !important;
 }
 
+/* Chevron do Select: repouso muted, hover/foco/aberto = accent (igual contorno do Input) */
 body.ds-demo-has-sidebar .ds-demo-main .select-container .chevron{
+  color: var(--ds-icon-muted) !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container:hover:not(.disabled):not(.error) .chevron,
+body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container:focus-within:not(.disabled):not(.error) .chevron,
+body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container:not(.disabled):not(.error) .chevron.open{
   color: var(--ds-icon-accent) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container.error .chevron{
+  color: var(--ds-error) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .select-container > .field-input-container.error:hover:not(.disabled) .chevron{
+  color: color-mix(in srgb, var(--ds-error) 52%, var(--ds-surface)) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .select-container .chevron path{
@@ -1103,9 +1281,9 @@ body.ds-demo-has-sidebar .ds-demo-main .field-label .icon-sm [stroke]{
 body.ds-demo-has-sidebar .ds-demo-main .field-label{
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: var(--ds-space-sm) !important;
   flex-wrap: wrap !important;
-  margin-bottom: 12px !important;
+  margin-bottom: var(--ds-space-md) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .field-label-text,
@@ -1114,7 +1292,7 @@ body.ds-demo-has-sidebar .ds-demo-main .field-sublabel{
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .field-input-container{
-  gap: 10px !important;
+  gap: var(--ds-space-md) !important;
   margin-top: 0 !important;
 }
 
@@ -1124,14 +1302,14 @@ body.ds-demo-has-sidebar .ds-demo-main .select-text{
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .field-helper{
-  margin-top: 8px !important;
-  font-size: 12px !important;
+  margin-top: var(--ds-space-sm) !important;
+  font-size: var(--ds-font-size-sm) !important;
   line-height: 1.4 !important;
 }
 
 /* Respiro entre descrição da seção e grid de campos (Input/Select) */
 body.ds-demo-has-sidebar .ds-demo-main .section-description + .grid{
-  margin-top: 10px !important;
+  margin-top: var(--ds-space-md) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main input::placeholder,
@@ -1157,35 +1335,7 @@ body.ds-demo-has-sidebar .ds-demo-main .modal .close-btn:hover{
   background: var(--ds-bg-subtle) !important;
 }
 
-body.ds-demo-has-sidebar .ds-demo-main .drawer select,
-body.ds-demo-has-sidebar .ds-demo-main .modal select{
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  background-color: var(--ds-surface) !important;
-  color: var(--ds-fg) !important;
-  padding-right: 36px !important;
-  background-repeat: no-repeat !important;
-  background-position: right 12px center !important;
-  background-size: 16px 16px !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2304843B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
-}
-
-body.ds-demo-has-sidebar .ds-demo-main .drawer select:required:invalid,
-body.ds-demo-has-sidebar .ds-demo-main .modal select:required:invalid{
-  color: var(--ds-placeholder) !important;
-}
-
-body.ds-demo-has-sidebar .ds-demo-main .drawer select option,
-body.ds-demo-has-sidebar .ds-demo-main .modal select option{
-  color: var(--ds-fg) !important;
-  background: var(--ds-surface) !important;
-}
-
-body.ds-demo-has-sidebar .ds-demo-main .drawer select option:disabled,
-body.ds-demo-has-sidebar .ds-demo-main .modal select option:disabled{
-  color: var(--ds-placeholder) !important;
-  background: var(--ds-surface) !important;
-}
+/* Select em drawer/modal: usar .select-container (custom); não estilizar <select> nativo aqui. */
 
 body.ds-demo-has-sidebar .ds-demo-main .field-input::placeholder,
 body.ds-demo-has-sidebar .ds-demo-main .select-text:not(.has-value){
@@ -1198,9 +1348,12 @@ body.ds-demo-has-sidebar .ds-demo-main textarea::placeholder{
   opacity: 1 !important;
 }
 
-body.ds-demo-has-sidebar .ds-demo-main .field-input-container:focus-within,
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container:focus-within:not(.error),
 body.ds-demo-has-sidebar .ds-demo-main .select-search input:focus{
   box-shadow: var(--ds-focus-ring) !important;
+}
+body.ds-demo-has-sidebar .ds-demo-main .field-input-container.error:focus-within{
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .field-input-container.disabled{
@@ -1476,7 +1629,10 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: 
   color: var(--ds-fg) !important;
 }
 
-[data-ds-theme="dark"] .field-input-container,
+[data-ds-theme="dark"] .field-input-container{
+  background: var(--ds-surface) !important;
+}
+
 [data-ds-theme="dark"] .select-dropdown,
 [data-ds-theme="dark"] .dp-input,
 [data-ds-theme="dark"] .dp-popover,
@@ -1485,6 +1641,25 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: 
 [data-ds-theme="dark"] .toast{
   background: var(--ds-surface) !important;
   border-color: var(--ds-border) !important;
+}
+
+/* Input + Select (trigger): borda sem !important no default; hover/foco verde e erro alinhados ao tema claro. */
+[data-ds-theme="dark"] .field-input-container:not(.error){
+  border-color: var(--ds-border);
+}
+[data-ds-theme="dark"] .field-input-container:hover:not(.disabled):not(.error),
+[data-ds-theme="dark"] .field-input-container:focus-within:not(.disabled):not(.error){
+  border-color: var(--ds-success) !important;
+}
+[data-ds-theme="dark"] .field-input-container.error{
+  border-color: var(--ds-error) !important;
+}
+[data-ds-theme="dark"] .field-input-container.error:hover:not(.disabled){
+  border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface)) !important;
+}
+[data-ds-theme="dark"] .field-input-container.error:focus-within{
+  border-color: var(--ds-error) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent) !important;
 }
 
 [data-ds-theme="dark"] .dp-input.dp-input--error{

@@ -7,27 +7,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
+    /* Variáveis locais do demo (evita “48400” espalhados; largura 400px é decisão de layout) */
+    :root{
+      --drawer-demo-side-width: 400px;
+      --drawer-demo-bottom-height: min(340px, 70vh);
+      --drawer-demo-touch-target: 44px;
+      --drawer-demo-ease: 0.3s ease;
+      /* Bottom “flutuante”: largura máxima visível vs ponta-a-ponta */
+      --drawer-demo-bottom-floating-max: 560px;
+    }
+
     /* Subconjunto do botão do DS (mesmas classes da button-demo) */
     .btn{
       font-family: var(--ds-font-family);
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 1.5;
-      border-radius: 9999px;
+      font-weight: var(--ds-font-weight-regular);
+      font-size: var(--ds-font-size-md);
+      line-height: var(--ds-line-height-normal);
+      border-radius: var(--ds-radius-full);
       border: none;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: var(--ds-space-sm);
       outline: none;
       padding: 0;
     }
     .btn-medium{
-      padding: 8px 16px;
-      height: 40px;
-      font-size: 12px;
+      padding: var(--ds-space-sm) var(--ds-space-lg);
+      min-height: var(--drawer-demo-touch-target);
+      font-size: var(--ds-font-size-sm);
+      box-sizing: border-box;
     }
     .btn-primary{
       background-color: var(--ds-success);
@@ -49,117 +60,234 @@
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: rgba(0,0,0,0.5);
+      background-color: color-mix(in srgb, var(--ds-neutral-900) 50%, transparent);
       display: none;
       z-index: 9999;
-      padding: 24px;
+      padding: var(--ds-space-lg);
+      box-sizing: border-box;
     }
     .overlay.show{ display: flex; }
 
+    /* Mobile-first: painel ocupa a largura em viewports estreitas; ≥744px largura fixa */
     .drawer{
       position: fixed;
-      top: 0; bottom: 0; right: -400px;
-      width: 400px;
+      top: 0; bottom: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 100vw;
       background: var(--ds-surface);
       box-shadow: var(--ds-shadow-md);
-      transition: right 0.3s ease;
+      transition: right var(--drawer-demo-ease);
       z-index: 10000;
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
     }
-    .drawer.show{ right: 0; }
+    /* Só o painel lateral usa `right`; bottom sheets usam `bottom` */
+    .drawer.show:not(.drawer--bottom){
+      right: 0;
+    }
+    @media (min-width: 744px){
+      .drawer:not(.drawer--bottom){
+        width: var(--drawer-demo-side-width);
+        right: calc(-1 * var(--drawer-demo-side-width));
+        max-width: min(var(--drawer-demo-side-width), 100vw);
+      }
+    }
     .drawer--bottom{
       top: auto;
-      bottom: -340px;
-      left: 24px;
-      right: 24px;
       transform: none;
       width: auto;
-      height: 340px;
-      border-radius: 14px 14px 0 0;
-      transition: bottom 0.3s ease;
+      height: var(--drawer-demo-bottom-height);
+      max-height: 70vh;
+      bottom: calc(0px - var(--drawer-demo-bottom-height));
+      border-radius: var(--ds-radius-lg) var(--ds-radius-lg) 0 0;
+      transition: bottom var(--drawer-demo-ease);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    /* Inferior com margens: faixas laterais maiores + largura máx. (contrasta com full) */
+    .drawer--bottom:not(.drawer--bottom-full){
+      left: var(--ds-space-lg);
+      right: var(--ds-space-lg);
+    }
+    @media (min-width: 744px){
+      .drawer--bottom:not(.drawer--bottom-full){
+        left: max(var(--ds-space-xl), calc((100vw - var(--drawer-demo-bottom-floating-max)) / 2));
+        right: max(var(--ds-space-xl), calc((100vw - var(--drawer-demo-bottom-floating-max)) / 2));
+      }
+    }
+    .drawer--bottom.drawer--bottom-full{
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 100%;
+      border-radius: 0;
     }
     .drawer--bottom.show{
       bottom: 0;
     }
 
     .drawer-header{
-      padding: 24px;
+      flex-shrink: 0;
+      padding: var(--ds-space-md) var(--ds-space-lg);
       border-bottom: 1px solid var(--ds-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: var(--ds-space-md);
+      padding-top: max(var(--ds-space-md), env(safe-area-inset-top, 0px));
     }
 
     .drawer-title{
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--ds-fg);
+      font-size: var(--ds-font-size-xl);
+      font-weight: var(--ds-font-weight-semibold);
+      color: var(--ds-text-primary);
       margin: 0;
+      line-height: var(--ds-line-height-tight);
     }
 
     .drawer-content{
       flex: 1;
-      padding: 24px;
+      padding: var(--ds-space-lg);
+      padding-bottom: calc(var(--ds-space-lg) + env(safe-area-inset-bottom, 0px));
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .drawer-content p{
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.5;
-      color: var(--ds-fg-muted);
+      font-size: var(--ds-font-size-md);
+      font-weight: var(--ds-font-weight-regular);
+      line-height: var(--ds-line-height-normal);
+      color: var(--ds-text-secondary);
     }
     .drawer-form{
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
-      margin: 18px 0;
+      gap: var(--ds-space-md);
+      margin: 0 0 var(--ds-space-lg) 0;
     }
-    .field{
+    .drawer-field{
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: var(--ds-space-sm);
     }
-    .field label{
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--ds-fg-muted);
+    /* Alinhado a input-demo / select-demo: label com contraste (WCAG texto) */
+    .drawer-field-label{
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-semibold);
+      color: var(--ds-text-primary);
+      line-height: 1.4;
     }
-    .field input,
-    .field select{
-      height: 40px;
-      border-radius: 8px;
-      border: 1px solid var(--ds-border);
+    .drawer-field-control{
+      display: flex;
+      align-items: center;
+      gap: var(--ds-space-sm);
+      padding: var(--ds-space-md) var(--ds-space-lg);
+      min-height: var(--drawer-demo-touch-target);
+      box-sizing: border-box;
       background: var(--ds-surface);
-      color: var(--ds-fg);
-      padding: 0 12px;
-      font-size: 14px;
-      font-family: var(--ds-font-family);
-      outline: none;
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius-sm);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .field input::placeholder{
-      color: var(--ds-placeholder);
-      opacity: 1;
+    .drawer-field-control:hover:not(:focus-within){
+      border-color: var(--ds-success);
     }
-    .field input:focus,
-    .field select:focus{
+    .drawer-field-control:focus-within{
       border-color: var(--ds-success);
       box-shadow: var(--ds-focus-ring);
     }
-    @media (max-width: 900px){
-      .drawer--bottom{
-        left: 12px;
-        right: 12px;
-      }
-      .drawer-form{
-        grid-template-columns: 1fr;
+    .drawer-field-input{
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: var(--ds-font-family);
+      font-size: var(--ds-font-size-md);
+      line-height: 1.4;
+      color: var(--ds-fg);
+    }
+    .drawer-field-input::placeholder{
+      color: var(--ds-placeholder);
+      opacity: 1;
+    }
+    /* Categoria: Select custom (select-demo + ds-demo-select.js), não <select> nativo */
+    @media (max-width: 743px){
+      .drawer--bottom:not(.drawer--bottom-full){
+        left: var(--ds-space-lg);
+        right: var(--ds-space-lg);
       }
     }
 
     .close-btn{
-      /* Layout base; cor/estado agora vem do CSS global */
+      flex-shrink: 0;
       padding: 0;
-      min-width: 40px;
-      min-height: 40px;
+      margin: 0;
+      min-width: var(--drawer-demo-touch-target);
+      min-height: var(--drawer-demo-touch-target);
+      border-radius: var(--ds-radius-md);
+      color: var(--ds-text-secondary);
+      align-items: center;
+      justify-content: center;
+    }
+    .close-btn:hover{
+      color: var(--ds-text-primary);
+      background-color: var(--ds-bg-subtle);
+    }
+    .close-btn:focus-visible{
+      outline: none;
+      box-shadow: var(--ds-focus-ring);
+    }
+    .close-btn svg{
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .drawer,
+      .drawer--bottom{
+        transition: none;
+      }
+    }
+
+    /* Copy da página (evita inline styles) */
+    .drawer-demo-page-title{
+      font-size: clamp(1.375rem, 3vw, 1.75rem);
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-success);
+      margin-bottom: var(--ds-space-sm);
+    }
+    .drawer-demo-lead{
+      margin-bottom: calc(var(--ds-space-xl) + var(--ds-space-xs));
+    }
+    .drawer-demo-preview-tools{
+      display: flex;
+      gap: var(--ds-space-md);
+      flex-wrap: wrap;
+    }
+    .drawer-demo-anatomy-list{
+      padding-left: var(--ds-space-lg);
+      color: var(--ds-text-secondary);
+      line-height: var(--ds-line-height-relaxed);
+      font-size: var(--ds-font-size-md);
+    }
+    .drawer-demo-props{
+      font-size: var(--ds-font-size-sm);
+      color: var(--ds-text-secondary);
+      line-height: var(--ds-line-height-relaxed);
+      margin-top: var(--ds-space-md);
+    }
+    .drawer-demo-props strong{
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-text-primary);
+      display: block;
+      margin-bottom: var(--ds-space-sm);
+    }
+    .drawer-content > p{
+      margin-bottom: var(--ds-space-sm);
+    }
+    .drawer-content > .drawer-form{
+      margin-top: var(--ds-space-md);
     }
   </style>
 </head>
@@ -194,8 +322,8 @@
   </div>
 
   <div class="ds-container">
-    <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Drawer</h1>
-    <p class="section-subtitle" style="margin-bottom:28px;">
+    <h1 class="drawer-demo-page-title">Drawer</h1>
+    <p class="section-subtitle drawer-demo-lead">
       Painel lateral que abre sobre a tela e fecha por overlay, botão e tecla <code>Esc</code>.
     </p>
 
@@ -205,17 +333,21 @@
         <li>Drawer usa <code>role="dialog"</code> e <code>aria-modal="true"</code>.</li>
         <li>Fechamento por overlay (clique), botão e <code>Esc</code>.</li>
         <li>Ao abrir, o foco vai para o botão de fechar.</li>
+        <li>Campo de texto: container próprio; <strong>Categoria</strong> reutiliza o Select custom de <code>select-demo.html</code> (<code>ds-demo-base.css</code> + <code>ds-demo-select.js</code>).</li>
+        <li>Labels com <code>--ds-text-primary</code>; ícone de fechar com <code>aria-label</code> e foco visível.</li>
+        <li>Respeita <code>prefers-reduced-motion</code> e <code>env(safe-area-inset-*)</code> em mobile.</li>
       </ul>
     </div>
 
-    <div class="section" style="margin-top:16px;">
-      <div class="section-title" style="margin-bottom:10px;">Preview</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div class="section" style="margin-top:var(--ds-space-lg);">
+      <div class="section-title" style="margin-bottom:var(--ds-space-md);">Preview</div>
+      <div class="drawer-demo-preview-tools">
         <button class="btn btn-primary btn-medium" id="drawer-open-btn" type="button" onclick="openDrawer()">Abrir Drawer (Direita)</button>
-        <button class="btn btn-secondary btn-medium" id="drawer-open-bottom-btn" type="button" onclick="openBottomDrawer()">Abrir Drawer (Inferior)</button>
+        <button class="btn btn-secondary btn-medium" id="drawer-open-bottom-btn" type="button" onclick="openBottomDrawer()">Inferior (com margens)</button>
+        <button class="btn btn-secondary btn-medium" id="drawer-open-bottom-full-btn" type="button" onclick="openBottomDrawerFull()">Inferior (ponta a ponta)</button>
       </div>
 
-      <div class="overlay" id="drawer-overlay" onclick="closeDrawer();closeBottomDrawer();" aria-hidden="true"></div>
+      <div class="overlay" id="drawer-overlay" onclick="closeAllDrawers()" aria-hidden="true"></div>
       <div
         class="drawer"
         id="drawer"
@@ -225,29 +357,38 @@
       >
         <div class="drawer-header">
           <h2 class="drawer-title" id="drawer-title">Configurações</h2>
-          <button class="btn btn-ghost btn-medium close-btn" id="drawer-close-btn" type="button" onclick="closeDrawer()" aria-label="Fechar Drawer">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="btn btn-ghost close-btn" id="drawer-close-btn" type="button" onclick="closeDrawer()" aria-label="Fechar painel Configurações">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </button>
         </div>
         <div class="drawer-content">
-          <p style="margin-bottom:12px;">Este é um drawer lateral com layout consistente.</p>
-          <p style="margin-bottom:8px;">Pode conter formulários e ações secundárias.</p>
+          <p>Este é um drawer lateral com layout consistente.</p>
+          <p>Pode conter formulários e ações secundárias.</p>
           <div class="drawer-form">
-            <div class="field">
-              <label for="drawer-side-name">Nome</label>
-              <input id="drawer-side-name" type="text" placeholder="Digite um nome">
+            <div class="drawer-field">
+              <label class="drawer-field-label" for="drawer-side-name">Nome</label>
+              <div class="drawer-field-control">
+                <input id="drawer-side-name" class="drawer-field-input" type="text" placeholder="Digite um nome" autocomplete="name">
+              </div>
             </div>
-            <div class="field">
-              <label for="drawer-side-type">Categoria</label>
-              <select id="drawer-side-type" required>
-                <option value="" selected disabled hidden>Selecione</option>
-                <option>Operacional</option>
-                <option>Financeiro</option>
-                <option>Comercial</option>
-              </select>
+            <div class="drawer-field">
+              <span class="drawer-field-label" id="drawer-side-cat-lbl">Categoria</span>
+              <div class="select-container" aria-labelledby="drawer-side-cat-lbl">
+                <div class="field-input-container" onclick="toggleDropdown('drawer-side-cat')">
+                  <span class="select-text" id="drawer-side-cat-text">Selecione</span>
+                  <svg class="chevron" id="drawer-side-cat-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="select-dropdown" id="drawer-side-cat-dropdown" role="listbox">
+                  <div class="select-option" onclick="selectOption('drawer-side-cat', 'Operacional', this)" role="option"><span>Operacional</span></div>
+                  <div class="select-option" onclick="selectOption('drawer-side-cat', 'Financeiro', this)" role="option"><span>Financeiro</span></div>
+                  <div class="select-option" onclick="selectOption('drawer-side-cat', 'Comercial', this)" role="option"><span>Comercial</span></div>
+                </div>
+              </div>
             </div>
           </div>
           <button class="btn btn-primary btn-medium" type="button" onclick="alert('Ação do drawer')">Salvar</button>
@@ -262,44 +403,101 @@
       >
         <div class="drawer-header">
           <h2 class="drawer-title" id="drawer-bottom-title">Ações rápidas</h2>
-          <button class="btn btn-ghost btn-medium close-btn" id="drawer-bottom-close-btn" type="button" onclick="closeBottomDrawer()" aria-label="Fechar Drawer inferior">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="btn btn-ghost close-btn" id="drawer-bottom-close-btn" type="button" onclick="closeBottomDrawer()" aria-label="Fechar painel Ações rápidas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </button>
         </div>
         <div class="drawer-content">
-          <p style="margin-bottom:12px;">Este é o drawer inferior restaurado (bottom sheet).</p>
-          <p style="margin-bottom:8px;">Use para ações rápidas sem cobrir toda a lateral.</p>
+          <p>Este é o drawer inferior com margens laterais (bottom sheet “flutuante”).</p>
+          <p>Use para ações rápidas sem tocar nas bordas do ecrã.</p>
           <div class="drawer-form">
-            <div class="field">
-              <label for="drawer-bottom-name">Nome</label>
-              <input id="drawer-bottom-name" type="text" placeholder="Digite um nome">
+            <div class="drawer-field">
+              <label class="drawer-field-label" for="drawer-bottom-name">Nome</label>
+              <div class="drawer-field-control">
+                <input id="drawer-bottom-name" class="drawer-field-input" type="text" placeholder="Digite um nome" autocomplete="name">
+              </div>
             </div>
-            <div class="field">
-              <label for="drawer-bottom-type">Categoria</label>
-              <select id="drawer-bottom-type" required>
-                <option value="" selected disabled hidden>Selecione</option>
-                <option>Operacional</option>
-                <option>Financeiro</option>
-                <option>Comercial</option>
-              </select>
+            <div class="drawer-field">
+              <span class="drawer-field-label" id="drawer-bottom-cat-lbl">Categoria</span>
+              <div class="select-container" aria-labelledby="drawer-bottom-cat-lbl">
+                <div class="field-input-container" onclick="toggleDropdown('drawer-bottom-cat')">
+                  <span class="select-text" id="drawer-bottom-cat-text">Selecione</span>
+                  <svg class="chevron" id="drawer-bottom-cat-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="select-dropdown" id="drawer-bottom-cat-dropdown" role="listbox">
+                  <div class="select-option" onclick="selectOption('drawer-bottom-cat', 'Operacional', this)" role="option"><span>Operacional</span></div>
+                  <div class="select-option" onclick="selectOption('drawer-bottom-cat', 'Financeiro', this)" role="option"><span>Financeiro</span></div>
+                  <div class="select-option" onclick="selectOption('drawer-bottom-cat', 'Comercial', this)" role="option"><span>Comercial</span></div>
+                </div>
+              </div>
             </div>
           </div>
           <button class="btn btn-primary btn-medium" type="button" onclick="alert('Ação do drawer inferior')">Confirmar</button>
+        </div>
+      </div>
+      <div
+        class="drawer drawer--bottom drawer--bottom-full"
+        id="drawer-bottom-full"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawer-bottom-full-title"
+      >
+        <div class="drawer-header">
+          <h2 class="drawer-title" id="drawer-bottom-full-title">Painel inferior — largura total</h2>
+          <button class="btn btn-ghost close-btn" id="drawer-bottom-full-close-btn" type="button" onclick="closeBottomDrawerFull()" aria-label="Fechar painel inferior em largura total">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="drawer-content">
+          <p>Variante <strong>ponta a ponta</strong>: <code>drawer--bottom</code> + <code>drawer--bottom-full</code>.</p>
+          <p>Útil para listas densas, filtros ou confirmações em mobile.</p>
+          <div class="drawer-form">
+            <div class="drawer-field">
+              <label class="drawer-field-label" for="drawer-full-name">Nome</label>
+              <div class="drawer-field-control">
+                <input id="drawer-full-name" class="drawer-field-input" type="text" placeholder="Digite um nome" autocomplete="name">
+              </div>
+            </div>
+            <div class="drawer-field">
+              <span class="drawer-field-label" id="drawer-full-cat-lbl">Categoria</span>
+              <div class="select-container" aria-labelledby="drawer-full-cat-lbl">
+                <div class="field-input-container" onclick="toggleDropdown('drawer-full-cat')">
+                  <span class="select-text" id="drawer-full-cat-text">Selecione</span>
+                  <svg class="chevron" id="drawer-full-cat-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="select-dropdown" id="drawer-full-cat-dropdown" role="listbox">
+                  <div class="select-option" onclick="selectOption('drawer-full-cat', 'Operacional', this)" role="option"><span>Operacional</span></div>
+                  <div class="select-option" onclick="selectOption('drawer-full-cat', 'Financeiro', this)" role="option"><span>Financeiro</span></div>
+                  <div class="select-option" onclick="selectOption('drawer-full-cat', 'Comercial', this)" role="option"><span>Comercial</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-medium" type="button" onclick="alert('Ação do drawer inferior largura total')">Aplicar</button>
         </div>
       </div>
     </div>
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+      <ul class="drawer-demo-anatomy-list">
         <li><code>button</code> de abrir (<code>openDrawer()</code>).</li>
         <li><code>div.overlay#drawer-overlay</code>: sombra e clique externo para fechar.</li>
         <li><code>div.drawer#drawer</code>: container do dialog.</li>
         <li><code>role="dialog"</code> + <code>aria-modal="true"</code>: acessibilidade.</li>
         <li><code>div.drawer-header</code> + <code>button.close-btn</code> + <code>div.drawer-content</code>.</li>
+        <li>Formulário: <code>.drawer-field</code> + texto em <code>.drawer-field-control</code>; categorias com <code>.select-container</code> + <code>.field-input-container</code> + <code>.select-dropdown</code> (igual à página Select).</li>
+        <li>Inferior flutuante: <code>.drawer--bottom</code> (largura máx. centrada em desktop). Inferior ponta a ponta: <code>.drawer--bottom.drawer--bottom-full</code>.</li>
       </ul>
     </div>
 
@@ -369,8 +567,8 @@ function Page() {
   );
 }
       </code></pre>
-      <div style="font-size:13px;color:var(--ds-n500);line-height:1.7;margin-top:14px;">
-        <div style="font-weight:800;color:var(--ds-n800);margin-bottom:6px;">Props principais</div>
+      <div class="drawer-demo-props">
+        <div><strong>Props principais</strong></div>
         <div><code>isOpen</code>: controla exibição do drawer.</div>
         <div><code>onClose</code>: callback ao fechar (overlay/esc/botão).</div>
         <div><code>title</code> (opcional): título no header.</div>
@@ -380,48 +578,77 @@ function Page() {
     </div>
   </div>
 
+  <script src="ds-demo-select.js"></script>
   <script>
-    window.openDrawer = function openDrawer(){
-      const overlay = document.getElementById('drawer-overlay');
-      const drawer = document.getElementById('drawer');
-      overlay.classList.add('show');
-      drawer.classList.add('show');
-      document.body.style.overflow = 'hidden';
-      document.getElementById('drawer-close-btn').focus();
-    }
-
-    window.closeDrawer = function closeDrawer(){
-      const overlay = document.getElementById('drawer-overlay');
-      const drawer = document.getElementById('drawer');
-      overlay.classList.remove('show');
-      drawer.classList.remove('show');
-      document.body.style.overflow = '';
-      document.getElementById('drawer-open-btn').focus();
-    }
-    window.openBottomDrawer = function openBottomDrawer(){
-      const overlay = document.getElementById('drawer-overlay');
-      const drawer = document.getElementById('drawer-bottom');
-      overlay.classList.add('show');
-      drawer.classList.add('show');
-      document.body.style.overflow = 'hidden';
-      document.getElementById('drawer-bottom-close-btn').focus();
-    }
-
-    window.closeBottomDrawer = function closeBottomDrawer(){
-      const overlay = document.getElementById('drawer-overlay');
-      const drawer = document.getElementById('drawer-bottom');
-      overlay.classList.remove('show');
-      drawer.classList.remove('show');
-      document.body.style.overflow = '';
-      document.getElementById('drawer-open-bottom-btn').focus();
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        window.closeDrawer();
-        window.closeBottomDrawer();
+    (function () {
+      function refreshOverlayAndScroll() {
+        var side = document.getElementById('drawer').classList.contains('show');
+        var bottom = document.getElementById('drawer-bottom').classList.contains('show');
+        var bottomFull = document.getElementById('drawer-bottom-full').classList.contains('show');
+        var any = side || bottom || bottomFull;
+        var overlay = document.getElementById('drawer-overlay');
+        overlay.classList.toggle('show', any);
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = any ? 'hidden' : '';
       }
-    });
+
+      function hideOthers(except) {
+        if (except !== 'drawer') document.getElementById('drawer').classList.remove('show');
+        if (except !== 'drawer-bottom') document.getElementById('drawer-bottom').classList.remove('show');
+        if (except !== 'drawer-bottom-full') document.getElementById('drawer-bottom-full').classList.remove('show');
+      }
+
+      window.openDrawer = function openDrawer() {
+        hideOthers('drawer');
+        document.getElementById('drawer').classList.add('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-close-btn').focus();
+      };
+
+      window.closeDrawer = function closeDrawer() {
+        document.getElementById('drawer').classList.remove('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-open-btn').focus();
+      };
+
+      window.openBottomDrawer = function openBottomDrawer() {
+        hideOthers('drawer-bottom');
+        document.getElementById('drawer-bottom').classList.add('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-bottom-close-btn').focus();
+      };
+
+      window.closeBottomDrawer = function closeBottomDrawer() {
+        document.getElementById('drawer-bottom').classList.remove('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-open-bottom-btn').focus();
+      };
+
+      window.openBottomDrawerFull = function openBottomDrawerFull() {
+        hideOthers('drawer-bottom-full');
+        document.getElementById('drawer-bottom-full').classList.add('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-bottom-full-close-btn').focus();
+      };
+
+      window.closeBottomDrawerFull = function closeBottomDrawerFull() {
+        document.getElementById('drawer-bottom-full').classList.remove('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-open-bottom-full-btn').focus();
+      };
+
+      window.closeAllDrawers = function closeAllDrawers() {
+        document.getElementById('drawer').classList.remove('show');
+        document.getElementById('drawer-bottom').classList.remove('show');
+        document.getElementById('drawer-bottom-full').classList.remove('show');
+        refreshOverlayAndScroll();
+        document.getElementById('drawer-open-btn').focus();
+      };
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') window.closeAllDrawers();
+      });
+    })();
   </script>
 
 <script src="ds-demo-topbar-search.js" defer></script>
