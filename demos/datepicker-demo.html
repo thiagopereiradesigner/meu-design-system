@@ -151,13 +151,14 @@
         }
 
         .dp-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--ds-fg);
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--ds-text-primary);
         }
 
         .dp-label-required {
-            color: #DC2626;
+            color: var(--ds-error);
             margin-left: 2px;
         }
 
@@ -168,7 +169,7 @@
         }
 
         .dp-input {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             width: 100%;
             height: 48px;
             padding: 12px 44px 12px 16px;
@@ -180,28 +181,75 @@
             outline: none;
             cursor: pointer;
             transition: border-color 0.15s ease, box-shadow 0.15s ease;
-            caret-color: #04843B;
+            caret-color: var(--ds-success);
         }
 
         .dp-input::placeholder {
             color: var(--ds-placeholder);
         }
 
-        .dp-input:hover:not(:disabled) {
-            border-color: #04843B;
+        .dp-input:hover:not(:disabled):not(.dp-input--error) {
+            border-color: var(--ds-success);
         }
 
-        .dp-input:focus {
-            border-color: #04843B;
+        .dp-input.dp-input--error:hover:not(:disabled) {
+            border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface));
+        }
+
+        .dp-input:focus-visible:not(.dp-input--error) {
+            border-color: var(--ds-success);
             box-shadow: var(--ds-focus-ring);
         }
 
-        .dp-input.dp-input--error {
-            border-color: #DC2626;
+        .dp-input:focus:not(:focus-visible):not(.dp-input--open) {
+            box-shadow: none;
         }
 
-        .dp-input.dp-input--error:focus {
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        .dp-input.dp-input--open {
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .dp-input-wrapper:has(.dp-input.dp-input--open) .dp-icon-btn:not(:disabled) {
+            color: var(--ds-success);
+        }
+
+        .dp-input.dp-input--error {
+            border-color: var(--ds-error);
+        }
+
+        .dp-field:has(.dp-input.dp-input--error) .dp-label {
+            color: var(--ds-error);
+        }
+
+        .dp-field:has(.dp-input.dp-input--error) .dp-helper {
+            color: var(--ds-error);
+        }
+
+        .dp-input.dp-input--error:focus-visible {
+            border-color: var(--ds-error);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent);
+        }
+
+        .dp-input-wrapper:has(.dp-input.dp-input--error) .dp-icon-btn:not(:disabled) {
+            color: var(--ds-error);
+        }
+
+        .dp-field:has(.dp-input:disabled) .dp-label {
+            color: var(--ds-icon-muted);
+        }
+
+        .dp-field:has(.dp-input:disabled) .dp-helper {
+            color: var(--ds-icon-muted);
+        }
+
+        .dp-input.dp-input--demo-open {
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .dp-input-wrapper:has(.dp-input.dp-input--demo-open) .dp-icon-btn:not(:disabled) {
+            color: var(--ds-success);
         }
 
         .dp-input:disabled {
@@ -231,15 +279,26 @@
             border: none;
             background: none;
             cursor: pointer;
-            color: var(--ds-fg-muted);
+            color: var(--ds-icon-accent);
             border-radius: 4px;
             transition: color 0.15s, background 0.15s;
             padding: 0;
         }
 
-        .dp-icon-btn:hover {
-            color: #04843B;
+        .dp-icon-btn:hover:not(:disabled) {
+            color: var(--ds-success-hover);
             background: var(--ds-success-bg);
+        }
+
+        /* Depois do hover genérico: em erro, vermelho mais suave + fundo semântico */
+        .dp-input-wrapper:has(.dp-input.dp-input--error) .dp-icon-btn:hover:not(:disabled) {
+            color: color-mix(in srgb, var(--ds-error) 52%, var(--ds-surface));
+            background: var(--ds-error-bg);
+        }
+
+        .dp-icon-btn:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
         }
 
         .dp-input:disabled + .dp-icon-btn,
@@ -255,7 +314,7 @@
         }
 
         .dp-helper--error {
-            color: #DC2626;
+            color: var(--ds-error);
         }
 
         /* ── Calendar popover ── */
@@ -269,7 +328,9 @@
             border-radius: 12px;
             box-shadow: var(--ds-shadow-md);
             padding: 16px;
-            width: 296px;
+            width: min(296px, calc(100vw - 32px));
+            max-width: 100%;
+            box-sizing: border-box;
             user-select: none;
         }
 
@@ -299,10 +360,16 @@
             transition: all 0.15s;
         }
 
-        .dp-nav-btn:hover {
-            border-color: #04843B;
-            color: #04843B;
+        .dp-nav-btn:hover:not(:disabled) {
+            border-color: var(--ds-success);
+            color: var(--ds-success);
             background: var(--ds-success-bg);
+        }
+
+        .dp-nav-btn:focus-visible {
+            outline: none;
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
         }
 
         .dp-month-label {
@@ -350,12 +417,18 @@
             border: none;
             border-radius: 8px;
             background: transparent;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             font-size: 13px;
             color: var(--ds-fg);
             cursor: pointer;
             transition: all 0.1s;
             padding: 0;
+        }
+
+        .dp-day:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+            z-index: 1;
         }
 
         .dp-day:hover:not(.dp-day--disabled):not(.dp-day--selected):not(.dp-day--outside) {
@@ -365,17 +438,17 @@
 
         .dp-day--today {
             font-weight: 700;
-            color: #04843B;
-            border: 1.5px solid #04843B;
+            color: var(--ds-success);
+            border: 1.5px solid var(--ds-success);
         }
 
-        .dp-day--today:hover {
-            background: #E6F4ED;
+        .dp-day--today:hover:not(.dp-day--disabled):not(.dp-day--outside) {
+            background: var(--ds-success-bg);
         }
 
         .dp-day--selected {
-            background: #04843B;
-            color: #FFFFFF;
+            background: var(--ds-success);
+            color: var(--ds-on-inverse);
             font-weight: 600;
         }
 
@@ -396,22 +469,22 @@
 
         /* Range styles */
         .dp-day--range-start {
-            background: #04843B;
-            color: #FFFFFF;
+            background: var(--ds-success);
+            color: var(--ds-on-inverse);
             font-weight: 600;
             border-radius: 8px 0 0 8px;
         }
 
         .dp-day--range-end {
-            background: #04843B;
-            color: #FFFFFF;
+            background: var(--ds-success);
+            color: var(--ds-on-inverse);
             font-weight: 600;
             border-radius: 0 8px 8px 0;
         }
 
         .dp-day--range-between {
-            background: #E6F4ED;
-            color: #005A1A;
+            background: var(--ds-success-bg);
+            color: var(--ds-success-fg);
             border-radius: 0;
         }
 
@@ -431,10 +504,10 @@
         }
 
         .dp-footer-today {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             font-size: 13px;
             font-weight: 500;
-            color: #04843B;
+            color: var(--ds-success);
             background: none;
             border: none;
             cursor: pointer;
@@ -447,8 +520,13 @@
             background: var(--ds-success-bg);
         }
 
+        .dp-footer-today:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
+
         .dp-footer-clear {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             font-size: 13px;
             font-weight: 500;
             color: var(--ds-fg-muted);
@@ -462,6 +540,11 @@
 
         .dp-footer-clear:hover {
             background: var(--ds-bg-subtle);
+        }
+
+        .dp-footer-clear:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
         }
 
         /* ── Range input group ── */
@@ -498,6 +581,7 @@
             border-top: 1px solid var(--ds-border);
             border-bottom: 1px solid var(--ds-border);
             flex-shrink: 0;
+            color: var(--ds-fg-subtle);
         }
 
         .dp-range-separator--md {
@@ -512,7 +596,150 @@
             border-radius: 12px;
             box-shadow: var(--ds-shadow-sm);
             padding: 16px;
-            width: 296px;
+            width: min(296px, calc(100vw - 32px));
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dp-legend-swatch {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .dp-legend-swatch--default {
+            color: var(--ds-fg);
+            background: transparent;
+            border: 1px solid transparent;
+        }
+
+        .dp-legend-swatch--hover {
+            color: var(--ds-success);
+            background: var(--ds-success-bg);
+        }
+
+        .dp-legend-swatch--today {
+            font-weight: 700;
+            color: var(--ds-success);
+            border: 1.5px solid var(--ds-success);
+        }
+
+        .dp-legend-swatch--selected {
+            font-weight: 600;
+            color: var(--ds-on-inverse);
+            background: var(--ds-success);
+        }
+
+        .dp-legend-swatch--disabled {
+            color: var(--ds-icon-muted);
+            text-decoration: line-through;
+        }
+
+        .dp-legend-swatch--outside {
+            color: var(--ds-icon-muted);
+        }
+
+        .dp-legend-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dp-legend-card {
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .dp-legend-meta-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ds-fg);
+        }
+
+        .dp-legend-meta-desc {
+            font-size: 11px;
+            color: var(--ds-fg-subtle);
+        }
+
+        .dp-calendar-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            align-items: flex-start;
+        }
+
+        .dp-legend-aside {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .dp-classes-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            color: var(--ds-fg);
+        }
+
+        .dp-classes-table thead tr {
+            background: var(--ds-neutral-bg);
+        }
+
+        .dp-classes-table th {
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--ds-fg);
+            border-bottom: 1px solid var(--ds-border);
+        }
+
+        .dp-classes-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--ds-separator-light);
+            vertical-align: top;
+        }
+
+        .dp-classes-table td:first-child {
+            font-family: monospace;
+            color: var(--ds-success);
+        }
+
+        .dp-classes-table td:last-child {
+            color: var(--ds-fg-muted);
+        }
+
+        .dp-classes-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (max-width: 743px) {
+            .dp-nav-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .dp-icon-btn {
+                min-width: 44px;
+                min-height: 44px;
+                padding: 0;
+                right: 8px;
+            }
+
+            .dp-footer-today,
+            .dp-footer-clear {
+                min-height: 44px;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
         }
     </style>
 </head>
@@ -530,7 +757,7 @@
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
@@ -542,7 +769,7 @@
     </a>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
 </div>
@@ -565,7 +792,7 @@
             <li>Popover do calendário como <code>role="dialog"</code> e com <code>aria-label</code>.</li>
             <li>Trigger (botão/ícone) com <code>aria-label</code> e estado atualizado (<code>aria-expanded</code>).</li>
             <li>Tratamento de disabled com atributos compatíveis e mensagens textuais.</li>
-            <li>Navegação por teclado (setas, Enter/Space, Esc).</li>
+            <li>Navegação por teclado (Esc fecha o popover); anel de foco visível com <code>:focus-visible</code> e <code>var(--ds-focus-ring)</code> nos controles do calendário.</li>
         </ul>
     </div>
 
@@ -574,59 +801,59 @@
         <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
         <div class="color-demo">
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #04843B;"></div>
+                <div class="color-box" style="background-color: var(--ds-success);"></div>
                 <div class="color-info">
-                    <span class="color-name">Primary 500 (Selected / Active)</span>
-                    <span class="color-value">#04843B</span>
+                    <span class="color-name">Sucesso / seleção (primário)</span>
+                    <span class="color-value">var(--ds-success)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #067647;"></div>
+                <div class="color-box" style="background-color: var(--ds-success-hover);"></div>
                 <div class="color-info">
-                    <span class="color-name">Primary 600 (Hover borda)</span>
-                    <span class="color-value">#067647</span>
+                    <span class="color-name">Hover do primário</span>
+                    <span class="color-value">var(--ds-success-hover)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #005A1A;"></div>
+                <div class="color-box" style="background-color: var(--ds-success-fg);"></div>
                 <div class="color-info">
-                    <span class="color-name">Primary 700 (Range texto)</span>
-                    <span class="color-value">#005A1A</span>
+                    <span class="color-name">Texto sobre fundo de sucesso suave</span>
+                    <span class="color-value">var(--ds-success-fg)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #E6F4ED;"></div>
+                <div class="color-box" style="background-color: var(--ds-success-bg);"></div>
                 <div class="color-info">
-                    <span class="color-name">Primary 50 (Range fundo / Focus ring)</span>
-                    <span class="color-value">#E6F4ED</span>
+                    <span class="color-name">Fundo suave (hover de dia, intervalo)</span>
+                    <span class="color-value">var(--ds-success-bg)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #DDDDDD; border-color:#ccc;"></div>
+                <div class="color-box" style="background-color: var(--ds-border);"></div>
                 <div class="color-info">
-                    <span class="color-name">Border input (default)</span>
-                    <span class="color-value">#DDDDDD</span>
+                    <span class="color-name">Borda padrão</span>
+                    <span class="color-value">var(--ds-border)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #999999;"></div>
+                <div class="color-box" style="background-color: var(--ds-placeholder);"></div>
                 <div class="color-info">
-                    <span class="color-name">Neutral 300 (Placeholder)</span>
-                    <span class="color-value">#999999</span>
+                    <span class="color-name">Placeholder</span>
+                    <span class="color-value">var(--ds-placeholder)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #C6C6C6;"></div>
+                <div class="color-box" style="background-color: var(--ds-icon-muted);"></div>
                 <div class="color-info">
-                    <span class="color-name">Neutral 200 (Disabled / Outside)</span>
-                    <span class="color-value">#C6C6C6</span>
+                    <span class="color-name">Ícone / estados muted</span>
+                    <span class="color-value">var(--ds-icon-muted)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #DC2626;"></div>
+                <div class="color-box" style="background-color: var(--ds-error);"></div>
                 <div class="color-info">
-                    <span class="color-name">Semantic Error</span>
-                    <span class="color-value">#DC2626</span>
+                    <span class="color-name">Erro</span>
+                    <span class="color-value">var(--ds-error)</span>
                 </div>
             </div>
         </div>
@@ -674,8 +901,8 @@
                     <div class="dp-field">
                         <label class="dp-label">Data</label>
                         <div class="dp-input-wrapper">
-                            <input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly style="border-color:#04843B;box-shadow:0 0 0 3px rgba(4,132,59,0.1);">
-                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário" style="color:#04843B;">
+                            <input type="text" class="dp-input dp-input--demo-open" placeholder="dd/mm/aaaa" readonly>
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             </button>
                         </div>
@@ -689,7 +916,7 @@
                         <label class="dp-label">Data <span class="dp-label-required">*</span></label>
                         <div class="dp-input-wrapper">
                             <input type="text" class="dp-input dp-input--error" placeholder="dd/mm/aaaa" readonly>
-                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário" style="color:#DC2626;">
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             </button>
                         </div>
@@ -700,14 +927,14 @@
                 <div class="demo-item">
                     <div class="demo-item-label">Desabilitado</div>
                     <div class="dp-field">
-                        <label class="dp-label" style="color:#C6C6C6;">Data</label>
+                        <label class="dp-label">Data</label>
                         <div class="dp-input-wrapper">
                             <input type="text" class="dp-input" placeholder="dd/mm/aaaa" readonly disabled>
-                            <button class="dp-icon-btn" tabindex="-1" disabled aria-label="Abrir calendário" style="color:#C6C6C6;cursor:not-allowed;">
+                            <button class="dp-icon-btn" tabindex="-1" disabled aria-label="Abrir calendário">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             </button>
                         </div>
-                        <span class="dp-helper" style="color:#C6C6C6;">Campo desabilitado</span>
+                        <span class="dp-helper">Campo desabilitado</span>
                     </div>
                 </div>
             </div>
@@ -749,7 +976,7 @@
                         <label class="dp-label">Data <span class="dp-label-required">*</span></label>
                         <div class="dp-input-wrapper">
                             <input type="text" class="dp-input dp-input--md dp-input--error" placeholder="dd/mm/aaaa" readonly>
-                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário" style="color:#DC2626;">
+                            <button class="dp-icon-btn" tabindex="-1" aria-label="Abrir calendário">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             </button>
                         </div>
@@ -760,10 +987,10 @@
                 <div class="demo-item">
                     <div class="demo-item-label">Desabilitado</div>
                     <div class="dp-field">
-                        <label class="dp-label" style="color:#C6C6C6;">Data</label>
+                        <label class="dp-label">Data</label>
                         <div class="dp-input-wrapper">
                             <input type="text" class="dp-input dp-input--md" placeholder="dd/mm/aaaa" readonly disabled>
-                            <button class="dp-icon-btn" tabindex="-1" disabled aria-label="Abrir calendário" style="color:#C6C6C6;cursor:not-allowed;">
+                            <button class="dp-icon-btn" tabindex="-1" disabled aria-label="Abrir calendário">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             </button>
                         </div>
@@ -778,7 +1005,7 @@
         <h2 class="section-title">🗓️ Calendário — Estados dos dias</h2>
         <p style="font-size:14px;color:var(--ds-fg-muted);margin-bottom:24px;">Visualização dos estados individuais de cada célula de dia dentro do calendário.</p>
 
-        <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;">
+        <div class="dp-calendar-layout">
             <!-- Default calendar -->
             <div>
                 <div class="size-label" style="margin-bottom:12px;">Seleção de data única — interativo</div>
@@ -788,49 +1015,49 @@
             </div>
 
             <!-- Day states legend -->
-            <div style="flex:1;min-width:280px;">
+            <div class="dp-legend-aside">
                 <div class="size-label" style="margin-bottom:16px;">Estados das células</div>
-                <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:var(--ds-fg);background:transparent;border:1px solid transparent;">15</div>
+                <div class="dp-legend-card">
+                    <div class="dp-legend-row">
+                        <div class="dp-legend-swatch dp-legend-swatch--default">15</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Default</div>
-                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Dia normal, disponível</div>
+                            <div class="dp-legend-meta-title">Default</div>
+                            <div class="dp-legend-meta-desc">Dia normal, disponível</div>
                         </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#04843B;background:#E6F4ED;">16</div>
+                    <div class="dp-legend-row">
+                        <div class="dp-legend-swatch dp-legend-swatch--hover">16</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Hover</div>
-                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Mouse sobre o dia</div>
+                            <div class="dp-legend-meta-title">Hover</div>
+                            <div class="dp-legend-meta-desc">Mouse sobre o dia</div>
                         </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:700;color:#04843B;border:1.5px solid #04843B;">20</div>
+                    <div class="dp-legend-row">
+                        <div class="dp-legend-swatch dp-legend-swatch--today">20</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Hoje</div>
-                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Data atual, borda verde</div>
+                            <div class="dp-legend-meta-title">Hoje</div>
+                            <div class="dp-legend-meta-desc">Data atual (borda de destaque)</div>
                         </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:#04843B;">14</div>
+                    <div class="dp-legend-row">
+                        <div class="dp-legend-swatch dp-legend-swatch--selected">14</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Selecionado</div>
-                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Data escolhida pelo usuário</div>
+                            <div class="dp-legend-meta-title">Selecionado</div>
+                            <div class="dp-legend-meta-desc">Data escolhida pelo usuário</div>
                         </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#C6C6C6;text-decoration:line-through;">11</div>
+                    <div class="dp-legend-row">
+                        <div class="dp-legend-swatch dp-legend-swatch--disabled">11</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Desabilitado</div>
-                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Data bloqueada / fora do range permitido</div>
+                            <div class="dp-legend-meta-title">Desabilitado</div>
+                            <div class="dp-legend-meta-desc">Data bloqueada / fora do range permitido</div>
                         </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;color:#C6C6C6;">1</div>
+                    <div class="dp-legend-row">
+                        <div class="dp-legend-swatch dp-legend-swatch--outside">1</div>
                         <div>
-                            <div style="font-size:13px;font-weight:500;color:var(--ds-fg);">Fora do mês</div>
-                            <div style="font-size:11px;color:var(--ds-fg-subtle);">Dia de mês anterior/seguinte</div>
+                            <div class="dp-legend-meta-title">Fora do mês</div>
+                            <div class="dp-legend-meta-desc">Dia de mês anterior/seguinte</div>
                         </div>
                     </div>
                 </div>
@@ -857,7 +1084,7 @@
                         </div>
                     </div>
                     <div class="dp-range-separator" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ds-fg-subtle)" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </div>
                     <div class="dp-field">
                         <label class="dp-label">Data final</label>
@@ -938,7 +1165,7 @@
 
     <!-- COMO USAR -->
     <div class="section">
-        <div class="section-title">Anatomia do Componente (HTML)</div>
+        <h2 class="section-title">Anatomia do Componente (HTML)</h2>
         <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
             <li><code>div.dp-field</code>: wrapper do campo (label + input + helper).</li>
             <li><code>label.dp-label</code> e <code>span.dp-label-required</code>: rótulo e obrigatoriedade.</li>
@@ -956,7 +1183,7 @@
 
         <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;margin-bottom:24px;">
             <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--ds-fg);">1. Input com calendário (estrutura base)</h3>
-            <pre class="code" style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;!-- Wrapper com posicionamento relativo --&gt;
+            <pre class="code"><code>&lt;!-- Wrapper com posicionamento relativo --&gt;
 &lt;div style="position: relative; width: fit-content;"&gt;
 
   &lt;!-- Campo de entrada --&gt;
@@ -989,7 +1216,7 @@
 
         <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;margin-bottom:24px;">
             <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--ds-fg);">2. Date Range (dois campos)</h3>
-            <pre class="code" style="font-size:12px;background:#1A1A1A;color:#E6E6E6;padding:16px;border-radius:8px;overflow-x:auto;line-height:1.6;"><code>&lt;div class="dp-range-group"&gt;
+            <pre class="code"><code>&lt;div class="dp-range-group"&gt;
   &lt;div class="dp-field"&gt;
     &lt;label class="dp-label"&gt;Data inicial&lt;/label&gt;
     &lt;div class="dp-input-wrapper"&gt;
@@ -1012,32 +1239,32 @@
 
         <div style="background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;padding:24px;">
             <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--ds-fg);">3. Classes disponíveis</h3>
-            <table style="width:100%;border-collapse:collapse;font-size:13px;color:var(--ds-fg);">
+            <table class="dp-classes-table">
                 <thead>
-                    <tr style="background:#F3F3F3;">
-                        <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Classe</th>
-                        <th style="padding:10px 14px;text-align:left;font-weight:600;color:#333;border-bottom:1px solid #E0E0E0;">Descrição</th>
+                    <tr>
+                        <th>Classe</th>
+                        <th>Descrição</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-field</td><td style="padding:10px 14px;color:#656976;">Container do campo (label + input + helper)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-label</td><td style="padding:10px 14px;color:#656976;">Rótulo do campo</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input-wrapper</td><td style="padding:10px 14px;color:#656976;">Wrapper relativo que posiciona ícone sobre input</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input</td><td style="padding:10px 14px;color:#656976;">Campo de texto — tamanho Large (48px)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input--md</td><td style="padding:10px 14px;color:#656976;">Modificador Medium (40px)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-input--error</td><td style="padding:10px 14px;color:#656976;">Estado de erro (borda vermelha)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-icon-btn</td><td style="padding:10px 14px;color:#656976;">Botão ícone de calendário dentro do input</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-helper</td><td style="padding:10px 14px;color:#656976;">Texto auxiliar abaixo do campo</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-helper--error</td><td style="padding:10px 14px;color:#656976;">Texto de erro (vermelho)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-popover</td><td style="padding:10px 14px;color:#656976;">Calendário flutuante (posicionamento absoluto)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-popover--hidden</td><td style="padding:10px 14px;color:#656976;">Oculta o popover (toggle via JS)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-inline</td><td style="padding:10px 14px;color:#656976;">Calendário estático sem input (embutido na página)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--today</td><td style="padding:10px 14px;color:#656976;">Célula do dia atual</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--selected</td><td style="padding:10px 14px;color:#656976;">Data selecionada</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--disabled</td><td style="padding:10px 14px;color:#656976;">Data indisponível</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--range-start</td><td style="padding:10px 14px;color:#656976;">Início do intervalo (range)</td></tr>
-                    <tr style="border-bottom:1px solid #EEEEEE;"><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--range-end</td><td style="padding:10px 14px;color:#656976;">Fim do intervalo (range)</td></tr>
-                    <tr><td style="padding:10px 14px;font-family:monospace;color:#005A1A;">.dp-day--range-between</td><td style="padding:10px 14px;color:#656976;">Dias entre início e fim do intervalo</td></tr>
+                    <tr><td>.dp-field</td><td>Container do campo (label + input + helper)</td></tr>
+                    <tr><td>.dp-label</td><td>Rótulo do campo (12px, semibold; alinhado ao Input)</td></tr>
+                    <tr><td>.dp-input-wrapper</td><td>Wrapper relativo que posiciona ícone sobre input</td></tr>
+                    <tr><td>.dp-input</td><td>Campo de texto — tamanho Large (48px)</td></tr>
+                    <tr><td>.dp-input--md</td><td>Modificador Medium (40px)</td></tr>
+                    <tr><td>.dp-input--error</td><td>Estado de erro (borda semântica de erro)</td></tr>
+                    <tr><td>.dp-icon-btn</td><td>Botão ícone de calendário dentro do input</td></tr>
+                    <tr><td>.dp-helper</td><td>Texto auxiliar abaixo do campo</td></tr>
+                    <tr><td>.dp-helper--error</td><td>Texto de erro</td></tr>
+                    <tr><td>.dp-popover</td><td>Calendário flutuante (posicionamento absoluto)</td></tr>
+                    <tr><td>.dp-popover--hidden</td><td>Oculta o popover (toggle via JS)</td></tr>
+                    <tr><td>.dp-inline</td><td>Calendário estático sem input (embutido na página)</td></tr>
+                    <tr><td>.dp-day--today</td><td>Célula do dia atual</td></tr>
+                    <tr><td>.dp-day--selected</td><td>Data selecionada</td></tr>
+                    <tr><td>.dp-day--disabled</td><td>Data indisponível</td></tr>
+                    <tr><td>.dp-day--range-start</td><td>Início do intervalo (range)</td></tr>
+                    <tr><td>.dp-day--range-end</td><td>Fim do intervalo (range)</td></tr>
+                    <tr><td>.dp-day--range-between</td><td>Dias entre início e fim do intervalo</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1045,7 +1272,7 @@
 
     <!-- Como Usar (React) -->
     <div class="section">
-        <div class="section-title">Como Usar (React)</div>
+        <h2 class="section-title">Como Usar (React)</h2>
         <p class="section-description">
             Snippet React mantendo as mesmas classes do HTML: trigger com <code>aria-expanded</code> e popover como <code>role="dialog"</code>.
         </p>
@@ -1335,15 +1562,13 @@ function DatePickerField({
             renderCalendar(popover, opts);
             popover.classList.remove('dp-popover--hidden');
             trigger.setAttribute('aria-expanded', 'true');
-            input.style.borderColor = '#04843B';
-            input.style.boxShadow = '0 0 0 3px rgba(4,132,59,0.1)';
+            input.classList.add('dp-input--open');
         }
 
         function closePopover() {
             popover.classList.add('dp-popover--hidden');
             trigger.setAttribute('aria-expanded', 'false');
-            input.style.borderColor = '';
-            input.style.boxShadow = '';
+            input.classList.remove('dp-input--open');
         }
 
         function togglePopover(e) {
@@ -1375,28 +1600,7 @@ function DatePickerField({
     createInteractivePicker('dp-interactive-md', 'dp-trigger-md', 'dp-popover-md');
 </script>
 
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Tab',file:'tab-demo.html',cat:'Navegação'},{name:'Date Picker',file:'datepicker-demo.html',cat:'Formulário'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
-
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

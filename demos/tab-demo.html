@@ -129,7 +129,7 @@
         }
 
         .tab--line:hover:not(:disabled):not(.tab--active) {
-            color: #04843B;
+            color: var(--ds-success);
             background-color: var(--ds-bg-subtle);
         }
 
@@ -139,8 +139,8 @@
         }
 
         .tab--line.tab--active {
-            color: #04843B;
-            border-bottom-color: #04843B;
+            color: var(--ds-success);
+            border-bottom-color: var(--ds-success);
             font-weight: 600;
         }
 
@@ -186,8 +186,8 @@
         }
 
         .tab--pill:hover:not(:disabled):not(.tab--active) {
-            color: #04843B;
-            background-color: #E6F4ED;
+            color: var(--ds-success);
+            background-color: var(--ds-success-bg);
         }
 
         .tab--pill:focus-visible {
@@ -196,7 +196,7 @@
 
         .tab--pill.tab--active {
             background: var(--ds-surface);
-            color: #04843B;
+            color: var(--ds-success);
             font-weight: 600;
             box-shadow: var(--ds-shadow-sm);
         }
@@ -223,22 +223,22 @@
             height: 18px;
             padding: 0 5px;
             border-radius: 9999px;
-            background: #E6F4ED;
-            color: #005A1A;
+            background: var(--ds-success-bg);
+            color: var(--ds-success-fg);
             font-size: 10px;
             font-weight: 600;
             line-height: 1;
         }
 
         .tab--active .tab-badge {
-            background: #04843B;
-            color: #FFFFFF;
+            background: var(--ds-success);
+            color: var(--ds-surface);
         }
 
         .tab--disabled .tab-badge,
         :disabled .tab-badge {
-            background: #F3F3F3;
-            color: #C6C6C6;
+            background: var(--ds-neutral-bg);
+            color: var(--ds-n200);
         }
 
         /* ── TAB PANEL ── */
@@ -326,21 +326,21 @@
         .note {
             margin-top: 48px;
             padding: 24px;
-            background-color: #E6F4ED;
+            background-color: var(--ds-success-bg);
             border-radius: 12px;
-            border-left: 4px solid #04843B;
+            border-left: 4px solid var(--ds-success);
         }
 
         .note h3 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #004D16;
+            color: var(--ds-success-fg);
         }
 
         .note ul {
             font-size: 14px;
-            color: #333333;
+            color: var(--ds-fg);
             line-height: 1.6;
             padding-left: 20px;
         }
@@ -493,59 +493,59 @@ export function ExampleTabs() {
         <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
         <div class="color-demo">
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #04843B;"></div>
+                <div class="color-box" style="background-color: var(--ds-success);"></div>
                 <div class="color-info">
                     <span class="color-name">Primary 500 (Active)</span>
-                    <span class="color-value">#04843B</span>
+                    <span class="color-value">var(--ds-success)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #067647;"></div>
+                <div class="color-box" style="background-color: var(--ds-success-hover);"></div>
                 <div class="color-info">
                     <span class="color-name">Primary 600 (Hover)</span>
-                    <span class="color-value">#067647</span>
+                    <span class="color-value">var(--ds-success-hover)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #005A1A;"></div>
+                <div class="color-box" style="background-color: var(--ds-success-fg);"></div>
                 <div class="color-info">
                     <span class="color-name">Primary 700 (Badge text)</span>
-                    <span class="color-value">#005A1A</span>
+                    <span class="color-value">var(--ds-success-fg)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #E6F4ED;"></div>
+                <div class="color-box" style="background-color: var(--ds-success-bg);"></div>
                 <div class="color-info">
                     <span class="color-name">Primary 50 (Badge bg)</span>
-                    <span class="color-value">#E6F4ED</span>
+                    <span class="color-value">var(--ds-success-bg)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #656976;"></div>
+                <div class="color-box" style="background-color: var(--ds-text-secondary);"></div>
                 <div class="color-info">
                     <span class="color-name">Neutral 500 (Default text)</span>
-                    <span class="color-value">#656976</span>
+                    <span class="color-value">var(--ds-text-secondary)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #C6C6C6;"></div>
+                <div class="color-box" style="background-color: var(--ds-n200);"></div>
                 <div class="color-info">
                     <span class="color-name">Neutral 200 (Disabled)</span>
-                    <span class="color-value">#C6C6C6</span>
+                    <span class="color-value">var(--ds-n200)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #E0E0E0; border-color: #ccc;"></div>
+                <div class="color-box" style="background-color: var(--ds-border); border-color: var(--ds-border);"></div>
                 <div class="color-info">
                     <span class="color-name">Border (Line)</span>
-                    <span class="color-value">#E0E0E0</span>
+                    <span class="color-value">var(--ds-border)</span>
                 </div>
             </div>
             <div class="color-swatch">
-                <div class="color-box" style="background-color: #F3F3F3; border-color: #ccc;"></div>
+                <div class="color-box" style="background-color: var(--ds-neutral-bg); border-color: var(--ds-border);"></div>
                 <div class="color-info">
                     <span class="color-name">Neutral 100 (Pill bg)</span>
-                    <span class="color-value">#F3F3F3</span>
+                    <span class="color-value">var(--ds-neutral-bg)</span>
                 </div>
             </div>
         </div>
@@ -554,7 +554,7 @@ export function ExampleTabs() {
     <!-- LINE TABS -->
     <div class="section">
         <h2 class="section-title">📑 Tab Line — Variante Linha</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">A variante mais comum, com indicador de sublinha. Ideal para navegação de seções e conteúdo extenso.</p>
+        <p style="font-size:14px;color:var(--ds-text-secondary);margin-bottom:24px;">A variante mais comum, com indicador de sublinha. Ideal para navegação de seções e conteúdo extenso.</p>
 
         <!-- Large -->
         <div class="size-group">
@@ -571,7 +571,7 @@ export function ExampleTabs() {
                         <span class="state-label">Active</span>
                     </div>
                     <div class="state-col">
-                        <button class="tab--line" style="height:48px;color:#04843B;background:#F9F9F9;">Tab Item</button>
+                        <button class="tab--line" style="height:48px;color:var(--ds-success);background:var(--ds-bg-subtle);">Tab Item</button>
                         <span class="state-label">Hover</span>
                     </div>
                     <div class="state-col">
@@ -601,7 +601,7 @@ export function ExampleTabs() {
                         <span class="state-label">Active</span>
                     </div>
                     <div class="state-col">
-                        <button class="tab--line tab--md" style="height:40px;color:#04843B;background:#F9F9F9;">Tab Item</button>
+                        <button class="tab--line tab--md" style="height:40px;color:var(--ds-success);background:var(--ds-bg-subtle);">Tab Item</button>
                         <span class="state-label">Hover</span>
                     </div>
                     <div class="state-col">
@@ -651,7 +651,7 @@ export function ExampleTabs() {
     <!-- PILL TABS -->
     <div class="section">
         <h2 class="section-title">💊 Tab Pill — Variante Pílula</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Variante compacta com fundo arredondado. Ideal para filtros de conteúdo e seleções secundárias.</p>
+        <p style="font-size:14px;color:var(--ds-text-secondary);margin-bottom:24px;">Variante compacta com fundo arredondado. Ideal para filtros de conteúdo e seleções secundárias.</p>
 
         <!-- Large -->
         <div class="size-group">
@@ -668,7 +668,7 @@ export function ExampleTabs() {
                         <span class="state-label" style="margin-top:6px;">Active</span>
                     </div>
                     <div class="state-col">
-                        <button class="tab--pill" style="color:#04843B;background:#E6F4ED;">Tab Item</button>
+                        <button class="tab--pill" style="color:var(--ds-success);background:var(--ds-success-bg);">Tab Item</button>
                         <span class="state-label" style="margin-top:6px;">Hover</span>
                     </div>
                     <div class="state-col">
@@ -698,7 +698,7 @@ export function ExampleTabs() {
                         <span class="state-label" style="margin-top:6px;">Active</span>
                     </div>
                     <div class="state-col">
-                        <button class="tab--pill tab--md" style="color:#04843B;background:#E6F4ED;">Tab Item</button>
+                        <button class="tab--pill tab--md" style="color:var(--ds-success);background:var(--ds-success-bg);">Tab Item</button>
                         <span class="state-label" style="margin-top:6px;">Hover</span>
                     </div>
                     <div class="state-col">
@@ -748,7 +748,7 @@ export function ExampleTabs() {
     <!-- TABS WITH ICONS -->
     <div class="section">
         <h2 class="section-title">🔷 Tabs com Ícones</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Ícones reforçam o significado visual de cada aba. Use o ícone sempre à esquerda do texto.</p>
+        <p style="font-size:14px;color:var(--ds-text-secondary);margin-bottom:24px;">Ícones reforçam o significado visual de cada aba. Use o ícone sempre à esquerda do texto.</p>
 
         <div class="size-group">
             <div class="size-label">Line — com ícone</div>
@@ -816,7 +816,7 @@ export function ExampleTabs() {
     <!-- TABS WITH BADGE -->
     <div class="section">
         <h2 class="section-title">🔔 Tabs com Badge</h2>
-        <p style="font-size:14px;color:#656976;margin-bottom:24px;">Badges indicam quantidade de itens ou notificações em cada aba. O badge herda a cor do estado ativo.</p>
+        <p style="font-size:14px;color:var(--ds-text-secondary);margin-bottom:24px;">Badges indicam quantidade de itens ou notificações em cada aba. O badge herda a cor do estado ativo.</p>
 
         <div class="size-group">
             <div class="size-label">Line — com badge contador</div>
@@ -869,9 +869,9 @@ export function ExampleTabs() {
 
         <div class="demo-row">
             <!-- Example 1: Detalhe de registro -->
-            <div style="background: #FFFFFF; border-radius: 8px; padding: 24px; border: 1px solid #E0E0E0;">
-                <h3 style="font-size:16px;font-weight:600;margin-bottom:4px;color:#1A1A1A;">Detalhe de registro</h3>
-                <p style="font-size:12px;color:#999;margin-bottom:20px;">Abas line em página de detalhe de cadastro</p>
+            <div style="background: var(--ds-surface); border-radius: 8px; padding: 24px; border: 1px solid var(--ds-border);">
+                <h3 style="font-size:16px;font-weight:600;margin-bottom:4px;color:var(--ds-text-primary);">Detalhe de registro</h3>
+                <p style="font-size:12px;color:var(--ds-fg-muted);margin-bottom:20px;">Abas line em página de detalhe de cadastro</p>
                 <div role="tablist" class="tab-group tab-group--line" id="tabs-ex1" aria-label="Seções do cadastro">
                     <button class="tab--line tab--active" role="tab" aria-selected="true" style="height:48px;" aria-controls="ex1-p1" id="ex1-t1">Dados gerais</button>
                     <button class="tab--line" role="tab" aria-selected="false" style="height:48px;" aria-controls="ex1-p2" id="ex1-t2">
@@ -908,9 +908,9 @@ export function ExampleTabs() {
             </div>
 
             <!-- Example 2: Filtro de listagem -->
-            <div style="background: #FFFFFF; border-radius: 8px; padding: 24px; border: 1px solid #E0E0E0;">
-                <h3 style="font-size:16px;font-weight:600;margin-bottom:4px;color:#1A1A1A;">Filtro de listagem</h3>
-                <p style="font-size:12px;color:#999;margin-bottom:20px;">Abas pill como filtro rápido de status em uma listagem</p>
+            <div style="background: var(--ds-surface); border-radius: 8px; padding: 24px; border: 1px solid var(--ds-border);">
+                <h3 style="font-size:16px;font-weight:600;margin-bottom:4px;color:var(--ds-text-primary);">Filtro de listagem</h3>
+                <p style="font-size:12px;color:var(--ds-fg-muted);margin-bottom:20px;">Abas pill como filtro rápido de status em uma listagem</p>
                 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
                     <div role="tablist" class="tab-group tab-group--pill" id="tabs-ex2" aria-label="Filtrar por status">
                         <button class="tab--pill tab--md tab--active" role="tab" aria-selected="true">Todos <span class="tab-badge">248</span></button>
@@ -918,9 +918,9 @@ export function ExampleTabs() {
                         <button class="tab--pill tab--md" role="tab" aria-selected="false">Pendentes <span class="tab-badge">50</span></button>
                         <button class="tab--pill tab--md" role="tab" aria-selected="false">Reprovados <span class="tab-badge">15</span></button>
                     </div>
-                    <button style="padding:8px 14px;border:1px solid #d0d0d0;border-radius:8px;background:#fff;font-size:13px;cursor:pointer;font-family:inherit;">+ Novo</button>
+                    <button style="padding:8px 14px;border:1px solid var(--ds-border);border-radius:8px;background:var(--ds-surface);font-size:13px;cursor:pointer;font-family:inherit;">+ Novo</button>
                 </div>
-                <div style="border:1px solid #E0E0E0;border-radius:8px;padding:16px;font-size:13px;color:#656976;text-align:center;">
+                <div style="border:1px solid var(--ds-border);border-radius:8px;padding:16px;font-size:13px;color:var(--ds-text-secondary);text-align:center;">
                     Conteúdo da listagem aparece aqui conforme filtro selecionado
                 </div>
             </div>
@@ -940,7 +940,7 @@ export function ExampleTabs() {
             <li>Forneça <code>aria-label</code> no <code>tablist</code> para descrever o grupo de abas</li>
             <li>Suporte navegação por teclado: <kbd>Tab</kbd> para focar, <kbd>←</kbd>/<kbd>→</kbd> para navegar entre abas</li>
             <li>O foco visível usa box-shadow de 2px na variante line e 3px na variante pill</li>
-            <li>Contrast ratio WCAG AA: texto ativo #04843B sobre branco = 5.5:1 ✓</li>
+            <li>Contrast ratio WCAG AA: texto ativo var(--ds-success) sobre branco = 5.5:1 ✓</li>
         </ul>
     </div>
 </div>

@@ -4,20 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TP.IA - Card</title>
+  <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
-    /* Tokens centralizados em ds-demo-base.css */
+    /* Tokens: cores, sombras e foco vêm de ds-demo-base.css (temas claro/escuro). */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: var(--ds-font-family); background: var(--ds-bg); color: var(--ds-fg); }
-
-    /* Header controlado por ds-demo-base.css */
 
     .ds-container{ width: 100%; max-width: 1440px; margin: 0 auto; padding: 40px 16px; }
     @media(min-width:744px){ .ds-container{ padding-left: 24px; padding-right: 24px; } }
 
-    h1{ font-size: 28px; font-weight: 800; margin-bottom: 8px; color: var(--ds-success-fg); }
-    .lead{ font-size: 14px; color: var(--ds-n500); margin-bottom: 20px; line-height: 1.6; max-width: 760px; }
+    h1{ font-size: clamp(1.5rem, 4vw, 1.75rem); font-weight: 800; margin-bottom: 8px; color: var(--ds-success); }
+    .lead{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 20px; line-height: 1.6; max-width: 760px; }
 
     .token-nav{
       display: flex; flex-wrap: wrap; gap: 10px 16px;
@@ -28,33 +27,37 @@
 
     .section{ margin-bottom: 28px; }
     .section-title{ font-size: 18px; font-weight: 800; margin-bottom: 10px; }
-    .section-subtitle{ font-size: 14px; color: var(--ds-n500); margin-bottom: 14px; line-height: 1.6; }
+    .section-subtitle{ font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 14px; line-height: 1.6; }
 
     .demo-wrap{ margin-bottom: 28px; }
 
     /* Card surface */
     .ds-card{
-      border-radius: 12px; background: var(--ds-bg); color: var(--ds-n800);
+      border-radius: 12px; background: var(--ds-surface); color: var(--ds-fg);
       border: 1px solid var(--ds-border);
     }
     .ds-card--outline{ border-color: var(--ds-border); }
-    .ds-card--elevated{ border: none; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .ds-card--elevated{ border: none; box-shadow: var(--ds-shadow-md); }
     .ds-card__body{ padding: 20px 22px; }
     .ds-card__header{ margin-bottom: 12px; }
     .ds-card__title-row{ display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
     .ds-card__title{ font-size: 18px; font-weight: 800; line-height: 1.25; }
     .ds-card__action{ font-size: 13px; font-weight: 700; color: var(--ds-success); text-decoration: none; white-space: nowrap; }
     .ds-card__action:hover{ text-decoration: underline; }
-    .ds-card__description{ margin-top: 6px; font-size: 14px; color: var(--ds-n500); line-height: 1.5; }
+    .ds-card__description{ margin-top: 6px; font-size: 14px; color: var(--ds-fg-muted); line-height: 1.5; }
     .ds-card__content{ display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
     .ds-card__divider{ border: none; border-top: 1px solid var(--ds-border); margin: 18px 0; }
     .ds-card__footer{ display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
     .ds-card__badges{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-    .ds-card__meta{ display: flex; flex-direction: column; gap: 8px; margin: 10px 0 12px; font-size: 13px; color: var(--ds-n500); }
+    .ds-card__meta{ display: flex; flex-direction: column; gap: 8px; margin: 10px 0 12px; font-size: 13px; color: var(--ds-fg-muted); }
     .ds-card__meta-row{ display: flex; align-items: center; gap: 8px; }
-    .ds-card__meta-row svg{ flex-shrink: 0; color: var(--ds-n500); }
-    .ds-card__hint{ font-size: 12px; color: var(--ds-n500); text-align: center; margin-top: 8px; }
-    .ds-card__eyebrow{ font-size: 12px; font-weight: 700; color: var(--ds-success); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+    .ds-card__meta-row svg{ flex-shrink: 0; color: var(--ds-fg-muted); }
+    .ds-card__hint{ font-size: 12px; color: var(--ds-fg-muted); text-align: center; margin-top: 8px; }
+    .ds-card__eyebrow{
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;
+    }
+    .ds-card__eyebrow--brand{ color: var(--ds-success); }
+    .ds-card__eyebrow--warm{ color: var(--ds-warning-fg); }
     .ds-card__media{
       width: 100%; height: auto; max-height: 168px; object-fit: cover;
       display: block; border-bottom: 1px solid var(--ds-border);
@@ -70,20 +73,25 @@
     }
     .badge.small{ padding: 2px 8px; font-size: 10px; }
     .badge.medium{ padding: 4px 10px; font-size: 12px; }
-    .badge.primary-solid{ background: var(--ds-success); color: var(--ds-bg); }
+    /* Badges semânticos — variar por card / contexto (todos de ds-demo-base.css) */
+    .badge.solid-success{ background: var(--ds-success); color: var(--ds-on-inverse); }
+    .badge.soft-success{ background: var(--ds-success-bg); color: var(--ds-success-fg); }
+    .badge.solid-warning{ background: var(--ds-warning); color: var(--ds-warning-solid-fg); }
+    .badge.soft-warning{ background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+    .badge.soft-error{ background: var(--ds-error-bg); color: var(--ds-error-fg); }
     .badge.neutral{ background: var(--ds-neutral-bg); color: var(--ds-neutral-fg); }
     .badge.info{ background: var(--ds-info-bg); color: var(--ds-info-fg); }
 
     .ds-label-row{ display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .ds-label{ font-size: 13px; font-weight: 700; color: var(--ds-n800); }
+    .ds-label{ font-size: 13px; font-weight: 700; color: var(--ds-fg); }
     .ds-input{
       width: 100%; padding: 10px 12px; border-radius: 8px;
       border: 1px solid var(--ds-border); font-size: 14px; font-family: inherit;
-      color: var(--ds-n800); background: var(--ds-bg);
+      color: var(--ds-fg); background: var(--ds-surface);
     }
-    .ds-input:focus{
+    .ds-input:focus-visible{
       outline: none; border-color: var(--ds-success);
-      box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.12);
+      box-shadow: var(--ds-focus-ring);
     }
     .ds-input::placeholder{ color: var(--ds-placeholder); }
     .ds-link{ font-size: 13px; font-weight: 600; color: var(--ds-success); text-decoration: none; }
@@ -102,29 +110,37 @@
       border: 1px solid transparent;
     }
     .btn-outline{
-      background: var(--ds-bg); color: var(--ds-n800); border: 1px solid var(--ds-border);
+      background: var(--ds-surface); color: var(--ds-fg); border: 1px solid var(--ds-border);
     }
     .btn-outline:hover:not(:disabled){ background: var(--ds-bg-subtle); }
     .btn-outline-success{
-      background: var(--ds-bg); color: var(--ds-success); border: 1px solid var(--ds-success);
+      background: var(--ds-surface); color: var(--ds-success); border: 1px solid var(--ds-success);
     }
     .btn-outline-success:hover:not(:disabled){
       background: var(--ds-success-bg); color: var(--ds-success-fg);
     }
     .btn:disabled{ opacity: 0.55; cursor: not-allowed; }
+    /* Secundário desabilitado: sem opacidade global — mantém contraste legível (WCAG) */
+    .btn.btn-secondary:disabled,
+    .btn.btn-secondary[disabled]{
+      opacity: 1;
+      background: var(--ds-neutral-bg);
+      color: var(--ds-fg-muted);
+      border: 1px solid var(--ds-border);
+    }
 
     .ds-showcase-card{
       border-radius: 12px; overflow: hidden; border: 1px solid var(--ds-border);
-      background: var(--ds-bg); max-width: 280px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      background: var(--ds-surface); max-width: 280px;
+      box-shadow: var(--ds-shadow-sm);
     }
     .ds-showcase-card__preview{
       height: 120px; background: var(--ds-bg-subtle); display: flex; align-items: center; justify-content: center;
       border-bottom: 1px solid var(--ds-border);
     }
     .ds-showcase-card__body{ padding: 16px 18px; }
-    .ds-showcase-card__title{ font-size: 16px; font-weight: 800; margin-bottom: 8px; color: var(--ds-n800); }
-    .ds-showcase-card__desc{ font-size: 13px; color: var(--ds-n500); line-height: 1.45; }
+    .ds-showcase-card__title{ font-size: 16px; font-weight: 800; margin-bottom: 8px; color: var(--ds-fg); }
+    .ds-showcase-card__desc{ font-size: 13px; color: var(--ds-fg-muted); line-height: 1.45; }
     .ds-showcase-card__meta{ margin-bottom: 10px; }
   </style>
 </head>
@@ -185,12 +201,12 @@
     <div class="section" id="anatomia">
       <h2 class="section-title">Anatomia do Componente (HTML)</h2>
       <p class="section-subtitle">Partes usadas nesta página:</p>
-      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.75;font-size:14px;">
+      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.75;font-size:14px;">
         <li><code>.ds-card</code> + <code>ds-card--outline</code> | <code>ds-card--elevated</code> | <code>ds-card--feature</code>.</li>
         <li><code>.ds-card__media</code> — imagem no topo (ratio controlado por <code>max-height</code>).</li>
         <li><code>.ds-card__body</code>, <code>.ds-card__header</code>, <code>.ds-card__title-row</code>, <code>.ds-card__title</code>, <code>.ds-card__action</code>.</li>
-        <li><code>.ds-card__eyebrow</code>, <code>.ds-card__description</code>, <code>.ds-card__content</code>, <code>.ds-card__divider</code>, <code>.ds-card__footer</code>.</li>
-        <li><code>.badge</code> + <code>.primary-solid</code> | <code>.neutral</code> | <code>.info</code> + <code>.small</code> | <code>.medium</code>.</li>
+        <li><code>.ds-card__eyebrow</code> + <code>.ds-card__eyebrow--brand|--warm</code>; <code>.ds-card__description</code>, <code>.ds-card__content</code>, <code>.ds-card__divider</code>, <code>.ds-card__footer</code>.</li>
+        <li><code>.badge</code>: <code>.solid-success</code>, <code>.soft-success</code>, <code>.solid-warning</code> (texto <code>--ds-warning-solid-fg</code>), <code>.soft-warning</code>, <code>.soft-error</code>, <code>.info</code>, <code>.neutral</code> + <code>.small|medium</code>.</li>
         <li><code>.btn</code> + <code>.btn-primary</code> | <code>.btn-secondary</code> | <code>.btn-outline</code> | <code>.btn-outline-success</code> + <code>.btn-block</code> (SSO / secundário em verde).</li>
         <li><code>.ds-showcase-card*</code> — variante estilo grid do portal.</li>
       </ul>
@@ -246,7 +262,7 @@ export function LoginCard() {
 }
 </code></pre>
       <p class="section-subtitle" style="margin-top:16px;"><strong>Props principais</strong></p>
-      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.75;font-size:14px;">
+      <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.75;font-size:14px;">
         <li><code>variant</code>: <code>elevated</code> | <code>outline</code> | <code>ghost</code> | <code>feature</code></li>
         <li><code>padding</code>: <code>none</code> | <code>sm</code> | <code>md</code> | <code>lg</code></li>
         <li><code>as</code> (Card): <code>section</code> | <code>article</code> | <code>div</code></li>
@@ -298,8 +314,9 @@ export function LoginCard() {
           <article class="ds-card ds-card--elevated" aria-labelledby="ev1-title">
             <div class="ds-card__body">
               <div class="ds-card__badges">
-                <span class="badge primary-solid medium">Curso</span>
+                <span class="badge solid-success medium">Curso</span>
                 <span class="badge neutral medium">Presencial</span>
+                <span class="badge soft-warning small">Inscrições abertas</span>
               </div>
               <h2 id="ev1-title" class="ds-card__title">Design System na prática</h2>
               <div class="ds-card__meta">
@@ -320,8 +337,9 @@ export function LoginCard() {
           <article class="ds-card ds-card--outline" aria-labelledby="ev2-title">
             <div class="ds-card__body">
               <div class="ds-card__badges">
-                <span class="badge primary-solid medium">Evento</span>
-                <span class="badge info medium">Online</span>
+                <span class="badge solid-warning medium">Evento</span>
+                <span class="badge soft-success medium">Ao vivo</span>
+                <span class="badge neutral small">Gratuito</span>
               </div>
               <h2 id="ev2-title" class="ds-card__title">Live: tokens e temas</h2>
               <div class="ds-card__footer" style="padding-top:8px;">
@@ -337,7 +355,11 @@ export function LoginCard() {
         <article class="ds-card ds-card--feature ds-card--outline" style="max-width:360px;" aria-labelledby="feat-title">
           <img class="ds-card__media" src="https://picsum.photos/seed/tpia-card/640/360" width="640" height="360" alt="Equipe colaborando em workshop" loading="lazy" />
           <div class="ds-card__body">
-            <p class="ds-card__eyebrow">Especialista</p>
+            <p class="ds-card__eyebrow ds-card__eyebrow--warm">Especialista</p>
+            <div class="ds-card__badges">
+              <span class="badge info medium">Mentoria</span>
+              <span class="badge neutral small">8 semanas</span>
+            </div>
             <h2 id="feat-title" class="ds-card__title">Implemente o DS com acompanhamento</h2>
             <p class="ds-card__description">Sessões para alinhar tokens, componentes e acessibilidade.</p>
           </div>
@@ -348,14 +370,16 @@ export function LoginCard() {
         <p class="section-subtitle" style="margin-bottom:12px;"><strong>4) Card estilo portal</strong></p>
         <div class="ds-showcase-card" role="article" aria-label="Card exemplo portal">
           <div class="ds-showcase-card__preview">
-            <div style="display:flex;gap:8px;">
-              <span style="width:36px;height:36px;border-radius:8px;background:var(--ds-success);"></span>
-              <span style="width:36px;height:36px;border-radius:8px;background:var(--ds-success-bg);"></span>
+            <div style="display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;">
+              <span style="width:32px;height:32px;border-radius:8px;background:var(--ds-success);" title="--ds-success"></span>
+              <span style="width:32px;height:32px;border-radius:8px;background:var(--ds-warning);" title="--ds-warning"></span>
+              <span style="width:32px;height:32px;border-radius:8px;background:var(--ds-neutral-bg);border:1px solid var(--ds-border);" title="--ds-neutral-bg"></span>
             </div>
           </div>
           <div class="ds-showcase-card__body">
-            <div class="ds-showcase-card__meta">
-              <span class="badge primary-solid small">Fundação</span>
+            <div class="ds-showcase-card__meta" style="display:flex;flex-wrap:wrap;gap:8px;">
+              <span class="badge solid-success small">Fundação</span>
+              <span class="badge info small">Tokens</span>
             </div>
             <div class="ds-showcase-card__title">Design Tokens</div>
             <p class="ds-showcase-card__desc">Cores, tipografia e espaçamentos do sistema.</p>

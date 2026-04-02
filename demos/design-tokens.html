@@ -14,7 +14,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             background-color: var(--ds-bg);
             color: var(--ds-fg);
         }
@@ -45,7 +45,7 @@
             color: var(--ds-fg);
             font-size: 13px;
             font-weight: 500;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             cursor: pointer;
             transition: all 0.15s ease;
             text-decoration: none;
@@ -78,15 +78,24 @@
             border: 1px solid var(--ds-border);
             border-radius: 8px;
             font-size: 13px;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             outline: none;
             background: var(--ds-surface);
             color: var(--ds-fg);
-            transition: border-color 0.15s;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .ds-search-input:focus {
             border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .ds-search-input:focus-visible {
+            outline: none;
+        }
+
+        .ds-search-input::placeholder {
+            color: var(--ds-placeholder);
         }
 
         .ds-search-icon {
@@ -156,7 +165,10 @@
         }
 
         .ds-hamburger:hover { background: var(--ds-bg-subtle); }
-        .ds-hamburger:hover { background: var(--ds-bg-subtle); }
+        .ds-hamburger:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
         .ds-hamburger svg { color: var(--ds-fg); }
 
         /* Mobile Menu */
@@ -199,16 +211,16 @@
         }
 
         .page-header h1 {
-            font-size: 32px;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
-            color: #005A1A;
+            color: var(--ds-success);
             margin-bottom: 8px;
         }
 
         .page-header p {
-            font-size: 16px;
-            color: #656976;
-            max-width: 600px;
+            font-size: 1rem;
+            color: var(--ds-fg-muted);
+            max-width: 42rem;
             margin: 0 auto;
             line-height: 1.6;
         }
@@ -257,6 +269,7 @@
         }
 
         .theme-select-row select {
+            min-height: 44px;
             padding: 8px 14px;
             border-radius: 10px;
             border: 1px solid var(--ds-border);
@@ -265,6 +278,294 @@
             font-family: var(--ds-font-family);
             font-weight: 600;
             cursor: pointer;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .theme-select-row select:focus-visible {
+            outline: none;
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .theme-select-row-extended {
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .theme-active-badge {
+            flex: 1 1 100%;
+            text-align: center;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--ds-fg-muted);
+        }
+
+        @media (min-width: 744px) {
+            .theme-active-badge {
+                flex: 0 1 auto;
+                text-align: left;
+            }
+        }
+
+        .token-io-open-modal-btn {
+            min-height: 44px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
+            color: var(--ds-fg);
+            font-family: var(--ds-font-family);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .token-io-open-modal-btn:hover {
+            border-color: var(--ds-success);
+            background: var(--ds-success-bg);
+            color: var(--ds-success-fg);
+        }
+
+        .token-io-open-modal-btn:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .token-nav .token-nav-trigger {
+            font: inherit;
+            margin: 0;
+            padding: 8px 16px;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ds-fg);
+            transition: all 0.2s;
+        }
+
+        .token-nav .token-nav-trigger:hover {
+            background: var(--ds-success-bg);
+            border-color: var(--ds-success);
+            color: var(--ds-success-fg);
+        }
+
+        .token-nav .token-nav-trigger:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        /* ── Modal import/export ── */
+        .theme-io-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 16px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            background: color-mix(in srgb, var(--ds-n800) 45%, transparent);
+            box-sizing: border-box;
+        }
+
+        .theme-io-modal-backdrop[hidden] {
+            display: none !important;
+        }
+
+        .theme-io-modal {
+            width: min(100%, 32rem);
+            max-height: min(88vh, 100% - 32px);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
+            box-shadow: var(--ds-shadow-md);
+        }
+
+        @media (min-width: 744px) {
+            .theme-io-modal-backdrop {
+                align-items: center;
+                padding: 24px;
+            }
+            .theme-io-modal {
+                width: min(100%, 36rem);
+                max-height: 85vh;
+            }
+        }
+
+        .theme-io-modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--ds-border);
+        }
+
+        .theme-io-modal-header h2 {
+            margin: 0;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--ds-fg);
+        }
+
+        .theme-io-modal-close {
+            flex-shrink: 0;
+            min-width: 44px;
+            min-height: 44px;
+            margin: -6px -6px -6px 0;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--ds-fg-muted);
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-io-modal-close:hover {
+            color: var(--ds-fg);
+            background: var(--ds-bg-subtle);
+        }
+
+        .theme-io-modal-close:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .theme-io-modal-body {
+            padding: 18px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .theme-io-modal-intro {
+            margin-bottom: 16px;
+            font-size: 0.875rem;
+            color: var(--ds-fg-muted);
+        }
+
+        .theme-io-modal-intro code {
+            font-size: 0.8125em;
+            background: var(--ds-bg-subtle);
+            padding: 0.1em 0.35em;
+            border-radius: 4px;
+        }
+
+        /* ── Import / export fields (no caixa exterior; dentro do modal) ── */
+        .token-io-section {
+            margin-bottom: 0;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .token-io-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .token-io-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: min(100%, 220px);
+            flex: 1;
+        }
+
+        .token-io-field label {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--ds-fg);
+        }
+
+        .token-io-field input[type="text"],
+        .token-io-field input[type="file"] {
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-bg-subtle);
+            color: var(--ds-fg);
+            font-family: var(--ds-font-family);
+            font-size: 0.875rem;
+        }
+
+        .token-io-field input[type="text"]:focus-visible,
+        .token-io-field input[type="file"]:focus-visible {
+            outline: none;
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .token-io-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .token-io-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-success-bg);
+            color: var(--ds-success-fg);
+            font-family: var(--ds-font-family);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .token-io-btn:hover {
+            border-color: var(--ds-success);
+        }
+
+        .token-io-btn:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .token-io-btn-link {
+            background: var(--ds-surface);
+            color: var(--ds-fg);
+        }
+
+        .token-io-btn-secondary {
+            background: var(--ds-bg-subtle);
+            color: var(--ds-fg-muted);
+        }
+
+        .token-io-status {
+            margin-top: 12px;
+            font-size: 0.8125rem;
+            color: var(--ds-fg-muted);
+        }
+
+        .token-io-error {
+            margin-top: 8px;
+            font-size: 0.8125rem;
+            color: var(--ds-error);
         }
 
         /* Section */
@@ -311,7 +612,7 @@
         .color-swatch {
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.06);
+            border: 1px solid var(--ds-border);
             transition: transform 0.15s;
         }
 
@@ -329,11 +630,11 @@
             display: none;
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.5);
-            color: #fff;
+            background: color-mix(in srgb, var(--ds-n800) 55%, transparent);
+            color: var(--ds-on-inverse);
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 0.6875rem;
             font-weight: 600;
         }
 
@@ -343,19 +644,26 @@
 
         .color-swatch-info {
             padding: 8px 10px;
-            background: #fff;
+            background: var(--ds-surface);
         }
 
         .color-swatch-name {
-            font-size: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .color-swatch-hex {
-            font-size: 11px;
-            color: #999;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.6875rem;
+            color: var(--ds-fg-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .color-swatch-token {
+            font-size: 0.625rem;
+            color: var(--ds-success);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            margin-bottom: 2px;
         }
 
         /* Semantic colors */
@@ -371,8 +679,8 @@
             gap: 16px;
             padding: 16px;
             border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
         }
 
         .semantic-circle {
@@ -387,21 +695,21 @@
         }
 
         .semantic-name {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
             text-transform: capitalize;
         }
 
         .semantic-hex {
-            font-size: 12px;
-            color: #999;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--ds-fg-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         .semantic-usage {
-            font-size: 11px;
-            color: #656976;
+            font-size: 0.6875rem;
+            color: var(--ds-fg-muted);
             margin-top: 2px;
         }
 
@@ -417,7 +725,7 @@
             align-items: baseline;
             gap: 24px;
             padding: 16px 20px;
-            background: #F9F9F9;
+            background: var(--ds-bg-subtle);
             border-radius: 8px;
         }
 
@@ -427,19 +735,19 @@
         }
 
         .type-token {
-            font-size: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
-            color: #04843B;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--ds-success);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         .type-value {
-            font-size: 11px;
-            color: #999;
+            font-size: 0.6875rem;
+            color: var(--ds-fg-muted);
         }
 
         .type-preview {
-            color: #333;
+            color: var(--ds-fg);
         }
 
         /* Font weights */
@@ -453,26 +761,26 @@
         .weight-card {
             padding: 20px;
             border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
         }
 
         .weight-preview {
             font-size: 28px;
-            color: #1A1A1A;
+            color: var(--ds-fg);
             margin-bottom: 8px;
         }
 
         .weight-name {
-            font-size: 13px;
+            font-size: 0.8125rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .weight-value {
-            font-size: 12px;
-            color: #999;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--ds-fg-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         /* Line height */
@@ -486,33 +794,33 @@
         .lh-card {
             padding: 20px;
             border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
         }
 
         .lh-demo {
-            font-size: 14px;
-            color: #333;
+            font-size: 0.875rem;
+            color: var(--ds-fg);
             margin-bottom: 12px;
             background: repeating-linear-gradient(
                 to bottom,
                 transparent,
                 transparent calc(1em * var(--lh) - 1px),
-                #E6F4ED calc(1em * var(--lh) - 1px),
-                #E6F4ED calc(1em * var(--lh))
+                var(--ds-success-bg) calc(1em * var(--lh) - 1px),
+                var(--ds-success-bg) calc(1em * var(--lh))
             );
         }
 
         .lh-label {
-            font-size: 13px;
+            font-size: 0.8125rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .lh-value {
-            font-size: 12px;
-            color: #999;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--ds-fg-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         /* ── Spacing ── */
@@ -527,7 +835,7 @@
             align-items: center;
             gap: 20px;
             padding: 12px 16px;
-            background: #F9F9F9;
+            background: var(--ds-bg-subtle);
             border-radius: 8px;
         }
 
@@ -536,20 +844,20 @@
         }
 
         .spacing-token {
-            font-size: 13px;
+            font-size: 0.8125rem;
             font-weight: 600;
-            color: #04843B;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--ds-success);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         .spacing-value {
-            font-size: 11px;
-            color: #999;
+            font-size: 0.6875rem;
+            color: var(--ds-fg-muted);
         }
 
         .spacing-bar {
             height: 32px;
-            background: linear-gradient(135deg, #04843B, #33A76F);
+            background: linear-gradient(135deg, var(--ds-success), var(--ds-success-hover));
             border-radius: 6px;
             transition: width 0.3s ease;
             position: relative;
@@ -560,8 +868,8 @@
             right: -36px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 11px;
-            color: #656976;
+            font-size: 0.6875rem;
+            color: var(--ds-fg-muted);
             white-space: nowrap;
         }
 
@@ -578,27 +886,27 @@
             align-items: center;
             gap: 12px;
             padding: 24px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--ds-border);
             border-radius: 12px;
-            background: #fff;
+            background: var(--ds-surface);
         }
 
         .radius-shape {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #04843B, #33A76F);
+            background: linear-gradient(135deg, var(--ds-success), var(--ds-success-hover));
         }
 
         .radius-name {
-            font-size: 13px;
+            font-size: 0.8125rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .radius-value {
-            font-size: 12px;
-            color: #999;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--ds-fg-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         /* ── Shadows ── */
@@ -611,7 +919,8 @@
         .shadow-card {
             padding: 32px;
             border-radius: 12px;
-            background: #fff;
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -621,39 +930,47 @@
         .shadow-preview {
             width: 120px;
             height: 80px;
-            background: #fff;
+            background: var(--ds-surface);
             border-radius: 8px;
         }
 
         .shadow-name {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .shadow-value {
-            font-size: 11px;
-            color: #999;
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.6875rem;
+            color: var(--ds-fg-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             text-align: center;
             word-break: break-all;
+        }
+
+        .shadow-card-desc {
+            font-size: 0.75rem;
+            color: var(--ds-fg-muted);
+            text-align: center;
         }
 
         /* ── Copy Feedback ── */
         .global-toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #04843B;
-            color: #fff;
+            bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+            right: calc(24px + env(safe-area-inset-right, 0px));
+            max-width: min(90vw, 24rem);
+            background: var(--ds-success);
+            color: var(--ds-on-inverse);
             padding: 12px 20px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 0.8125rem;
             font-weight: 500;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            font-family: var(--ds-font-family);
+            box-shadow: var(--ds-shadow-md);
             transform: translateY(80px);
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
             z-index: 9999;
         }
 
@@ -663,15 +980,21 @@
         }
 
         /* ── Responsive ── */
-        @media (max-width: 768px) {
+        @media (max-width: 743px) {
             .container { padding: 24px 16px; }
             .ds-topbar { padding: 0 16px; }
             .ds-topbar > .ds-back-btn,
             .ds-topbar > .ds-search-wrapper { display: none; }
-            .ds-hamburger { display: flex; }
+            .ds-hamburger {
+                display: flex;
+                min-width: 44px;
+                min-height: 44px;
+            }
             .color-scale { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
             .lh-grid { grid-template-columns: 1fr; }
             .type-row { flex-direction: column; gap: 8px; }
+            .spacing-row { flex-wrap: wrap; }
+            .spacing-bar-label { position: static; transform: none; margin-top: 4px; display: block; }
         }
     </style>
 </head>
@@ -690,7 +1013,7 @@
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" autocomplete="off" aria-label="Buscar demos de componentes">
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
@@ -702,7 +1025,7 @@
     </a>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" autocomplete="off" aria-label="Buscar demos de componentes">
         <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
 </div>
@@ -716,37 +1039,75 @@
 
     <!-- Quick Nav -->
     <div class="token-nav">
+        <button type="button" class="token-nav-trigger" id="nav-open-theme-modal">Tema (import/export)</button>
         <a href="#colors">Cores</a>
+        <a href="#secondary-brand">Secondary</a>
+        <a href="#accents">Accents</a>
         <a href="#typography">Tipografia</a>
         <a href="#spacing">Espaçamento</a>
         <a href="#radius">Border Radius</a>
         <a href="#shadows">Sombras</a>
     </div>
 
-    <div class="theme-select-row">
-        <label for="ds-theme-select">Tema</label>
-        <select id="ds-theme-select" aria-label="Selecionar tema">
+    <div class="theme-select-row theme-select-row-extended">
+        <label for="ds-theme-select">Aparência</label>
+        <select id="ds-theme-select" aria-label="Modo claro ou escuro do tema">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
         </select>
+        <span id="ds-theme-active-label" class="theme-active-badge" aria-live="polite">Padrão do design system</span>
+        <button type="button" class="token-io-open-modal-btn" id="ds-open-theme-io-modal" aria-haspopup="dialog" aria-controls="ds-theme-io-modal-dialog">Importar ou exportar tema…</button>
     </div>
 
     <!-- ═══════ COLORS ═══════ -->
     <div class="section" id="colors">
         <div class="section-header">
             <h2 class="section-title">Cores</h2>
-            <p class="section-desc">Paleta de cores primárias, neutras e semânticas. Clique em qualquer cor para copiar o valor hex.</p>
+            <p class="section-desc">Primary, <strong>secondary</strong> (slate blue), famílias de <strong>accent</strong> (violet, warm, teal, rose, indigo), neutros e semânticas — tudo em <code>var(--ds-*)</code>; import reflete nas grades.</p>
         </div>
 
         <!-- Primary Scale -->
         <div class="color-scale-group">
-            <div class="color-scale-label">Primary (Green)</div>
+            <div class="color-scale-label">Primary (<code>--ds-primary-*</code>)</div>
             <div class="color-scale" id="primary-colors"></div>
+        </div>
+
+        <!-- Secondary Scale -->
+        <div class="color-scale-group" id="secondary-brand">
+            <div class="color-scale-label">Secondary — slate blue (<code>--ds-color-brand-secondary-*</code>)</div>
+            <p class="section-desc" style="margin-top:0;margin-bottom:12px;font-size:0.8125rem;">Atalhos: <code>--ds-secondary</code>, <code>--ds-secondary-fg</code>. Âncora de marca no tom <strong>900</strong>.</p>
+            <div class="color-scale" id="secondary-brand-colors"></div>
+        </div>
+
+        <!-- Accents -->
+        <div class="color-scale-group" id="accents">
+            <div class="color-scale-label">Accents — famílias complementares</div>
+            <p class="section-desc" style="margin-top:0;margin-bottom:16px;font-size:0.8125rem;">Violet como accent padrão (<code>--ds-accent</code>); warm, teal, rose e indigo para CTAs, badges e ilustração. Atalhos: <code>--ds-accent-warm</code>, <code>--ds-accent-teal</code>, <code>--ds-accent-rose</code>, <code>--ds-accent-indigo</code>, <code>--ds-accent-muted-bg</code>.</p>
+        </div>
+        <div class="color-scale-group">
+            <div class="color-scale-label">Accent violet (<code>--ds-color-brand-accent-*</code>)</div>
+            <div class="color-scale" id="accent-violet-colors"></div>
+        </div>
+        <div class="color-scale-group">
+            <div class="color-scale-label">Accent warm — coral (<code>--ds-color-brand-accent-warm-*</code>)</div>
+            <div class="color-scale" id="accent-warm-colors"></div>
+        </div>
+        <div class="color-scale-group">
+            <div class="color-scale-label">Accent teal (<code>--ds-color-brand-accent-teal-*</code>)</div>
+            <div class="color-scale" id="accent-teal-colors"></div>
+        </div>
+        <div class="color-scale-group">
+            <div class="color-scale-label">Accent rose (<code>--ds-color-brand-accent-rose-*</code>)</div>
+            <div class="color-scale" id="accent-rose-colors"></div>
+        </div>
+        <div class="color-scale-group">
+            <div class="color-scale-label">Accent indigo (<code>--ds-color-brand-accent-indigo-*</code>)</div>
+            <div class="color-scale" id="accent-indigo-colors"></div>
         </div>
 
         <!-- Neutral Scale -->
         <div class="color-scale-group">
-            <div class="color-scale-label">Neutral (Gray)</div>
+            <div class="color-scale-label">Neutral (<code>--ds-neutral-*</code>)</div>
             <div class="color-scale" id="neutral-colors"></div>
         </div>
 
@@ -761,7 +1122,7 @@
     <div class="section" id="typography">
         <div class="section-header">
             <h2 class="section-title">Tipografia</h2>
-            <p class="section-desc">Família tipográfica Inter com escala de tamanhos, pesos e alturas de linha.</p>
+            <p class="section-desc">Escala ligada a <code>var(--ds-font-size-*)</code>, pesos <code>--ds-font-weight-*</code> e alturas <code>--ds-line-height-*</code> no CSS base (importável).</p>
         </div>
 
         <!-- Font Family -->
@@ -769,10 +1130,10 @@
             <div class="color-scale-label">Família</div>
             <div class="type-row" style="margin-bottom: 24px;">
                 <div class="type-meta">
-                    <div class="type-token">fontFamily</div>
-                    <div class="type-value">Inter, sans-serif</div>
+                    <div class="type-token">--ds-font-family</div>
+                    <div class="type-value" id="font-family-value"></div>
                 </div>
-                <div class="type-preview" style="font-size: 20px;">
+                <div class="type-preview" style="font-size: 20px; font-family: var(--ds-font-family);">
                     The quick brown fox jumps over the lazy dog — 0123456789
                 </div>
             </div>
@@ -801,7 +1162,7 @@
     <div class="section" id="spacing">
         <div class="section-header">
             <h2 class="section-title">Espaçamento</h2>
-            <p class="section-desc">Escala de espaçamento consistente para margens, paddings e gaps.</p>
+            <p class="section-desc">Escala <code>--ds-space-*</code> (importável) para margens, paddings e gaps.</p>
         </div>
         <div class="spacing-list" id="spacing-list"></div>
     </div>
@@ -810,7 +1171,7 @@
     <div class="section" id="radius">
         <div class="section-header">
             <h2 class="section-title">Border Radius</h2>
-            <p class="section-desc">Raios de borda para manter consistência nos cantos arredondados dos componentes.</p>
+            <p class="section-desc">Raios <code>--ds-radius-*</code> alinhados ao CSS base e ao JSON importado.</p>
         </div>
         <div class="radius-grid" id="radius-grid"></div>
     </div>
@@ -825,65 +1186,154 @@
     </div>
 </div>
 
+<!-- Modal: import / export (um botão na página abre este painel) -->
+<div id="ds-theme-io-modal" class="theme-io-modal-backdrop" hidden data-theme-io-modal>
+    <div id="ds-theme-io-modal-dialog" class="theme-io-modal" role="dialog" aria-modal="true" aria-labelledby="theme-io-modal-title" tabindex="-1">
+        <div class="theme-io-modal-header">
+            <h2 id="theme-io-modal-title">Importar / exportar tema</h2>
+            <button type="button" class="theme-io-modal-close" id="ds-theme-io-modal-close" aria-label="Fechar">×</button>
+        </div>
+        <div class="theme-io-modal-body">
+            <section class="token-io-section" aria-describedby="theme-io-modal-desc">
+                <p id="theme-io-modal-desc" class="theme-io-modal-intro">Use um JSON com <code>light</code> e <code>dark</code>, ou um export desta demo com <code>mode</code> + <code>tokens</code> (só o modo atual). Chaves: <code>--ds-*</code>. Exporta apenas o modo em que a página está agora (Light ou Dark).</p>
+                <div class="token-io-row">
+                    <div class="token-io-field">
+                        <label for="ds-theme-name-input">Nome do tema</label>
+                        <input type="text" id="ds-theme-name-input" placeholder="ex.: marca-2026" autocomplete="off" aria-describedby="theme-io-modal-desc">
+                    </div>
+                </div>
+                <div class="token-io-row">
+                    <div class="token-io-field">
+                        <label for="ds-theme-file-input">Importar JSON</label>
+                        <input type="file" id="ds-theme-file-input" accept=".json,application/json" aria-label="Ficheiro JSON de tokens do tema">
+                    </div>
+                </div>
+                <div class="token-io-actions">
+                    <button type="button" class="token-io-btn" id="ds-export-current">Exportar este modo (Light ou Dark)</button>
+                    <a href="theme-tokens-import.template.json" download class="token-io-btn token-io-btn-link">Baixar template JSON</a>
+                    <a href="THEME-TOKENS-LLM-RULES.md" download class="token-io-btn token-io-btn-link">Baixar regras para LLM</a>
+                    <button type="button" class="token-io-btn token-io-btn-secondary" id="ds-reset-imported">Remover tema importado</button>
+                </div>
+                <p id="ds-theme-io-status" class="token-io-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                <p id="ds-theme-io-error" class="token-io-error" role="alert" aria-live="assertive" hidden></p>
+            </section>
+        </div>
+    </div>
+</div>
+
 <!-- Global Toast -->
-<div class="global-toast" id="global-toast">Copiado!</div>
+<div class="global-toast" id="global-toast" role="status" aria-live="polite" aria-atomic="true">Copiado!</div>
 
 <script>
-    // ── Token Data ──
-    const tokens = {
-        colors: {
-            primary: {
-                "50": "#E6F4ED", "100": "#CCE9DB", "200": "#99D3B7", "300": "#66BD93",
-                "400": "#33A76F", "500": "#04843B", "600": "#067647", "700": "#005A1A",
-                "800": "#004D16", "900": "#003D11"
-            },
-            neutral: {
-                "0": "#FFFFFF", "50": "#F9F9F9", "100": "#F3F3F3", "200": "#C6C6C6",
-                "300": "#999999", "400": "#6C6C6C", "500": "#656976", "600": "#4D4D4D",
-                "700": "#333333", "800": "#1A1A1A", "900": "#000000"
-            },
-            semantic: {
-                success: { hex: "#04843B", usage: "Ações positivas, confirmações" },
-                error: { hex: "#DC2626", usage: "Erros, validações, destrutivos" },
-                warning: { hex: "#F59E0B", usage: "Alertas, atenção necessária" },
-                info: { hex: "#3B82F6", usage: "Informações, dicas, links" }
-            }
-        },
-        fontSize: {
-            xs: "10px", sm: "12px", md: "14px", lg: "16px", xl: "18px"
-        },
-        fontWeight: {
-            regular: 400, medium: 500, semibold: 600, bold: 700
-        },
-        lineHeight: {
-            tight: 1.2, normal: 1.5, relaxed: 1.75
-        },
-        spacing: {
-            xs: "4px", sm: "8px", md: "12px", lg: "16px", xl: "24px", "2xl": "32px"
-        },
-        borderRadius: {
-            sm: "4px", md: "8px", lg: "12px", full: "9999px"
-        },
-        shadows: {
-            sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-            md: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-            focus: "0 0 0 3px rgba(4, 132, 59, 0.1)"
-        }
-    };
+    // Chaves alinhadas a demos/ds-demo-base.css (:root + [data-ds-theme="dark"])
+    var DS_KEY_RE = /^--ds-[a-zA-Z0-9-]+$/;
+    var DS_TOKEN_KEYS = [
+        '--ds-font-family', '--ds-text-primary', '--ds-text-secondary', '--ds-text-tertiary', '--ds-placeholder',
+        '--ds-success', '--ds-success-hover', '--ds-border', '--ds-separator-light',
+        '--ds-fg', '--ds-fg-muted', '--ds-fg-subtle',
+        '--ds-content-primary', '--ds-content-secondary', '--ds-content-tertiary',
+        '--ds-on-inverse', '--ds-icon-muted', '--ds-icon-accent',
+        '--ds-n800', '--ds-n500', '--ds-n200',
+        '--ds-bg', '--ds-bg-subtle', '--ds-surface', '--ds-surface-elevated',
+        '--ds-success-bg', '--ds-success-fg',
+        '--ds-error', '--ds-error-bg', '--ds-error-fg',
+        '--ds-warning', '--ds-warning-bg', '--ds-warning-fg', '--ds-warning-solid-fg',
+        '--ds-info', '--ds-info-bg', '--ds-info-fg',
+        '--ds-neutral-bg', '--ds-neutral-fg',
+        '--ds-n100', '--ds-pre-bg', '--ds-pre-fg',
+        '--ds-shadow-sm', '--ds-shadow-md', '--ds-shadow-success', '--ds-shadow-sidebar', '--ds-focus-ring',
+        '--ds-primary-50', '--ds-primary-100', '--ds-primary-200', '--ds-primary-300', '--ds-primary-400',
+        '--ds-primary-500', '--ds-primary-600', '--ds-primary-700', '--ds-primary-800', '--ds-primary-900',
+        '--ds-neutral-0', '--ds-neutral-50', '--ds-neutral-100', '--ds-neutral-200', '--ds-neutral-300',
+        '--ds-neutral-400', '--ds-neutral-500', '--ds-neutral-600', '--ds-neutral-700', '--ds-neutral-800', '--ds-neutral-900',
+        '--ds-font-size-xs', '--ds-font-size-sm', '--ds-font-size-md', '--ds-font-size-lg', '--ds-font-size-xl',
+        '--ds-font-weight-regular', '--ds-font-weight-medium', '--ds-font-weight-semibold', '--ds-font-weight-bold',
+        '--ds-line-height-tight', '--ds-line-height-normal', '--ds-line-height-relaxed',
+        '--ds-space-xs', '--ds-space-sm', '--ds-space-md', '--ds-space-lg', '--ds-space-xl', '--ds-space-2xl',
+        '--ds-radius-sm', '--ds-radius-md', '--ds-radius-lg', '--ds-radius-full',
+        '--ds-secondary', '--ds-secondary-fg', '--ds-accent', '--ds-accent-fg', '--ds-accent-muted-bg',
+        '--ds-accent-warm', '--ds-accent-teal', '--ds-accent-rose', '--ds-accent-indigo',
+        '--ds-color-brand-secondary-50', '--ds-color-brand-secondary-100', '--ds-color-brand-secondary-200',
+        '--ds-color-brand-secondary-300', '--ds-color-brand-secondary-400', '--ds-color-brand-secondary-500',
+        '--ds-color-brand-secondary-600', '--ds-color-brand-secondary-700', '--ds-color-brand-secondary-800',
+        '--ds-color-brand-secondary-900',
+        '--ds-color-brand-accent-50', '--ds-color-brand-accent-100', '--ds-color-brand-accent-200',
+        '--ds-color-brand-accent-300', '--ds-color-brand-accent-400', '--ds-color-brand-accent-500',
+        '--ds-color-brand-accent-600', '--ds-color-brand-accent-700', '--ds-color-brand-accent-800',
+        '--ds-color-brand-accent-900',
+        '--ds-color-brand-accent-warm-50', '--ds-color-brand-accent-warm-100', '--ds-color-brand-accent-warm-200',
+        '--ds-color-brand-accent-warm-300', '--ds-color-brand-accent-warm-400', '--ds-color-brand-accent-warm-500',
+        '--ds-color-brand-accent-warm-600', '--ds-color-brand-accent-warm-700', '--ds-color-brand-accent-warm-800',
+        '--ds-color-brand-accent-warm-900',
+        '--ds-color-brand-accent-teal-50', '--ds-color-brand-accent-teal-100', '--ds-color-brand-accent-teal-200',
+        '--ds-color-brand-accent-teal-300', '--ds-color-brand-accent-teal-400', '--ds-color-brand-accent-teal-500',
+        '--ds-color-brand-accent-teal-600', '--ds-color-brand-accent-teal-700', '--ds-color-brand-accent-teal-800',
+        '--ds-color-brand-accent-teal-900',
+        '--ds-color-brand-accent-rose-50', '--ds-color-brand-accent-rose-100', '--ds-color-brand-accent-rose-200',
+        '--ds-color-brand-accent-rose-300', '--ds-color-brand-accent-rose-400', '--ds-color-brand-accent-rose-500',
+        '--ds-color-brand-accent-rose-600', '--ds-color-brand-accent-rose-700', '--ds-color-brand-accent-rose-800',
+        '--ds-color-brand-accent-rose-900',
+        '--ds-color-brand-accent-indigo-50', '--ds-color-brand-accent-indigo-100', '--ds-color-brand-accent-indigo-200',
+        '--ds-color-brand-accent-indigo-300', '--ds-color-brand-accent-indigo-400', '--ds-color-brand-accent-indigo-500',
+        '--ds-color-brand-accent-indigo-600', '--ds-color-brand-accent-indigo-700', '--ds-color-brand-accent-indigo-800',
+        '--ds-color-brand-accent-indigo-900'
+    ];
 
-    // ── Component Nav Data ──
-    const navComponents = [
-        { name: 'Button', file: 'button-demo.html', cat: 'Formulário' },
-        { name: 'Input', file: 'input-demo.html', cat: 'Formulário' },
-        { name: 'Select', file: 'select-demo.html', cat: 'Formulário' },
-        { name: 'Checkbox', file: 'checkbox-demo.html', cat: 'Formulário' },
-        { name: 'Radio', file: 'radio-demo.html', cat: 'Formulário' },
-        { name: 'Switch', file: 'switch-demo.html', cat: 'Formulário' },
-        { name: 'Textarea', file: 'textarea-demo.html', cat: 'Formulário' },
-        { name: 'Tabela — scroll virtual', file: 'table-virtual-scroll-demo.html', cat: 'Dados' },
-        { name: 'Toast', file: 'toast-demo-updated.html', cat: 'Feedback' },
-        { name: 'Design Tokens', file: 'design-tokens.html', cat: 'Fundação' },
-        { name: 'Iconografia', file: 'icons-demo.html', cat: 'Fundação' }
+    var PRIMARY_STEPS = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
+    var NEUTRAL_STEPS = ['0', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
+    var FONT_SIZE_ROWS = [
+        { name: 'xs', varName: '--ds-font-size-xs' },
+        { name: 'sm', varName: '--ds-font-size-sm' },
+        { name: 'md', varName: '--ds-font-size-md' },
+        { name: 'lg', varName: '--ds-font-size-lg' },
+        { name: 'xl', varName: '--ds-font-size-xl' }
+    ];
+    var FONT_WEIGHT_ROWS = [
+        { name: 'regular', varName: '--ds-font-weight-regular' },
+        { name: 'medium', varName: '--ds-font-weight-medium' },
+        { name: 'semibold', varName: '--ds-font-weight-semibold' },
+        { name: 'bold', varName: '--ds-font-weight-bold' }
+    ];
+    var LINE_HEIGHT_ROWS = [
+        { name: 'tight', varName: '--ds-line-height-tight' },
+        { name: 'normal', varName: '--ds-line-height-normal' },
+        { name: 'relaxed', varName: '--ds-line-height-relaxed' }
+    ];
+    var SPACING_ROWS = [
+        { name: 'xs', varName: '--ds-space-xs' },
+        { name: 'sm', varName: '--ds-space-sm' },
+        { name: 'md', varName: '--ds-space-md' },
+        { name: 'lg', varName: '--ds-space-lg' },
+        { name: 'xl', varName: '--ds-space-xl' },
+        { name: '2xl', varName: '--ds-space-2xl' }
+    ];
+    var RADIUS_ROWS = [
+        { name: 'sm', varName: '--ds-radius-sm' },
+        { name: 'md', varName: '--ds-radius-md' },
+        { name: 'lg', varName: '--ds-radius-lg' },
+        { name: 'full', varName: '--ds-radius-full' }
+    ];
+
+    var SEMANTIC_ROWS = [
+        { key: '--ds-success', label: 'success', usage: 'Ações positivas, confirmações' },
+        { key: '--ds-error', label: 'error', usage: 'Erros, validações, destrutivos' },
+        { key: '--ds-warning', label: 'warning', usage: 'Alertas, atenção necessária' },
+        { key: '--ds-info', label: 'info', usage: 'Informações, dicas, links' },
+        { key: '--ds-secondary', label: 'secondary', usage: 'Marca secundária (slate blue; atalho)' },
+        { key: '--ds-accent', label: 'accent', usage: 'Accent violet padrão (atalho)' },
+        { key: '--ds-accent-warm', label: 'accent warm', usage: 'Coral / destaque quente' },
+        { key: '--ds-accent-teal', label: 'accent teal', usage: 'Ponte verde–azul' },
+        { key: '--ds-accent-rose', label: 'accent rose', usage: 'Rosa / destaque suave' },
+        { key: '--ds-accent-indigo', label: 'accent indigo', usage: 'Índigo / eixo azul' },
+        { key: '--ds-accent-muted-bg', label: 'accent muted', usage: 'Fundo suave do accent violet' }
+    ];
+
+    var SHADOW_ROWS = [
+        { key: '--ds-shadow-sm', name: 'shadow-sm', desc: 'Sutil — cards e botões em repouso' },
+        { key: '--ds-shadow-md', name: 'shadow-md', desc: 'Média — cards elevados, dropdowns' },
+        { key: '--ds-shadow-success', name: 'shadow-success', desc: 'Destaque em estados de sucesso' },
+        { key: '--ds-shadow-sidebar', name: 'shadow-sidebar', desc: 'Barra lateral' },
+        { key: '--ds-focus-ring', name: 'focus-ring', desc: 'Anel de foco (acessibilidade)' }
     ];
 
     // ── Toast ──
@@ -898,218 +1348,568 @@
         navigator.clipboard.writeText(hex).then(() => showToast('Copiado: ' + hex));
     }
 
-    // ── Render Colors ──
-    function renderColorScale(containerId, scale, prefix) {
-        const el = document.getElementById(containerId);
-        el.innerHTML = Object.entries(scale).map(([step, hex]) => {
-            const isLight = ['0', '50', '100'].includes(step);
-            return `
-                <div class="color-swatch">
-                    <div class="color-swatch-block" style="background:${hex};" onclick="copyHex('${hex}')" title="Clique para copiar">
-                        <div class="copied-label">Copiado!</div>
-                    </div>
-                    <div class="color-swatch-info">
-                        <div class="color-swatch-name">${prefix}-${step}</div>
-                        <div class="color-swatch-hex">${hex}</div>
-                    </div>
-                </div>
-            `;
-        }).join('');
+    // ── Cores escala: lê var(--ds-*) do CSS (import reflete aqui) ──
+    function renderCssVarColorScale(containerId, steps, prefixLabel, cssVarStem) {
+        var el = document.getElementById(containerId);
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = steps
+            .map(function (step) {
+                var varName = cssVarStem + step;
+                var val = root.getPropertyValue(varName).trim();
+                var safeCopy = val.replace(/"/g, '&quot;');
+                return (
+                    '<div class="color-swatch">' +
+                    '<div class="color-swatch-block" role="button" tabindex="0" title="Clique para copiar valor resolvido" style="background:var(' +
+                    varName +
+                    ');" data-copy="' +
+                    safeCopy +
+                    '">' +
+                    '<div class="copied-label">Copiado!</div></div>' +
+                    '<div class="color-swatch-info">' +
+                    '<div class="color-swatch-name">' +
+                    prefixLabel +
+                    '-' +
+                    step +
+                    '</div>' +
+                    '<div class="color-swatch-token">' +
+                    escapeHtml(varName) +
+                    '</div>' +
+                    '<div class="color-swatch-hex">' +
+                    escapeHtml(val) +
+                    '</div>' +
+                    '</div></div>'
+                );
+            })
+            .join('');
+        el.querySelectorAll('.color-swatch-block').forEach(function (block) {
+            block.addEventListener('click', function () {
+                copyHex(block.getAttribute('data-copy') || '');
+            });
+            block.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    copyHex(block.getAttribute('data-copy') || '');
+                }
+            });
+        });
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     function renderSemanticColors() {
-        const el = document.getElementById('semantic-colors');
-        el.innerHTML = Object.entries(tokens.colors.semantic).map(([name, data]) => `
-            <div class="semantic-card" onclick="copyHex('${data.hex}')" style="cursor:pointer;" title="Clique para copiar">
-                <div class="semantic-circle" style="background:${data.hex};"></div>
-                <div class="semantic-info">
-                    <div class="semantic-name">${name}</div>
-                    <div class="semantic-hex">${data.hex}</div>
-                    <div class="semantic-usage">${data.usage}</div>
-                </div>
-            </div>
-        `).join('');
+        var el = document.getElementById('semantic-colors');
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = SEMANTIC_ROWS.map(function (row) {
+            var hex = root.getPropertyValue(row.key).trim();
+            return (
+                '<div class="semantic-card" role="button" tabindex="0" title="Clique para copiar" data-hex="' +
+                hex.replace(/"/g, '&quot;') + '">' +
+                '<div class="semantic-circle" style="background:' + hex + ';"></div>' +
+                '<div class="semantic-info">' +
+                '<div class="semantic-name">' + row.label + '</div>' +
+                '<div class="semantic-hex">' + escapeHtml(hex) + '</div>' +
+                '<div class="semantic-usage">' + row.usage + '</div>' +
+                '</div></div>'
+            );
+        }).join('');
+        el.querySelectorAll('.semantic-card').forEach(function (card) {
+            card.addEventListener('click', function () {
+                copyHex(card.getAttribute('data-hex') || '');
+            });
+            card.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    copyHex(card.getAttribute('data-hex') || '');
+                }
+            });
+        });
     }
 
-    renderColorScale('primary-colors', tokens.colors.primary, 'primary');
-    renderColorScale('neutral-colors', tokens.colors.neutral, 'neutral');
-    renderSemanticColors();
-
-    // ── Render Typography ──
+    // ── Tipografia / spacing / radius a partir de var(--ds-*) ──
     function renderFontSizes() {
-        const el = document.getElementById('font-sizes');
-        el.innerHTML = Object.entries(tokens.fontSize).map(([name, size]) => `
-            <div class="type-row">
-                <div class="type-meta">
-                    <div class="type-token">fontSize.${name}</div>
-                    <div class="type-value">${size}</div>
-                </div>
-                <div class="type-preview" style="font-size:${size};">
-                    Design tokens criam consistência visual — Aa Bb Cc 123
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function renderFontWeights() {
-        const el = document.getElementById('font-weights');
-        el.innerHTML = Object.entries(tokens.fontWeight).map(([name, value]) => `
-            <div class="weight-card">
-                <div class="weight-preview" style="font-weight:${value};">Aa</div>
-                <div class="weight-name">${name}</div>
-                <div class="weight-value">${value}</div>
-            </div>
-        `).join('');
-    }
-
-    function renderLineHeights() {
-        const el = document.getElementById('line-heights');
-        el.innerHTML = Object.entries(tokens.lineHeight).map(([name, value]) => `
-            <div class="lh-card">
-                <div class="lh-demo" style="line-height:${value};">
-                    Texto de exemplo com line-height ${value}. Esta linha demonstra o espaçamento vertical entre as linhas de texto.
-                </div>
-                <div class="lh-label">${name}</div>
-                <div class="lh-value">${value}</div>
-            </div>
-        `).join('');
-    }
-
-    renderFontSizes();
-    renderFontWeights();
-    renderLineHeights();
-
-    // ── Render Spacing ──
-    function renderSpacing() {
-        const el = document.getElementById('spacing-list');
-        const maxPx = 32;
-        el.innerHTML = Object.entries(tokens.spacing).map(([name, value]) => {
-            const px = parseInt(value);
-            const pct = (px / maxPx) * 100;
-            return `
-                <div class="spacing-row">
-                    <div class="spacing-meta">
-                        <div class="spacing-token">spacing.${name}</div>
-                        <div class="spacing-value">${value}</div>
-                    </div>
-                    <div style="flex:1;position:relative;padding-right:40px;">
-                        <div class="spacing-bar" style="width:${pct}%;">
-                            <span class="spacing-bar-label">${value}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+        var el = document.getElementById('font-sizes');
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = FONT_SIZE_ROWS.map(function (row) {
+            var v = root.getPropertyValue(row.varName).trim();
+            return (
+                '<div class="type-row">' +
+                '<div class="type-meta">' +
+                '<div class="type-token">' +
+                escapeHtml(row.varName) +
+                '</div>' +
+                '<div class="type-value">' +
+                escapeHtml(v) +
+                '</div>' +
+                '</div>' +
+                '<div class="type-preview" style="font-size:var(' +
+                row.varName +
+                ');">' +
+                'Design tokens criam consistência visual — Aa Bb Cc 123' +
+                '</div></div>'
+            );
         }).join('');
     }
 
-    renderSpacing();
-
-    // ── Render Border Radius ──
-    function renderRadius() {
-        const el = document.getElementById('radius-grid');
-        el.innerHTML = Object.entries(tokens.borderRadius).map(([name, value]) => `
-            <div class="radius-card">
-                <div class="radius-shape" style="border-radius:${value};"></div>
-                <div class="radius-name">borderRadius.${name}</div>
-                <div class="radius-value">${value}</div>
-            </div>
-        `).join('');
-    }
-
-    renderRadius();
-
-    // ── Render Shadows ──
-    function renderShadows() {
-        const el = document.getElementById('shadow-grid');
-        const labels = {
-            sm: 'Sutil — cards e botões em repouso',
-            md: 'Média — cards elevados, dropdowns',
-            focus: 'Focus — anel de foco para acessibilidade'
-        };
-        el.innerHTML = Object.entries(tokens.shadows).map(([name, value]) => `
-            <div class="shadow-card" style="border: 1px solid #eee;">
-                <div class="shadow-preview" style="box-shadow:${value};"></div>
-                <div class="shadow-name">shadow.${name}</div>
-                <div class="shadow-value">${value}</div>
-                <div style="font-size:12px;color:#656976;text-align:center;">${labels[name] || ''}</div>
-            </div>
-        `).join('');
-    }
-
-    renderShadows();
-
-    // ── Component Search Nav ──
-    function setupSearch(inputId, dropdownId) {
-        const si = document.getElementById(inputId);
-        const dd = document.getElementById(dropdownId);
-        if (!si || !dd) return;
-
-        function renderDropdown(filter) {
-            const filtered = navComponents.filter(c =>
-                c.name.toLowerCase().includes(filter.toLowerCase())
+    function renderFontWeights() {
+        var el = document.getElementById('font-weights');
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = FONT_WEIGHT_ROWS.map(function (row) {
+            var v = root.getPropertyValue(row.varName).trim();
+            return (
+                '<div class="weight-card">' +
+                '<div class="weight-preview" style="font-weight:var(' +
+                row.varName +
+                ');">Aa</div>' +
+                '<div class="weight-name">' +
+                row.name +
+                '</div>' +
+                '<div class="weight-value">' +
+                escapeHtml(row.varName) +
+                ' → ' +
+                escapeHtml(v) +
+                '</div></div>'
             );
-            if (filtered.length === 0 || !filter) {
-                dd.classList.remove('open');
-                return;
-            }
-            dd.innerHTML = filtered.map(c => `
-                <a href="${c.file}" class="ds-search-item">
-                    <span>${c.name}</span>
-                    <span class="ds-search-item-tag">${c.cat}</span>
-                </a>
-            `).join('');
-            dd.classList.add('open');
-        }
+        }).join('');
+    }
 
-        si.addEventListener('input', (e) => renderDropdown(e.target.value));
-        si.addEventListener('focus', (e) => { if (e.target.value) renderDropdown(e.target.value); });
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.ds-search-wrapper')) dd.classList.remove('open');
+    function renderLineHeights() {
+        var el = document.getElementById('line-heights');
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = LINE_HEIGHT_ROWS.map(function (row) {
+            var v = root.getPropertyValue(row.varName).trim();
+            return (
+                '<div class="lh-card">' +
+                '<div class="lh-demo" style="--lh:var(' +
+                row.varName +
+                ');line-height:var(' +
+                row.varName +
+                ');">' +
+                'Texto de exemplo com este line-height. Esta linha demonstra o espaçamento vertical.' +
+                '</div>' +
+                '<div class="lh-label">' +
+                row.name +
+                '</div>' +
+                '<div class="lh-value">' +
+                escapeHtml(row.varName) +
+                ' → ' +
+                escapeHtml(v) +
+                '</div></div>'
+            );
+        }).join('');
+    }
+
+    function renderSpacing() {
+        var el = document.getElementById('spacing-list');
+        var root = getComputedStyle(document.documentElement);
+        var maxPx = 32;
+        el.innerHTML = SPACING_ROWS.map(function (row) {
+            var v = root.getPropertyValue(row.varName).trim();
+            var px = parseFloat(v) || 0;
+            var pct = (px / maxPx) * 100;
+            return (
+                '<div class="spacing-row">' +
+                '<div class="spacing-meta">' +
+                '<div class="spacing-token">' +
+                escapeHtml(row.varName) +
+                '</div>' +
+                '<div class="spacing-value">' +
+                escapeHtml(v) +
+                '</div></div>' +
+                '<div style="flex:1;position:relative;padding-right:40px;">' +
+                '<div class="spacing-bar" style="width:' +
+                pct +
+                '%;">' +
+                '<span class="spacing-bar-label">' +
+                escapeHtml(v) +
+                '</span></div></div></div>'
+            );
+        }).join('');
+    }
+
+    function renderRadius() {
+        var el = document.getElementById('radius-grid');
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = RADIUS_ROWS.map(function (row) {
+            var v = root.getPropertyValue(row.varName).trim();
+            return (
+                '<div class="radius-card">' +
+                '<div class="radius-shape" style="border-radius:var(' +
+                row.varName +
+                ');"></div>' +
+                '<div class="radius-name">' +
+                escapeHtml(row.varName) +
+                '</div>' +
+                '<div class="radius-value">' +
+                escapeHtml(v) +
+                '</div></div>'
+            );
+        }).join('');
+    }
+
+    function renderPrimaryAndNeutralScales() {
+        renderCssVarColorScale('primary-colors', PRIMARY_STEPS, 'primary', '--ds-primary-');
+        renderCssVarColorScale('secondary-brand-colors', PRIMARY_STEPS, 'sec', '--ds-color-brand-secondary-');
+        renderCssVarColorScale('accent-violet-colors', PRIMARY_STEPS, 'violet', '--ds-color-brand-accent-');
+        renderCssVarColorScale('accent-warm-colors', PRIMARY_STEPS, 'warm', '--ds-color-brand-accent-warm-');
+        renderCssVarColorScale('accent-teal-colors', PRIMARY_STEPS, 'teal', '--ds-color-brand-accent-teal-');
+        renderCssVarColorScale('accent-rose-colors', PRIMARY_STEPS, 'rose', '--ds-color-brand-accent-rose-');
+        renderCssVarColorScale('accent-indigo-colors', PRIMARY_STEPS, 'indigo', '--ds-color-brand-accent-indigo-');
+        renderCssVarColorScale('neutral-colors', NEUTRAL_STEPS, 'neutral', '--ds-neutral-');
+    }
+
+    // ── Render Shadows (variáveis do CSS base) ──
+    function renderShadows() {
+        var el = document.getElementById('shadow-grid');
+        var root = getComputedStyle(document.documentElement);
+        el.innerHTML = SHADOW_ROWS.map(function (r) {
+            var v = root.getPropertyValue(r.key).trim();
+            return (
+                '<div class="shadow-card">' +
+                '<div class="shadow-preview" style="box-shadow: var(' + r.key + ');"></div>' +
+                '<div class="shadow-name">' + r.name + '</div>' +
+                '<div class="shadow-value">' + escapeHtml(v) + '</div>' +
+                '<div class="shadow-card-desc">' + r.desc + '</div>' +
+                '</div>'
+            );
+        }).join('');
+    }
+
+    function updateFontFamilyMeta() {
+        var el = document.getElementById('font-family-value');
+        if (!el) return;
+        var v = getComputedStyle(document.documentElement).getPropertyValue('--ds-font-family').trim();
+        el.textContent = v || '—';
+    }
+
+    function refreshThemeRenders() {
+        renderPrimaryAndNeutralScales();
+        renderFontSizes();
+        renderFontWeights();
+        renderLineHeights();
+        renderSpacing();
+        renderRadius();
+        renderSemanticColors();
+        renderShadows();
+        updateFontFamilyMeta();
+    }
+
+    function clearImportedInlineStyles() {
+        DS_TOKEN_KEYS.forEach(function (k) {
+            document.documentElement.style.removeProperty(k);
         });
     }
 
-    setupSearch('ds-nav-search', 'ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile', 'ds-nav-dropdown-mobile');
+    function applyImportedThemeLayer(data) {
+        if (!data) {
+            try {
+                var raw = localStorage.getItem('ds-imported-theme');
+                if (!raw) return;
+                data = JSON.parse(raw);
+            } catch (e) {
+                return;
+            }
+        }
+        clearImportedInlineStyles();
+        var mode = document.documentElement.dataset.dsTheme === 'dark' ? 'dark' : 'light';
+        var vars = data[mode] || {};
+        Object.keys(vars).forEach(function (k) {
+            if (DS_KEY_RE.test(k) && DS_TOKEN_KEYS.indexOf(k) !== -1) {
+                document.documentElement.style.setProperty(k, vars[k]);
+            }
+        });
+    }
 
-    // ── Theme: persistência entre páginas ──
-    (function () {
-        var savedTheme = 'light';
+    function downloadJson(obj, filename) {
+        var blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json;charset=utf-8' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+    }
+
+    function sanitizeFilename(name) {
+        var s = String(name || 'tema').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
+        return s || 'tema';
+    }
+
+    function getThemeNameInput() {
+        var el = document.getElementById('ds-theme-name-input');
+        var t = el && el.value ? String(el.value).trim() : '';
+        return t || 'export';
+    }
+
+    function tryGetParsedImport() {
         try {
-            var stored = localStorage.getItem('ds-theme');
-            savedTheme = stored || 'light';
+            var raw = localStorage.getItem('ds-imported-theme');
+            if (!raw) return null;
+            return JSON.parse(raw);
         } catch (e) {
-            // default (:root)
+            return null;
+        }
+    }
+
+    function validateTokenKeysInMap(obj) {
+        if (!obj || typeof obj !== 'object') return 0;
+        var n = 0;
+        Object.keys(obj).forEach(function (k) {
+            if (!DS_KEY_RE.test(k)) throw new Error('Chave inválida: ' + k);
+            if (DS_TOKEN_KEYS.indexOf(k) === -1) throw new Error('Chave não suportada pelo DS: ' + k);
+            n++;
+        });
+        return n;
+    }
+
+    function normalizeImportPayload(data) {
+        if (!data || typeof data !== 'object') throw new Error('JSON inválido.');
+        if (data.schemaVersion !== 1) throw new Error('schemaVersion deve ser 1.');
+
+        if (data.tokens && typeof data.tokens === 'object' && data.mode != null && String(data.mode) !== '') {
+            var modeNorm = String(data.mode).toLowerCase();
+            if (modeNorm !== 'light' && modeNorm !== 'dark') {
+                throw new Error('mode deve ser light ou dark quando usar tokens.');
+            }
+            var nTok = validateTokenKeysInMap(data.tokens);
+            if (nTok === 0) throw new Error('O objeto tokens está vazio.');
+            var mode = modeNorm;
+            var existing = tryGetParsedImport();
+            var merged = {
+                schemaVersion: 1,
+                themeName:
+                    (data.themeName && String(data.themeName).trim()) ||
+                    (existing && existing.themeName) ||
+                    'importado',
+                description: (data.description && String(data.description)) || (existing && existing.description) || '',
+                light: existing && typeof existing.light === 'object' ? Object.assign({}, existing.light) : {},
+                dark: existing && typeof existing.dark === 'object' ? Object.assign({}, existing.dark) : {}
+            };
+            Object.keys(data.tokens).forEach(function (k) {
+                merged[mode][k] = data.tokens[k];
+            });
+            return merged;
         }
 
+        if (!data.light || typeof data.light !== 'object' || !data.dark || typeof data.dark !== 'object') {
+            throw new Error('Use objetos light e dark no JSON, ou mode (light|dark) com tokens.');
+        }
+        var nL = validateTokenKeysInMap(data.light);
+        var nD = validateTokenKeysInMap(data.dark);
+        if (nL + nD === 0) throw new Error('Nenhuma variável --ds-* para aplicar.');
+        return {
+            schemaVersion: 1,
+            themeName: (data.themeName && String(data.themeName).trim()) || 'importado',
+            description: data.description || '',
+            light: Object.assign({}, data.light),
+            dark: Object.assign({}, data.dark)
+        };
+    }
+
+    function updateThemeSelectLabels() {
+        var sel = document.getElementById('ds-theme-select');
+        var badge = document.getElementById('ds-theme-active-label');
+        var store = tryGetParsedImport();
+        var name = store && store.themeName ? String(store.themeName).trim() : '';
+        var optLight = sel && sel.querySelector('option[value="light"]');
+        var optDark = sel && sel.querySelector('option[value="dark"]');
+        if (optLight) optLight.textContent = name ? 'Light — ' + name : 'Light';
+        if (optDark) optDark.textContent = name ? 'Dark — ' + name : 'Dark';
+        if (badge) {
+            badge.textContent = name
+                ? 'Tema personalizado: ' + name + ' (escolha Light ou Dark acima)'
+                : 'Design system padrão (sem importação ativa)';
+        }
+    }
+
+    var themeIoModalLastFocus = null;
+
+    function openThemeIoModal() {
+        var backdrop = document.querySelector('[data-theme-io-modal]');
+        if (!backdrop) return;
+        themeIoModalLastFocus = document.activeElement;
+        backdrop.removeAttribute('hidden');
+        var stored = tryGetParsedImport();
+        var nameInput = document.getElementById('ds-theme-name-input');
+        if (nameInput && stored && stored.themeName) nameInput.value = stored.themeName;
+        var dialog = document.getElementById('ds-theme-io-modal-dialog');
+        if (dialog) dialog.focus();
+        try {
+            document.body.style.overflow = 'hidden';
+        } catch (e) {}
+    }
+
+    function closeThemeIoModal() {
+        var backdrop = document.querySelector('[data-theme-io-modal]');
+        if (!backdrop || backdrop.hasAttribute('hidden')) return;
+        backdrop.setAttribute('hidden', '');
+        try {
+            document.body.style.overflow = '';
+        } catch (e) {}
+        if (themeIoModalLastFocus && typeof themeIoModalLastFocus.focus === 'function') {
+            try {
+                themeIoModalLastFocus.focus();
+            } catch (e2) {}
+        }
+        themeIoModalLastFocus = null;
+    }
+
+    function attachThemeIoModalHandlers() {
+        var backdrop = document.querySelector('[data-theme-io-modal]');
+        var openBtn = document.getElementById('ds-open-theme-io-modal');
+        var navBtn = document.getElementById('nav-open-theme-modal');
+        var closeBtn = document.getElementById('ds-theme-io-modal-close');
+        var panel = backdrop && backdrop.querySelector('.theme-io-modal');
+        if (openBtn) openBtn.addEventListener('click', openThemeIoModal);
+        if (navBtn) navBtn.addEventListener('click', openThemeIoModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeThemeIoModal);
+        if (backdrop) {
+            backdrop.addEventListener('click', function (e) {
+                if (e.target === backdrop) closeThemeIoModal();
+            });
+        }
+        if (panel) {
+            panel.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape') return;
+            var b = document.querySelector('[data-theme-io-modal]');
+            if (b && !b.hasAttribute('hidden')) closeThemeIoModal();
+        });
+    }
+
+    function setIoStatus(msg) {
+        var el = document.getElementById('ds-theme-io-status');
+        if (el) el.textContent = msg || '';
+    }
+
+    function setIoError(msg) {
+        var el = document.getElementById('ds-theme-io-error');
+        if (!el) return;
+        if (msg) {
+            el.textContent = msg;
+            el.hidden = false;
+        } else {
+            el.textContent = '';
+            el.hidden = true;
+        }
+    }
+
+    function exportCurrentTheme() {
+        setIoError('');
+        var name = getThemeNameInput();
+        var mode = document.documentElement.dataset.dsTheme === 'dark' ? 'dark' : 'light';
+        var root = getComputedStyle(document.documentElement);
+        var tokenMap = {};
+        DS_TOKEN_KEYS.forEach(function (k) {
+            var v = root.getPropertyValue(k).trim();
+            if (v) tokenMap[k] = v;
+        });
+        var payload = {
+            schemaVersion: 1,
+            themeName: name,
+            mode: mode,
+            description:
+                'Apenas o modo ' +
+                mode +
+                '. Ao importar, estes tokens são fundidos nesse modo (o outro modo mantém-se se já existir no navegador).',
+            exportedAt: new Date().toISOString(),
+            tokens: tokenMap
+        };
+        downloadJson(payload, sanitizeFilename(name) + '-' + mode + '-tokens.json');
+        setIoStatus('Exportado só o modo ' + mode + ' (ficheiro com mode + tokens).');
+    }
+
+    function attachImportExportHandlers() {
+        var file = document.getElementById('ds-theme-file-input');
+        if (file) {
+            file.addEventListener('change', function () {
+                setIoError('');
+                var f = file.files && file.files[0];
+                if (!f) return;
+                var reader = new FileReader();
+                reader.onload = function () {
+                    try {
+                        var parsed = JSON.parse(reader.result);
+                        var normalized = normalizeImportPayload(parsed);
+                        localStorage.setItem('ds-imported-theme', JSON.stringify(normalized));
+                        applyImportedThemeLayer(normalized);
+                        var nm = document.getElementById('ds-theme-name-input');
+                        if (nm && normalized.themeName) nm.value = normalized.themeName;
+                        updateThemeSelectLabels();
+                        setIoStatus('Tema importado. Use «Remover tema importado» no mesmo painel para voltar ao CSS base.');
+                        refreshThemeRenders();
+                    } catch (err) {
+                        setIoError(err.message || String(err));
+                        setIoStatus('');
+                    }
+                    file.value = '';
+                };
+                reader.onerror = function () {
+                    setIoError('Não foi possível ler o ficheiro.');
+                };
+                reader.readAsText(f, 'utf-8');
+            });
+        }
+        var ec = document.getElementById('ds-export-current');
+        if (ec) ec.addEventListener('click', exportCurrentTheme);
+        var rst = document.getElementById('ds-reset-imported');
+        if (rst) {
+            rst.addEventListener('click', function () {
+                try {
+                    localStorage.removeItem('ds-imported-theme');
+                } catch (e) {}
+                clearImportedInlineStyles();
+                setIoError('');
+                setIoStatus('Tema importado removido.');
+                var nm = document.getElementById('ds-theme-name-input');
+                if (nm) nm.value = '';
+                updateThemeSelectLabels();
+                refreshThemeRenders();
+            });
+        }
+    }
+
+    attachImportExportHandlers();
+    attachThemeIoModalHandlers();
+
+    // ── Theme + import guardado ──
+    (function initTheme() {
+        var savedTheme = 'light';
+        try {
+            savedTheme = localStorage.getItem('ds-theme') || 'light';
+        } catch (e) {}
         document.documentElement.dataset.dsTheme = savedTheme;
 
         var sel = document.getElementById('ds-theme-select');
-        if (!sel) return;
+        if (sel) {
+            sel.value = savedTheme;
+            sel.addEventListener('change', function () {
+                var next = sel.value || 'light';
+                document.documentElement.dataset.dsTheme = next;
+                try {
+                    localStorage.setItem('ds-theme', next);
+                } catch (e) {}
+                applyImportedThemeLayer();
+                refreshThemeRenders();
+            });
+        }
 
-        sel.value = savedTheme;
-        sel.addEventListener('change', function () {
-            var next = sel.value || 'light';
-            document.documentElement.dataset.dsTheme = next;
-            try {
-                localStorage.setItem('ds-theme', next);
-            } catch (e) {
-                // ignore
-            }
-        });
+        try {
+            var raw = localStorage.getItem('ds-imported-theme');
+            if (raw) applyImportedThemeLayer(JSON.parse(raw));
+        } catch (e) {}
+
+        updateThemeSelectLabels();
+        refreshThemeRenders();
     })();
-
-    // ── Hamburger Toggle ──
-    const hb = document.getElementById('ds-hamburger');
-    const mm = document.getElementById('ds-mobile-menu');
-    if (hb && mm) {
-        hb.addEventListener('click', () => mm.classList.toggle('open'));
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.ds-mobile-menu') && !e.target.closest('.ds-hamburger'))
-                mm.classList.remove('open');
-        });
-    }
 </script>
 
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>

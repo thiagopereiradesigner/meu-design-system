@@ -4,85 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Checkbox Component</title>
+    <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        /* Header/topbar padronizados em ds-demo-base.css */
+        :root {
+            --cb-demo-page-pad: 16px;
+            --cb-demo-after-topbar: 24px;
+            /* Checkmark vetorial (máscara) — centralização estável em claro/escuro */
+            --cb-check-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath stroke='%23000' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.2 6.5 11 12.5 4.5'/%3E%3C/svg%3E");
+        }
+        @media (min-width: 744px) {
+            :root {
+                --cb-demo-page-pad: 24px;
+                --cb-demo-after-topbar: 32px;
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --cb-demo-page-pad: 40px;
+                --cb-demo-after-topbar: 40px;
+            }
+        }
 
-        body {
-            font-family: 'Inter', sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body.ds-checkbox-demo {
+            font-family: var(--ds-font-family);
             background-color: var(--ds-bg);
-            padding: 40px;
+            padding: var(--cb-demo-page-pad);
             color: var(--ds-fg);
         }
+
+        .ds-checkbox-demo .ds-topbar {
+            margin: 0 calc(-1 * var(--cb-demo-page-pad)) var(--cb-demo-after-topbar);
+            width: calc(100% + 2 * var(--cb-demo-page-pad));
+            box-sizing: border-box;
+        }
+
         .container { max-width: 1440px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 48px; }
-        .header h1 { font-size: 32px; font-weight: 700; color: var(--ds-success); margin-bottom: 8px; }
-        .header p { font-size: 16px; color: var(--ds-fg-muted); }
-        .section { background: var(--ds-surface); border: 1px solid var(--ds-border); padding: 32px; border-radius: 12px; margin-bottom: 32px; }
-        .section-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: var(--ds-fg); }
-        .section-description { font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 16px; }
-        .column { display: flex; flex-direction: column; gap: 16px; }
-        .subtitle { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: var(--ds-fg); }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--ds-success);
+            margin-bottom: 8px;
+        }
+        .header .lead { font-size: 16px; color: var(--ds-fg-muted); line-height: 1.6; max-width: 640px; margin: 0 auto; }
+
+        .section {
+            background: var(--ds-surface);
+            border: 1px solid var(--ds-border);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        @media (min-width: 744px) {
+            .section { padding: 32px; margin-bottom: 32px; }
+        }
+
+        .section-title { font-size: clamp(1.125rem, 2vw, 1.5rem); font-weight: 700; margin-bottom: 8px; color: var(--ds-fg); }
+        .section-description { font-size: 14px; color: var(--ds-fg-muted); margin-bottom: 16px; line-height: 1.6; }
+
+        .column { display: flex; flex-direction: column; gap: 12px; }
+        @media (min-width: 744px) {
+            .column { gap: 16px; }
+        }
+
+        .subtitle { font-size: 16px; font-weight: 600; margin: 20px 0 12px; color: var(--ds-fg); }
+
         .checkbox-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
             user-select: none;
         }
+
+        @media (max-width: 743px) {
+            .checkbox-wrapper {
+                min-height: 44px;
+                padding: 6px 0;
+            }
+        }
+
         .checkbox-input {
             appearance: none;
+            -webkit-appearance: none;
             width: 20px;
             height: 20px;
-            border: 1.5px solid #DDDDDD;
+            border: 1.5px solid var(--ds-border);
             border-radius: 4px;
-            background-color: white;
+            background-color: var(--ds-surface);
             cursor: pointer;
             position: relative;
-            transition: all 0.15s ease;
             flex-shrink: 0;
+            transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
         }
+
+        .checkbox-input:hover:not(:disabled) {
+            border-color: var(--ds-success);
+        }
+
+        .checkbox-input:focus {
+            outline: none;
+        }
+
+        .checkbox-input:focus-visible {
+            box-shadow: var(--ds-focus-ring);
+            border-color: var(--ds-success);
+        }
+
         .checkbox-input:checked {
-            background-color: #04843B;
-            border-color: #04843B;
+            background-color: var(--ds-success);
+            border-color: var(--ds-success);
         }
+
+        /* Ícone centralizado via máscara (evita desalinhamento do “L” com rotate) */
         .checkbox-input:checked::after {
             content: '';
             position: absolute;
-            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
+            top: 50%;
+            width: 11px;
+            height: 11px;
+            transform: translate(-50%, -50%);
+            background-color: var(--ds-on-inverse);
+            -webkit-mask-image: var(--cb-check-mask);
+            mask-image: var(--cb-check-mask);
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
         }
+
         .checkbox-input:disabled {
-            opacity: 0.5;
             cursor: not-allowed;
+            opacity: 1;
+            background-color: var(--ds-bg-subtle);
+            border-color: var(--ds-border);
         }
-        .checkbox-label { font-size: 14px; color: var(--ds-fg); }
-        .code-block {
-            margin-top: 16px;
-            padding: 16px;
-            background: #1A1A1A;
-            color: #E6E6E6;
-            border-radius: 8px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
-            overflow-x: auto;
+
+        .checkbox-input:disabled:checked {
+            background-color: color-mix(in srgb, var(--ds-success) 50%, var(--ds-bg-subtle));
+            border-color: color-mix(in srgb, var(--ds-success) 55%, var(--ds-border));
+        }
+
+        .checkbox-input:disabled:checked::after {
+            background-color: var(--ds-fg-muted);
+        }
+
+        .checkbox-label { font-size: 14px; color: var(--ds-fg); line-height: 1.45; }
+
+        .doc-list {
+            padding-left: 18px;
+            color: var(--ds-fg-muted);
+            line-height: 1.75;
+            font-size: 14px;
+        }
+
+        .props-box {
+            font-size: 13px;
+            color: var(--ds-fg-muted);
+            line-height: 1.7;
+            margin-top: 14px;
+        }
+        .props-box strong {
+            display: block;
+            font-weight: 800;
+            color: var(--ds-fg);
+            margin-bottom: 6px;
         }
     </style>
 </head>
-<body>
-<!-- DS Navigation Bar -->
+<body class="ds-checkbox-demo">
 <nav class="ds-topbar">
     <button class="ds-hamburger" id="ds-hamburger" aria-label="Menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <a href="index.html" class="ds-back-btn">
+    <a href="index.html" class="ds-back-btn" aria-label="Voltar à lista de componentes">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
@@ -90,11 +193,10 @@
     <div class="ds-topbar-spacer"></div>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
     </div>
 </nav>
-<!-- DS Mobile Menu -->
 <div class="ds-mobile-menu" id="ds-mobile-menu">
     <a href="index.html" class="ds-back-btn">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
@@ -102,97 +204,88 @@
     </a>
     <div class="ds-search-wrapper">
         <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
+        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" autocomplete="off">
         <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
     </div>
 </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>Checkbox</h1>
-            <p>Componente Checkbox | Estados e código de uso</p>
+<div class="container">
+    <div class="header">
+        <h1>Checkbox</h1>
+        <p class="lead">Caixa de seleção para <strong>várias opções independentes</strong> em formulários e filtros. Prefira <code>&lt;label&gt;</code> envolvendo o input para área de clique ampla e leitura correta por tecnologias assistivas.</p>
+    </div>
+
+    <div class="note">
+        <h3>♿ Nota Acessibilidade</h3>
+        <ul>
+            <li><strong>Teclado:</strong> foco visível com <code>:focus-visible</code> e <code>var(--ds-focus-ring)</code>; Estado marcado anunciado pelo leitor de tela.</li>
+            <li><strong>Contraste:</strong> borda e estados usam tokens do tema (WCAG depende dos valores em <code>ds-demo-base.css</code>).</li>
+            <li><strong>Toque:</strong> em telas estreitas, o rótulo + linha têm altura mínima ~44px (área confortável).</li>
+            <li><strong>Erros:</strong> associe mensagem de erro ao grupo ou ao campo com <code>aria-describedby</code> quando aplicável.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Estados (demo)</h2>
+        <p class="section-description">Interaja com os exemplos; desabilitados usam mistura semântica para manter leitura sem apenas “apagar” o componente.</p>
+
+        <h3 class="subtitle">Básico</h3>
+        <div class="column">
+            <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox-input" id="check1">
+                <span class="checkbox-label">Aceito os termos e condições</span>
+            </label>
+            <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox-input" id="check2" checked>
+                <span class="checkbox-label">Receber notificações por email</span>
+            </label>
+            <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox-input" id="check3">
+                <span class="checkbox-label">Manter conectado</span>
+            </label>
         </div>
 
-        <div class="section">
-            <h2 class="section-title">✅ Checkbox</h2>
-            <p class="section-description">
-                Controle de seleção múltipla, com suporte a estados marcado, desmarcado e desabilitado.
-            </p>
-
-            <h3 class="subtitle">Basic</h3>
-            <div class="column">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" class="checkbox-input" id="check1">
-                    <span class="checkbox-label">Aceito os termos e condições</span>
-                </label>
-                
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" class="checkbox-input" id="check2" checked>
-                    <span class="checkbox-label">Receber notificações por email</span>
-                </label>
-                
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" class="checkbox-input" id="check3">
-                    <span class="checkbox-label">Manter conectado</span>
-                </label>
-            </div>
-
-            <h3 class="subtitle">States</h3>
-            <div class="column">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" class="checkbox-input" disabled>
-                    <span class="checkbox-label">Desabilitado (unchecked)</span>
-                </label>
-                
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" class="checkbox-input" checked disabled>
-                    <span class="checkbox-label">Desabilitado (checked)</span>
-                </label>
-            </div>
+        <h3 class="subtitle">Desabilitado</h3>
+        <div class="column">
+            <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox-input" disabled>
+                <span class="checkbox-label">Desabilitado (desmarcado)</span>
+            </label>
+            <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox-input" checked disabled>
+                <span class="checkbox-label">Desabilitado (marcado)</span>
+            </label>
         </div>
+    </div>
 
-        <div class="section">
-            <h2 class="section-title">Anatomia do Componente (HTML)</h2>
-            <p class="section-description">
-                Checkbox custom usando input nativo, para manter foco/teclado e leitura por leitores de tela.
-            </p>
-            <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
-                <li><code>label.checkbox-wrapper</code>: aumenta a área clicável.</li>
-                <li><code>input.checkbox-input</code>: input nativo (checkbox).</li>
-                <li><code>span.checkbox-label</code>: texto acessível ao lado do checkbox.</li>
-                <li>Estados do demo: <code>checked</code>, <code>disabled</code> e variação de UI via CSS.</li>
-            </ul>
-        </div>
+    <div class="section">
+        <h2 class="section-title">Anatomia do Componente (HTML)</h2>
+        <p class="section-description">Estrutura usada nesta página:</p>
+        <ul class="doc-list">
+            <li><code>label.checkbox-wrapper</code> — região clicável; alinha ícone e texto.</li>
+            <li><code>input.checkbox-input</code> — <code>type="checkbox"</code> nativo (teclado e AT).</li>
+            <li><code>span.checkbox-label</code> — texto visível; mantenha próximo ao controle no DOM.</li>
+            <li>Estado marcado: estilo <code>:checked</code> + <code>::after</code> com máscara SVG para o traço.</li>
+        </ul>
+    </div>
 
-        <div class="section">
-            <h2 class="section-title">Como Usar (HTML)</h2>
-            <p class="section-description">
-                Exemplo mínimo de estrutura para checkbox acessível.
-            </p>
-
-            <div class="code-block">
-<pre class="code"><code>&lt;label class="checkbox-wrapper"&gt;
-  &lt;input 
-    type="checkbox" 
-    class="checkbox-input" 
-    checked /&gt;
+    <div class="section">
+        <h2 class="section-title">Como Usar (HTML)</h2>
+        <p class="section-description">Exemplo mínimo acessível (rótulo associado por aninhamento).</p>
+        <pre class="code"><code>&lt;label class="checkbox-wrapper"&gt;
+  &lt;input type="checkbox" class="checkbox-input" id="termos" /&gt;
   &lt;span class="checkbox-label"&gt;Aceito os termos&lt;/span&gt;
 &lt;/label&gt;</code></pre>
-            </div>
-        </div>
+    </div>
 
-        <div class="section">
-            <h2 class="section-title">Como Usar (React)</h2>
-            <p class="section-description" style="margin-bottom:12px;">
-                JSX equivalente usando o componente do design system.
-            </p>
-            <pre class="code" style="font-size:12px;"><code>{/* React */}
-import React, { useState } from 'react';
+    <div class="section">
+        <h2 class="section-title">Como Usar (React)</h2>
+        <p class="section-description">Equivalente com o componente da pasta <code>components/Forms/Checkbox</code>.</p>
+        <pre class="code"><code>import { useState } from 'react';
 import { Checkbox } from '@/components/Forms/Checkbox/Checkbox';
 
-export default function Demo() {
+export function Demo() {
   const [checked, setChecked] = useState(false);
-
   return (
     &lt;Checkbox
       label="Aceito os termos e condições"
@@ -200,47 +293,16 @@ export default function Demo() {
       onChange={setChecked}
     /&gt;
   );
-}
-            </code></pre>
-            <div style="font-size:13px;color:#5E5E5E;line-height:1.7;margin-top:14px;">
-                <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
-                <div><code>label</code>, <code>checked</code>, <code>onChange</code></div>
-                <div><code>disabled</code>, <code>indeterminate</code>, <code>error</code>, <code>helperText</code></div>
-            </div>
-        </div>
-
-        <div class="note">
-            <h3>♿ Nota Acessibilidade</h3>
-            <ul>
-                <li>Use <code>&lt;label&gt;</code> para aumentar a área clicável e facilitar navegação.</li>
-                <li>O input permanece nativo para suporte a teclado/AT.</li>
-                <li>Para erro, mantenha mensagem textual (<code>error</code>) e contraste.</li>
-            </ul>
+}</code></pre>
+        <div class="props-box">
+            <strong>Props principais (visuais / UX)</strong>
+            <div><code>label</code> · <code>checked</code> · <code>onChange</code></div>
+            <div><code>disabled</code> · <code>indeterminate</code> · <code>error</code> · <code>helperText</code></div>
         </div>
     </div>
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
+</div>
 
+<script src="ds-demo-topbar-search.js" defer></script>
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
-

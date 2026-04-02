@@ -43,18 +43,18 @@
         .field-label-text {
             font-size: 12px;
             font-weight: 600;
-            color: #393939;
+            color: var(--ds-text-primary);
             line-height: 1.4;
         }
 
         .field-label-text.error {
-            color: #DC2626;
+            color: var(--ds-error);
         }
 
         .field-sublabel {
             font-size: 12px;
             font-weight: 400;
-            color: #5E5E5E;
+            color: var(--ds-fg-muted);
             line-height: 1.4;
         }
 
@@ -63,31 +63,39 @@
             align-items: center;
             gap: 10px;
             padding: 12px 16px;
-            background-color: #FFFFFF;
-            border: 1px solid #DDDDDD;
+            background-color: var(--ds-surface);
+            border: 1px solid var(--ds-border);
             border-radius: 4px;
-            transition: all 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .field-input-container:hover:not(.disabled) {
-            border-color: #04843B;
+        .field-input-container:hover:not(.disabled):not(.error) {
+            border-color: var(--ds-success);
+        }
+
+        .field-input-container.error:hover:not(.disabled) {
+            border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface));
+        }
+
+        .field-input-container.error:hover:not(.disabled) .field-icon--error {
+            color: color-mix(in srgb, var(--ds-error) 52%, var(--ds-surface));
         }
 
         .field-input-container:focus-within:not(.disabled):not(.error) {
-            border-color: #04843B;
-            box-shadow: 0 0 0 3px rgba(4, 132, 59, 0.1);
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
         }
 
         .field-input-container.error {
-            border-color: #DC2626;
+            border-color: var(--ds-error);
         }
 
         .field-input-container.error:focus-within {
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent);
         }
 
         .field-input-container.disabled {
-            background-color: #F9F9F9;
+            background-color: var(--ds-bg-subtle);
             opacity: 0.6;
             cursor: not-allowed;
         }
@@ -97,9 +105,9 @@
             border: none;
             outline: none;
             background: transparent;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             font-size: 14px;
-            color: #393939;
+            color: var(--ds-fg);
             line-height: 1.4;
         }
 
@@ -109,7 +117,7 @@
 
         .field-input:disabled {
             cursor: not-allowed;
-            color: #727272;
+            color: var(--ds-placeholder);
         }
 
         .field-helper {
@@ -118,12 +126,28 @@
             gap: 8px;
             margin-top: 8px;
             font-size: 12px;
-            color: #5E5E5E;
+            color: var(--ds-fg-muted);
             line-height: 1.4;
         }
 
         .field-helper.error {
-            color: #DC2626;
+            color: var(--ds-error);
+        }
+
+        .field-icon {
+            color: var(--ds-icon-accent);
+        }
+
+        .field-icon--muted {
+            color: var(--ds-fg-muted);
+        }
+
+        .field-icon--error {
+            color: var(--ds-error);
+        }
+
+        .field-icon--disabled {
+            color: var(--ds-placeholder);
         }
 
         .icon {
@@ -135,13 +159,14 @@
         .icon-sm {
             width: 16px;
             height: 16px;
+            flex-shrink: 0;
         }
 
         .code-block {
             margin-top: 16px;
             padding: 16px;
-            background: #1A1A1A;
-            color: #E6E6E6;
+            background: var(--ds-pre-bg);
+            color: var(--ds-pre-fg);
             border-radius: 8px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             font-size: 12px;
@@ -151,7 +176,7 @@
         .props-list {
             margin-top: 16px;
             font-size: 13px;
-            color: #333;
+            color: var(--ds-fg);
         }
 
         .props-list dt {
@@ -165,10 +190,11 @@
         .note {
             margin-top: 24px;
             padding: 16px;
-            background-color: #E6F4ED;
+            background-color: var(--ds-success-bg);
             border-radius: 8px;
-            border-left: 4px solid #04843B;
+            border-left: 4px solid var(--ds-success);
             font-size: 13px;
+            color: var(--ds-fg);
         }
     </style>
 </head>
@@ -237,22 +263,22 @@
                     <div class="field-label">
                         <span class="field-label-text">Input label</span>
                         <span class="field-sublabel">Sublabel</span>
-                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
-                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        <svg class="icon-sm field-icon field-icon--muted" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                     </div>
                     <div class="field-input-container">
-                        <svg class="icon" viewBox="0 0 20 20" fill="none">
-                            <circle cx="9" cy="9" r="6" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M13.5 13.5L17 17" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                        <svg class="icon field-icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         <input type="text" class="field-input" placeholder="Your text input here">
                     </div>
                     <div class="field-helper">
-                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
-                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        <svg class="icon-sm field-icon field-icon--muted" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <span>Input label</span>
                     </div>
@@ -264,16 +290,16 @@
                         <span class="field-label-text">Input com valor</span>
                     </div>
                     <div class="field-input-container">
-                        <svg class="icon" viewBox="0 0 20 20" fill="none">
-                            <circle cx="9" cy="9" r="6" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M13.5 13.5L17 17" stroke="#04843B" stroke-width="2" stroke-linecap="round"/>
+                        <svg class="icon field-icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         <input type="text" class="field-input" value="Texto digitado" placeholder="Digite algo...">
                     </div>
                     <div class="field-helper">
-                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
-                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        <svg class="icon-sm field-icon field-icon--muted" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <span>Este input está funcional</span>
                     </div>
@@ -285,16 +311,16 @@
                         <span class="field-label-text error">Input com erro</span>
                     </div>
                     <div class="field-input-container error">
-                        <svg class="icon" viewBox="0 0 20 20" fill="none">
-                            <circle cx="9" cy="9" r="6" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M13.5 13.5L17 17" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+                        <svg class="icon field-icon field-icon--error" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         <input type="text" class="field-input" placeholder="Campo obrigatório">
                     </div>
                     <div class="field-helper error">
-                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="#DC2626" stroke-width="1.5"/>
-                            <path d="M8 4V8M8 11V11.5" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/>
+                        <svg class="icon-sm field-icon field-icon--error" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 4V8M8 11V11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <span>Este campo é obrigatório</span>
                     </div>
@@ -306,16 +332,16 @@
                         <span class="field-label-text">Input desabilitado</span>
                     </div>
                     <div class="field-input-container disabled">
-                        <svg class="icon" viewBox="0 0 20 20" fill="none">
-                            <circle cx="9" cy="9" r="6" stroke="#727272" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M13.5 13.5L17 17" stroke="#727272" stroke-width="2" stroke-linecap="round"/>
+                        <svg class="icon field-icon field-icon--disabled" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         <input type="text" class="field-input" placeholder="Campo desabilitado" disabled>
                     </div>
                     <div class="field-helper">
-                        <svg class="icon-sm" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="#5E5E5E" stroke-width="1.5"/>
-                            <path d="M8 7V11M8 5V5.5" stroke="#5E5E5E" stroke-width="1.5" stroke-linecap="round"/>
+                        <svg class="icon-sm field-icon field-icon--muted" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 7V11M8 5V5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <span>Este campo está desabilitado</span>
                     </div>
@@ -326,7 +352,7 @@
         <!-- Anatomia -->
         <div class="section">
             <div class="section-title">Anatomia do Componente (HTML)</div>
-            <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+            <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
                 <li><code>div.field</code>: wrapper do componente.</li>
                 <li><code>div.field-label</code>: container da label (texto + opcional <code>field-sublabel</code>).</li>
                 <li><code>span.field-label-text</code>: label principal; com erro use <code>.error</code> (quando aplicável).</li>

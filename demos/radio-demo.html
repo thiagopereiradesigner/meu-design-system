@@ -36,7 +36,7 @@
             appearance: none;
             width: 20px;
             height: 20px;
-            border: 1.5px solid #DDDDDD;
+            border: 1.5px solid var(--ds-border);
             border-radius: 50%;
             background-color: white;
             cursor: pointer;
@@ -44,7 +44,7 @@
             transition: all 0.15s ease;
             flex-shrink: 0;
         }
-        .radio-input:checked { border-color: #04843B; }
+        .radio-input:checked { border-color: var(--ds-success); }
         .radio-input:checked::after {
             content: '';
             position: absolute;
@@ -53,7 +53,7 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: #04843B;
+            background-color: var(--ds-success);
         }
         .radio-input:disabled { opacity: 0.5; cursor: not-allowed; }
         .radio-label { font-size: 14px; color: var(--ds-fg); }
@@ -61,8 +61,8 @@
         .code-block {
             margin-top: 16px;
             padding: 16px;
-            background: #1A1A1A;
-            color: #E6E6E6;
+            background: var(--ds-pre-bg);
+            color: var(--ds-pre-fg);
             border-radius: 8px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             font-size: 12px;

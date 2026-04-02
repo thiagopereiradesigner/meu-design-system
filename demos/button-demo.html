@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP.IA - Design System Buttons</title>
+    <!-- Fonte alinhada a var(--ds-font-family) em ds-demo-base.css; ao trocar tema/fonte, atualize o link ou use @font-face no base. -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ds-demo-base.css">
     <style>
@@ -13,8 +14,35 @@
             box-sizing: border-box;
         }
 
+        /* Padding da página (alinhado ao topbar full-bleed) — troca de tema pode alterar --ds-font-family no base */
+        :root{
+            --btn-demo-page-pad: 16px;
+            --btn-demo-space-after-topbar: 24px;
+        }
+        @media (min-width:744px){
+            :root{
+                --btn-demo-page-pad: 24px;
+                --btn-demo-space-after-topbar: 32px;
+            }
+        }
+        @media (min-width:1024px){
+            :root{
+                --btn-demo-page-pad: 40px;
+                --btn-demo-space-after-topbar: 40px;
+            }
+        }
+
         /* ── DS Navigation Bar ── */
-        .ds-topbar{position:sticky;top:0;z-index:999;background:var(--ds-surface);border-bottom:1px solid var(--ds-border);padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:var(--ds-shadow-sm);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:-40px -40px 40px -40px;}
+        .ds-topbar{
+            position:sticky;top:0;z-index:999;background:var(--ds-surface);border-bottom:1px solid var(--ds-border);
+            padding:0 16px;height:56px;display:flex;align-items:center;gap:16px;box-shadow:var(--ds-shadow-sm);
+            font-family:var(--ds-font-family);
+            margin:0 calc(-1 * var(--btn-demo-page-pad)) var(--btn-demo-space-after-topbar) calc(-1 * var(--btn-demo-page-pad));
+            width:calc(100% + 2 * var(--btn-demo-page-pad));
+            box-sizing:border-box;
+        }
+        @media (min-width:744px){ .ds-topbar{ padding:0 24px; } }
+        @media (min-width:1280px){ .ds-topbar{ padding:0 32px; } }
         .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid var(--ds-border);background:var(--ds-surface);color:var(--ds-fg);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
         .ds-back-btn:hover{background:var(--ds-bg-subtle);border-color:var(--ds-success);color:var(--ds-success);}
         .ds-topbar-title{font-size:14px;font-weight:600;color:var(--ds-success);white-space:nowrap;}
@@ -36,12 +64,15 @@
         @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
         .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
         .ds-mobile-menu .ds-search-wrapper{width:100%;}
-        @media(max-width:743px){.ds-topbar{margin:-40px -40px 24px -40px;padding:0 16px;}.ds-back-btn,.ds-search-wrapper{display:none;}.ds-hamburger{display:flex;}}
+        @media(max-width:743px){
+            .ds-back-btn,.ds-search-wrapper{display:none;}
+            .ds-hamburger{display:flex;}
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             background-color: var(--ds-bg);
-            padding: 40px;
+            padding: var(--btn-demo-page-pad);
             color: var(--ds-fg);
         }
 
@@ -56,9 +87,9 @@
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
-            color: var(--ds-success-fg);
+            color: var(--ds-success);
             margin-bottom: 8px;
         }
 
@@ -113,14 +144,14 @@
 
         /* BUTTON STYLES */
         .btn {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             font-weight: 400;
             font-size: 14px;
             line-height: 1.5;
             border-radius: 9999px;
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.15s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -151,9 +182,13 @@
         }
 
         .btn-primary.focus,
-        .btn-primary:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+        .btn-primary:focus-visible:not(.hover):not(.focus):not(.active):not(.disabled) {
             background-color: var(--ds-success);
             box-shadow: var(--ds-focus-ring);
+        }
+
+        .btn-primary:focus:not(:focus-visible) {
+            box-shadow: none;
         }
 
         .btn-primary.active,
@@ -168,32 +203,43 @@
             cursor: not-allowed;
         }
 
-        /* SECONDARY VARIANT */
+        /* SECONDARY VARIANT — borda no hover (opção C); default com borda transparente evita “salto” de layout */
         .btn-secondary {
             background-color: var(--ds-success-bg);
             color: var(--ds-success-fg);
+            border: 1px solid transparent;
         }
 
         .btn-secondary.hover,
         .btn-secondary:hover:not(.hover):not(.focus):not(.active):not(.disabled) {
             background-color: var(--ds-success-bg);
+            border-color: var(--ds-success-hover);
+            box-shadow: none;
         }
 
         .btn-secondary.focus,
-        .btn-secondary:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+        .btn-secondary:focus-visible:not(.hover):not(.focus):not(.active):not(.disabled) {
             background-color: var(--ds-success-bg);
+            border-color: transparent;
             box-shadow: var(--ds-focus-ring);
+        }
+
+        .btn-secondary:focus:not(:focus-visible) {
+            box-shadow: none;
         }
 
         .btn-secondary.active,
         .btn-secondary:active:not(.hover):not(.focus):not(.active):not(.disabled) {
-            background-color: var(--ds-success-bg);
+            background-color: var(--ds-bg-subtle);
+            border-color: var(--ds-success);
+            color: var(--ds-success-fg);
         }
 
         .btn-secondary.disabled,
         .btn-secondary:disabled {
             background-color: var(--ds-n100);
             color: var(--ds-n200);
+            border-color: transparent;
             cursor: not-allowed;
         }
 
@@ -210,9 +256,13 @@
         }
 
         .btn-outline.focus,
-        .btn-outline:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+        .btn-outline:focus-visible:not(.hover):not(.focus):not(.active):not(.disabled) {
             background-color: transparent;
             box-shadow: var(--ds-focus-ring);
+        }
+
+        .btn-outline:focus:not(:focus-visible) {
+            box-shadow: none;
         }
 
         .btn-outline.active,
@@ -240,9 +290,13 @@
         }
 
         .btn-ghost.focus,
-        .btn-ghost:focus:not(.hover):not(.focus):not(.active):not(.disabled) {
+        .btn-ghost:focus-visible:not(.hover):not(.focus):not(.active):not(.disabled) {
             background-color: transparent;
             box-shadow: var(--ds-focus-ring);
+        }
+
+        .btn-ghost:focus:not(:focus-visible) {
+            box-shadow: none;
         }
 
         .btn-ghost.active,
@@ -263,19 +317,38 @@
             align-items: center;
             gap: 8px;
             padding: 6px 12px;
+            min-height: 40px;
             border-radius: 9999px;
             border: 1px solid var(--ds-success);
             background-color: transparent;
             color: var(--ds-success);
             font-size: 12px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--ds-font-family);
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-filter:hover:not(:disabled){
+            background-color: var(--ds-success-bg);
+            border-color: var(--ds-success-hover);
+            color: var(--ds-success-fg);
         }
 
         .btn-filter.active {
             background-color: var(--ds-success-bg);
+            border-color: var(--ds-success);
+            color: var(--ds-success-fg);
+        }
+
+        .btn-filter.active:hover:not(:disabled){
+            background-color: var(--ds-success-bg);
+            border-color: var(--ds-success-hover);
+        }
+
+        .btn-filter:focus-visible{
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
         }
 
         .btn-filter .close-icon {
@@ -286,9 +359,27 @@
             height: 16px;
             border-radius: 50%;
             background-color: var(--ds-success-fg);
+            color: var(--ds-bg);
             border: none;
             cursor: pointer;
             padding: 0;
+        }
+
+        .btn-filter .close-icon svg{
+            stroke: currentColor;
+        }
+
+        @media (max-width: 743px){
+            .btn-medium{
+                min-height: 44px;
+            }
+            .btn-large{
+                min-height: 48px;
+            }
+            .btn-filter{
+                min-height: 44px;
+                padding: 8px 14px;
+            }
         }
 
         .examples {
@@ -414,38 +505,38 @@
             <h2 class="section-title">🎨 Tokens de Cor Utilizados</h2>
             <div class="color-demo">
                 <div class="color-swatch">
-                    <div class="color-box" style="background-color: #04843B;"></div>
+                    <div class="color-box" style="background-color:var(--ds-success);"></div>
                     <div class="color-info">
-                        <span class="color-name">Primary 500 (Brand)</span>
-                        <span class="color-value">#04843B</span>
+                        <span class="color-name">--ds-success</span>
+                        <span class="color-value">Primary / brand</span>
                     </div>
                 </div>
                 <div class="color-swatch">
-                    <div class="color-box" style="background-color: #067647;"></div>
+                    <div class="color-box" style="background-color:var(--ds-success-hover);"></div>
                     <div class="color-info">
-                        <span class="color-name">Primary 600 (Hover)</span>
-                        <span class="color-value">#067647</span>
+                        <span class="color-name">--ds-success-hover</span>
+                        <span class="color-value">Hover (primary sec.)</span>
                     </div>
                 </div>
                 <div class="color-swatch">
-                    <div class="color-box" style="background-color: #005A1A;"></div>
+                    <div class="color-box" style="background-color:var(--ds-success-fg);"></div>
                     <div class="color-info">
-                        <span class="color-name">Primary 700 (Active)</span>
-                        <span class="color-value">#005A1A</span>
+                        <span class="color-name">--ds-success-fg</span>
+                        <span class="color-value">Texto sobre tint / active</span>
                     </div>
                 </div>
                 <div class="color-swatch">
-                    <div class="color-box" style="background-color: #E6F4ED;"></div>
+                    <div class="color-box" style="background-color:var(--ds-success-bg);"></div>
                     <div class="color-info">
-                        <span class="color-name">Primary 50 (Background)</span>
-                        <span class="color-value">#E6F4ED</span>
+                        <span class="color-name">--ds-success-bg</span>
+                        <span class="color-value">Secondary / estados suaves</span>
                     </div>
                 </div>
                 <div class="color-swatch">
-                    <div class="color-box" style="background-color: #C6C6C6;"></div>
+                    <div class="color-box" style="background-color:var(--ds-n200);"></div>
                     <div class="color-info">
-                        <span class="color-name">Neutral 200 (Disabled)</span>
-                        <span class="color-value">#C6C6C6</span>
+                        <span class="color-name">--ds-n200</span>
+                        <span class="color-value">Disabled (texto/borda)</span>
                     </div>
                 </div>
             </div>
@@ -480,7 +571,7 @@
                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <div class="state-label">Hover (#067647)</div>
+                        <div class="state-label">Hover (--ds-success-hover)</div>
                     </div>
                     <div class="button-item">
                         <button class="btn btn-primary btn-large focus">
@@ -504,7 +595,7 @@
                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <div class="state-label">Active (#005A1A)</div>
+                        <div class="state-label">Active (--ds-success-fg)</div>
                     </div>
                     <div class="button-item">
                         <button class="btn btn-primary btn-large disabled" disabled>
@@ -557,11 +648,11 @@
                 <div class="button-grid">
                     <div class="button-item">
                         <button class="btn btn-secondary btn-large">Button</button>
-                        <div class="state-label">Default (#E6F4ED)</div>
+                        <div class="state-label">Default (--ds-success-bg)</div>
                     </div>
                     <div class="button-item">
                         <button class="btn btn-secondary btn-large hover">Button</button>
-                        <div class="state-label">Hover (#CCE9DB)</div>
+                        <div class="state-label">Hover (borda --ds-success-hover)</div>
                     </div>
                     <div class="button-item">
                         <button class="btn btn-secondary btn-large focus">Button</button>
@@ -569,7 +660,7 @@
                     </div>
                     <div class="button-item">
                         <button class="btn btn-secondary btn-large active">Button</button>
-                        <div class="state-label">Active (#99D3B7)</div>
+                        <div class="state-label">Active (--ds-bg-subtle + borda)</div>
                     </div>
                     <div class="button-item">
                         <button class="btn btn-secondary btn-large disabled" disabled>Button</button>
@@ -618,7 +709,7 @@
                     </div>
                     <div class="button-item">
                         <button class="btn btn-outline btn-large hover">Button</button>
-                        <div class="state-label">Hover (#E6F4ED)</div>
+                        <div class="state-label">Hover (--ds-success-bg)</div>
                     </div>
                     <div class="button-item">
                         <button class="btn btn-outline btn-large focus">Button</button>
@@ -739,7 +830,7 @@
                         </svg>
                         Filtro
                         <span class="close-icon">
-                            <svg class="icon-sm" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2">
+                            <svg class="icon-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                 <path d="M12 4L4 12M4 4L12 12" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </span>
@@ -775,9 +866,9 @@
         <div class="note">
             <h3>♿ Nota sobre Acessibilidade (WCAG)</h3>
             <ul>
-                <li>Todos os botões possuem estados visuais claros (hover, focus, active)</li>
-                <li>Contrast ratio conforme WCAG AA (4.5:1 para texto normal)</li>
-                <li>Focus visível com outline de 3px para navegação por teclado</li>
+                <li>Estados visuais claros: secundário diferencia hover com borda reforçada (sem confundir com primary)</li>
+                <li>Contraste conforme WCAG AA quando os tokens do tema são mantidos</li>
+                <li>Foco visível: <code>box-shadow: var(--ds-focus-ring)</code> e <code>:focus-visible</code> no filtro</li>
                 <li>Estados desabilitados claramente diferenciados</li>
                 <li>Tamanho mínimo de toque: 40px (WCAG 2.5.5 - Level AAA)</li>
                 <li>Ícones com stroke visível em todos os estados</li>
@@ -787,10 +878,12 @@
         <!-- Template: Anatomia + Como Usar -->
         <div class="section">
             <div class="section-title">Anatomia do Componente (HTML)</div>
-            <ul style="padding-left:18px;color:#5E5E5E;line-height:1.7;font-size:14px;">
+            <ul style="padding-left:18px;color:var(--ds-fg-muted);line-height:1.7;font-size:14px;">
                 <li><code>button.btn</code>: componente base.</li>
                 <li><code>.btn-primary|btn-secondary|btn-outline|btn-ghost</code>: variação de estilo.</li>
                 <li><code>.btn-large|btn-medium</code>: variação de tamanho (padding/font-size).</li>
+                <li><code>.btn-secondary</code>: borda transparente no default; <code>hover</code> com <code>border-color: var(--ds-success-hover)</code>.</li>
+                <li><code>.btn-filter</code> + <code>.active</code>: chip de filtro; <code>.close-icon</code> com <code>stroke="currentColor"</code> e <code>color: var(--ds-bg)</code>.</li>
                 <li><code>.disabled</code>: estado desabilitado.</li>
                 <li>Ícone: <code>span</code> ou <code>svg</code> com classes como <code>icon</code> dentro do botão.</li>
             </ul>
@@ -823,8 +916,8 @@
   Criar novo
 </button>
             </code></pre>
-            <div style="font-size:13px;color:#5E5E5E;line-height:1.7;margin-top:14px;">
-                <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais (visuais)</div>
+            <div style="font-size:13px;color:var(--ds-fg-muted);line-height:1.7;margin-top:14px;">
+                <div style="font-weight:800;color:var(--ds-fg);margin-bottom:6px;">Props principais (visuais)</div>
                 <div><code>variant</code> (primary/secondary/outline/ghost)</div>
                 <div><code>size</code> (large/medium)</div>
                 <div><code>disabled</code> (true/false)</div>

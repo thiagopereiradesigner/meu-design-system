@@ -38,14 +38,14 @@
             transform: scale(1.02);
         }
 
-        .btn-success { background: #04843B; color: white; }
-        .btn-error { background: #DC2626; color: white; }
-        .btn-warning { background: #DC6803; color: white; }
-        .btn-info { background: #3B82F6; color: white; }
-        .btn-success-light { background: #E6F4ED; color: #005A1A; }
-        .btn-error-light { background: #FEE2E2; color: #DC2626; }
-        .btn-warning-light { background: #FEF3C7; color: #92400E; }
-        .btn-info-light { background: #DBEAFE; color: #1E40AF; }
+        .btn-success { background: var(--ds-success); color: var(--ds-on-inverse); }
+        .btn-error { background: var(--ds-error); color: var(--ds-on-inverse); }
+        .btn-warning { background: var(--ds-warning); color: var(--ds-on-inverse); }
+        .btn-info { background: var(--ds-info); color: var(--ds-on-inverse); }
+        .btn-success-light { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+        .btn-error-light { background: var(--ds-error-bg); color: var(--ds-error-fg); }
+        .btn-warning-light { background: var(--ds-warning-bg); color: var(--ds-warning-fg); }
+        .btn-info-light { background: var(--ds-info-bg); color: var(--ds-info-fg); }
 
         /* TOAST */
         .toast-container {
@@ -148,79 +148,79 @@
         }
 
         /* Success Active */
-        .toast-success-active { background: #04843B; }
+        .toast-success-active { background: var(--ds-success); }
         .toast-success-active .toast-title,
         .toast-success-active .toast-message { color: white; }
         .toast-success-active .toast-progress { background: rgba(255,255,255,0.3); }
         .toast-success-active .toast-progress-bar { background: white; }
 
         /* Error Active */
-        .toast-error-active { background: #DC2626; }
+        .toast-error-active { background: var(--ds-error); }
         .toast-error-active .toast-title,
         .toast-error-active .toast-message { color: white; }
         .toast-error-active .toast-progress { background: rgba(255,255,255,0.3); }
         .toast-error-active .toast-progress-bar { background: white; }
 
         /* Warning Active */
-        .toast-warning-active { background: #DC6803; }
+        .toast-warning-active { background: var(--ds-warning); }
         .toast-warning-active .toast-title,
         .toast-warning-active .toast-message { color: white; }
         .toast-warning-active .toast-progress { background: rgba(255,255,255,0.3); }
         .toast-warning-active .toast-progress-bar { background: white; }
 
         /* Info Active */
-        .toast-info-active { background: #3B82F6; }
+        .toast-info-active { background: var(--ds-info); }
         .toast-info-active .toast-title,
         .toast-info-active .toast-message { color: white; }
         .toast-info-active .toast-progress { background: rgba(255,255,255,0.3); }
         .toast-info-active .toast-progress-bar { background: white; }
 
         /* Success Light */
-        .toast-success-light { background: #E6F4ED; }
+        .toast-success-light { background: var(--ds-success-bg); }
         .toast-success-light .toast-title,
-        .toast-success-light .toast-message { color: #005A1A; }
+        .toast-success-light .toast-message { color: var(--ds-success-fg); }
         .toast-success-light .toast-progress { background: rgba(4,132,59,0.3); }
-        .toast-success-light .toast-progress-bar { background: #005A1A; }
+        .toast-success-light .toast-progress-bar { background: var(--ds-success-fg); }
 
         /* Error Light */
-        .toast-error-light { background: #FEE2E2; }
+        .toast-error-light { background: var(--ds-error-bg); }
         .toast-error-light .toast-title,
-        .toast-error-light .toast-message { color: #DC2626; }
+        .toast-error-light .toast-message { color: var(--ds-error); }
         .toast-error-light .toast-progress { background: rgba(220,38,38,0.3); }
-        .toast-error-light .toast-progress-bar { background: #DC2626; }
+        .toast-error-light .toast-progress-bar { background: var(--ds-error); }
 
         /* Warning Light */
-        .toast-warning-light { background: #FEF3C7; }
+        .toast-warning-light { background: var(--ds-warning-bg); }
         .toast-warning-light .toast-title,
-        .toast-warning-light .toast-message { color: #92400E; }
+        .toast-warning-light .toast-message { color: var(--ds-warning-fg); }
         .toast-warning-light .toast-progress { background: rgba(220,104,3,0.3); }
-        .toast-warning-light .toast-progress-bar { background: #92400E; }
+        .toast-warning-light .toast-progress-bar { background: var(--ds-warning-fg); }
 
         /* Info Light */
-        .toast-info-light { background: #DBEAFE; }
+        .toast-info-light { background: var(--ds-info-bg); }
         .toast-info-light .toast-title,
-        .toast-info-light .toast-message { color: #1E40AF; }
+        .toast-info-light .toast-message { color: var(--ds-info-fg); }
         .toast-info-light .toast-progress { background: rgba(59,130,246,0.3); }
-        .toast-info-light .toast-progress-bar { background: #1E40AF; }
+        .toast-info-light .toast-progress-bar { background: var(--ds-info-fg); }
 
         .note {
             margin-top: 32px;
             padding: 24px;
-            background-color: #E6F4ED;
+            background-color: var(--ds-success-bg);
             border-radius: 12px;
-            border-left: 4px solid #04843B;
+            border-left: 4px solid var(--ds-success);
         }
 
         .note h3 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #004D16;
+            color: var(--ds-success-fg);
         }
 
         .note ul {
             font-size: 14px;
-            color: #333333;
+            color: var(--ds-fg);
             line-height: 1.6;
             padding-left: 20px;
         }
@@ -349,7 +349,7 @@
         </div>
     <div class="section">
         <div class="section-title">Anatomia do Componente (HTML)</div>
-        <ul style="padding-left:18px;color:#656976;line-height:1.7;font-size:13px;">
+        <ul style="padding-left:18px;color:var(--ds-text-secondary);line-height:1.7;font-size:13px;">
             <li><code>div#toast-container.toast-container</code>: contêiner fixo (onde as toasts são injetadas).</li>
             <li><code>div.toast</code>: wrapper da notificação (criado via JS no demo).</li>
             <li><code>div.toast-icon</code>: ícone do tipo (Lucide-style).</li>
@@ -384,7 +384,7 @@
             Use o Toast quando você precisar de feedback temporário. O texto é opcional via <code>showText</code>.
         </p>
 
-        <pre class="code" style="font-size:12px;background:#F3F3F3;padding:12px;border-radius:12px;overflow-x:auto;">
+        <pre class="code" style="font-size:12px;background:var(--ds-neutral-bg);padding:12px;border-radius:12px;overflow-x:auto;">
 <code>{/* JSX */}
 import { ToastProvider, useToast } from '@/components/ui/Toast';
 
@@ -412,8 +412,8 @@ function Page() {
   </code>
         </pre>
 
-        <div style="font-size:13px;color:#656976;line-height:1.7;margin-top:14px;">
-            <div style="font-weight:800;color:#1A1A1A;margin-bottom:6px;">Props principais</div>
+        <div style="font-size:13px;color:var(--ds-text-secondary);line-height:1.7;margin-top:14px;">
+            <div style="font-weight:800;color:var(--ds-text-primary);margin-bottom:6px;">Props principais</div>
             <div><code>type</code>: success | error | warning | info</div>
             <div><code>variant</code>: active | light</div>
             <div><code>showText</code>: true (title+message) | false (ícone + close)</div>
@@ -475,22 +475,22 @@ function Page() {
                 <line x1="12" x2="12.01" y1="8" y2="8"/>
             </svg>`,
 
-            success: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            success: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ds-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" x2="12" y1="16" y2="12"/>
                 <line x1="12" x2="12.01" y1="8" y2="8"/>
             </svg>`,
-            error: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            error: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ds-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" x2="12" y1="16" y2="12"/>
                 <line x1="12" x2="12.01" y1="8" y2="8"/>
             </svg>`,
-            warning: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC6803" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            warning: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ds-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" x2="12" y1="16" y2="12"/>
                 <line x1="12" x2="12.01" y1="8" y2="8"/>
             </svg>`,
-            info: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            info: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ds-info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" x2="12" y1="16" y2="12"/>
                 <line x1="12" x2="12.01" y1="8" y2="8"/>
@@ -499,16 +499,16 @@ function Page() {
             closeWhite: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>`,
-            closeSuccess: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#04843B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            closeSuccess: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ds-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>`,
-            closeError: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            closeError: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ds-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>`,
-            closeWarning: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC6803" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            closeWarning: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ds-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>`,
-            closeInfo: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            closeInfo: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ds-info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>`
         };

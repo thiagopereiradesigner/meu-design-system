@@ -11,7 +11,7 @@
         /* Header/topbar padronizados em ds-demo-base.css */
 
         /* Layout/base tokens vêm de ds-demo-base.css */
-        .subtitle { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: #393939; }
+        .subtitle { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: var(--ds-fg); }
         .column { display: flex; flex-direction: column; gap: 16px; }
         .switch-wrapper {
             display: flex;
@@ -24,12 +24,12 @@
             position: relative;
             width: 44px;
             height: 24px;
-            background-color: #C6C6C6;
+            background-color: var(--ds-n200);
             border-radius: 12px;
             transition: background-color 0.2s ease;
             flex-shrink: 0;
         }
-        .switch-track.checked { background-color: #04843B; }
+        .switch-track.checked { background-color: var(--ds-success); }
         .switch-thumb {
             position: absolute;
             top: 2px;
@@ -43,12 +43,12 @@
         }
         .switch-track.checked .switch-thumb { left: 22px; }
         .switch-track.disabled { opacity: 0.5; cursor: not-allowed; }
-        .switch-label { font-size: 14px; color: #393939; }
+        .switch-label { font-size: 14px; color: var(--ds-fg); }
         .code-block {
             margin-top: 16px;
             padding: 16px;
-            background: #1A1A1A;
-            color: #E6E6E6;
+            background: var(--ds-pre-bg);
+            color: var(--ds-pre-fg);
             border-radius: 8px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             font-size: 12px;
