@@ -1,7 +1,7 @@
 (function () {
   /**
-   * Busca do header (topbar) das demos internas.
-   * Mantém IDs fixos para facilitar “montagem” uniforme em todas as páginas.
+   * Busca dos demos: input injetado em `ds-demo-sidebar.js` (menu lateral), não no header.
+   * `ds-demo-sidebar.js` deve carregar antes deste ficheiro (defer, ordem no HTML).
    */
 
   var nc = [
@@ -78,63 +78,119 @@
       if (e.target.value) render(e.target.value);
     });
 
-    // Fecha dropdown ao clicar fora.
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.ds-search-wrapper')) dd.classList.remove('open');
     });
   }
 
-  setupSearch('ds-nav-search', 'ds-nav-dropdown');
-  setupSearch('ds-nav-search-mobile', 'ds-nav-dropdown-mobile');
+  function isMobileNav() {
+    return typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 743px)').matches;
+  }
 
-  // Títulos consistentes entre demos:
-  // - Topbar sempre: "TP.IA - Design System"
-  // - H1 sempre: nome do componente da página (derivado do arquivo atual)
-  function syncDemoTitles() {
-    var currentFile = (window.location.pathname || '').split('/').pop() || '';
-    var cur = nc.find(function (c) {
-      return c.file === currentFile;
+  function setSidebarOpen(open) {
+    if (open) document.body.classList.add('ds-demo-sidebar--open');
+    else document.body.classList.remove('ds-demo-sidebar--open');
+
+    var hb = document.getElementById('ds-hamburger');
+    if (hb) {
+      hb.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+  }
+
+  function initMobileSidebarNav() {
+    var hb = document.getElementById('ds-hamburger');
+    var backdrop = document.querySelector('.ds-demo-sidebar-backdrop');
+    var closeBtn = document.querySelector('.ds-demo-sidebar__close');
+
+    if (!hb) return;
+
+    hb.setAttribute('aria-expanded', 'false');
+    hb.setAttribute('aria-controls', 'ds-demo-sidebar-panel');
+
+    if (hb._dsBound) return;
+    hb._dsBound = true;
+
+    hb.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!document.body.classList.contains('ds-demo-has-sidebar')) return;
+      if (!isMobileNav()) return;
+      var next = !document.body.classList.contains('ds-demo-sidebar--open');
+      setSidebarOpen(next);
     });
-    if (!cur) return;
+
+    if (backdrop) {
+      backdrop.addEventListener('click', function () {
+        setSidebarOpen(false);
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        setSidebarOpen(false);
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('ds-demo-sidebar--open')) {
+        setSidebarOpen(false);
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (!isMobileNav()) setSidebarOpen(false);
+    });
+
+    var aside = document.querySelector('.ds-demo-sidebar');
+    if (aside) {
+      aside.addEventListener('click', function (e) {
+        if (e.target.closest('.ds-demo-sidebar__link') && isMobileNav()) setSidebarOpen(false);
+      });
+    }
+  }
+
+  function boot() {
+    setupSearch('ds-nav-search', 'ds-nav-dropdown');
+    initMobileSidebarNav();
 
     var appTitle = 'TP.IA - Design System';
 
-    // Topbar: força o título fixo de aplicativo.
-    var topTitle = document.querySelector('nav.ds-topbar .ds-topbar-title') || document.querySelector('.ds-topbar .ds-topbar-title');
-    if (topTitle) topTitle.textContent = appTitle;
+    function syncDemoTitles() {
+      var topTitle = document.querySelector('nav.ds-topbar .ds-topbar-title') || document.querySelector('.ds-topbar .ds-topbar-title');
+      if (topTitle) {
+        topTitle.textContent = appTitle;
+        if (topTitle.tagName === 'A') {
+          topTitle.setAttribute('href', 'index.html');
+          topTitle.setAttribute('aria-label', 'Ir ao portal do design system');
+        }
+      }
 
-    // Conteúdo: força o título principal (h1 ou h2) para o nome do componente.
-    // Alguns demos usam apenas h2 (ex.: stepper).
-    var titleEl =
-      document.querySelector('.ds-container > h1') ||
-      document.querySelector('.ds-container > h2') ||
-      document.querySelector('.container .header h1') ||
-      document.querySelector('.ds-demo-main h1') ||
-      document.querySelector('.ds-demo-main h2') ||
-      document.querySelector('h1') ||
-      document.querySelector('h2');
-    if (titleEl) titleEl.textContent = cur.name;
+      var currentFile = (window.location.pathname || '').split('/').pop() || '';
+      var cur = nc.find(function (c) {
+        return c.file === currentFile;
+      });
+      if (!cur) return;
+
+      var titleEl =
+        document.querySelector('.ds-container > h1') ||
+        document.querySelector('.ds-container > h2') ||
+        document.querySelector('.container .header h1') ||
+        document.querySelector('.ds-demo-main h1') ||
+        document.querySelector('.ds-demo-main h2') ||
+        document.querySelector('h1') ||
+        document.querySelector('h2');
+      if (titleEl) titleEl.textContent = cur.name;
+    }
+
+    syncDemoTitles();
+    try {
+      window.addEventListener('load', syncDemoTitles);
+    } catch (e) {}
   }
 
-  // Executa imediatamente e tenta também de novo após a injeção do sidebar (defer).
-  syncDemoTitles();
-  try {
-    window.addEventListener('load', syncDemoTitles);
-  } catch (e) {}
-
-  // Toggle do mobile menu.
-  var hb = document.getElementById('ds-hamburger');
-  var mm = document.getElementById('ds-mobile-menu');
-  if (hb && mm) {
-    hb.addEventListener('click', function () {
-      mm.classList.toggle('open');
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.ds-mobile-menu') && !e.target.closest('.ds-hamburger')) {
-        mm.classList.remove('open');
-      }
-    });
+  if (document.getElementById('ds-nav-search')) {
+    boot();
+  } else {
+    window.addEventListener('ds-demo-sidebar-ready', boot, { once: true });
   }
 })();
-

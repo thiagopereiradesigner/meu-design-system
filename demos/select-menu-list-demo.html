@@ -188,25 +188,8 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
-    <span class="ds-topbar-title">TP.IA - Design System</span>
-    <div class="ds-topbar-spacer"></div>
-    <div class="ds-search-wrapper">
-        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" aria-label="Buscar componentes">
-        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
-    </div>
-</nav>
-<div class="ds-mobile-menu" id="ds-mobile-menu">
-    <a href="index.html" class="ds-back-btn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
-        Voltar ao Portal
-    </a>
-    <div class="ds-search-wrapper">
-        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" aria-label="Buscar componentes">
-        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
-    </div>
-</div>
+    <a href="index.html" class="ds-topbar-title" aria-label="Ir ao portal do design system">TP.IA - Design System</a>
+    <div class="ds-topbar-spacer"></div></nav>
 
 <div class="container">
     <div class="header">
@@ -415,7 +398,7 @@ function SelectMenuList({ options, value, onSelect }) {
     </div>
 </div>
 
-<script src="ds-demo-topbar-search.js" defer></script>
-<script src="ds-demo-sidebar.js" defer></script>
+<script src="ds-demo-sidebar.js" defer></script><script src="ds-demo-topbar-search.js" defer></script>
+
 </body>
 </html>

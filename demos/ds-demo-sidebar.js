@@ -1,18 +1,14 @@
 /**
- * Navegação lateral entre demos do DS (sem ícones).
+ * Navegação lateral entre demos do DS + busca fixa no topo do menu.
  * Injeta layout após `nav.ds-topbar` e move o conteúdo da página para `main`.
  * Não incluir em `index.html`. Opcional: `data-ds-demo-sidebar="skip"` no <body>.
  */
 (function () {
-  // Tema global para persistir entre páginas (home/cobrindo demos).
-  // `light` é default (tokens em :root); `dark` vem do escopo [data-ds-theme="dark"].
   try {
     var savedTheme = localStorage.getItem('ds-theme');
     var theme = savedTheme || 'light';
     document.documentElement.dataset.dsTheme = theme;
-  } catch (e) {
-    // Se localStorage estiver bloqueado, fica no default (:root).
-  }
+  } catch (e) {}
 
   if (document.body.dataset.dsDemoSidebar === 'skip') return;
 
@@ -24,18 +20,65 @@
   var layout = document.createElement('div');
   layout.className = 'ds-demo-layout';
 
+  var backdrop = document.createElement('div');
+  backdrop.className = 'ds-demo-sidebar-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+
   var aside = document.createElement('aside');
   aside.className = 'ds-demo-sidebar';
-  aside.setAttribute('aria-label', 'Outros componentes do design system');
+  aside.id = 'ds-demo-sidebar-panel';
+  aside.setAttribute('aria-label', 'Navegação do design system');
+
+  var inner = document.createElement('div');
+  inner.className = 'ds-demo-sidebar__inner';
+
+  var mobileHeader = document.createElement('div');
+  mobileHeader.className = 'ds-demo-sidebar__mobile-header';
+
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'ds-demo-sidebar__close';
+  closeBtn.setAttribute('aria-label', 'Fechar menu');
+  closeBtn.innerHTML =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  mobileHeader.appendChild(closeBtn);
+
+  var searchRegion = document.createElement('div');
+  searchRegion.className = 'ds-demo-sidebar__search';
+  searchRegion.setAttribute('role', 'search');
+
+  var searchWrap = document.createElement('div');
+  searchWrap.className = 'ds-search-wrapper';
+
+  var searchIconHolder = document.createElement('div');
+  searchIconHolder.innerHTML =
+    '<svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  var searchIcon = searchIconHolder.firstElementChild;
+
+  var searchInput = document.createElement('input');
+  searchInput.type = 'text';
+  searchInput.className = 'ds-search-input';
+  searchInput.id = 'ds-nav-search';
+  searchInput.setAttribute('placeholder', 'Buscar componentes...');
+  searchInput.setAttribute('autocomplete', 'off');
+  searchInput.setAttribute('aria-label', 'Buscar componentes');
+
+  var searchDd = document.createElement('div');
+  searchDd.className = 'ds-search-dropdown';
+  searchDd.id = 'ds-nav-dropdown';
+
+  searchWrap.appendChild(searchIcon);
+  searchWrap.appendChild(searchInput);
+  searchWrap.appendChild(searchDd);
+  searchRegion.appendChild(searchWrap);
+
+  var scroll = document.createElement('div');
+  scroll.className = 'ds-demo-sidebar__scroll';
 
   var main = document.createElement('div');
   main.className = 'ds-demo-main';
 
-  // Em vez de mover "tudo até algum <script>" (muito sensível ao HTML real),
-  // movemos apenas as estruturas que representam a página:
-  // - `.ds-mobile-menu` (se existir)
-  // - o primeiro "content root": `.ds-container` ou `.container`
-  // Isso torna o layout determinístico e evita quebra em várias páginas.
   var mobileMenu = null;
   var contentRoot = null;
 
@@ -51,14 +94,23 @@
     el = el.nextElementSibling;
   }
 
-  // fallback: se não acharmos um content root, não quebra; apenas injeta.
-  var firstToMove = mobileMenu || contentRoot || nav.nextElementSibling;
+  if (mobileMenu && mobileMenu.parentNode) {
+    mobileMenu.parentNode.removeChild(mobileMenu);
+  }
+
+  var firstToMove = contentRoot || nav.nextElementSibling;
   if (firstToMove) nav.parentNode.insertBefore(layout, firstToMove);
   else nav.parentNode.appendChild(layout);
+
+  layout.appendChild(backdrop);
   layout.appendChild(aside);
   layout.appendChild(main);
 
-  if (mobileMenu) main.appendChild(mobileMenu);
+  inner.appendChild(mobileHeader);
+  inner.appendChild(searchRegion);
+  inner.appendChild(scroll);
+  aside.appendChild(inner);
+
   if (contentRoot) main.appendChild(contentRoot);
 
   /** @type {{ file: string, label: string, featured?: boolean }[]} */
@@ -129,5 +181,7 @@
   });
 
   navSide.appendChild(ul);
-  aside.appendChild(navSide);
+  scroll.appendChild(navSide);
+
+  window.dispatchEvent(new CustomEvent('ds-demo-sidebar-ready', { bubbles: true }));
 })();

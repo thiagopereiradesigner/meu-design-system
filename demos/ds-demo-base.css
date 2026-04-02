@@ -421,11 +421,23 @@ body{
   font-weight: 700;
   color: var(--ds-success);
   white-space: nowrap;
-  /* Centraliza o título do header. */
+  text-decoration: none;
+  cursor: pointer;
+  /* Centraliza o título do header (clicável → index). */
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  pointer-events: none;
+}
+
+.ds-topbar-title:hover{
+  color: var(--ds-success-hover);
+  text-decoration: none;
+}
+
+.ds-topbar-title:focus-visible{
+  outline: 2px solid var(--ds-success);
+  outline-offset: 3px;
+  border-radius: var(--ds-radius-sm);
 }
 
 .ds-topbar-spacer{ flex: 1; }
@@ -510,6 +522,11 @@ body{
   display: block;
 }
 
+/* Dropdown da busca acima da lista do menu lateral */
+body.ds-demo-has-sidebar .ds-demo-sidebar .ds-search-dropdown{
+  z-index: 1005;
+}
+
 .ds-search-item{
   display: flex;
   align-items: center;
@@ -592,9 +609,8 @@ body{
 }
 
 @media(max-width:743px){
-  /* No celular: busca e botão de voltar somem, hamburger aparece. */
-  .ds-back-btn,
-  .ds-search-wrapper{
+  /* No celular: voltar some no topbar; busca fica no menu lateral; hamburger abre o menu. */
+  .ds-topbar .ds-back-btn{
     display: none;
   }
   .ds-hamburger{
@@ -741,37 +757,101 @@ body.ds-demo-has-sidebar .ds-hamburger{
   border-radius: 8px !important;
 }
 
-/* Evita stretching do search no flex (min-width: auto causa expansão pelo placeholder). */
-body.ds-demo-has-sidebar .ds-search-wrapper{
-  width: 280px !important;
-  flex: 0 0 280px !important;
+/* Busca no menu lateral (não no header) — largura fluida dentro do aside. */
+body.ds-demo-has-sidebar .ds-demo-sidebar .ds-search-wrapper{
+  width: 100% !important;
+  flex: 1 1 auto !important;
   min-width: 0 !important;
-  max-width: 280px !important;
+  max-width: none !important;
 }
 
-body.ds-demo-has-sidebar .ds-search-input{
+body.ds-demo-has-sidebar .ds-demo-sidebar .ds-search-input{
   min-width: 0 !important;
   box-sizing: border-box !important;
 }
 
+.ds-demo-sidebar-backdrop{
+  display: none;
+}
+
 .ds-demo-sidebar{
   flex: 0 0 240px;
+  width: 240px;
   max-width: 280px;
   border-right: 1px solid var(--ds-border);
   background: var(--ds-bg);
-  overflow-y: auto;
-  /* Garante scroll interno e sidebar “fixa” no viewport (desktop). */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: sticky;
   top: var(--ds-topbar-height);
   height: calc(100vh - var(--ds-topbar-height));
   align-self: flex-start;
-  padding: 16px 0 24px;
+  padding: 0;
   box-shadow: var(--ds-shadow-sidebar);
 }
 
+.ds-demo-sidebar__inner{
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  height: 100%;
+}
+
+.ds-demo-sidebar__mobile-header{
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: var(--ds-space-sm) var(--ds-space-md);
+  padding-top: max(var(--ds-space-sm), env(safe-area-inset-top, 0px));
+  border-bottom: 1px solid var(--ds-border);
+  background: var(--ds-bg);
+}
+
+.ds-demo-sidebar__close{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+  color: var(--ds-fg);
+  transition: background 0.15s ease;
+}
+
+.ds-demo-sidebar__close:hover{
+  background: var(--ds-bg-subtle);
+}
+
+.ds-demo-sidebar__close:focus-visible{
+  outline: 2px solid var(--ds-success);
+  outline-offset: 2px;
+}
+
+.ds-demo-sidebar__search{
+  flex-shrink: 0;
+  padding: var(--ds-space-md) var(--ds-space-md) var(--ds-space-lg);
+  border-bottom: 1px solid var(--ds-border);
+  background: var(--ds-bg);
+  z-index: 2;
+}
+
+.ds-demo-sidebar__scroll{
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: max(var(--ds-space-lg), env(safe-area-inset-bottom, 0px));
+}
+
 .ds-demo-sidebar__nav{
-  position: sticky;
-  top: 0;
+  position: static;
 }
 
 .ds-demo-sidebar__list{
@@ -1801,24 +1881,61 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-warning-light .toast-message{ colo
 body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-title,
 body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: var(--ds-info-fg) !important; }
 
-@media (max-width: 900px){
-  .ds-demo-layout{
-    flex-direction: column;
+/* Mobile: menu lateral em tela cheia; busca fixa no topo do painel (não rola com a lista). */
+@media (max-width: 743px){
+  .ds-demo-sidebar-backdrop{
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    background: var(--ds-backdrop-scrim);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
   }
+
+  body.ds-demo-sidebar--open .ds-demo-sidebar-backdrop{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .ds-demo-sidebar__mobile-header{
+    display: flex;
+  }
+
   .ds-demo-sidebar{
-    flex: 0 0 auto;
-    position: relative;
-    top: auto;
-    height: auto;
-    max-width: none;
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--ds-border);
-    max-height: 200px;
-    padding: 12px 0;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: min(100%, 100vw) !important;
+    max-width: none !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    z-index: 1002 !important;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: none !important;
+    box-shadow: none !important;
+    align-self: stretch !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
   }
-  .ds-demo-sidebar__nav{
-    position: relative;
+
+  body.ds-demo-sidebar--open .ds-demo-sidebar{
+    transform: translateX(0);
+  }
+
+  body.ds-demo-sidebar--open{
+    overflow: hidden;
+  }
+
+  .ds-demo-layout{
+    flex-direction: row;
   }
 }
 

@@ -63,91 +63,15 @@
             font-weight: 600;
             color: var(--ds-success);
             white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .ds-topbar-title:hover {
+            color: var(--ds-success-hover);
         }
 
         .ds-topbar-spacer { flex: 1; }
-
-        .ds-search-wrapper {
-            position: relative;
-            width: 280px;
-        }
-
-        .ds-search-input {
-            width: 100%;
-            padding: 8px 12px 8px 32px;
-            border: 1px solid var(--ds-border);
-            border-radius: 8px;
-            font-size: 13px;
-            font-family: var(--ds-font-family);
-            outline: none;
-            background: var(--ds-surface);
-            color: var(--ds-fg);
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .ds-search-input:focus {
-            border-color: var(--ds-success);
-            box-shadow: var(--ds-focus-ring);
-        }
-
-        .ds-search-input:focus-visible {
-            outline: none;
-        }
-
-        .ds-search-input::placeholder {
-            color: var(--ds-placeholder);
-        }
-
-        .ds-search-icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--ds-fg-subtle);
-            pointer-events: none;
-        }
-
-        .ds-search-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: var(--ds-surface);
-            border: 1px solid var(--ds-border);
-            border-radius: 8px;
-            box-shadow: var(--ds-shadow-md);
-            max-height: 320px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .ds-search-dropdown.open { display: block; }
-
-        .ds-search-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            text-decoration: none;
-            color: var(--ds-fg);
-            font-size: 13px;
-            transition: background 0.1s;
-        }
-
-        .ds-search-item:hover, .ds-search-item.active {
-            background: var(--ds-success-bg);
-            color: var(--ds-success-fg);
-        }
-
-        .ds-search-item-tag {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: var(--ds-bg-subtle);
-            color: var(--ds-fg-subtle);
-            margin-left: auto;
-        }
 
         /* Hamburger */
         .ds-hamburger {
@@ -170,33 +94,6 @@
             box-shadow: var(--ds-focus-ring);
         }
         .ds-hamburger svg { color: var(--ds-fg); }
-
-        /* Mobile Menu */
-        .ds-mobile-menu {
-            display: none;
-            position: fixed;
-            top: 56px;
-            left: 0;
-            right: 0;
-            background: var(--ds-surface);
-            border-bottom: 1px solid var(--ds-border);
-            box-shadow: var(--ds-shadow-md);
-            padding: 16px;
-            z-index: 998;
-            flex-direction: column;
-            gap: 12px;
-            animation: dsSlideDown 0.2s ease;
-        }
-
-        .ds-mobile-menu.open { display: flex; }
-
-        @keyframes dsSlideDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .ds-mobile-menu .ds-back-btn { width: 100%; justify-content: center; }
-        .ds-mobile-menu .ds-search-wrapper { width: 100%; }
 
         /* ── Page Content ── */
         .container {
@@ -983,8 +880,7 @@
         @media (max-width: 743px) {
             .container { padding: 24px 16px; }
             .ds-topbar { padding: 0 16px; }
-            .ds-topbar > .ds-back-btn,
-            .ds-topbar > .ds-search-wrapper { display: none; }
+            .ds-topbar > .ds-back-btn { display: none; }
             .ds-hamburger {
                 display: flex;
                 min-width: 44px;
@@ -1009,26 +905,9 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
-    <span class="ds-topbar-title">Design Tokens</span>
+    <a href="index.html" class="ds-topbar-title" aria-label="Ir ao portal do design system">Design Tokens</a>
     <div class="ds-topbar-spacer"></div>
-    <div class="ds-search-wrapper">
-        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search" autocomplete="off" aria-label="Buscar demos de componentes">
-        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
-    </div>
 </nav>
-<!-- DS Mobile Menu -->
-<div class="ds-mobile-menu" id="ds-mobile-menu">
-    <a href="index.html" class="ds-back-btn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
-        Voltar ao Portal
-    </a>
-    <div class="ds-search-wrapper">
-        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile" autocomplete="off" aria-label="Buscar demos de componentes">
-        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
-    </div>
-</div>
 
 <div class="container">
     <!-- Page Header -->
@@ -1909,7 +1788,7 @@
     })();
 </script>
 
-<script src="ds-demo-topbar-search.js" defer></script>
-<script src="ds-demo-sidebar.js" defer></script>
+<script src="ds-demo-sidebar.js" defer></script><script src="ds-demo-topbar-search.js" defer></script>
+
 </body>
 </html>

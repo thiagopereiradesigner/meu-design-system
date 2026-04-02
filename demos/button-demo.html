@@ -45,27 +45,13 @@
         @media (min-width:1280px){ .ds-topbar{ padding:0 32px; } }
         .ds-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid var(--ds-border);background:var(--ds-surface);color:var(--ds-fg);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s ease;text-decoration:none;white-space:nowrap;}
         .ds-back-btn:hover{background:var(--ds-bg-subtle);border-color:var(--ds-success);color:var(--ds-success);}
-        .ds-topbar-title{font-size:14px;font-weight:600;color:var(--ds-success);white-space:nowrap;}
+        .ds-topbar-title{font-size:14px;font-weight:600;color:var(--ds-success);white-space:nowrap;text-decoration:none;cursor:pointer;}
         .ds-topbar-spacer{flex:1;}
-        .ds-search-wrapper{position:relative;width:280px;}
-        .ds-search-input{width:100%;padding:8px 12px 8px 32px;border:1px solid var(--ds-border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;background:var(--ds-surface);color:var(--ds-fg);}
-        .ds-search-input:focus{border-color:var(--ds-success);box-shadow:var(--ds-focus-ring);}
-        .ds-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ds-fg-subtle);pointer-events:none;}
-        .ds-search-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--ds-surface);border:1px solid var(--ds-border);border-radius:8px;box-shadow:var(--ds-shadow-md);max-height:320px;overflow-y:auto;z-index:1000;}
-        .ds-search-dropdown.open{display:block;}
-        .ds-search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;color:var(--ds-fg);font-size:13px;transition:background .1s;}
-        .ds-search-item:hover{background:var(--ds-success-bg);color:var(--ds-success-fg);}
-        .ds-search-item-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--ds-bg-subtle);color:var(--ds-fg-subtle);margin-left:auto;}
         .ds-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;transition:background .15s;flex-shrink:0;}
         .ds-hamburger:hover{background:var(--ds-bg-subtle);}
         .ds-hamburger svg{color:var(--ds-fg);}
-        .ds-mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:var(--ds-surface);border-bottom:1px solid var(--ds-border);box-shadow:var(--ds-shadow-md);padding:16px;z-index:998;flex-direction:column;gap:12px;animation:dsSlideDown .2s ease;}
-        .ds-mobile-menu.open{display:flex;}
-        @keyframes dsSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-        .ds-mobile-menu .ds-back-btn{width:100%;justify-content:center;}
-        .ds-mobile-menu .ds-search-wrapper{width:100%;}
         @media(max-width:743px){
-            .ds-back-btn,.ds-search-wrapper{display:none;}
+            .ds-topbar .ds-back-btn{display:none;}
             .ds-hamburger{display:flex;}
         }
 
@@ -473,26 +459,9 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
         Voltar
     </a>
-    <span class="ds-topbar-title">TP.IA - Design System</span>
+    <a href="index.html" class="ds-topbar-title" aria-label="Ir ao portal do design system">TP.IA - Design System</a>
     <div class="ds-topbar-spacer"></div>
-    <div class="ds-search-wrapper">
-        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search">
-        <div class="ds-search-dropdown" id="ds-nav-dropdown"></div>
-    </div>
 </nav>
-<!-- DS Mobile Menu -->
-<div class="ds-mobile-menu" id="ds-mobile-menu">
-    <a href="index.html" class="ds-back-btn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
-        Voltar ao Portal
-    </a>
-    <div class="ds-search-wrapper">
-        <svg class="ds-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="ds-search-input" placeholder="Buscar componentes..." id="ds-nav-search-mobile">
-        <div class="ds-search-dropdown" id="ds-nav-dropdown-mobile"></div>
-    </div>
-</div>
 
     <div class="container">
         <div class="header">
@@ -935,28 +904,7 @@
             });
         });
     </script>
-<!-- DS Navigation Search Script -->
-<script>
-(function(){
-    const nc=[{name:'Button',file:'button-demo.html',cat:'Formulário'},{name:'Input',file:'input-demo.html',cat:'Formulário'},{name:'Lista do select (menu)',file:'select-menu-list-demo.html',cat:'Formulário'},{name:'Select',file:'select-demo.html',cat:'Formulário'},{name:'Checkbox',file:'checkbox-demo.html',cat:'Formulário'},{name:'Radio',file:'radio-demo.html',cat:'Formulário'},{name:'Switch',file:'switch-demo.html',cat:'Formulário'},{name:'Textarea',file:'textarea-demo.html',cat:'Formulário'},{name:'Toast',file:'toast-demo-updated.html',cat:'Feedback'},{name:'Design Tokens',file:'design-tokens.html',cat:'Fundação'},{name:'Iconografia',file:'icons-demo.html',cat:'Fundação'}];
-    function setupSearch(inputId,dropdownId){
-        var si=document.getElementById(inputId),dd=document.getElementById(dropdownId);
-        if(!si||!dd)return;
-        function render(f){var r=nc.filter(function(c){return c.name.toLowerCase().includes(f.toLowerCase());});if(!r.length||!f){dd.classList.remove('open');return;}dd.innerHTML=r.map(function(c){return '<a href="'+c.file+'" class="ds-search-item"><span>'+c.name+'</span><span class="ds-search-item-tag">'+c.cat+'</span></a>';}).join('');dd.classList.add('open');}
-        si.addEventListener('input',function(e){render(e.target.value);});
-        si.addEventListener('focus',function(e){if(e.target.value)render(e.target.value);});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-search-wrapper'))dd.classList.remove('open');});
-    }
-    setupSearch('ds-nav-search','ds-nav-dropdown');
-    setupSearch('ds-nav-search-mobile','ds-nav-dropdown-mobile');
-    var hb=document.getElementById('ds-hamburger'),mm=document.getElementById('ds-mobile-menu');
-    if(hb&&mm){
-        hb.addEventListener('click',function(){mm.classList.toggle('open');});
-        document.addEventListener('click',function(e){if(!e.target.closest('.ds-mobile-menu')&&!e.target.closest('.ds-hamburger'))mm.classList.remove('open');});
-    }
-})();
-</script>
-
 <script src="ds-demo-sidebar.js" defer></script>
+<script src="ds-demo-topbar-search.js" defer></script>
 </body>
 </html>

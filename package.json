@@ -2,11 +2,17 @@
   "name": "meu-design-system",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/ds-docs"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev:docs": "npm run dev -w ds-docs",
+    "build:ds-react": "npm run build -w @meu-ds/react"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
