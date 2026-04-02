@@ -7,61 +7,143 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="ds-demo-base.css">
   <style>
-    .btn{
-      padding: 10px 16px;
-      border-radius: 8px;
+    /* ~28px a partir da escala tipográfica (--ds-font-size-lg = 1rem) */
+    .menu-demo__title {
+      font-size: calc(var(--ds-font-size-lg) * 1.75);
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-success);
+      margin-bottom: var(--ds-space-sm);
+    }
+
+    .menu-demo__lead {
+      margin-bottom: var(--ds-space-xl);
+    }
+
+    .menu-demo__preview-section {
+      margin-top: var(--ds-space-lg);
+    }
+
+    .menu-demo__preview-title {
+      margin-bottom: var(--ds-space-md);
+    }
+
+    .menu-demo__preview-frame {
+      margin-top: var(--ds-space-lg);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius-lg);
+      overflow: hidden;
+    }
+
+    .menu-demo__anatomy-list {
+      padding-left: var(--ds-space-lg);
+      color: var(--ds-n500);
+      line-height: var(--ds-line-height-relaxed);
+      font-size: var(--ds-font-size-md);
+    }
+
+    .menu-demo__props {
+      font-size: var(--ds-font-size-md);
+      color: var(--ds-n500);
+      line-height: var(--ds-line-height-relaxed);
+      margin-top: var(--ds-space-md);
+    }
+
+    .menu-demo__props-title {
+      font-weight: var(--ds-font-weight-bold);
+      color: var(--ds-n800);
+      margin-bottom: var(--ds-space-sm);
+    }
+
+    .btn {
+      padding: var(--ds-space-md) var(--ds-space-lg);
+      border-radius: var(--ds-radius-md);
       border: 1px solid var(--ds-border);
       background: var(--ds-surface);
       color: var(--ds-n800);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: var(--ds-font-size-md);
+      font-weight: var(--ds-font-weight-semibold);
       cursor: pointer;
+      font-family: var(--ds-font-family);
     }
-    .btn:hover{ border-color: var(--ds-success); color: var(--ds-success); background: var(--ds-bg-subtle); }
 
-    .menu{
-      width: 240px;
+    .btn:hover {
+      border-color: var(--ds-success);
+      color: var(--ds-success);
+      background: var(--ds-bg-subtle);
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: var(--ds-focus-ring);
+    }
+
+    /* Larguras: derivadas de tokens (--ds-space-xl = 24px → 10× = 240px; --ds-space-md = 12px → 5× = 60px) */
+    .menu {
+      width: calc(var(--ds-space-xl) * 10);
       background: var(--ds-surface);
       border-right: 1px solid var(--ds-border);
       transition: width 0.3s ease;
       display: flex;
       flex-direction: column;
-      padding: 6px 0;
+      padding: var(--ds-space-sm) 0;
     }
-    .menu.collapsed{ width: 60px; }
 
-    .menu-item{
+    .menu.collapsed {
+      width: calc(var(--ds-space-md) * 5);
+    }
+
+    .menu-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
+      gap: var(--ds-space-md);
+      padding: var(--ds-space-lg) calc(var(--ds-space-lg) + var(--ds-space-xs));
       cursor: pointer;
-      transition: all 0.15s ease;
-      border-left: 3px solid transparent;
-      border: none;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      border-left: var(--ds-space-xs) solid transparent;
+      border-top: none;
+      border-right: none;
+      border-bottom: none;
       background: transparent;
       text-align: left;
       width: 100%;
       color: var(--ds-n800);
+      font-family: var(--ds-font-family);
     }
 
-    .menu-item:hover{ background-color: var(--ds-bg-subtle); }
+    .menu-item:hover {
+      background-color: var(--ds-bg-subtle);
+    }
 
-    .menu-item.active{
+    .menu-item.active {
       background-color: var(--ds-success-bg);
       color: var(--ds-success);
       border-left-color: var(--ds-success);
-      font-weight: 600;
+      font-weight: var(--ds-font-weight-semibold);
     }
 
-    .menu-item svg{ width: 20px; height: 20px; flex-shrink: 0; }
+    .menu-item-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
 
-    .menu-item span{
+    .menu-item-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .menu-item__label {
       white-space: nowrap;
       overflow: hidden;
       transition: opacity 0.3s ease;
     }
-    .menu.collapsed .menu-item span{ opacity: 0; }
+
+    .menu.collapsed .menu-item__label {
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
@@ -95,8 +177,8 @@
   </div>
 
   <div class="ds-container">
-    <h1 style="font-size:28px;font-weight:800;color:var(--ds-success);margin-bottom:8px;">Menu / Sidebar</h1>
-    <p class="section-subtitle" style="margin-bottom:28px;">
+    <h1 class="menu-demo__title">Menu / Sidebar</h1>
+    <p class="section-subtitle menu-demo__lead">
       Navegação lateral colapsável com estado ativo (clique ou teclado).
     </p>
 
@@ -106,41 +188,32 @@
         <li>Itens são <code>button</code> (teclado via Tab e Enter/Space).</li>
         <li>Estado ativo comunica via <code>aria-current="page"</code>.</li>
         <li>Menu usa <code>&lt;nav aria-label="Menu"&gt;</code> para leitores de tela.</li>
+        <li>Botão colapsar usa <code>aria-expanded</code> e <code>aria-controls</code> ligados ao <code>nav</code>.</li>
+        <li>Ícones SVG vêm de <code>ds-demo-icons.js</code> (mesmos paths que <code>icons-demo.html</code> — Lucide no DS).</li>
       </ul>
     </div>
 
-    <div class="section" style="margin-top:16px;">
-      <div class="section-title" style="margin-bottom:10px;">Preview</div>
-      <button class="btn" type="button" onclick="toggleMenu()">
+    <div class="section menu-demo__preview-section">
+      <div class="section-title menu-demo__preview-title">Preview</div>
+      <button class="btn" type="button" id="menu-toggle-btn" onclick="toggleMenu()" aria-expanded="true" aria-controls="sidebar-menu">
         <span id="menu-toggle-text">Colapsar Menu</span>
       </button>
 
-      <div style="margin-top:16px; border:1px solid var(--ds-border); border-radius:12px; overflow:hidden;">
+      <div class="menu-demo__preview-frame">
         <nav class="menu" id="sidebar-menu" aria-label="Menu">
           <button class="menu-item active" type="button" onclick="setActive(this)" aria-current="page">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"/>
-              <rect x="14" y="3" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/>
-            </svg>
-            <span>Dashboard</span>
+            <span class="menu-item-icon" data-ds-icon="layout-grid" aria-hidden="true"></span>
+            <span class="menu-item__label">Dashboard</span>
           </button>
 
           <button class="menu-item" type="button" onclick="setActive(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-            </svg>
-            <span>Usuários</span>
+            <span class="menu-item-icon" data-ds-icon="user" aria-hidden="true"></span>
+            <span class="menu-item__label">Usuários</span>
           </button>
 
           <button class="menu-item" type="button" onclick="setActive(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m-4.24-4.24l4.24-4.24"/>
-            </svg>
-            <span>Configurações</span>
+            <span class="menu-item-icon" data-ds-icon="settings" aria-hidden="true"></span>
+            <span class="menu-item__label">Configurações</span>
           </button>
         </nav>
       </div>
@@ -148,60 +221,49 @@
 
     <div class="section">
       <div class="section-title">Anatomia do Componente (HTML)</div>
-      <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
+      <ul class="menu-demo__anatomy-list">
         <li><code>nav.menu</code>: container da sidebar (colapsável via classe <code>collapsed</code>).</li>
         <li><code>button.menu-item</code>: item de navegação.</li>
+        <li><code>span[data-ds-icon="…"]</code>: ícone injetado por <code>ds-demo-icons.js</code> (mesmos nomes que em <code>icons-demo.html</code>).</li>
         <li><code>button.menu-item.active</code>: item selecionado (estilo e <code>aria-current</code>).</li>
-        <li><code>button.menu-item span</code>: label (oculta quando <code>.menu.collapsed</code>).</li>
+        <li><code>span.menu-item__label</code>: texto (oculto quando <code>.menu.collapsed</code>).</li>
       </ul>
     </div>
 
     <div class="section">
       <div class="section-title">Como Usar (HTML)</div>
-      <div class="section-subtitle">Use <code>menu.collapsed</code> para colapsar e <code>menu-item.active</code> para o item atual.</div>
-      <pre class="code"><code>{/* HTML + JS mínimo */}
-&lt;button type="button" onclick="toggleMenu()"&gt;
+      <div class="section-subtitle">Inclua <code>ds-demo-icons.js</code>, use <code>data-ds-icon="layout-grid|user|settings"</code> em um <code>span</code>, e chame o injetor no load. <code>menu.collapsed</code> colapsa; <code>menu-item.active</code> marca o atual.</div>
+      <pre class="code"><code>&lt;script src="ds-demo-icons.js"&gt;&lt;/script&gt;
+&lt;button type="button" id="menu-toggle-btn" aria-expanded="true" aria-controls="sidebar-menu" onclick="toggleMenu()"&gt;
   &lt;span id="menu-toggle-text"&gt;Colapsar Menu&lt;/span&gt;
 &lt;/button&gt;
 
 &lt;nav class="menu" id="sidebar-menu" aria-label="Menu"&gt;
   &lt;button class="menu-item active" type="button" onclick="setActive(this)" aria-current="page"&gt;
-    &lt;svg&gt;...&lt;/svg&gt;
-    &lt;span&gt;Dashboard&lt;/span&gt;
+    &lt;span class="menu-item-icon" data-ds-icon="layout-grid" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="menu-item__label"&gt;Dashboard&lt;/span&gt;
   &lt;/button&gt;
 &lt;/nav&gt;
 
 &lt;script&gt;
-  function toggleMenu() {
-    const menu = document.getElementById('sidebar-menu');
-    const text = document.getElementById('menu-toggle-text');
-    menu.classList.toggle('collapsed');
-    text.textContent = menu.classList.contains('collapsed')
-      ? 'Expandir Menu'
-      : 'Colapsar Menu';
-  }
-
-  function setActive(btn) {
-    document.querySelectorAll('.menu-item').forEach((el) =&gt; {
-      el.classList.remove('active');
-      el.removeAttribute('aria-current');
+  function injectDsIcons() {
+    document.querySelectorAll('[data-ds-icon]').forEach(function (el) {
+      el.innerHTML = window.dsDemoIconSvg(el.getAttribute('data-ds-icon'));
     });
-    btn.classList.add('active');
-    btn.setAttribute('aria-current', 'page');
   }
-&lt;/script&gt;
-      </code></pre>
+  injectDsIcons();
+&lt;/script&gt;</code></pre>
     </div>
 
     <div class="section">
       <div class="section-title">Como Usar (React)</div>
-      <div class="section-subtitle">Passe <code>items</code>, controle <code>collapsed</code> e opcionalmente trate <code>onItemClick</code>.</div>
+      <div class="section-subtitle">Passe <code>items</code> com <code>iconName</code> do DS (ex.: <code>layout-grid</code>) e renderize com os mesmos paths que <code>ds-demo-icons.js</code>.</div>
       <pre class="code"><code>{/* JSX */}
 import { Menu } from '@/components/FinalComponents';
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: &lt;svg /&gt; },
-  { id: 'users', label: 'Usuários', icon: &lt;svg /&gt; },
+  { id: 'dashboard', label: 'Dashboard', iconName: 'layout-grid' },
+  { id: 'users', label: 'Usuários', iconName: 'user' },
 ];
 
 function Sidebar() {
@@ -214,25 +276,42 @@ function Sidebar() {
   );
 }
       </code></pre>
-      <div style="font-size:13px;color:var(--ds-n500);line-height:1.7;margin-top:14px;">
-        <div style="font-weight:800;color:var(--ds-n800);margin-bottom:6px;">Props principais</div>
-        <div><code>items</code>: {`{ id, label, icon? }`}[]</div>
+      <div class="menu-demo__props">
+        <div class="menu-demo__props-title">Props principais</div>
+        <div><code>items</code>: {`{ id, label, iconName? }`}[] — <code>iconName</code> deve existir em <code>DSDemoIconPaths</code> / iconografia.</div>
         <div><code>collapsed</code> (opcional): boolean</div>
         <div><code>onItemClick</code> (opcional): (item) =&gt; void</div>
       </div>
     </div>
   </div>
 
+  <script src="ds-demo-icons.js"></script>
   <script>
+    function injectDsMenuIcons() {
+      document.querySelectorAll('[data-ds-icon]').forEach(function (el) {
+        var name = el.getAttribute('data-ds-icon');
+        if (window.dsDemoIconSvg) el.innerHTML = window.dsDemoIconSvg(name);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', injectDsMenuIcons);
+    } else {
+      injectDsMenuIcons();
+    }
+
     function toggleMenu() {
-      const menu = document.getElementById('sidebar-menu');
-      const text = document.getElementById('menu-toggle-text');
+      var menu = document.getElementById('sidebar-menu');
+      var text = document.getElementById('menu-toggle-text');
+      var btn = document.getElementById('menu-toggle-btn');
       menu.classList.toggle('collapsed');
-      text.textContent = menu.classList.contains('collapsed') ? 'Expandir Menu' : 'Colapsar Menu';
+      var collapsed = menu.classList.contains('collapsed');
+      text.textContent = collapsed ? 'Expandir Menu' : 'Colapsar Menu';
+      if (btn) btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     }
 
     function setActive(btn) {
-      document.querySelectorAll('.menu-item').forEach((el) => {
+      document.querySelectorAll('.menu-item').forEach(function (el) {
         el.classList.remove('active');
         el.removeAttribute('aria-current');
       });
@@ -245,4 +324,3 @@ function Sidebar() {
 <script src="ds-demo-sidebar.js" defer></script>
 </body>
 </html>
-

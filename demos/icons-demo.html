@@ -13,214 +13,265 @@
             box-sizing: border-box;
         }
 
-        /* Header/topbar padronizados em ds-demo-base.css */
-
-        /* Layout/base tokens vêm de ds-demo-base.css */
+        .icons-page-hidden-label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
 
         .header p {
-            font-size: 16px;
-            color: #656976;
+            font-size: var(--ds-font-size-lg);
+            color: var(--ds-fg-muted);
             max-width: 600px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: var(--ds-line-height-relaxed);
         }
 
         .header-ref {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            margin-top: 12px;
-            padding: 6px 14px;
-            background: #F9F9F9;
-            border: 1px solid #e0e0e0;
-            border-radius: 9999px;
-            font-size: 12px;
-            color: #656976;
+            gap: var(--ds-space-sm);
+            margin-top: var(--ds-space-md);
+            padding: var(--ds-space-sm) var(--ds-space-lg);
+            background: var(--ds-bg-subtle);
+            border: 1px solid var(--ds-border);
+            border-radius: var(--ds-radius-full);
+            font-size: var(--ds-font-size-sm);
+            font-family: var(--ds-font-family);
+            color: var(--ds-fg-muted);
             text-decoration: none;
-            transition: all 0.15s;
+            transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
         }
 
-        .header-ref:hover {
-            border-color: #04843B;
-            color: #005A1A;
-            background: #E6F4ED;
+        .header-ref:hover,
+        .header-ref:focus-visible {
+            border-color: var(--ds-success);
+            color: var(--ds-success-fg);
+            background: var(--ds-success-bg);
+            outline: none;
         }
 
-        /* Controls */
+        /* Mobile-first: base estreita; ≥744px expande (ver ds-mobile-responsive.mdc) */
         .controls {
             display: flex;
-            gap: 16px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
+            flex-direction: column;
+            gap: var(--ds-space-md);
+            align-items: stretch;
+            margin-bottom: var(--ds-space-2xl);
         }
 
         .icon-search {
+            width: 100%;
             flex: 1;
-            min-width: 240px;
-            padding: 12px 16px 12px 40px;
-            border: 1px solid #d0d0d0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
+            min-height: 44px;
+            padding: var(--ds-space-md) var(--ds-space-lg) var(--ds-space-md) 40px;
+            border: 1px solid var(--ds-border);
+            border-radius: var(--ds-radius-md);
+            font-size: var(--ds-font-size-md);
+            font-family: var(--ds-font-family);
+            background: var(--ds-surface);
+            color: var(--ds-fg);
             outline: none;
-            transition: border-color 0.15s;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .icon-search::placeholder {
+            color: var(--ds-placeholder);
         }
 
         .icon-search:focus {
-            border-color: #04843B;
+            border-color: var(--ds-success);
+            box-shadow: var(--ds-focus-ring);
+        }
+
+        .icon-search:focus-visible {
+            outline: none;
         }
 
         .icon-search-wrap {
             position: relative;
-            flex: 1;
-            min-width: 240px;
+            width: 100%;
         }
 
         .icon-search-wrap svg {
             position: absolute;
-            left: 14px;
+            left: var(--ds-space-lg);
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: var(--ds-icon-muted);
             pointer-events: none;
         }
 
         .category-filters {
             display: flex;
-            gap: 8px;
+            gap: var(--ds-space-sm);
             flex-wrap: wrap;
         }
 
         .cat-btn {
-            padding: 8px 14px;
-            border: 1px solid #d0d0d0;
-            background: #fff;
-            border-radius: 9999px;
+            min-height: 44px;
+            padding: var(--ds-space-sm) var(--ds-space-lg);
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
+            border-radius: var(--ds-radius-full);
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            color: #333;
-            transition: all 0.2s;
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-medium);
+            font-family: var(--ds-font-family);
+            color: var(--ds-fg);
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
 
         .cat-btn:hover {
-            background: #f5f5f5;
+            background: var(--ds-bg-subtle);
+        }
+
+        .cat-btn:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
         }
 
         .cat-btn.active {
-            background: #04843B;
-            color: #fff;
-            border-color: #04843B;
+            background: var(--ds-success);
+            color: var(--ds-on-inverse);
+            border-color: var(--ds-success);
         }
 
         .icon-count {
-            font-size: 13px;
-            color: #999;
-            padding: 8px 0;
+            font-size: var(--ds-font-size-md);
+            color: var(--ds-fg-muted);
+            padding: var(--ds-space-sm) 0;
         }
 
-        /* Grid */
         .icons-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 12px;
-            margin-bottom: 48px;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: var(--ds-space-sm);
+            margin-bottom: var(--ds-space-2xl);
         }
 
         .icon-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            padding: 20px 8px 14px;
-            border-radius: 12px;
-            border: 1px solid #f0f0f0;
-            background: #fff;
+            justify-content: center;
+            gap: var(--ds-space-sm);
+            min-height: 44px;
+            padding: var(--ds-space-lg) var(--ds-space-sm) var(--ds-space-md);
+            border-radius: var(--ds-radius-lg);
+            border: 1px solid var(--ds-border);
+            background: var(--ds-surface);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
             position: relative;
+            font: inherit;
+            color: inherit;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .icon-card:focus {
+            outline: none;
+        }
+
+        .icon-card:focus-visible {
+            box-shadow: var(--ds-focus-ring);
+            border-color: var(--ds-success);
         }
 
         .icon-card:hover {
-            border-color: #04843B;
-            background: #E6F4ED;
+            border-color: var(--ds-success);
+            background: var(--ds-success-bg);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(4,132,59,0.08);
+            box-shadow: var(--ds-shadow-success);
         }
 
         .icon-card svg {
             width: 24px;
             height: 24px;
-            stroke: #333;
+            stroke: var(--ds-fg);
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
             fill: none;
         }
 
-        .icon-card:hover svg {
-            stroke: #005A1A;
+        .icon-card:hover svg,
+        .icon-card:focus-visible svg {
+            stroke: var(--ds-success-fg);
         }
 
         .icon-card-name {
-            font-size: 10px;
-            color: #656976;
+            font-size: var(--ds-font-size-xs);
+            color: var(--ds-fg-muted);
             text-align: center;
             word-break: break-word;
             line-height: 1.3;
+            pointer-events: none;
         }
 
-        .icon-card:hover .icon-card-name {
-            color: #005A1A;
+        .icon-card:hover .icon-card-name,
+        .icon-card:focus-visible .icon-card-name {
+            color: var(--ds-success-fg);
         }
 
-        /* Section title */
         .section-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #999;
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-semibold);
+            color: var(--ds-fg-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: var(--ds-space-md);
+            padding-bottom: var(--ds-space-sm);
+            border-bottom: 1px solid var(--ds-border);
         }
 
         .section-group {
-            margin-bottom: 32px;
+            margin-bottom: var(--ds-space-2xl);
         }
 
-        /* Empty state */
+        /* Bloco de documentação após a grelha */
+        .icons-page-docs {
+            margin-top: var(--ds-space-2xl);
+            padding-top: var(--ds-space-xl);
+            border-top: 1px solid var(--ds-border);
+        }
+
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #999;
+            padding: var(--ds-space-2xl) var(--ds-space-xl);
+            color: var(--ds-fg-muted);
             display: none;
         }
 
         .empty-state h3 {
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: #666;
+            font-size: var(--ds-font-size-xl);
+            margin-bottom: var(--ds-space-sm);
+            color: var(--ds-fg);
         }
 
-        /* ── Drawer ── */
         .drawer-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.4);
+            background: var(--ds-backdrop-scrim);
             z-index: 2000;
-            animation: fadeIn 0.2s ease;
+            animation: iconsDrawerFadeIn 0.2s ease;
         }
 
         .drawer-overlay.open {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes iconsDrawerFadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
@@ -228,12 +279,13 @@
         .drawer {
             position: fixed;
             top: 0;
-            right: -420px;
-            width: 420px;
-            max-width: 90vw;
+            width: 100%;
+            max-width: 100vw;
             height: 100vh;
+            height: 100dvh;
+            right: -100%;
             background: var(--ds-surface);
-            box-shadow: var(--ds-shadow-lg);
+            box-shadow: var(--ds-shadow-md);
             z-index: 2001;
             display: flex;
             flex-direction: column;
@@ -248,47 +300,56 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 24px;
+            padding: var(--ds-space-lg) var(--ds-space-xl);
             border-bottom: 1px solid var(--ds-border);
+            flex-shrink: 0;
         }
 
         .drawer-title {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: var(--ds-font-size-xl);
+            font-weight: var(--ds-font-weight-semibold);
             color: var(--ds-fg);
         }
 
         .drawer-close {
-            width: 36px;
-            height: 36px;
+            min-width: 44px;
+            min-height: 44px;
             border: none;
             background: none;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: var(--ds-radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s;
+            color: var(--ds-fg);
+            transition: background-color 0.15s ease;
         }
 
-        .drawer-close:hover {
+        .drawer-close:hover,
+        .drawer-close:focus-visible {
             background: var(--ds-bg-subtle);
+            outline: none;
+        }
+
+        .drawer-close:focus-visible {
+            box-shadow: var(--ds-focus-ring);
         }
 
         .drawer-body {
             flex: 1;
             overflow-y: auto;
-            padding: 24px;
+            padding: var(--ds-space-xl);
+            padding-bottom: max(var(--ds-space-xl), env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 24px;
+            gap: var(--ds-space-xl);
         }
 
         .drawer-preview {
             width: 160px;
             height: 160px;
-            border-radius: 16px;
+            border-radius: var(--ds-radius-lg);
             background: var(--ds-bg-subtle);
             display: flex;
             align-items: center;
@@ -310,46 +371,47 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: var(--ds-space-md);
         }
 
         .drawer-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: var(--ds-space-md) 0;
             border-bottom: 1px solid var(--ds-border);
         }
 
         .drawer-row-label {
-            font-size: 13px;
-            font-weight: 500;
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-medium);
             color: var(--ds-fg-muted);
         }
 
         .drawer-row-value {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-semibold);
             color: var(--ds-fg);
-            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         .drawer-sizes {
             display: flex;
-            gap: 24px;
+            gap: var(--ds-space-xl);
             align-items: flex-end;
             justify-content: center;
-            padding: 16px;
+            padding: var(--ds-space-lg);
             background: var(--ds-bg-subtle);
-            border-radius: 12px;
+            border-radius: var(--ds-radius-lg);
             width: 100%;
+            flex-wrap: wrap;
         }
 
         .drawer-size-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: var(--ds-space-sm);
         }
 
         .drawer-size-item svg {
@@ -361,7 +423,7 @@
         }
 
         .drawer-size-label {
-            font-size: 10px;
+            font-size: var(--ds-font-size-xs);
             color: var(--ds-fg-subtle);
         }
 
@@ -369,29 +431,35 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding-top: 8px;
+            gap: var(--ds-space-sm);
+            padding-top: var(--ds-space-sm);
         }
 
         .btn-download {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: var(--ds-space-sm);
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 9999px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
+            min-height: 44px;
+            padding: var(--ds-space-md) var(--ds-space-xl);
+            border-radius: var(--ds-radius-full);
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-medium);
+            font-family: var(--ds-font-family);
             cursor: pointer;
-            transition: all 0.15s;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
             border: none;
+        }
+
+        .btn-download:focus-visible {
+            outline: none;
+            box-shadow: var(--ds-focus-ring);
         }
 
         .btn-download-primary {
             background: var(--ds-success);
-            color: var(--ds-bg);
+            color: var(--ds-on-inverse);
         }
 
         .btn-download-primary:hover {
@@ -408,21 +476,25 @@
             background: var(--ds-success-bg);
         }
 
-        /* Toast */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: max(var(--ds-space-xl), env(safe-area-inset-bottom, 0px));
+            right: max(var(--ds-space-xl), env(safe-area-inset-right, 0px));
+            left: max(var(--ds-space-xl), env(safe-area-inset-left, 0px));
+            width: auto;
+            max-width: min(360px, calc(100vw - 2 * var(--ds-space-xl)));
+            margin-left: auto;
             background: var(--ds-success);
-            color: var(--ds-bg);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            color: var(--ds-on-inverse);
+            padding: var(--ds-space-md) var(--ds-space-xl);
+            border-radius: var(--ds-radius-md);
+            font-size: var(--ds-font-size-md);
+            font-weight: var(--ds-font-weight-medium);
+            font-family: var(--ds-font-family);
+            box-shadow: var(--ds-shadow-md);
             transform: translateY(80px);
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
             z-index: 9999;
         }
 
@@ -431,14 +503,43 @@
             opacity: 1;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .icons-grid {
-                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-                gap: 8px;
+        @media (min-width: 744px) {
+            .controls {
+                flex-direction: row;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: var(--ds-space-lg);
             }
-            .icon-card { padding: 14px 6px 10px; }
-            .drawer { width: 100%; max-width: 100vw; }
+
+            .icon-search-wrap {
+                flex: 1;
+                min-width: 240px;
+                width: auto;
+            }
+
+            .icons-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: var(--ds-space-md);
+            }
+
+            .icon-card {
+                padding: var(--ds-space-xl) var(--ds-space-sm) var(--ds-space-md);
+            }
+
+            .drawer {
+                width: 420px;
+                max-width: 90vw;
+                right: -420px;
+            }
+
+            .drawer.open {
+                right: 0;
+            }
+
+            .toast {
+                left: auto;
+                max-width: min(360px, calc(100vw - 2 * var(--ds-space-xl)));
+            }
         }
     </style>
 </head>
@@ -475,7 +576,7 @@
 </div>
 
 <div class="container">
-    <!-- Header -->
+    <!-- Título + acesso rápido à biblioteca (ícone-grid em seguida) -->
     <div class="header">
         <h1>Iconografia</h1>
         <p>Biblioteca de ícones do design system baseada no Lucide Icons. Clique em qualquer ícone para visualizar detalhes e fazer download em SVG.</p>
@@ -485,29 +586,48 @@
         </a>
     </div>
 
-    <!-- Lead -->
-    <p class="section-subtitle">
+    <!-- Busca, filtros e grelha (prioridade visual) -->
+    <div class="controls">
+        <div class="icon-search-wrap">
+            <label class="icons-page-hidden-label" for="icon-search">Buscar ícones por nome ou categoria</label>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" class="icon-search" id="icon-search" placeholder="Buscar ícones (ex: search, user, arrow...)" autocomplete="off">
+        </div>
+        <div class="category-filters" id="category-filters"></div>
+    </div>
+
+    <div class="icon-count" id="icon-count"></div>
+
+    <div id="icons-container"></div>
+
+    <div class="empty-state" id="empty-state">
+        <h3>Nenhum ícone encontrado</h3>
+        <p>Tente buscar por outro termo ou ajustar os filtros</p>
+    </div>
+
+    <!-- Documentação (após a grelha) -->
+    <p class="section-subtitle icons-page-docs">
         Use a biblioteca para copiar SVGs compatíveis com `stroke="currentColor"` e reaproveitar a mesma iconografia em telas e componentes.
     </p>
 
-    <!-- Nota Acessibilidade (WCAG/ARIA) -->
     <div class="note">
         <h3>♿ Melhorias de Acessibilidade Aplicadas</h3>
         <ul>
-            <li>Botões do drawer possuem <code>aria-label</code> (ex.: fechar).</li>
+            <li>Campo de busca com <code>&lt;label&gt;</code> associado (texto só para leitores).</li>
+            <li>Cada ícone no grid é um <code>&lt;button type="button"&gt;</code> com <code>aria-label</code>; foco visível (<code>:focus-visible</code>).</li>
+            <li>Botões do drawer possuem <code>aria-label</code> (ex.: fechar); alvos tocáveis ≥ 44px onde aplicável.</li>
             <li>Fechamento do drawer via teclado com <code>Escape</code>.</li>
-            <li>O SVG exportado mantém <code>fill="none"</code> e <code>stroke="currentColor"</code> para herdar cor e manter consistência visual.</li>
+            <li>O SVG exportado mantém <code>fill="none"</code> e <code>stroke="currentColor"</code> para herdar cor dos tokens de tema.</li>
         </ul>
     </div>
 
-    <!-- Anatomia -->
     <div class="section">
         <div class="section-title">Anatomia do Componente (HTML)</div>
         <ul style="padding-left:18px;color:var(--ds-n500);line-height:1.7;font-size:14px;">
             <li><code>div#category-filters</code>: lista de filtros por categoria (renderizada por JS).</li>
             <li><code>input#icon-search</code>: busca do grid de ícones.</li>
             <li><code>div#icons-container</code>: container onde os cards de ícone são renderizados.</li>
-            <li><code>.icon-card[data-icon]</code>: cada ícone clicável abre o drawer com preview.</li>
+            <li><code>button.icon-card[data-icon]</code>: cada ícone acionável (teclado + leitor) abre o drawer com preview.</li>
             <li><code>div#drawer</code> + <code>div#drawer-overlay</code>: painel lateral com preview, tamanhos e ações.</li>
             <li><code>div#drawer-preview</code>: onde o SVG do ícone selecionado é injetado.</li>
             <li><code>button#btn-copy-svg</code> e <code>button#btn-download-svg</code>: copiar/download do SVG.</li>
@@ -515,7 +635,6 @@
         </ul>
     </div>
 
-    <!-- Como Usar (HTML) -->
     <div class="section">
         <div class="section-title">Como Usar (HTML)</div>
         <p class="section-description">
@@ -535,7 +654,6 @@
 &lt;/svg&gt;</code></pre>
     </div>
 
-    <!-- Como Usar (React) -->
     <div class="section">
         <div class="section-title">Como Usar (React)</div>
         <p class="section-description">
@@ -579,26 +697,6 @@ export function SearchIcon({
             <dd>Quando presente, o SVG vira <code>role="img"</code>.</dd>
         </dl>
     </div>
-
-    <!-- Controls -->
-    <div class="controls">
-        <div class="icon-search-wrap">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="icon-search" id="icon-search" placeholder="Buscar ícones (ex: search, user, arrow...)">
-        </div>
-        <div class="category-filters" id="category-filters"></div>
-    </div>
-
-    <div class="icon-count" id="icon-count"></div>
-
-    <!-- Icons Grid -->
-    <div id="icons-container"></div>
-
-    <!-- Empty State -->
-    <div class="empty-state" id="empty-state">
-        <h3>Nenhum ícone encontrado</h3>
-        <p>Tente buscar por outro termo ou ajustar os filtros</p>
-    </div>
 </div>
 
 <!-- Drawer Overlay -->
@@ -633,7 +731,7 @@ export function SearchIcon({
 </div>
 
 <!-- Toast -->
-<div class="toast" id="toast">Copiado!</div>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">Copiado!</div>
 
 <script>
     // ── Icon Database (Lucide SVG paths) ──
@@ -807,10 +905,10 @@ export function SearchIcon({
                     <div class="section-label">${cat} (${catIcons.length})</div>
                     <div class="icons-grid">
                         ${catIcons.map(i => `
-                            <div class="icon-card" data-icon="${i.name}" title="${i.name}">
+                            <button type="button" class="icon-card" data-icon="${i.name}" aria-label="Abrir detalhes do ícone ${i.name}">
                                 ${buildSvg(i, 24)}
                                 <span class="icon-card-name">${i.name}</span>
-                            </div>
+                            </button>
                         `).join('')}
                     </div>
                 </div>
@@ -819,10 +917,10 @@ export function SearchIcon({
             containerEl.innerHTML = `
                 <div class="icons-grid">
                     ${filtered.map(i => `
-                        <div class="icon-card" data-icon="${i.name}" title="${i.name}">
+                        <button type="button" class="icon-card" data-icon="${i.name}" aria-label="Abrir detalhes do ícone ${i.name}">
                             ${buildSvg(i, 24)}
                             <span class="icon-card-name">${i.name}</span>
-                        </div>
+                        </button>
                     `).join('')}
                 </div>
             `;
