@@ -22,7 +22,8 @@ Antes de publicar o pacote no npm, alinhar uma estratégia única (copiar subset
 | `--ds-success` | Fill / borda primária |
 | `--ds-success-hover` | Hover primário |
 | `--ds-success-bg`, `--ds-success-fg` | Secundário / ghost |
-| `--ds-on-inverse` | Texto sobre fill primário |
+| `--ds-on-inverse` | Texto sobre superfícies escuras / secundárias (ex.: azul `#13375A`) |
+| `--ds-on-brand-primary` | Texto sobre fill `--ds-success` (ex.: Ringgo usa `#0A0A0B` em botão primário para WCAG AA); padrão: igual a `--ds-on-inverse` |
 | `--ds-focus-ring` | Foco visível |
 
 ## Regras para novos componentes

@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
 :root{
   --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Texto sobre fill de marca (--ds-success em botões primários, checkboxes). Padrão: branco; Ringgo: escuro para AA sobre #03D062. */
+  --ds-on-brand-primary: var(--ds-on-inverse);
+  /* Títulos; em temas sem override, segue o corpo. */
+  --ds-font-family-heading: var(--ds-font-family);
 
   /* Semantic text/icon contract (theme-ready source of truth) */
   --ds-text-primary: #1A1A1A;
@@ -209,6 +215,183 @@
   --ds-select-option-checkbox-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath stroke='%23000' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.2 6.5 11 12.5 4.5'/%3E%3C/svg%3E");
 }
 
+/* ── Ringgo (light) — primitivos Figma + semântica; texto em botão primário escuro para WCAG AA sobre verde #03D062 ── */
+[data-ds-theme="ringgo"]{
+  --ds-font-family: 'Swiss721 BT', 'Swiss 721 BT', 'Helvetica Neue', Arial, sans-serif;
+  --ds-font-family-heading: 'Poppins', system-ui, sans-serif;
+  --ds-on-brand-primary: #0A0A0B;
+
+  --ds-text-primary: #2F3335;
+  --ds-text-secondary: #6B6F71;
+  --ds-text-tertiary: #8A8D8E;
+  --ds-placeholder: #A8ABAC;
+
+  --ds-success: #03D062;
+  --ds-success-hover: #01B852;
+  --ds-border: #E0E0E0;
+  --ds-separator-light: #F0F0F0;
+  --ds-fg: var(--ds-text-primary);
+  --ds-fg-muted: var(--ds-text-secondary);
+  --ds-fg-subtle: var(--ds-text-tertiary);
+  --ds-content-primary: var(--ds-text-primary);
+  --ds-content-secondary: var(--ds-text-secondary);
+  --ds-content-tertiary: var(--ds-text-tertiary);
+  --ds-on-inverse: #FFFFFF;
+  --ds-icon-muted: #B3B3B3;
+  --ds-icon-accent: var(--ds-success);
+  --ds-n800: var(--ds-text-primary);
+  --ds-n500: var(--ds-text-secondary);
+  --ds-n200: #E0E0E0;
+
+  --ds-bg: #FFFFFF;
+  --ds-bg-subtle: #F9F9F9;
+  --ds-surface: #FFFFFF;
+  --ds-surface-elevated: #FFFFFF;
+
+  --ds-success-bg: #CEF5E1;
+  --ds-success-fg: #005E26;
+  --ds-error: #D92D20;
+  --ds-error-bg: #FECDCA;
+  --ds-error-fg: #B42318;
+  --ds-warning: #F79009;
+  --ds-warning-bg: #FFFAEB;
+  --ds-warning-fg: #93370D;
+  --ds-warning-solid-fg: #292524;
+  --ds-info: #13375A;
+  --ds-info-bg: #D5E6F6;
+  --ds-info-fg: #0A213A;
+  --ds-neutral-bg: #F0F0F0;
+  --ds-neutral-fg: #6B6F71;
+
+  --ds-n100: #F0F0F0;
+  --ds-pre-bg: #F0F0F0;
+  --ds-pre-fg: #181A1B;
+
+  --ds-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --ds-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ds-shadow-success: 0 12px 32px rgba(3, 208, 98, 0.22);
+  --ds-shadow-sidebar: 2px 0 12px rgba(0, 0, 0, 0.06);
+  --ds-focus-ring: 0 0 0 3px rgba(3, 208, 98, 0.28);
+  --ds-backdrop-scrim: color-mix(in srgb, var(--ds-neutral-900) 42%, transparent);
+
+  --ds-primary-50: #F2FCF7;
+  --ds-primary-100: #CEF5E1;
+  --ds-primary-200: #9EE9C2;
+  --ds-primary-300: #5DD8A0;
+  --ds-primary-400: #21CB81;
+  --ds-primary-500: #03D062;
+  --ds-primary-600: #01B852;
+  --ds-primary-700: #009642;
+  --ds-primary-800: #007A33;
+  --ds-primary-900: #005E26;
+
+  --ds-neutral-0: #FFFFFF;
+  --ds-neutral-50: #F9F9F9;
+  --ds-neutral-100: #F0F0F0;
+  --ds-neutral-200: #E0E0E0;
+  --ds-neutral-300: #D4D4D4;
+  --ds-neutral-400: #B3B3B3;
+  --ds-neutral-500: #A8ABAC;
+  --ds-neutral-600: #8A8D8E;
+  --ds-neutral-700: #6B6F71;
+  --ds-neutral-800: #4D5153;
+  --ds-neutral-900: #181A1B;
+
+  --ds-color-brand-secondary-50: #D5E6F6;
+  --ds-color-brand-secondary-100: #AACCEE;
+  --ds-color-brand-secondary-200: #6CA7E0;
+  --ds-color-brand-secondary-300: #2874BE;
+  --ds-color-brand-secondary-400: #1F5A93;
+  --ds-color-brand-secondary-500: #13375A;
+  --ds-color-brand-secondary-600: #0F2D4A;
+  --ds-color-brand-secondary-700: #0A213A;
+  --ds-color-brand-secondary-800: #06162A;
+  --ds-color-brand-secondary-900: #030B15;
+
+  /* Accents: harmonia com verde marca + azul secundário (mesmo ritmo 50–900 do DS). */
+  --ds-color-brand-accent-50: #F3F1FF;
+  --ds-color-brand-accent-100: #E8E4FF;
+  --ds-color-brand-accent-200: #D4CCFF;
+  --ds-color-brand-accent-300: #B8A8FF;
+  --ds-color-brand-accent-400: #9B82F0;
+  --ds-color-brand-accent-500: #7C5EEB;
+  --ds-color-brand-accent-600: #6545D6;
+  --ds-color-brand-accent-700: #4F35B0;
+  --ds-color-brand-accent-800: #3F2B8F;
+  --ds-color-brand-accent-900: #2E2068;
+
+  --ds-color-brand-accent-warm-50: #FFFAEB;
+  --ds-color-brand-accent-warm-100: #FEF0C7;
+  --ds-color-brand-accent-warm-200: #FEDF89;
+  --ds-color-brand-accent-warm-300: #FEC84B;
+  --ds-color-brand-accent-warm-400: #FDB022;
+  --ds-color-brand-accent-warm-500: #F79009;
+  --ds-color-brand-accent-warm-600: #DC6803;
+  --ds-color-brand-accent-warm-700: #B54708;
+  --ds-color-brand-accent-warm-800: #93370D;
+  --ds-color-brand-accent-warm-900: #55160C;
+
+  --ds-color-brand-accent-teal-50: #ECFDF3;
+  --ds-color-brand-accent-teal-100: #DCFAE6;
+  --ds-color-brand-accent-teal-200: #A9EFC5;
+  --ds-color-brand-accent-teal-300: #75E0A7;
+  --ds-color-brand-accent-teal-400: #47CD89;
+  --ds-color-brand-accent-teal-500: #17B26A;
+  --ds-color-brand-accent-teal-600: #079455;
+  --ds-color-brand-accent-teal-700: #067647;
+  --ds-color-brand-accent-teal-800: #085D3A;
+  --ds-color-brand-accent-teal-900: #074D31;
+
+  --ds-color-brand-accent-rose-50: #FEF3F2;
+  --ds-color-brand-accent-rose-100: #FEE4E2;
+  --ds-color-brand-accent-rose-200: #FECDCA;
+  --ds-color-brand-accent-rose-300: #FDA29B;
+  --ds-color-brand-accent-rose-400: #F97066;
+  --ds-color-brand-accent-rose-500: #F04438;
+  --ds-color-brand-accent-rose-600: #D92D20;
+  --ds-color-brand-accent-rose-700: #B42318;
+  --ds-color-brand-accent-rose-800: #912018;
+  --ds-color-brand-accent-rose-900: #55160C;
+
+  --ds-color-brand-accent-indigo-50: #E8EEF5;
+  --ds-color-brand-accent-indigo-100: #C5D4EA;
+  --ds-color-brand-accent-indigo-200: #9FB8DC;
+  --ds-color-brand-accent-indigo-300: #6CA7E0;
+  --ds-color-brand-accent-indigo-400: #3D78C3;
+  --ds-color-brand-accent-indigo-500: #1F5A93;
+  --ds-color-brand-accent-indigo-600: #13375A;
+  --ds-color-brand-accent-indigo-700: #0F2D4A;
+  --ds-color-brand-accent-indigo-800: #0A213A;
+  --ds-color-brand-accent-indigo-900: #030B15;
+
+  --ds-secondary: var(--ds-color-brand-secondary-600);
+  --ds-secondary-fg: var(--ds-on-inverse);
+  --ds-accent: var(--ds-color-brand-accent-600);
+  --ds-accent-fg: var(--ds-on-inverse);
+  --ds-accent-muted-bg: var(--ds-color-brand-accent-100);
+  --ds-accent-warm: var(--ds-color-brand-accent-warm-500);
+  --ds-accent-teal: var(--ds-color-brand-accent-teal-500);
+  --ds-accent-rose: var(--ds-color-brand-accent-rose-500);
+  --ds-accent-indigo: var(--ds-color-brand-accent-indigo-500);
+
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+
+  --ds-scrollbar-thumb: color-mix(in srgb, var(--ds-success) 30%, var(--ds-neutral-300));
+  --ds-scrollbar-thumb-hover: color-mix(in srgb, var(--ds-success) 45%, var(--ds-neutral-400));
+}
+
+[data-ds-theme="ringgo"] h1,
+[data-ds-theme="ringgo"] h2,
+[data-ds-theme="ringgo"] h3,
+[data-ds-theme="ringgo"] h4,
+[data-ds-theme="ringgo"] h5,
+[data-ds-theme="ringgo"] h6{
+  font-family: var(--ds-font-family-heading);
+  line-height: 1.2;
+}
+
 [data-ds-theme="dark"]{
   --ds-text-primary: #F3F4F6;
   --ds-text-secondary: #9AA1AE;
@@ -394,6 +577,206 @@
   --ds-scrollbar-track: var(--ds-neutral-800);
   --ds-scrollbar-thumb: color-mix(in srgb, var(--ds-success) 38%, var(--ds-neutral-600));
   --ds-scrollbar-thumb-hover: color-mix(in srgb, var(--ds-success) 52%, var(--ds-neutral-500));
+}
+
+/* ── Ringgo (dark) — superfícies frias, verde marca legível; botão primário mantém #03D062 + texto escuro (AA) ── */
+[data-ds-theme="ringgo-dark"]{
+  --ds-font-family: 'Swiss721 BT', 'Swiss 721 BT', 'Helvetica Neue', Arial, sans-serif;
+  --ds-font-family-heading: 'Poppins', system-ui, sans-serif;
+  --ds-on-brand-primary: #0A0A0B;
+
+  --ds-text-primary: #EEF1F4;
+  --ds-text-secondary: #9AA6B0;
+  --ds-text-tertiary: #7D8A96;
+  --ds-placeholder: #7D8A96;
+
+  --ds-success: #03D062;
+  --ds-success-hover: #21CB81;
+  --ds-border: #2A323D;
+  --ds-separator-light: #343D4A;
+  --ds-fg: var(--ds-text-primary);
+  --ds-fg-muted: var(--ds-text-secondary);
+  --ds-fg-subtle: var(--ds-text-tertiary);
+  --ds-content-primary: var(--ds-text-primary);
+  --ds-content-secondary: var(--ds-text-secondary);
+  --ds-content-tertiary: var(--ds-text-tertiary);
+  --ds-on-inverse: #FFFFFF;
+  --ds-icon-muted: #6B7784;
+  --ds-icon-accent: var(--ds-success);
+  --ds-n200: #5A6674;
+
+  --ds-bg: #0B0F14;
+  --ds-bg-subtle: #111820;
+  --ds-surface: #141C26;
+  --ds-surface-elevated: #1A2430;
+
+  --ds-success-bg: rgba(3, 208, 98, 0.16);
+  --ds-success-fg: #A7F3D0;
+  --ds-error: #FCA5A5;
+  --ds-error-bg: rgba(252, 165, 165, 0.14);
+  --ds-error-fg: #FECACA;
+  --ds-warning: #FCD34D;
+  --ds-warning-bg: rgba(252, 211, 77, 0.14);
+  --ds-warning-fg: #FEF3C7;
+  --ds-warning-solid-fg: #292524;
+  /* Azul mais escuro para fill sólido (toast/info ativo + texto branco ≥ AA). */
+  --ds-info: #3D6FA3;
+  --ds-info-bg: rgba(170, 204, 238, 0.12);
+  --ds-info-fg: #D5E6F6;
+  --ds-neutral-bg: #1E2835;
+  --ds-neutral-fg: #B8C2CC;
+
+  --ds-n100: #1A222C;
+  --ds-pre-bg: #151D27;
+  --ds-pre-fg: #E5E7EB;
+
+  --ds-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --ds-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.48);
+  --ds-shadow-success: 0 12px 36px rgba(3, 208, 98, 0.25);
+  --ds-shadow-sidebar: 2px 0 16px rgba(0, 0, 0, 0.45);
+  --ds-focus-ring: 0 0 0 3px rgba(3, 208, 98, 0.35);
+  --ds-backdrop-scrim: color-mix(in srgb, var(--ds-neutral-900) 62%, transparent);
+
+  --ds-primary-50: #052016;
+  --ds-primary-100: #063522;
+  --ds-primary-200: #054F30;
+  --ds-primary-300: #047857;
+  --ds-primary-400: #059669;
+  --ds-primary-500: #03D062;
+  --ds-primary-600: #21CB81;
+  --ds-primary-700: #4ADE80;
+  --ds-primary-800: #86EFAC;
+  --ds-primary-900: #DCFCE7;
+
+  --ds-neutral-0: #FFFFFF;
+  --ds-neutral-50: #E8EAED;
+  --ds-neutral-100: #D1D5DB;
+  --ds-neutral-200: #9AA6B0;
+  --ds-neutral-300: #7D8A96;
+  --ds-neutral-400: #6B7784;
+  --ds-neutral-500: #9AA6B0;
+  --ds-neutral-600: #4B5563;
+  --ds-neutral-700: #374151;
+  --ds-neutral-800: #1F2933;
+  --ds-neutral-900: #05080C;
+
+  --ds-color-brand-secondary-50: #0A1219;
+  --ds-color-brand-secondary-100: #0F1E2E;
+  --ds-color-brand-secondary-200: #152A40;
+  --ds-color-brand-secondary-300: #1F3D5C;
+  --ds-color-brand-secondary-400: #3D6FA3;
+  --ds-color-brand-secondary-500: #6CA7E0;
+  --ds-color-brand-secondary-600: #8FB8E8;
+  --ds-color-brand-secondary-700: #AACCEE;
+  --ds-color-brand-secondary-800: #C5D9F2;
+  --ds-color-brand-secondary-900: #E8F0FA;
+
+  --ds-color-brand-accent-50: #1A1530;
+  --ds-color-brand-accent-100: #261F45;
+  --ds-color-brand-accent-200: #352866;
+  --ds-color-brand-accent-300: #4A3A8F;
+  --ds-color-brand-accent-400: #6D5BC7;
+  --ds-color-brand-accent-500: #8B7CE8;
+  --ds-color-brand-accent-600: #A896F5;
+  --ds-color-brand-accent-700: #C4B5FD;
+  --ds-color-brand-accent-800: #DDD6FE;
+  --ds-color-brand-accent-900: #EDE9FE;
+
+  --ds-color-brand-accent-warm-50: #3A1808;
+  --ds-color-brand-accent-warm-100: #5C260D;
+  --ds-color-brand-accent-warm-200: #7F3816;
+  --ds-color-brand-accent-warm-300: #A84F24;
+  --ds-color-brand-accent-warm-400: #D16A35;
+  --ds-color-brand-accent-warm-500: #EA7F4A;
+  --ds-color-brand-accent-warm-600: #F59E73;
+  --ds-color-brand-accent-warm-700: #FDBA8B;
+  --ds-color-brand-accent-warm-800: #FDD5B8;
+  --ds-color-brand-accent-warm-900: #FFEDD5;
+
+  --ds-color-brand-accent-teal-50: #052016;
+  --ds-color-brand-accent-teal-100: #0A3024;
+  --ds-color-brand-accent-teal-200: #0F4A36;
+  --ds-color-brand-accent-teal-300: #147A56;
+  --ds-color-brand-accent-teal-400: #1AA47A;
+  --ds-color-brand-accent-teal-500: #34D399;
+  --ds-color-brand-accent-teal-600: #5EEAD4;
+  --ds-color-brand-accent-teal-700: #7FF5E1;
+  --ds-color-brand-accent-teal-800: #B6FBEE;
+  --ds-color-brand-accent-teal-900: #E6FFFA;
+
+  --ds-color-brand-accent-rose-50: #3B0D12;
+  --ds-color-brand-accent-rose-100: #5C121C;
+  --ds-color-brand-accent-rose-200: #7F1D2A;
+  --ds-color-brand-accent-rose-300: #A82F42;
+  --ds-color-brand-accent-rose-400: #D64A62;
+  --ds-color-brand-accent-rose-500: #F87171;
+  --ds-color-brand-accent-rose-600: #FCA5A5;
+  --ds-color-brand-accent-rose-700: #FECACA;
+  --ds-color-brand-accent-rose-800: #FEE2E2;
+  --ds-color-brand-accent-rose-900: #FFF1F2;
+
+  --ds-color-brand-accent-indigo-50: #0C1524;
+  --ds-color-brand-accent-indigo-100: #132A4A;
+  --ds-color-brand-accent-indigo-200: #1E3D66;
+  --ds-color-brand-accent-indigo-300: #2F5588;
+  --ds-color-brand-accent-indigo-400: #4A78B8;
+  --ds-color-brand-accent-indigo-500: #6CA7E0;
+  --ds-color-brand-accent-indigo-600: #8FB8E8;
+  --ds-color-brand-accent-indigo-700: #AACCEE;
+  --ds-color-brand-accent-indigo-800: #C5D9F2;
+  --ds-color-brand-accent-indigo-900: #E8F0FA;
+
+  --ds-secondary: var(--ds-color-brand-secondary-500);
+  --ds-secondary-fg: #0A0F14;
+  --ds-accent: var(--ds-color-brand-accent-500);
+  --ds-accent-fg: #0A0A0B;
+  --ds-accent-muted-bg: var(--ds-color-brand-accent-100);
+  --ds-accent-warm: var(--ds-color-brand-accent-warm-400);
+  --ds-accent-teal: var(--ds-color-brand-accent-teal-400);
+  --ds-accent-rose: var(--ds-color-brand-accent-rose-400);
+  --ds-accent-indigo: var(--ds-color-brand-accent-indigo-400);
+
+  --ds-font-size-xs: 0.625rem;
+  --ds-font-size-sm: 0.75rem;
+  --ds-font-size-md: 0.875rem;
+  --ds-font-size-lg: 1rem;
+  --ds-font-size-xl: 1.125rem;
+
+  --ds-font-weight-regular: 400;
+  --ds-font-weight-medium: 500;
+  --ds-font-weight-semibold: 600;
+  --ds-font-weight-bold: 700;
+
+  --ds-line-height-tight: 1.2;
+  --ds-line-height-normal: 1.5;
+  --ds-line-height-relaxed: 1.75;
+
+  --ds-space-xs: 4px;
+  --ds-space-sm: 8px;
+  --ds-space-md: 12px;
+  --ds-space-lg: 16px;
+  --ds-space-xl: 24px;
+  --ds-space-2xl: 32px;
+
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+  --ds-radius-full: 9999px;
+
+  --ds-select-dropdown-max-height: min(15rem, 45vh);
+  --ds-scrollbar-track: var(--ds-neutral-800);
+  --ds-scrollbar-thumb: color-mix(in srgb, var(--ds-success) 40%, var(--ds-neutral-600));
+  --ds-scrollbar-thumb-hover: color-mix(in srgb, var(--ds-success) 55%, var(--ds-neutral-500));
+}
+
+[data-ds-theme="ringgo-dark"] h1,
+[data-ds-theme="ringgo-dark"] h2,
+[data-ds-theme="ringgo-dark"] h3,
+[data-ds-theme="ringgo-dark"] h4,
+[data-ds-theme="ringgo-dark"] h5,
+[data-ds-theme="ringgo-dark"] h6{
+  font-family: var(--ds-font-family-heading);
+  line-height: 1.2;
 }
 
 body{
@@ -1340,7 +1723,7 @@ label.select-option.select-option--checkbox{
   width: 11px;
   height: 11px;
   transform: translate(-50%, -50%);
-  background-color: var(--ds-on-inverse);
+  background-color: var(--ds-on-brand-primary, var(--ds-on-inverse));
   -webkit-mask-image: var(--ds-select-option-checkbox-mask);
   mask-image: var(--ds-select-option-checkbox-mask);
   -webkit-mask-size: contain;
@@ -1432,7 +1815,7 @@ label.select-option.select-option--checkbox{
   font-size: var(--ds-font-size-md);
   font-weight: var(--ds-font-weight-semibold);
   line-height: 1.2;
-  color: var(--ds-on-inverse);
+  color: var(--ds-on-brand-primary, var(--ds-on-inverse));
   background: var(--ds-success);
   border: none;
   border-radius: var(--ds-radius-md);
@@ -1714,7 +2097,7 @@ body.ds-demo-has-sidebar .ds-demo-main .dp-day--selected,
 body.ds-demo-has-sidebar .ds-demo-main .dp-day--range-start,
 body.ds-demo-has-sidebar .ds-demo-main .dp-day--range-end{
   background: var(--ds-success) !important;
-  color: var(--ds-bg) !important;
+  color: var(--ds-on-brand-primary, var(--ds-bg)) !important;
 }
 
 body.ds-demo-has-sidebar .ds-demo-main .dp-day--range-between{
@@ -1857,7 +2240,9 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-warning-active{ background: var(--
 body.ds-demo-has-sidebar .ds-demo-main .toast-info-active{ background: var(--ds-info) !important; }
 
 body.ds-demo-has-sidebar .ds-demo-main .toast-success-active .toast-title,
-body.ds-demo-has-sidebar .ds-demo-main .toast-success-active .toast-message,
+body.ds-demo-has-sidebar .ds-demo-main .toast-success-active .toast-message{
+  color: var(--ds-on-brand-primary, #FFFFFF) !important;
+}
 body.ds-demo-has-sidebar .ds-demo-main .toast-error-active .toast-title,
 body.ds-demo-has-sidebar .ds-demo-main .toast-error-active .toast-message,
 body.ds-demo-has-sidebar .ds-demo-main .toast-warning-active .toast-title,
@@ -1939,24 +2324,35 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: 
   }
 }
 
-/* Fallback dark guards (sem depender da injeção do sidebar) */
+/* Fallback dark guards (sem depender da injeção do sidebar) — inclui Ringgo dark */
 [data-ds-theme="dark"] .field-label-text,
 [data-ds-theme="dark"] .field-sublabel,
 [data-ds-theme="dark"] .field-helper,
 [data-ds-theme="dark"] .switch-label,
 [data-ds-theme="dark"] .textarea-label,
 [data-ds-theme="dark"] .section-description,
-[data-ds-theme="dark"] .description{
+[data-ds-theme="dark"] .description,
+[data-ds-theme="ringgo-dark"] .field-label-text,
+[data-ds-theme="ringgo-dark"] .field-sublabel,
+[data-ds-theme="ringgo-dark"] .field-helper,
+[data-ds-theme="ringgo-dark"] .switch-label,
+[data-ds-theme="ringgo-dark"] .textarea-label,
+[data-ds-theme="ringgo-dark"] .section-description,
+[data-ds-theme="ringgo-dark"] .description{
   color: var(--ds-fg-muted) !important;
 }
 
 [data-ds-theme="dark"] .field-input,
 [data-ds-theme="dark"] .select-text,
-[data-ds-theme="dark"] .select-option{
+[data-ds-theme="dark"] .select-option,
+[data-ds-theme="ringgo-dark"] .field-input,
+[data-ds-theme="ringgo-dark"] .select-text,
+[data-ds-theme="ringgo-dark"] .select-option{
   color: var(--ds-fg) !important;
 }
 
-[data-ds-theme="dark"] .field-input-container{
+[data-ds-theme="dark"] .field-input-container,
+[data-ds-theme="ringgo-dark"] .field-input-container{
   background: var(--ds-surface) !important;
 }
 
@@ -1965,42 +2361,60 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: 
 [data-ds-theme="dark"] .dp-popover,
 [data-ds-theme="dark"] .tab-panel-card,
 [data-ds-theme="dark"] .table-container,
-[data-ds-theme="dark"] .toast{
+[data-ds-theme="dark"] .toast,
+[data-ds-theme="ringgo-dark"] .select-dropdown,
+[data-ds-theme="ringgo-dark"] .dp-input,
+[data-ds-theme="ringgo-dark"] .dp-popover,
+[data-ds-theme="ringgo-dark"] .tab-panel-card,
+[data-ds-theme="ringgo-dark"] .table-container,
+[data-ds-theme="ringgo-dark"] .toast{
   background: var(--ds-surface) !important;
   border-color: var(--ds-border) !important;
 }
 
 /* Input + Select (trigger): borda sem !important no default; hover/foco verde e erro alinhados ao tema claro. */
-[data-ds-theme="dark"] .field-input-container:not(.error){
+[data-ds-theme="dark"] .field-input-container:not(.error),
+[data-ds-theme="ringgo-dark"] .field-input-container:not(.error){
   border-color: var(--ds-border);
 }
 [data-ds-theme="dark"] .field-input-container:hover:not(.disabled):not(.error),
-[data-ds-theme="dark"] .field-input-container:focus-within:not(.disabled):not(.error){
+[data-ds-theme="dark"] .field-input-container:focus-within:not(.disabled):not(.error),
+[data-ds-theme="ringgo-dark"] .field-input-container:hover:not(.disabled):not(.error),
+[data-ds-theme="ringgo-dark"] .field-input-container:focus-within:not(.disabled):not(.error){
   border-color: var(--ds-success) !important;
 }
-[data-ds-theme="dark"] .field-input-container.error{
+[data-ds-theme="dark"] .field-input-container.error,
+[data-ds-theme="ringgo-dark"] .field-input-container.error{
   border-color: var(--ds-error) !important;
 }
-[data-ds-theme="dark"] .field-input-container.error:hover:not(.disabled){
+[data-ds-theme="dark"] .field-input-container.error:hover:not(.disabled),
+[data-ds-theme="ringgo-dark"] .field-input-container.error:hover:not(.disabled){
   border-color: color-mix(in srgb, var(--ds-error) 68%, var(--ds-surface)) !important;
 }
-[data-ds-theme="dark"] .field-input-container.error:focus-within{
+[data-ds-theme="dark"] .field-input-container.error:focus-within,
+[data-ds-theme="ringgo-dark"] .field-input-container.error:focus-within{
   border-color: var(--ds-error) !important;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-error) 14%, transparent) !important;
 }
 
-[data-ds-theme="dark"] .dp-input.dp-input--error{
+[data-ds-theme="dark"] .dp-input.dp-input--error,
+[data-ds-theme="ringgo-dark"] .dp-input.dp-input--error{
   border-color: var(--ds-error) !important;
 }
 
 [data-ds-theme="dark"] .dp-field:has(.dp-input.dp-input--error) .dp-label,
-[data-ds-theme="dark"] .dp-field:has(.dp-input.dp-input--error) .dp-helper{
+[data-ds-theme="dark"] .dp-field:has(.dp-input.dp-input--error) .dp-helper,
+[data-ds-theme="ringgo-dark"] .dp-field:has(.dp-input.dp-input--error) .dp-label,
+[data-ds-theme="ringgo-dark"] .dp-field:has(.dp-input.dp-input--error) .dp-helper{
   color: var(--ds-error) !important;
 }
 
 [data-ds-theme="dark"] .ds-demo-main,
 [data-ds-theme="dark"] .ds-demo-main > .container,
-[data-ds-theme="dark"] .ds-demo-main > .ds-container{
+[data-ds-theme="dark"] .ds-demo-main > .ds-container,
+[data-ds-theme="ringgo-dark"] .ds-demo-main,
+[data-ds-theme="ringgo-dark"] .ds-demo-main > .container,
+[data-ds-theme="ringgo-dark"] .ds-demo-main > .ds-container{
   background: var(--ds-bg) !important;
 }
 
@@ -2011,7 +2425,15 @@ body.ds-demo-has-sidebar .ds-demo-main .toast-info-light .toast-message{ color: 
 [data-ds-theme="dark"] [style*="background-color:#fff"],
 [data-ds-theme="dark"] [style*="background-color: #fff"],
 [data-ds-theme="dark"] [style*="background-color:#FFFFFF"],
-[data-ds-theme="dark"] [style*="background-color: #FFFFFF"]{
+[data-ds-theme="dark"] [style*="background-color: #FFFFFF"],
+[data-ds-theme="ringgo-dark"] [style*="background:#fff"],
+[data-ds-theme="ringgo-dark"] [style*="background: #fff"],
+[data-ds-theme="ringgo-dark"] [style*="background:#FFFFFF"],
+[data-ds-theme="ringgo-dark"] [style*="background: #FFFFFF"],
+[data-ds-theme="ringgo-dark"] [style*="background-color:#fff"],
+[data-ds-theme="ringgo-dark"] [style*="background-color: #fff"],
+[data-ds-theme="ringgo-dark"] [style*="background-color:#FFFFFF"],
+[data-ds-theme="ringgo-dark"] [style*="background-color: #FFFFFF"]{
   background: var(--ds-surface) !important;
 }
 

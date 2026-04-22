@@ -27,6 +27,8 @@ const tokens = {
       secondary: 'var(--ds-content-secondary, var(--ds-text-secondary, #656976))',
       tertiary: 'var(--ds-content-tertiary, var(--ds-text-tertiary, #727272))',
       inverse: 'var(--ds-on-inverse, #FFFFFF)',
+      /** Texto sobre fill verde (--ds-success), ex. Ringgo / WCAG AA */
+      onBrandPrimary: 'var(--ds-on-brand-primary, var(--ds-on-inverse, #FFFFFF))',
     },
     border: {
       primary: 'var(--ds-content-primary, var(--ds-text-primary, #1A1A1A))',
@@ -232,7 +234,7 @@ const cardVariantStyles = {
     border: 'none',
     boxShadow: tokens.shadows.md,
     borderRadius: tokens.borderRadius.md,
-    color: tokens.colors.content.inverse,
+    color: tokens.colors.content.onBrandPrimary,
   },
   filledSecondary: {
     backgroundColor: tokens.colors.brandSecondary900,
@@ -260,7 +262,14 @@ export const Card = ({
 }) => {
   const v = cardVariantStyles[variant] || cardVariantStyles.outline;
   const isFilled = variant === 'filledPrimary' || variant === 'filledSecondary';
-  const innerColor = isFilled ? { color: tokens.colors.content.inverse } : {};
+  const innerColor = isFilled
+    ? {
+        color:
+          variant === 'filledPrimary'
+            ? tokens.colors.content.onBrandPrimary
+            : tokens.colors.content.inverse,
+      }
+    : {};
 
   return (
     <Comp
@@ -337,7 +346,9 @@ export const CardTitle = ({
         color:
           tone === 'onFilled'
             ? tokens.colors.content.inverse
-            : tokens.colors.content.primary,
+            : tone === 'onBrand'
+              ? tokens.colors.content.onBrandPrimary
+              : tokens.colors.content.primary,
         ...style,
       },
       ...rest,
@@ -358,7 +369,9 @@ export const CardDescription = ({
       color:
         tone === 'onFilled'
           ? 'color-mix(in srgb, var(--ds-on-inverse, #ffffff) 92%, transparent)'
-          : tokens.colors.content.secondary,
+          : tone === 'onBrand'
+            ? 'color-mix(in srgb, var(--ds-on-brand-primary, #0a0a0b) 88%, transparent)'
+            : tokens.colors.content.secondary,
       lineHeight: tokens.typography.lineHeight.normal,
       ...style,
     }}
@@ -1139,7 +1152,7 @@ export default function FinalComponentsDemo() {
   const buttonStyle = {
     padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
     backgroundColor: tokens.colors.primary[500],
-    color: tokens.colors.content.inverse,
+    color: tokens.colors.content.onBrandPrimary,
     border: 'none',
     borderRadius: tokens.borderRadius.sm,
     fontSize: tokens.typography.fontSize.md,
@@ -1196,10 +1209,10 @@ export default function FinalComponentsDemo() {
 
           <Card variant="filledPrimary" as="section" aria-labelledby="demo-card-banner-title" padding="lg">
             <CardHeader>
-              <CardTitle id="demo-card-banner-title" tone="onFilled">
+              <CardTitle id="demo-card-banner-title" tone="onBrand">
                 Conta digital
               </CardTitle>
-              <CardDescription tone="onFilled">Abertura rápida com o DS TP.IA.</CardDescription>
+              <CardDescription tone="onBrand">Abertura rápida com o DS TP.IA.</CardDescription>
             </CardHeader>
             <CardFooter>
               <button

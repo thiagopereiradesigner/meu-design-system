@@ -142,11 +142,13 @@ const Toast = ({
     const colorMap = {
       success: {
         bg: isActive ? 'var(--ds-success)' : 'var(--ds-success-bg)',
-        text: isActive ? '#FFFFFF' : 'var(--ds-success-fg)',
-        icon: isActive ? '#FFFFFF' : 'var(--ds-success)',
-        close: isActive ? '#FFFFFF' : 'var(--ds-success-fg)',
-        progressBg: isActive ? 'rgba(255,255,255,0.3)' : 'color-mix(in srgb, var(--ds-success) 30%, transparent)',
-        progressFill: isActive ? '#FFFFFF' : 'var(--ds-success-fg)',
+        text: isActive ? 'var(--ds-on-brand-primary, #FFFFFF)' : 'var(--ds-success-fg)',
+        icon: isActive ? 'var(--ds-on-brand-primary, #FFFFFF)' : 'var(--ds-success)',
+        close: isActive ? 'var(--ds-on-brand-primary, #FFFFFF)' : 'var(--ds-success-fg)',
+        progressBg: isActive
+          ? 'color-mix(in srgb, var(--ds-on-brand-primary, #ffffff) 32%, transparent)'
+          : 'color-mix(in srgb, var(--ds-success) 30%, transparent)',
+        progressFill: isActive ? 'var(--ds-on-brand-primary, #FFFFFF)' : 'var(--ds-success-fg)',
       },
       error: {
         bg: isActive ? 'var(--ds-error)' : 'var(--ds-error-bg)',

@@ -5,8 +5,9 @@ Documentação rápida para retomar trabalho em novos temas e consistência visu
 ## Onde está a fonte da verdade
 
 - **Arquivo:** `demos/ds-demo-base.css`
-- **Temas:** `:root` (light default) e `[data-ds-theme="dark"]`
-- **Persistência entre páginas:** `localStorage` com chave `ds-theme` (`light` | `dark`), aplicada em `document.documentElement.dataset.dsTheme` (ver `demos/ds-demo-sidebar.js` e `demos/index.html`).
+- **Temas:** `:root` (padrão), `[data-ds-theme="dark"]`, `[data-ds-theme="ringgo"]` (light) e `[data-ds-theme="ringgo-dark"]`. Em Design Tokens, o seletor inclui **Ringgo (light)** e **Ringgo (dark)**.
+- **Persistência entre páginas:** `localStorage` com chave `ds-theme` (`light` | `dark` | `ringgo` | `ringgo-dark`), aplicada em `document.documentElement.dataset.dsTheme` (ver `demos/ds-demo-sidebar.js` e `demos/index.html`).
+- **Contraste em botão primário Ringgo:** `--ds-on-brand-primary` (#0A0A0B) sobre `--ds-success` (#03D062) para WCAG AA; noutros temas o token cai no fallback `--ds-on-inverse`.
 
 ## Tokens semânticos (preferir estes em código novo)
 

@@ -159,7 +159,7 @@
         /* PRIMARY VARIANT */
         .btn-primary {
             background-color: var(--ds-success);
-            color: var(--ds-bg);
+            color: var(--ds-on-brand-primary, var(--ds-bg));
         }
 
         .btn-primary.hover,
@@ -180,6 +180,8 @@
         .btn-primary.active,
         .btn-primary:active:not(.hover):not(.focus):not(.active):not(.disabled) {
             background-color: var(--ds-success-fg);
+            /* Texto claro sobre verde escuro (AA); evita preto em --ds-on-brand-primary no Ringgo */
+            color: var(--ds-on-inverse);
         }
 
         .btn-primary.disabled,

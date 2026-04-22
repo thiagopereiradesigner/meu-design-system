@@ -32,13 +32,19 @@
 
 .ds-r-btn--primary {
   background-color: var(--ds-success);
-  color: var(--ds-on-inverse);
+  color: var(--ds-on-brand-primary, var(--ds-on-inverse));
   border-color: var(--ds-success);
 }
 
 .ds-r-btn--primary:hover:not(:disabled) {
   background-color: var(--ds-success-hover);
   border-color: var(--ds-success-hover);
+}
+
+.ds-r-btn--primary:active:not(:disabled) {
+  background-color: var(--ds-success-fg);
+  border-color: var(--ds-success-fg);
+  color: var(--ds-on-inverse);
 }
 
 .ds-r-btn--secondary {

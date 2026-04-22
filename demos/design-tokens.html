@@ -930,9 +930,11 @@
 
     <div class="theme-select-row theme-select-row-extended">
         <label for="ds-theme-select">Aparência</label>
-        <select id="ds-theme-select" aria-label="Modo claro ou escuro do tema">
+        <select id="ds-theme-select" aria-label="Tema visual (claro, escuro ou Ringgo)">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
+            <option value="ringgo">Ringgo (light)</option>
+            <option value="ringgo-dark">Ringgo (dark)</option>
         </select>
         <span id="ds-theme-active-label" class="theme-active-badge" aria-live="polite">Padrão do design system</span>
         <button type="button" class="token-io-open-modal-btn" id="ds-open-theme-io-modal" aria-haspopup="dialog" aria-controls="ds-theme-io-modal-dialog">Importar ou exportar tema…</button>
@@ -1111,7 +1113,8 @@
         '--ds-success', '--ds-success-hover', '--ds-border', '--ds-separator-light',
         '--ds-fg', '--ds-fg-muted', '--ds-fg-subtle',
         '--ds-content-primary', '--ds-content-secondary', '--ds-content-tertiary',
-        '--ds-on-inverse', '--ds-icon-muted', '--ds-icon-accent',
+        '--ds-on-inverse', '--ds-on-brand-primary', '--ds-font-family-heading',
+        '--ds-icon-muted', '--ds-icon-accent',
         '--ds-n800', '--ds-n500', '--ds-n200',
         '--ds-bg', '--ds-bg-subtle', '--ds-surface', '--ds-surface-elevated',
         '--ds-success-bg', '--ds-success-fg',
@@ -1491,7 +1494,8 @@
             }
         }
         clearImportedInlineStyles();
-        var mode = document.documentElement.dataset.dsTheme === 'dark' ? 'dark' : 'light';
+        var t = document.documentElement.dataset.dsTheme || 'light';
+        var mode = t === 'dark' || t === 'ringgo-dark' ? 'dark' : 'light';
         var vars = data[mode] || {};
         Object.keys(vars).forEach(function (k) {
             if (DS_KEY_RE.test(k) && DS_TOKEN_KEYS.indexOf(k) !== -1) {
@@ -1681,7 +1685,8 @@
     function exportCurrentTheme() {
         setIoError('');
         var name = getThemeNameInput();
-        var mode = document.documentElement.dataset.dsTheme === 'dark' ? 'dark' : 'light';
+        var t = document.documentElement.dataset.dsTheme || 'light';
+        var mode = t === 'dark' || t === 'ringgo-dark' ? 'dark' : 'light';
         var root = getComputedStyle(document.documentElement);
         var tokenMap = {};
         DS_TOKEN_KEYS.forEach(function (k) {

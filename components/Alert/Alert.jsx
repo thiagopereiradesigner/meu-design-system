@@ -97,9 +97,9 @@ export const Alert = ({
   const colors = {
     success: {
       bg: isActive ? "var(--ds-success)" : "var(--ds-success-bg)",
-      text: isActive ? "#FFFFFF" : "var(--ds-success-fg)",
-      icon: isActive ? "#FFFFFF" : "var(--ds-success)",
-      close: isActive ? "#FFFFFF" : "var(--ds-success-fg)",
+      text: isActive ? "var(--ds-on-brand-primary, #FFFFFF)" : "var(--ds-success-fg)",
+      icon: isActive ? "var(--ds-on-brand-primary, #FFFFFF)" : "var(--ds-success)",
+      close: isActive ? "var(--ds-on-brand-primary, #FFFFFF)" : "var(--ds-success-fg)",
     },
     error: {
       bg: isActive ? "var(--ds-error)" : "var(--ds-error-bg)",
