@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run build:ds-react && npm run build -w ds-docs",
+    "build:next": "next build",
     "start": "next start",
     "lint": "eslint",
     "dev:docs": "npm run dev -w ds-docs",
