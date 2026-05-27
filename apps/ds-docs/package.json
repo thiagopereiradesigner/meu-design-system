@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@meu-ds/react": "workspace:*",
+    "@meu-ds/react": "file:../../packages/ds-react",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
